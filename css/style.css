@@ -1,0 +1,262 @@
+/* ============================================================
+   style.css — Sakin, yumuşak temalı kişisel farkındalık panosu
+   ============================================================ */
+
+:root {
+  --bg-card: rgba(255, 255, 255, 0.82);
+  --bg-card-soft: rgba(255, 255, 255, 0.6);
+  --metin: #2c2440;
+  --metin-soft: #6b6280;
+  --accent: #7c5cbf;
+  --accent-2: #b89ce0;
+  --accent-soft: #ede6f7;
+  --radius: 18px;
+  --shadow: 0 8px 30px rgba(60, 40, 90, 0.15);
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--metin);
+  min-height: 100vh;
+  line-height: 1.55;
+  background: url("../Görsellerim/ARKA FON.jpg") center / cover fixed no-repeat,
+              linear-gradient(160deg, #d9c9f0, #f3e9ff);
+}
+
+/* Arka plan üstü okunurluk katmanı */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.35), rgba(245,235,255,0.55));
+  z-index: -1;
+}
+
+/* ---------- Başlık & alt bilgi ---------- */
+.site-header {
+  text-align: center;
+  padding: 2.4rem 1rem 1rem;
+}
+.site-header h1 {
+  margin: 0;
+  font-size: 2.1rem;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 10px rgba(255,255,255,0.6);
+}
+.tarih {
+  margin: 0.3rem 0 0;
+  color: var(--metin-soft);
+  text-transform: capitalize;
+}
+.site-footer {
+  text-align: center;
+  padding: 2rem 1rem 3rem;
+  color: var(--metin-soft);
+}
+
+/* ---------- Grid düzeni ---------- */
+.grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.2rem;
+  align-items: start;
+}
+.card-wide { grid-column: 1 / -1; }
+
+/* ---------- Kart ---------- */
+.card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 1.3rem 1.4rem;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.6);
+}
+.card h2 {
+  margin: 0 0 0.9rem;
+  font-size: 1.15rem;
+  color: var(--accent);
+}
+.card-motivasyon blockquote {
+  margin: 0;
+  font-size: 1.25rem;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* ---------- Butonlar ---------- */
+.btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 0.55rem 1.2rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: transform 0.1s, background 0.2s;
+}
+.btn:hover { background: #6a4caf; }
+.btn:active { transform: scale(0.97); }
+.btn.ghost {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent-2);
+}
+.btn.ghost:hover { background: var(--accent-soft); }
+.file-label { display: inline-block; }
+
+/* ---------- Form öğeleri ---------- */
+input[type="text"], textarea {
+  width: 100%;
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #d9cfee;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--metin);
+  resize: vertical;
+}
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.ekle-satir { display: flex; gap: 0.5rem; margin-bottom: 0.8rem; }
+.ekle-satir input { flex: 1; }
+.satir-arasi { display: flex; align-items: center; gap: 0.8rem; margin-top: 0.7rem; flex-wrap: wrap; }
+.kayit-bilgi { color: #3f9b62; font-size: 0.85rem; }
+.muted { color: var(--metin-soft); }
+.small { font-size: 0.85rem; }
+
+/* ---------- Meditasyon ---------- */
+.ses-listesi { list-style: none; margin: 0 0 0.9rem; padding: 0; display: flex; flex-direction: column; gap: 0.4rem; }
+.ses-btn {
+  width: 100%;
+  text-align: left;
+  background: var(--accent-soft);
+  border: none;
+  border-radius: 12px;
+  padding: 0.6rem 0.9rem;
+  cursor: pointer;
+  color: var(--metin);
+  font-size: 0.95rem;
+  transition: background 0.2s;
+}
+.ses-btn:hover { background: #e0d3f5; }
+.ses-btn.aktif { background: var(--accent); color: #fff; }
+#ses-player { width: 100%; margin-top: 0.3rem; }
+
+/* ---------- Ruh hali ---------- */
+.mood-butonlar { display: flex; gap: 0.4rem; justify-content: space-between; margin-bottom: 0.8rem; }
+.mood {
+  font-size: 1.7rem;
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 14px;
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
+  transition: transform 0.1s, border-color 0.2s, background 0.2s;
+}
+.mood:hover { transform: scale(1.15); }
+.mood.aktif { border-color: var(--accent); background: var(--accent-soft); }
+.mood-serit { display: flex; gap: 0.3rem; margin-top: 0.4rem; }
+.mood-gun {
+  flex: 1;
+  text-align: center;
+  font-size: 1.2rem;
+  background: var(--bg-card-soft);
+  border-radius: 8px;
+  padding: 0.3rem 0;
+}
+
+/* ---------- Kart çekme ---------- */
+.kart-alani { min-height: 120px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.9rem; }
+.kart-placeholder { color: var(--metin-soft); font-style: italic; text-align: center; }
+.kart-icerik { text-align: center; animation: kartGir 0.4s ease; }
+.kart-icerik img {
+  max-width: 100%;
+  max-height: 280px;
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+.kart-icerik h3 { margin: 0.7rem 0 0.2rem; color: var(--accent); }
+.kart-icerik p { margin: 0; color: var(--metin-soft); }
+@keyframes kartGir { from { opacity: 0; transform: translateY(10px) scale(0.97); } to { opacity: 1; transform: none; } }
+
+/* ---------- Check ---------- */
+.check { display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer; }
+.check input { width: 18px; height: 18px; accent-color: var(--accent); }
+.soru-metin { font-weight: 600; margin-bottom: 0.7rem; }
+
+/* ---------- Listeler ---------- */
+.liste { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.45rem; }
+.liste li {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.6rem;
+  background: var(--bg-card-soft);
+  border-radius: 12px;
+  padding: 0.55rem 0.8rem;
+}
+.liste-metin { flex: 1; cursor: default; word-break: break-word; }
+#hedef-listesi .liste-metin { cursor: pointer; }
+.liste li.tamam .liste-metin { text-decoration: line-through; opacity: 0.6; }
+.sil {
+  background: transparent;
+  border: none;
+  color: #c46;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0.1rem 0.3rem;
+}
+.sil:hover { color: #a02040; }
+.gecmis { margin-top: 0.9rem; }
+.gecmis summary { cursor: pointer; color: var(--accent); }
+.gecmis ul { margin-top: 0.6rem; }
+
+/* ---------- Rozetler ---------- */
+.rozet-grid { display: flex; flex-direction: column; gap: 0.6rem; }
+.rozet {
+  background: var(--bg-card-soft);
+  border-radius: 12px;
+  padding: 0.6rem 0.8rem;
+  opacity: 0.6;
+  filter: grayscale(0.7);
+  transition: opacity 0.3s, filter 0.3s;
+}
+.rozet.kazanildi { opacity: 1; filter: none; box-shadow: 0 0 0 2px var(--accent-2); }
+.rozet-ikon { font-weight: 600; }
+.rozet-ilerleme { font-size: 0.8rem; color: var(--metin-soft); }
+.rozet-bar { height: 6px; background: #e3d8f5; border-radius: 99px; margin-top: 0.3rem; overflow: hidden; }
+.rozet-bar span { display: block; height: 100%; background: var(--accent); transition: width 0.4s; }
+
+/* ---------- Ürünler ---------- */
+.urun-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.8rem; }
+.urun {
+  display: block;
+  text-decoration: none;
+  color: var(--metin);
+  background: var(--bg-card-soft);
+  border-radius: 14px;
+  padding: 1rem;
+  transition: transform 0.15s, box-shadow 0.2s;
+}
+.urun:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.urun h4 { margin: 0 0 0.3rem; }
+.urun p { margin: 0 0 0.6rem; font-size: 0.85rem; color: var(--metin-soft); }
+.urun-link { color: var(--accent); font-weight: 600; font-size: 0.9rem; }
+
+/* ---------- Mobil ---------- */
+@media (max-width: 640px) {
+  .grid { grid-template-columns: 1fr; padding: 0.7rem; }
+  .site-header h1 { font-size: 1.6rem; }
+}

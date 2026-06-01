@@ -1,0 +1,6 @@
+# Yerel araç ayarları
+.claude/settings.local.json
+
+# OS
+Thumbs.db
+.DS_Store

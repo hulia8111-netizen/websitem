@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ruh & Niyet · Kişisel Farkındalık Panosu</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="overlay"></div>
+
+  <header class="site-header">
+    <h1>🌙 Ruh &amp; Niyet</h1>
+    <p id="bugun-tarih" class="tarih"></p>
+  </header>
+
+  <main class="grid">
+
+    <!-- 1. Günün motivasyon cümlesi -->
+    <section class="card card-motivasyon" id="motivasyon">
+      <h2>✨ Günün Cümlesi</h2>
+      <blockquote id="motivasyon-metin">…</blockquote>
+      <button class="btn ghost" id="motivasyon-yeni">Yeni cümle</button>
+    </section>
+
+    <!-- 2. Meditasyon sesleri -->
+    <section class="card" id="meditasyon">
+      <h2>🎧 Meditasyon Sesleri</h2>
+      <ul class="ses-listesi" id="ses-listesi"></ul>
+      <audio id="ses-player" controls preload="none"></audio>
+    </section>
+
+    <!-- 3. Günün ruh hali -->
+    <section class="card" id="ruhhali">
+      <h2>💗 Bugünkü Ruh Halin</h2>
+      <div class="mood-butonlar" id="mood-butonlar">
+        <button data-mood="😄" class="mood">😄</button>
+        <button data-mood="🙂" class="mood">🙂</button>
+        <button data-mood="😐" class="mood">😐</button>
+        <button data-mood="😔" class="mood">😔</button>
+        <button data-mood="😢" class="mood">😢</button>
+      </div>
+      <p class="muted small">Son 7 gün:</p>
+      <div class="mood-serit" id="mood-serit"></div>
+    </section>
+
+    <!-- 4. Kart çekme -->
+    <section class="card" id="kart">
+      <h2>🔮 Günün Kartı</h2>
+      <div class="kart-alani" id="kart-alani">
+        <div class="kart-placeholder">Kartını çekmek için butona dokun</div>
+      </div>
+      <button class="btn" id="kart-cek">Kart Çek</button>
+      <button class="btn ghost" id="kart-tekrar" hidden>Tekrar çek</button>
+    </section>
+
+    <!-- 5. Günün mini görevi -->
+    <section class="card" id="gorev">
+      <h2>✅ Günün Mini Görevi</h2>
+      <p id="gorev-metin">…</p>
+      <label class="check">
+        <input type="checkbox" id="gorev-check" />
+        <span>Tamamladım</span>
+      </label>
+    </section>
+
+    <!-- 6. Günün farkındalık sorusu -->
+    <section class="card" id="soru">
+      <h2>🌱 Farkındalık Sorusu</h2>
+      <p id="soru-metin" class="soru-metin">…</p>
+      <textarea id="soru-cevap" rows="3" placeholder="Cevabını buraya yaz…"></textarea>
+      <button class="btn" id="soru-kaydet">Kaydet</button>
+      <span class="kayit-bilgi" id="soru-bilgi"></span>
+    </section>
+
+    <!-- 7. Manifest / hedef -->
+    <section class="card" id="manifest">
+      <h2>🌟 Manifest Hedeflerim</h2>
+      <div class="ekle-satir">
+        <input type="text" id="hedef-input" placeholder="Yeni bir hedef yaz…" />
+        <button class="btn" id="hedef-ekle">Ekle</button>
+      </div>
+      <ul class="liste" id="hedef-listesi"></ul>
+    </section>
+
+    <!-- 8. Şükran defteri -->
+    <section class="card" id="sukran">
+      <h2>🙏 Şükran Defteri</h2>
+      <div class="ekle-satir">
+        <input type="text" id="sukran-input" placeholder="Bugün neye şükrediyorsun?" />
+        <button class="btn" id="sukran-ekle">Ekle</button>
+      </div>
+      <ul class="liste" id="sukran-listesi"></ul>
+    </section>
+
+    <!-- 9. Günlük -->
+    <section class="card card-wide" id="gunluk">
+      <h2>📓 Günlüğüm</h2>
+      <textarea id="gunluk-metin" rows="6" placeholder="Bugün neler oldu, neler hissettin?"></textarea>
+      <div class="satir-arasi">
+        <button class="btn" id="gunluk-kaydet">Bugünü Kaydet</button>
+        <span class="kayit-bilgi" id="gunluk-bilgi"></span>
+      </div>
+      <details class="gecmis">
+        <summary>Geçmiş günlükler</summary>
+        <ul class="liste" id="gunluk-gecmis"></ul>
+      </details>
+    </section>
+
+    <!-- 10. Haftalık rozetler -->
+    <section class="card" id="rozetler">
+      <h2>🏅 Haftalık Rozetler</h2>
+      <p class="muted small">Bu hafta kazandıkların:</p>
+      <div class="rozet-grid" id="rozet-grid"></div>
+    </section>
+
+    <!-- 11. Ürün linkleri -->
+    <section class="card card-wide" id="urunler">
+      <h2>🛍️ Önerilen Ürünler</h2>
+      <div class="urun-grid" id="urun-grid"></div>
+    </section>
+
+    <!-- 12. Ayarlar / yedek -->
+    <section class="card" id="ayarlar">
+      <h2>⚙️ Yedekleme</h2>
+      <p class="muted small">Verilerin yalnızca bu tarayıcıda saklanır. Yedek almayı unutma.</p>
+      <div class="satir-arasi">
+        <button class="btn" id="export-btn">Yedeği İndir</button>
+        <label class="btn ghost file-label">
+          Yedek Yükle
+          <input type="file" id="import-input" accept="application/json" hidden />
+        </label>
+      </div>
+      <span class="kayit-bilgi" id="yedek-bilgi"></span>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>Kendine nazik ol. 🤍</p>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
