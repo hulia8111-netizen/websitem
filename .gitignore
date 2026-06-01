@@ -1,6 +1,9 @@
 # Yerel araç ayarları
 .claude/settings.local.json
 
+# Telifli olabilecek ses dosyaları herkese açık yayımlanmasın (yerelde kalır)
+Ses dosyalarım/
+
 # OS
 Thumbs.db
 .DS_Store
