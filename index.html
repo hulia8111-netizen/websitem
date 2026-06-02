@@ -2,146 +2,680 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ruh & Niyet · Kişisel Farkındalık Panosu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0e0b1e" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Işığını Bul" />
+  <meta name="description" content="Işığını Bul ✨ — spiritüel kişisel farkındalık & wellbeing uygulaması: günün kartı, ruh hali, şükran, manifest, meditasyon, ay evresi, içsel rehber ve başarımlar." />
+  <title>Işığını Bul ✨ · Spiritüel Wellness</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <div class="overlay"></div>
+  <div class="aura" aria-hidden="true">
+    <span class="blob blob-1"></span>
+    <span class="blob blob-2"></span>
+    <span class="blob blob-3"></span>
+  </div>
+
+  <!-- Spiritüel Başlangıç Testi -->
+  <div class="test-overlay" id="test-overlay" hidden>
+    <div class="test-kart" id="test-kart">
+      <div class="test-yildiz" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+      <div class="test-soru-alan" id="test-soru-alan">
+        <div class="test-ust">
+          <span class="test-mini">Spiritüel Başlangıç Testi 🧠</span>
+          <span class="test-adim" id="test-adim"></span>
+        </div>
+        <div class="test-ilerleme"><span id="test-ilerleme-dolu"></span></div>
+        <h2 class="test-soru" id="test-soru"></h2>
+        <div class="test-secenekler" id="test-secenekler"></div>
+      </div>
+      <div class="test-sonuc-alan" id="test-sonuc-alan" hidden></div>
+    </div>
+  </div>
+
+  <!-- Ürün detay popup -->
+  <div class="urun-popup" id="urun-popup" hidden>
+    <div class="up-ic">
+      <button class="up-kapat" id="up-kapat" aria-label="Kapat">✕</button>
+      <div class="up-gorsel" id="up-gorsel"></div>
+      <div class="up-kat" id="up-kat"></div>
+      <h3 class="up-ad" id="up-ad"></h3>
+      <div class="up-fiyat" id="up-fiyat"></div>
+      <p class="up-aciklama" id="up-aciklama"></p>
+      <div class="up-aksiyon">
+        <a class="btn up-link" id="up-link" target="_blank" rel="noopener">Shopier'de Keşfet →</a>
+        <button class="up-fav" id="up-fav" aria-label="Favori">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.35-7-9a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 4.65-7 9-7 9z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Çift Saat kozmik popup -->
+  <div class="cs-popup" id="cs-popup" hidden>
+    <div class="cs-pop-ic">
+      <div class="cs-pop-yildiz" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+      <button class="cs-kapat" id="cs-kapat" aria-label="Kapat">✕</button>
+      <div class="cs-saat" id="cs-saat">11:11</div>
+      <p class="cs-mesaj" id="cs-mesaj"></p>
+      <p class="cs-yorum" id="cs-yorum"></p>
+      <div class="altin-divider ince"></div>
+      <span class="cs-olumlama-et">Olumlama</span>
+      <p class="cs-olumlama" id="cs-olumlama"></p>
+      <button class="cs-fav" id="cs-fav" aria-label="Favori saat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.35-7-9a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 4.65-7 9-7 9z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Gece Kozmik Modu katmanı (yalnız mod açıkken görünür) -->
+  <div class="kozmik-katman" id="kozmik-katman" aria-hidden="true">
+    <div class="kz-nebula"></div>
+    <div class="kz-yildizlar kz-l1" id="kz-l1"></div>
+    <div class="kz-yildizlar kz-l2" id="kz-l2"></div>
+    <div class="kz-parcaciklar" id="kz-parcaciklar"></div>
+  </div>
+
+  <!-- ============ KARŞILAMA / ONBOARDING ============ -->
+  <div class="onboarding" id="onboarding" hidden>
+    <div class="ob-gokyuzu" aria-hidden="true">
+      <span class="ob-yildiz y1"></span>
+      <span class="ob-yildiz y2"></span>
+      <span class="ob-yildiz y3"></span>
+      <span class="ob-yildiz y4"></span>
+      <span class="ob-yildiz y5"></span>
+      <span class="ob-yildiz y6"></span>
+    </div>
+    <div class="ob-kart">
+      <div class="ob-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.5 6.5 0 0 0 9.8 9.8z"/>
+        </svg>
+      </div>
+      <h2>Işığını <span>Bul</span> <span class="kivilcim">✨</span></h2>
+      <p class="ob-alt">Yolculuğuna başlamadan önce, sana nasıl hitap edelim?</p>
+      <input type="text" id="ob-isim" placeholder="İsmin…" maxlength="24" autocomplete="off" />
+      <button class="btn ob-basla" id="ob-basla">Başla ✨</button>
+      <p class="ob-not">İsmin yalnızca bu cihazda saklanır.</p>
+    </div>
+  </div>
 
   <header class="site-header">
-    <h1>🌙 Ruh &amp; Niyet</h1>
+    <div class="logo-ay" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.5 6.5 0 0 0 9.8 9.8z"/>
+      </svg>
+    </div>
+    <h1>Işığını <span>Bul</span> <span class="kivilcim">✨</span></h1>
+    <p id="karsilama" class="karsilama"></p>
     <p id="bugun-tarih" class="tarih"></p>
   </header>
 
-  <main class="grid">
+  <main class="app">
 
-    <!-- 1. Günün motivasyon cümlesi -->
-    <section class="card card-motivasyon" id="motivasyon">
-      <h2>✨ Günün Cümlesi</h2>
-      <blockquote id="motivasyon-metin">…</blockquote>
-      <button class="btn ghost" id="motivasyon-yeni">Yeni cümle</button>
-    </section>
+    <!-- ============ ANA SAYFA ============ -->
+    <div class="view active" id="view-home">
+      <div class="grid">
 
-    <!-- 2. Meditasyon sesleri -->
-    <section class="card" id="meditasyon">
-      <h2>🎧 Meditasyon Sesleri</h2>
-      <ul class="ses-listesi" id="ses-listesi"></ul>
-      <audio id="ses-player" controls preload="none"></audio>
-    </section>
+        <!-- İstikrar serisi (streak) widget'ı -->
+        <section class="card card-streak card-wide" id="streak-widget">
+          <div class="streak-ust">
+            <div class="streak-alev">
+              <svg class="alev-svg" viewBox="0 0 24 24" aria-hidden="true">
+                <defs>
+                  <linearGradient id="alevG" x1="0" y1="1" x2="0" y2="0">
+                    <stop offset="0%" stop-color="#ff6a2a"/>
+                    <stop offset="55%" stop-color="#ffac3e"/>
+                    <stop offset="100%" stop-color="#f3d98c"/>
+                  </linearGradient>
+                </defs>
+                <path fill="url(#alevG)" d="M12 2c2.6 3.6 5 5.4 5 9.2A5 5 0 0 1 7 11.4c0-1.6.6-2.7 1.7-3.9.2 1.4.9 2.2 2 2.5C10.6 7.6 10 5.2 12 2z"/>
+              </svg>
+            </div>
+            <div class="streak-bilgi">
+              <div class="streak-baslik">
+                <span class="streak-sayi" id="streak-sayi"></span>
+                <span id="streak-baslik-metin">…</span>
+              </div>
+              <div class="streak-mesaj" id="streak-mesaj"></div>
+              <div class="streak-bonus" id="streak-bonus" hidden></div>
+            </div>
+          </div>
+          <div class="streak-bar"><span id="streak-bar-dolu"></span></div>
+          <div class="streak-seviye-bilgi" id="streak-seviye-bilgi"></div>
+          <div class="streak-tier-serit" id="streak-tier-serit"></div>
+        </section>
 
-    <!-- 3. Günün ruh hali -->
-    <section class="card" id="ruhhali">
-      <h2>💗 Bugünkü Ruh Halin</h2>
-      <div class="mood-butonlar" id="mood-butonlar">
-        <button data-mood="😄" class="mood">😄</button>
-        <button data-mood="🙂" class="mood">🙂</button>
-        <button data-mood="😐" class="mood">😐</button>
-        <button data-mood="😔" class="mood">😔</button>
-        <button data-mood="😢" class="mood">😢</button>
+        <!-- Günün Enerji Seviyesi -->
+        <section class="card card-wide card-enerji" id="enerji">
+          <h2>Günün Enerji Seviyesi</h2>
+          <div class="enerji-ust">
+            <div class="enerji-gosterge dusuk" id="enerji-gosterge">
+              <svg viewBox="0 0 120 120" class="enerji-svg" aria-hidden="true">
+                <defs>
+                  <linearGradient id="enerjiG" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#f3d98c"/>
+                    <stop offset="100%" stop-color="#b38cff"/>
+                  </linearGradient>
+                </defs>
+                <circle class="e-track" cx="60" cy="60" r="52"/>
+                <circle class="e-ilerleme" cx="60" cy="60" r="52" id="enerji-ring" transform="rotate(-90 60 60)"/>
+              </svg>
+              <div class="enerji-yuzde" id="enerji-yuzde">0%</div>
+            </div>
+            <div class="enerji-bilgi">
+              <div class="enerji-seviye" id="enerji-seviye">…</div>
+              <div class="enerji-mesaj" id="enerji-mesaj"></div>
+            </div>
+          </div>
+          <p class="muted small enerji-graf-baslik">Son 7 gün</p>
+          <div class="enerji-grafik" id="enerji-grafik"></div>
+          <div class="e-rozet-serit" id="enerji-rozet"></div>
+        </section>
+
+        <section class="card card-motivasyon card-wide" id="motivasyon">
+          <h2>Günün Cümlesi</h2>
+          <blockquote id="motivasyon-metin">…</blockquote>
+        </section>
+
+        <!-- Kader Haritası / Günlük Spiritüel Rehber -->
+        <section class="card card-wide card-kader" id="kader">
+          <h2>Günlük Spiritüel Rehber 🪐</h2>
+          <div class="kader-flip" id="kader-flip">
+            <button class="kader-kapali" id="kader-kapali">
+              <div class="kader-yildiz" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+              <div class="kk-ay">🌙</div>
+              <span class="kk-yazi">Günün rehberini aç ✦</span>
+            </button>
+            <div class="kader-acik" id="kader-acik" hidden></div>
+          </div>
+          <details class="gecmis kader-detay">
+            <summary>Favoriler &amp; Geçmiş</summary>
+            <div id="kader-gecmis-liste"></div>
+          </details>
+        </section>
+
+        <!-- Sesli Olumlama -->
+        <section class="card card-wide card-olumlama" id="olumlama">
+          <div class="olumlama-bar">
+            <h2>Sesli Olumlama</h2>
+            <button class="ses-toggle" id="olumlama-ses" aria-label="Sesi aç/kapat"></button>
+          </div>
+          <div class="kategori-sekme" id="olumlama-kat" role="tablist"></div>
+          <div class="olumlama-kutu" id="olumlama-kutu">
+            <span class="olumlama-etiket" id="olumlama-etiket">Günün Önerisi</span>
+            <p class="olumlama-metin" id="olumlama-metin">…</p>
+            <div class="olumlama-player">
+              <button class="olumlama-play" id="olumlama-play" aria-label="Dinle"></button>
+              <span class="olumlama-wave" id="olumlama-wave"><i></i><i></i><i></i><i></i><i></i></span>
+              <div class="olumlama-aksiyon">
+                <button class="olumlama-fav" id="olumlama-fav" aria-label="Favorilere ekle"></button>
+                <button class="olumlama-rast" id="olumlama-rast" aria-label="Rastgele olumlama"></button>
+              </div>
+            </div>
+          </div>
+          <details class="gecmis olumlama-favori">
+            <summary>Favorilerim (<span id="olumlama-fav-sayi">0</span>)</summary>
+            <ul class="liste" id="olumlama-fav-liste"></ul>
+          </details>
+        </section>
+
+        <!-- Gerçek zamanlı Ay Evresi -->
+        <section class="card card-ay card-wide" id="ay-evresi">
+          <h2>Ay Evresi</h2>
+          <div class="ay-icerik">
+            <div class="ay-gorsel" id="ay-gorsel"></div>
+            <div class="ay-bilgi">
+              <div class="ay-ad" id="ay-ad">…</div>
+              <p class="ay-aciklama" id="ay-aciklama"></p>
+              <div class="ay-aydinlanma" id="ay-aydinlanma"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Çift Saat Anlamları -->
+        <section class="card card-wide card-ciftsaat" id="ciftsaat">
+          <h2>Çift Saat Anlamları</h2>
+          <div class="cs-canli" id="cs-canli">--:--</div>
+          <p class="muted small">Bir saate dokun ve anlamını keşfet; çift saat yakaladığında özel bir mesaj belirir ✨</p>
+          <div class="cs-grid" id="cs-grid"></div>
+          <details class="gecmis cs-detay">
+            <summary>Favoriler &amp; Geçmiş</summary>
+            <div class="cs-fav-liste" id="cs-fav-liste"></div>
+            <div class="cs-gecmis-liste" id="cs-gecmis-liste"></div>
+          </details>
+        </section>
+
+        <!-- AI Ruh Rehberi (sohbet) -->
+        <section class="card card-wide" id="rehber">
+          <div class="rehber-baslik">
+            <h2>AI Ruh Rehberi</h2>
+            <button class="rehber-temizle" id="rehber-temizle" hidden>Geçmişi temizle</button>
+          </div>
+          <div class="sohbet" id="rehber-sohbet" aria-live="polite"></div>
+          <div class="sohbet-giris">
+            <textarea id="rehber-girdi" rows="1" placeholder="Bugün nasıl hissediyorsun?"></textarea>
+            <button class="rehber-gonder" id="rehber-btn" aria-label="Gönder">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+        </section>
+
+        <section class="card" id="ruhhali">
+          <h2>Bugünkü Ruh Halin</h2>
+          <div class="mood-butonlar" id="mood-butonlar"></div>
+          <div class="satir-arasi">
+            <button class="btn" id="mood-kaydet">Kaydet</button>
+            <span class="kayit-bilgi" id="mood-bilgi"></span>
+          </div>
+          <p class="muted small mood-baslik">Son 7 Gün</p>
+          <div class="mood-serit" id="mood-serit"></div>
+          <div class="mood-istatistik" id="mood-istatistik" hidden></div>
+        </section>
+
+        <section class="card card-wide card-rituel" id="rituel">
+          <div class="rituel-bar">
+            <h2>Günün Ritüeli 🔮</h2>
+            <div class="rituel-xp" id="rituel-xp"></div>
+          </div>
+          <div class="rituel-kart" id="rituel-kart">
+            <div class="rk-ikon" id="rk-ikon">🌬️</div>
+            <div class="rk-kategori" id="rk-kategori">…</div>
+            <div class="rk-zorluk hafif" id="rk-zorluk"></div>
+            <p class="rk-metin" id="rk-metin">…</p>
+            <div class="rituel-parcacik" id="rituel-parcacik" aria-hidden="true"></div>
+          </div>
+          <div class="rituel-aksiyon">
+            <button class="btn" id="rituel-tamam">Tamamla ✦</button>
+            <button class="btn ghost sm" id="rituel-yenile">Yenile ↻</button>
+            <button class="rituel-fav" id="rituel-fav" aria-label="Favori ritüel">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.35-7-9a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 4.65-7 9-7 9z"/></svg>
+            </button>
+          </div>
+          <div class="rituel-rozet-serit e-rozet-serit" id="rituel-rozet"></div>
+          <details class="gecmis">
+            <summary>Geçmiş &amp; Favoriler</summary>
+            <div id="rituel-fav-liste"></div>
+            <div id="rituel-gecmis-liste"></div>
+          </details>
+        </section>
+
+        <section class="card" id="soru">
+          <h2>Farkındalık Sorusu</h2>
+          <p id="soru-metin" class="soru-metin">…</p>
+          <textarea id="soru-cevap" rows="3" placeholder="Cevabını buraya yaz…"></textarea>
+          <button class="btn" id="soru-kaydet">Kaydet</button>
+          <span class="kayit-bilgi" id="soru-bilgi"></span>
+        </section>
+
       </div>
-      <p class="muted small">Son 7 gün:</p>
-      <div class="mood-serit" id="mood-serit"></div>
-    </section>
+    </div>
 
-    <!-- 4. Kart çekme -->
-    <section class="card" id="kart">
-      <h2>🔮 Günün Kartı</h2>
-      <div class="kart-alani" id="kart-alani">
-        <div class="kart-placeholder">Kartını çekmek için butona dokun</div>
+    <!-- ============ RUH BAHÇESİ ============ -->
+    <div class="view" id="view-bahce">
+      <div class="grid">
+
+        <section class="card card-wide card-bahce" id="bahce">
+          <h2>Ruh Bahçesi</h2>
+          <div class="bahce-sahne sv-0" id="bahce-sahne"></div>
+          <div class="bahce-bilgi">
+            <div class="bahce-seviye" id="bahce-seviye">…</div>
+            <div class="bahce-mesaj" id="bahce-mesaj"></div>
+          </div>
+          <div class="bahce-bar"><span id="bahce-bar-dolu"></span></div>
+          <div class="bahce-bar-bilgi" id="bahce-bar-bilgi"></div>
+        </section>
+
+        <section class="card" id="bahce-gunluk">
+          <h2>Günlük Ritüel</h2>
+          <div class="bahce-gun-mesaj" id="bahce-gun-mesaj"></div>
+          <div class="bahce-gun-bar"><span id="bahce-gun-bar-dolu"></span></div>
+          <div class="bahce-gun-bilgi" id="bahce-gun-bilgi"></div>
+          <div class="ritm-liste" id="bahce-ritm"></div>
+        </section>
+
+        <section class="card" id="bahce-rozetler">
+          <h2>Bahçe Başarımları</h2>
+          <p class="muted small">Seviye rozetleri ve gizli başarımlar</p>
+          <div class="b-rozet-grid" id="bahce-rozet-grid"></div>
+        </section>
+
       </div>
-      <button class="btn" id="kart-cek">Kart Çek</button>
-      <button class="btn ghost" id="kart-tekrar" hidden>Tekrar çek</button>
-    </section>
+    </div>
 
-    <!-- 5. Günün mini görevi -->
-    <section class="card" id="gorev">
-      <h2>✅ Günün Mini Görevi</h2>
-      <p id="gorev-metin">…</p>
-      <label class="check">
-        <input type="checkbox" id="gorev-check" />
-        <span>Tamamladım</span>
-      </label>
-    </section>
+    <!-- ============ KARTLAR ============ -->
+    <div class="view" id="view-kartlar">
+      <div class="grid">
 
-    <!-- 6. Günün farkındalık sorusu -->
-    <section class="card" id="soru">
-      <h2>🌱 Farkındalık Sorusu</h2>
-      <p id="soru-metin" class="soru-metin">…</p>
-      <textarea id="soru-cevap" rows="3" placeholder="Cevabını buraya yaz…"></textarea>
-      <button class="btn" id="soru-kaydet">Kaydet</button>
-      <span class="kayit-bilgi" id="soru-bilgi"></span>
-    </section>
+        <section class="card card-wide" id="kart">
+          <h2>Günün Kartı</h2>
+          <div class="kart-alani" id="kart-alani">
+            <div class="kart-placeholder">Kartını çekmek için butona dokun</div>
+          </div>
+          <div class="satir-arasi">
+            <button class="btn" id="kart-cek">Kart Çek</button>
+            <button class="btn ghost" id="kart-tekrar" hidden>Tekrar çek</button>
+          </div>
+        </section>
 
-    <!-- 7. Manifest / hedef -->
-    <section class="card" id="manifest">
-      <h2>🌟 Manifest Hedeflerim</h2>
-      <div class="ekle-satir">
-        <input type="text" id="hedef-input" placeholder="Yeni bir hedef yaz…" />
-        <button class="btn" id="hedef-ekle">Ekle</button>
+        <section class="card card-wide" id="kart-gecmis-bolum">
+          <h2>Kart Geçmişi</h2>
+          <p class="muted small">Geçmişte çektiğin kartlar</p>
+          <div class="gecmis-grid" id="kart-gecmis"></div>
+        </section>
+
       </div>
-      <ul class="liste" id="hedef-listesi"></ul>
-    </section>
+    </div>
 
-    <!-- 8. Şükran defteri -->
-    <section class="card" id="sukran">
-      <h2>🙏 Şükran Defteri</h2>
-      <div class="ekle-satir">
-        <input type="text" id="sukran-input" placeholder="Bugün neye şükrediyorsun?" />
-        <button class="btn" id="sukran-ekle">Ekle</button>
+    <!-- ============ MEDİTASYON ============ -->
+    <div class="view" id="view-meditasyon">
+      <div class="grid">
+
+        <section class="card card-wide card-muzik" id="meditasyon">
+          <h2>Spiritüel Müzik &amp; Frekans</h2>
+          <div class="muzik-oneri" id="muzik-oneri"></div>
+          <div class="kategori-sekme" id="muzik-kat" role="tablist"></div>
+          <ul class="muzik-liste" id="muzik-liste"></ul>
+
+          <div class="muzik-player" id="muzik-player" hidden>
+            <div class="mp-wave" id="mp-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="mp-bilgi">
+              <div class="mp-ad" id="mp-ad">…</div>
+              <div class="mp-kat" id="mp-kat"></div>
+            </div>
+            <div class="mp-ilerleme"><span id="mp-dolu"></span></div>
+            <div class="mp-sure"><span id="mp-gecen">0:00</span><span id="mp-toplam">0:00</span></div>
+            <div class="mp-kontrol">
+              <button class="mp-yan" id="mp-onceki" aria-label="Önceki">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zM20 6v12l-9-6z"/></svg>
+              </button>
+              <button class="mp-play" id="mp-play" aria-label="Çal/Duraklat"></button>
+              <button class="mp-yan" id="mp-sonraki" aria-label="Sonraki">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM4 6l9 6-9 6z"/></svg>
+              </button>
+              <button class="mp-fav" id="mp-fav" aria-label="Favori">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.35-7-9a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 4.65-7 9-7 9z"/></svg>
+              </button>
+            </div>
+            <div class="mp-volume">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M16 9a4 4 0 0 1 0 6"/></svg>
+              <input type="range" id="mp-vol" min="0" max="100" value="60" aria-label="Ses seviyesi" />
+            </div>
+          </div>
+        </section>
+
       </div>
-      <ul class="liste" id="sukran-listesi"></ul>
-    </section>
+    </div>
 
-    <!-- 9. Günlük -->
-    <section class="card card-wide" id="gunluk">
-      <h2>📓 Günlüğüm</h2>
-      <textarea id="gunluk-metin" rows="6" placeholder="Bugün neler oldu, neler hissettin?"></textarea>
-      <div class="satir-arasi">
-        <button class="btn" id="gunluk-kaydet">Bugünü Kaydet</button>
-        <span class="kayit-bilgi" id="gunluk-bilgi"></span>
+    <!-- ============ GÜNLÜK ============ -->
+    <div class="view" id="view-gunluk">
+      <div class="grid">
+
+        <section class="card card-wide card-gunluk" id="gunluk">
+          <div class="gunluk-yildiz" aria-hidden="true"><span></span><span></span><span></span></div>
+          <h2>İçsel Yazım Alanı</h2>
+          <div class="gunluk-ust">
+            <span class="gunluk-tarih" id="gunluk-tarih"></span>
+            <div class="gunluk-mood-sec" id="gunluk-mood-sec" title="Bugünün ruh hali"></div>
+          </div>
+          <div class="altin-divider"></div>
+          <div class="gunluk-yaz-alan">
+            <textarea id="gunluk-metin" rows="6" placeholder="Bugün içinden ne geçiyor? Düşüncelerini, duygularını ve farkındalıklarını buraya dök…"></textarea>
+          </div>
+          <div class="satir-arasi gunluk-alt">
+            <span class="kayit-bilgi" id="gunluk-bilgi"></span>
+            <button class="btn" id="gunluk-kaydet">Kaydet ✦</button>
+          </div>
+          <div class="gunluk-analiz" id="gunluk-analiz" hidden></div>
+        </section>
+
+        <section class="card card-wide card-gunluk-gecmis" id="gunluk-gecmis-bolum">
+          <div class="gunluk-gecmis-ust">
+            <h2>Geçmiş Günlükler</h2>
+            <button class="gunluk-fav-filtre" id="gunluk-fav-filtre" aria-label="Sadece favoriler">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.35-7-9a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 4.65-7 9-7 9z"/></svg>
+            </button>
+          </div>
+          <div class="gunluk-arama">
+            <svg class="ara-ikon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+            <input type="text" id="gunluk-ara" placeholder="Günlüklerde ara…" />
+          </div>
+          <div class="gunluk-liste" id="gunluk-liste"></div>
+        </section>
+
+        <section class="card" id="sukran">
+          <h2>Şükran Defteri</h2>
+          <div class="ekle-satir">
+            <input type="text" id="sukran-input" placeholder="Bugün neye şükrediyorsun?" />
+            <button class="btn" id="sukran-ekle">Ekle</button>
+          </div>
+          <ul class="liste" id="sukran-listesi"></ul>
+        </section>
+
+        <section class="card" id="manifest">
+          <h2>Manifest Hedeflerim</h2>
+          <div class="ekle-satir">
+            <input type="text" id="hedef-input" placeholder="Yeni bir hedef yaz…" />
+            <button class="btn" id="hedef-ekle">Ekle</button>
+          </div>
+          <ul class="liste" id="hedef-listesi"></ul>
+        </section>
+
       </div>
-      <details class="gecmis">
-        <summary>Geçmiş günlükler</summary>
-        <ul class="liste" id="gunluk-gecmis"></ul>
-      </details>
-    </section>
+    </div>
 
-    <!-- 10. Haftalık rozetler -->
-    <section class="card" id="rozetler">
-      <h2>🏅 Haftalık Rozetler</h2>
-      <p class="muted small">Bu hafta kazandıkların:</p>
-      <div class="rozet-grid" id="rozet-grid"></div>
-    </section>
-
-    <!-- 11. Ürün linkleri -->
-    <section class="card card-wide" id="urunler">
-      <h2>🛍️ Önerilen Ürünler</h2>
-      <div class="urun-grid" id="urun-grid"></div>
-    </section>
-
-    <!-- 12. Ayarlar / yedek -->
-    <section class="card" id="ayarlar">
-      <h2>⚙️ Yedekleme</h2>
-      <p class="muted small">Verilerin yalnızca bu tarayıcıda saklanır. Yedek almayı unutma.</p>
-      <div class="satir-arasi">
-        <button class="btn" id="export-btn">Yedeği İndir</button>
-        <label class="btn ghost file-label">
-          Yedek Yükle
-          <input type="file" id="import-input" accept="application/json" hidden />
-        </label>
+    <!-- ============ SPİRİTÜEL MAĞAZA ============ -->
+    <div class="view" id="view-magaza">
+      <div class="grid">
+        <section class="card card-wide card-magaza" id="magaza">
+          <h2>Spiritüel Mağaza ✦</h2>
+          <p class="muted small">Yolculuğuna eşlik edecek özenle seçilmiş parçalar 🛍️</p>
+          <div class="magaza-oneri" id="magaza-oneri"></div>
+          <div class="kategori-sekme" id="magaza-kat" role="tablist"></div>
+          <div class="magaza-grid" id="magaza-grid"></div>
+        </section>
       </div>
-      <span class="kayit-bilgi" id="yedek-bilgi"></span>
-    </section>
+    </div>
+
+    <!-- ============ PROFİL ============ -->
+    <div class="view" id="view-profil">
+      <div class="grid">
+
+        <section class="card card-wide card-profil" id="profil">
+          <div class="profil-ust">
+            <div class="profil-avatar-sar sv-0" id="profil-avatar-sar">
+              <div class="profil-avatar" id="profil-avatar">✦</div>
+              <button class="profil-foto-btn" id="profil-foto-btn" aria-label="Fotoğraf ekle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3l2-3h8l2 3h3a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              </button>
+              <input type="file" id="profil-foto-input" accept="image/*" hidden />
+            </div>
+            <div class="profil-bilgi">
+              <h2 id="profil-isim">Hoş geldin</h2>
+              <div class="profil-seviye" id="profil-seviye">…</div>
+              <div class="profil-test" id="profil-test"></div>
+              <p class="muted small" id="profil-uyelik"></p>
+            </div>
+            <button class="btn ghost profil-duzenle" id="profil-duzenle">Düzenle</button>
+          </div>
+          <div class="profil-form" id="profil-form" hidden>
+            <div class="ekle-satir">
+              <input type="text" id="profil-isim-input" placeholder="İsmini yaz…" maxlength="24" />
+              <button class="btn" id="profil-kaydet">Kaydet</button>
+            </div>
+          </div>
+          <div class="profil-seviye-bar"><span id="profil-seviye-dolu"></span></div>
+          <div class="profil-seviye-bilgi" id="profil-seviye-bilgi"></div>
+          <div class="stat-grid" id="stat-grid"></div>
+          <div class="altin-divider"></div>
+          <p class="muted small profil-graf-baslik">Son 30 Gün · Gelişim</p>
+          <div class="profil-grafik" id="profil-grafik"></div>
+          <div class="profil-ozet" id="profil-ozet"></div>
+        </section>
+
+        <section class="card card-wide card-enerjitipi" id="enerjitipi">
+          <h2>Enerji Tipin 💞</h2>
+          <div class="et-aura">
+            <div class="et-orb" id="et-orb"><span class="et-ikon" id="et-ikon">🌙</span></div>
+            <div class="et-parcacik" id="et-parcacik" aria-hidden="true"></div>
+          </div>
+          <div class="et-ad" id="et-ad">…</div>
+          <p class="et-analiz" id="et-analiz"></p>
+          <div class="et-gunluk" id="et-gunluk"></div>
+          <div class="et-uyum" id="et-uyum"></div>
+          <button class="btn ghost sm" id="et-med">Önerilen meditasyon →</button>
+          <details class="gecmis">
+            <summary>Enerji geçmişi</summary>
+            <div id="et-gecmis"></div>
+          </details>
+        </section>
+
+        <section class="card" id="rozetler">
+          <h2>Başarımlar</h2>
+          <p class="muted small">Yolculuğunda kazandıkların</p>
+          <div class="rozet-grid" id="rozet-grid"></div>
+        </section>
+
+        <section class="card" id="med-gecmis-bolum">
+          <h2>Meditasyon Geçmişi</h2>
+          <p class="muted small">Dinleme yaptığın günler</p>
+          <div class="gun-rozet-serit" id="med-gecmis"></div>
+        </section>
+
+        <section class="card card-wide" id="bildirim">
+          <h2>Bildirimler 🔔</h2>
+          <div class="bildirim-izin" id="bildirim-izin"></div>
+          <div class="ayar-satir">
+            <div>
+              <div class="ayar-ad">Günlük Spiritüel Bildirimler</div>
+              <div class="ayar-aciklama muted small">Uygulamayla günlük bağ kur; nazik hatırlatmalar al.</div>
+            </div>
+            <label class="switch"><input type="checkbox" id="bld-aktif" /><span class="switch-yuva"></span></label>
+          </div>
+          <div class="bld-detay" id="bld-detay">
+            <div class="altin-divider ince"></div>
+            <label class="bld-satir"><span>Günlük hatırlatma saati</span><input type="time" id="bld-saat" /></label>
+            <p class="muted small bld-baslik">Bildirim kategorileri</p>
+            <div class="bld-kategoriler" id="bld-kategoriler"></div>
+            <div class="altin-divider ince"></div>
+            <div class="ayar-satir">
+              <div><div class="ayar-ad">Sessiz mod</div><div class="ayar-aciklama muted small">Tüm bildirimleri geçici olarak sustur.</div></div>
+              <label class="switch"><input type="checkbox" id="bld-sessiz" /><span class="switch-yuva"></span></label>
+            </div>
+            <div class="ayar-satir">
+              <div><div class="ayar-ad">Gece rahatsız etme</div><div class="ayar-aciklama muted small">Belirlenen saatlerde bildirim gelmez.</div></div>
+              <label class="switch"><input type="checkbox" id="bld-gece" /><span class="switch-yuva"></span></label>
+            </div>
+            <label class="bld-satir bld-gece-aralik"><span>Gece aralığı</span><span class="bld-aralik"><input type="time" id="bld-gece-bas" /> – <input type="time" id="bld-gece-bit" /></span></label>
+            <div class="ayar-satir">
+              <div><div class="ayar-ad">Haftalık spiritüel özet</div><div class="ayar-aciklama muted small">Her hafta bir kez ilham veren özet.</div></div>
+              <label class="switch"><input type="checkbox" id="bld-haftalik" /><span class="switch-yuva"></span></label>
+            </div>
+            <button class="btn ghost" id="bld-dene">Bir bildirim dene ✦</button>
+          </div>
+        </section>
+
+        <section class="card card-wide" id="atmosfer">
+          <h2>Atmosfer</h2>
+          <div class="ayar-satir">
+            <div>
+              <div class="ayar-ad">Gece Kozmik Modu 🌌</div>
+              <div class="ayar-aciklama muted small">Yıldızlar, nebula ve glow ile büyüleyici gece atmosferi.</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="kozmik-toggle" />
+              <span class="switch-yuva"></span>
+            </label>
+          </div>
+        </section>
+
+        <section class="card card-wide" id="ayarlar">
+          <h2>Yedekleme</h2>
+          <p class="muted small">Verilerin yalnızca bu tarayıcıda saklanır. Yedek almayı unutma.</p>
+          <div class="satir-arasi">
+            <button class="btn" id="export-btn">Yedeği İndir</button>
+            <label class="btn ghost file-label">
+              Yedek Yükle
+              <input type="file" id="import-input" accept="application/json" hidden />
+            </label>
+          </div>
+          <span class="kayit-bilgi" id="yedek-bilgi"></span>
+        </section>
+
+      </div>
+    </div>
 
   </main>
 
   <footer class="site-footer">
-    <p>Kendine nazik ol. 🤍</p>
+    <p>Kendine nazik ol.</p>
   </footer>
+
+  <!-- ============ ALT NAVİGASYON ============ -->
+  <nav class="bottom-nav" id="bottom-nav" aria-label="Ana gezinme">
+    <button class="nav-btn active" data-view="home" aria-label="Ana Sayfa">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+      <span>Ana Sayfa</span>
+    </button>
+    <button class="nav-btn" data-view="bahce" aria-label="Bahçe">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-9"/><path d="M12 12c-3.2 0-5-2-5-5 3.2 0 5 2 5 5z"/><path d="M12 10c2.6 0 4-1.6 4-4-2.6 0-4 1.6-4 4z"/><path d="M6 21h12"/></svg>
+      <span>Bahçe</span>
+    </button>
+    <button class="nav-btn" data-view="kartlar" aria-label="Kartlar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="12" height="16" rx="2"/><path d="M8 21h11a1 1 0 0 0 1-1V7"/></svg>
+      <span>Kartlar</span>
+    </button>
+    <button class="nav-btn" data-view="meditasyon" aria-label="Meditasyon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="2.5"/><path d="M12 9c3 2 7 2.5 9 1M12 9c-3 2-7 2.5-9 1M12 9v6M9 21l3-6 3 6"/></svg>
+      <span>Meditasyon</span>
+    </button>
+    <button class="nav-btn" data-view="gunluk" aria-label="Günlük">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 4v13a3 3 0 0 0 3 3"/></svg>
+      <span>Günlük</span>
+    </button>
+    <button class="nav-btn" data-view="magaza" aria-label="Mağaza">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 12H6z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg>
+      <span>Mağaza</span>
+    </button>
+    <button class="nav-btn" data-view="profil" aria-label="Profil">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/></svg>
+      <span>Profil</span>
+    </button>
+  </nav>
 
   <script src="js/data.js"></script>
   <script src="js/store.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/muzik.js"></script>
+  <script src="js/rehber.js"></script>
+  <script src="js/ay.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/streak.js"></script>
+  <script src="js/bahce.js"></script>
+  <script src="js/energy.js"></script>
+  <script src="js/olumlama.js"></script>
+  <script src="js/gunluk.js"></script>
+  <script src="js/bildirim.js"></script>
+  <script src="js/profil.js"></script>
+  <script src="js/rituel.js"></script>
+  <script src="js/magaza.js"></script>
+  <script src="js/test.js"></script>
+  <script src="js/kader.js"></script>
+  <script src="js/enerjitipi.js"></script>
+  <script src="js/ciftsaat.js"></script>
+  <script src="js/kozmik.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("service-worker.js").catch(() => {});
+      });
+    }
+  </script>
 </body>
 </html>

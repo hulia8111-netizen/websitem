@@ -1,0 +1,20 @@
+{
+  "name": "Işığını Bul ✨ · Spiritüel Wellness",
+  "short_name": "Işığını Bul",
+  "description": "Işığını Bul — spiritüel kişisel farkındalık ve wellbeing uygulaması.",
+  "lang": "tr",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0c0a1c",
+  "theme_color": "#0e0b1e",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

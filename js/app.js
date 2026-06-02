@@ -1,10 +1,46 @@
 /* ============================================================
-   app.js — Tüm bölümlerin mantığı ve olay bağlamaları.
+   app.js — Görünüm gezinmesi, profil ve tüm bölümlerin mantığı.
    ============================================================ */
+
+/* Ruh hali ikonları — minimal stroke SVG (emoji yerine).
+   val: haftalık ortalama için puan | mesaj: o ruh hali haftanın çoğunluğuysa
+   gösterilecek dinamik istatistik mesajı (her duyguya özel). */
+const MOOD_LIST = [
+  { key: "great", label: "Mutlu",   emoji: "✨", val: 5, mesaj: "Bu hafta en çok mutlu hissettin ✨" },
+  { key: "good",  label: "Huzurlu", emoji: "🌿", val: 4, mesaj: "Bu hafta en çok huzurlu hissettin 🌿" },
+  { key: "ok",    label: "Durgun",  emoji: "🌙", val: 3, mesaj: "Bu hafta biraz durgun hissettin 🌙" },
+  { key: "low",   label: "Üzgün",   emoji: "💜", val: 2, mesaj: "Bu hafta duygusal olarak zorlanmış görünüyorsun 💜" },
+  { key: "down",  label: "Hüzünlü", emoji: "🤍", val: 1, mesaj: "Kendine biraz şefkat göstermenin zamanı olabilir 🤍" }
+];
+const MOOD_META = MOOD_LIST.reduce((o, m) => (o[m.key] = m, o), {});
+const MOOD_ICON = {
+  great: '<circle cx="12" cy="12" r="9"/><path d="M8 13.5s1.4 2.2 4 2.2 4-2.2 4-2.2"/><path d="M9 9h.01M15 9h.01"/>',
+  good:  '<circle cx="12" cy="12" r="9"/><path d="M8.5 14c1 .9 2.2 1.3 3.5 1.3s2.5-.4 3.5-1.3"/><path d="M9 9h.01M15 9h.01"/>',
+  ok:    '<circle cx="12" cy="12" r="9"/><path d="M8.5 14.5h7"/><path d="M9 9h.01M15 9h.01"/>',
+  low:   '<circle cx="12" cy="12" r="9"/><path d="M8.5 15.4s1.2-1.4 3.5-1.4 3.5 1.4 3.5 1.4"/><path d="M9 9h.01M15 9h.01"/>',
+  down:  '<circle cx="12" cy="12" r="9"/><path d="M8.5 15.6s1.2-1.6 3.5-1.6 3.5 1.6 3.5 1.6"/><path d="M9 9h.01M15 9h.01"/><path d="M8 12.4l-.7 1.9a.75.75 0 0 0 1.45.25z"/>'
+};
+const EMOJI_MAP = { "😄": "great", "🙂": "good", "😐": "ok", "😔": "low", "😢": "down" };
+function moodKeyNormalize(v) {
+  if (!v) return null;
+  return MOOD_ICON[v] ? v : (EMOJI_MAP[v] || null);
+}
+function moodSvg(key, cls = "") {
+  return `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${MOOD_ICON[key]}</svg>`;
+}
+const SES_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M16 9a4 4 0 0 1 0 6M19 6.5a8 8 0 0 1 0 11"/></svg>';
 
 document.addEventListener("DOMContentLoaded", () => {
   const $ = sel => document.querySelector(sel);
   const today = todayKey();
+
+  /* Giriş/açılış takibi — bugünün açılış sayısını artır (streak + usage) */
+  const acilis = (Store.get("visit-" + today, 0) || 0) + 1;
+  Store.set("visit-" + today, acilis);
+
+  /* Profil başlangıç tarihi (ilk açılış) */
+  let profil = Store.get("profil", null);
+  if (!profil) { profil = { isim: "", baslangic: today }; Store.set("profil", profil); }
 
   /* ---------- Üst başlık tarih ---------- */
   $("#bugun-tarih").textContent = new Date().toLocaleDateString("tr-TR", {
@@ -12,72 +48,158 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* ====================================================
-     1. GÜNÜN MOTİVASYON CÜMLESİ
+     KARŞILAMA / ONBOARDING
      ==================================================== */
-  const motivasyonEl = $("#motivasyon-metin");
-  function gosterMotivasyon(rastgele = false) {
-    const liste = DATA.motivasyon;
-    const metin = rastgele
-      ? liste[Math.floor(Math.random() * liste.length)]
-      : pickByDate(liste);
-    motivasyonEl.textContent = metin;
+  function setKarsilama(yeni = false) {
+    const ad = (Store.get("profil", {}).isim || "").trim();
+    const el = $("#karsilama");
+    if (!ad) { el.textContent = ""; return; }
+    el.textContent = yeni
+      ? `Hoş geldin ${ad} ✨`
+      : pickByDate(DATA.karsilamalar).replace("{ad}", ad);
   }
-  gosterMotivasyon();
-  $("#motivasyon-yeni").addEventListener("click", () => gosterMotivasyon(true));
+  function onboardingBitir(ad) {
+    const p = Store.get("profil", { baslangic: today });
+    p.isim = ad;
+    Store.set("profil", p);
+    const ob = $("#onboarding");
+    ob.classList.add("kapaniyor");
+    setTimeout(() => { ob.hidden = true; ob.classList.remove("kapaniyor"); }, 500);
+    setKarsilama(true);
+    if (window.Profil) window.Profil.ciz();
+    // İsim alındıktan sonra Spiritüel Başlangıç Testi
+    setTimeout(() => { if (window.SpiriTest && !Store.get("spiritest-sonuc")) window.SpiriTest.baslat(); }, 750);
+  }
+  (function onboardingBaslat() {
+    const ob = $("#onboarding");
+    const adVar = (profil.isim || "").trim();
+    if (adVar) { setKarsilama(); return; }
+    ob.hidden = false;
+    const inp = $("#ob-isim");
+    const btn = $("#ob-basla");
+    setTimeout(() => inp.focus(), 450);
+    function basla() {
+      const v = inp.value.trim();
+      if (!v) { inp.focus(); return; }
+      onboardingBitir(v);
+    }
+    btn.addEventListener("click", basla);
+    inp.addEventListener("keydown", e => { if (e.key === "Enter") basla(); });
+  })();
 
   /* ====================================================
-     2. MEDİTASYON SESLERİ
+     GÖRÜNÜM GEZİNMESİ (bottom navigation)
      ==================================================== */
-  const sesListesi = $("#ses-listesi");
-  const player = $("#ses-player");
-  DATA.sesler.forEach(ses => {
-    const li = document.createElement("li");
-    const btn = document.createElement("button");
-    btn.className = "ses-btn";
-    btn.textContent = "▶ " + ses.ad;
-    btn.addEventListener("click", () => {
-      player.src = encodeURI(ses.dosya);
-      player.play().catch(() => {/* tarayıcı etkileşim bekleyebilir */});
-      sesListesi.querySelectorAll(".ses-btn").forEach(b => b.classList.remove("aktif"));
-      btn.classList.add("aktif");
-    });
-    li.appendChild(btn);
-    sesListesi.appendChild(li);
-  });
+  const views = document.querySelectorAll(".view");
+  const navBtns = document.querySelectorAll(".bottom-nav .nav-btn");
+  function gotoView(id) {
+    views.forEach(v => v.classList.toggle("active", v.id === "view-" + id));
+    navBtns.forEach(b => b.classList.toggle("active", b.dataset.view === id));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+  navBtns.forEach(b => b.addEventListener("click", () => gotoView(b.dataset.view)));
+  window.gotoView = gotoView;  // rehber.js için
+
+  /* ====================================================
+     1. GÜNÜN MOTİVASYON CÜMLESİ (gün boyu sabit)
+     ==================================================== */
+  $("#motivasyon-metin").textContent = pickByDate(DATA.motivasyon);
+
+  /* ====================================================
+     2. SPİRİTÜEL MÜZİK & FREKANS — js/muzik.js modülünde yönetilir.
+        (med-<gün> + med-sure-sn entegrasyonu ve window.setMeditasyonKategori orada)
+     ==================================================== */
 
   /* ====================================================
      3. GÜNÜN RUH HALİ
      ==================================================== */
-  const moodBtns = document.querySelectorAll("#mood-butonlar .mood");
-  function isaretleMood() {
-    const secili = Store.get("mood-" + today);
-    moodBtns.forEach(b => b.classList.toggle("aktif", b.dataset.mood === secili));
-  }
-  moodBtns.forEach(b => {
-    b.addEventListener("click", () => {
-      Store.set("mood-" + today, b.dataset.mood);
+  const moodKutu = $("#mood-butonlar");
+  /* Seçili (henüz kaydedilmemiş olabilir) ruh hali. Bugünün kaydı varsa onu seç. */
+  let seciliMood = moodKeyNormalize(Store.get("mood-" + today)) || null;
+
+  MOOD_LIST.forEach(m => {
+    const btn = document.createElement("button");
+    btn.className = "mood";
+    btn.dataset.mood = m.key;
+    btn.title = m.label;
+    btn.setAttribute("aria-label", m.label);
+    btn.innerHTML = moodSvg(m.key) + `<span class="mood-ad">${m.label}</span>`;
+    btn.addEventListener("click", () => {     // tıkla = seç (kaydetme)
+      seciliMood = m.key;
       isaretleMood();
-      cizMoodSerit();
-      cizRozetler();
     });
+    moodKutu.appendChild(btn);
   });
+  const moodBtns = moodKutu.querySelectorAll(".mood");
+
+  function isaretleMood() {
+    moodBtns.forEach(b => b.classList.toggle("aktif", b.dataset.mood === seciliMood));
+  }
+  $("#mood-kaydet").addEventListener("click", () => {
+    if (!seciliMood) { flash("#mood-bilgi", "Önce bir ruh hali seç"); return; }
+    Store.set("mood-" + today, seciliMood);   // gün başına tek kayıt; tekrar = güncelle
+    flash("#mood-bilgi", "Kaydedildi ✓");
+    cizMoodSerit();
+    cizMoodIstatistik();
+    cizRozetler();
+    if (window.Streak) window.Streak.ciz();
+    if (window.Bahce) window.Bahce.ciz();
+    if (window.Enerji) window.Enerji.ciz();
+    if (window.Profil) window.Profil.ciz();
+    if (window.Kader) window.Kader.ciz();
+    if (window.EnerjiTipi) window.EnerjiTipi.ciz();
+  });
+
+  /* Son 7 gün — yatay mini kartlar (gün adı + ikon) */
   function cizMoodSerit() {
     const serit = $("#mood-serit");
     serit.innerHTML = "";
     lastNDays(7).forEach(gun => {
-      const m = Store.get("mood-" + gun);
-      const span = document.createElement("span");
-      span.className = "mood-gun";
-      span.title = gun;
-      span.textContent = m || "·";
-      serit.appendChild(span);
+      const key = moodKeyNormalize(Store.get("mood-" + gun));
+      const gunAd = new Date(gun).toLocaleDateString("tr-TR", { weekday: "short" });
+      const kart = document.createElement("div");
+      kart.className = "mood-gun" + (key ? "" : " bos") + (gun === today ? " bugun" : "");
+      kart.title = gun + (key ? " · " + MOOD_META[key].label : "");
+      kart.innerHTML = `<span class="gun-ad">${gunAd}</span>` +
+        (key ? moodSvg(key) : `<span class="gun-bos">·</span>`);
+      serit.appendChild(kart);
     });
   }
+
+  /* Haftalık istatistik: en sık duygu + ortalama + mesaj */
+  function cizMoodIstatistik() {
+    const kutu = $("#mood-istatistik");
+    const kayitlar = lastNDays(7)
+      .map(g => moodKeyNormalize(Store.get("mood-" + g)))
+      .filter(Boolean);
+    if (!kayitlar.length) { kutu.hidden = true; return; }
+
+    const sayim = {};
+    let toplamPuan = 0;
+    kayitlar.forEach(k => { sayim[k] = (sayim[k] || 0) + 1; toplamPuan += MOOD_META[k].val; });
+
+    // En sık hissedilen (eşitlikte daha yüksek puanlı)
+    const enSik = Object.keys(sayim).sort((a, b) =>
+      sayim[b] - sayim[a] || MOOD_META[b].val - MOOD_META[a].val)[0];
+    const sik = MOOD_META[enSik];
+
+    // Ortalamayı en yakın ruh haline eşle
+    const ort = toplamPuan / kayitlar.length;
+    const ortMood = MOOD_LIST.reduce((a, b) =>
+      Math.abs(b.val - ort) < Math.abs(a.val - ort) ? b : a);
+
+    kutu.hidden = false;
+    kutu.innerHTML = `
+      <div class="mood-ist-mesaj">${sik.mesaj}</div>
+      <div class="mood-ist-alt">${kayitlar.length}/7 gün kayıt · Haftalık ruh hali ortalaması: <strong>${ortMood.label}</strong> (${ort.toFixed(1)}/5)</div>`;
+  }
+
   isaretleMood();
   cizMoodSerit();
+  cizMoodIstatistik();
 
   /* ====================================================
-     4. KART ÇEKME
+     4. KART ÇEKME + GEÇMİŞ
      ==================================================== */
   const kartAlani = $("#kart-alani");
   const kartCekBtn = $("#kart-cek");
@@ -87,44 +209,65 @@ document.addEventListener("DOMContentLoaded", () => {
     kartAlani.innerHTML = "";
     const wrap = document.createElement("div");
     wrap.className = "kart-icerik";
+    const cerceve = document.createElement("div");
+    cerceve.className = "kart-gorsel-cerceve";
     const img = document.createElement("img");
     img.src = encodeURI(kart.img);
     img.alt = kart.baslik;
     img.loading = "lazy";
+    cerceve.appendChild(img);
     const h = document.createElement("h3");
     h.textContent = kart.baslik;
     const p = document.createElement("p");
     p.textContent = kart.mesaj;
-    wrap.append(img, h, p);
+    wrap.append(cerceve, h, p);
     kartAlani.appendChild(wrap);
     kartCekBtn.hidden = true;
     kartTekrarBtn.hidden = false;
   }
-
   function kartCek(zorla = false) {
     let kayit = Store.get("card-" + today);
-    if (!kayit || zorla) {
-      const idx = Math.floor(Math.random() * DATA.kartlar.length);
-      kayit = idx;
-      Store.set("card-" + today, idx);
+    if (kayit === null || zorla) {
+      kayit = Math.floor(Math.random() * DATA.kartlar.length);
+      Store.set("card-" + today, kayit);
+      cizKartGecmis();
     }
     gosterKart(DATA.kartlar[kayit]);
   }
-  // Bugün zaten çekilmişse göster
   if (Store.get("card-" + today) !== null) kartCek();
   kartCekBtn.addEventListener("click", () => kartCek());
   kartTekrarBtn.addEventListener("click", () => kartCek(true));
 
-  /* ====================================================
-     5. GÜNÜN MİNİ GÖREVİ
-     ==================================================== */
-  $("#gorev-metin").textContent = pickByDate(DATA.gorevler);
-  const gorevCheck = $("#gorev-check");
-  gorevCheck.checked = !!Store.get("task-" + today);
-  gorevCheck.addEventListener("change", () => {
-    Store.set("task-" + today, gorevCheck.checked);
-    cizRozetler();
-  });
+  function cizKartGecmis() {
+    const grid = $("#kart-gecmis");
+    if (!grid) return;
+    const gunler = Store.allKeys()
+      .filter(k => k.startsWith(Store.PREFIX + "card-"))
+      .map(k => k.replace(Store.PREFIX + "card-", ""))
+      .sort().reverse();
+    grid.innerHTML = "";
+    if (!gunler.length) {
+      grid.innerHTML = `<p class="muted small">Henüz kart çekmedin.</p>`;
+      return;
+    }
+    gunler.forEach(gun => {
+      const idx = Store.get("card-" + gun);
+      const kart = DATA.kartlar[idx];
+      if (!kart) return;
+      const div = document.createElement("div");
+      div.className = "gecmis-kart";
+      div.innerHTML = `
+        <img src="${encodeURI(kart.img)}" alt="${escapeHtml(kart.baslik)}" loading="lazy" />
+        <div class="gecmis-kart-bilgi">
+          <strong>${escapeHtml(kart.baslik)}</strong>
+          <small>${gun}</small>
+        </div>`;
+      grid.appendChild(div);
+    });
+  }
+  cizKartGecmis();
+
+  /* 5. GÜNÜN RİTÜELİ — js/rituel.js modülünde yönetilir (task-<gün> entegrasyonu orada). */
 
   /* ====================================================
      6. FARKINDALIK SORUSU
@@ -135,7 +278,6 @@ document.addEventListener("DOMContentLoaded", () => {
   $("#soru-kaydet").addEventListener("click", () => {
     Store.set("awa-" + today, soruCevap.value.trim());
     flash("#soru-bilgi", "Kaydedildi ✓");
-    cizRozetler();
   });
 
   /* ====================================================
@@ -195,7 +337,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const li = document.createElement("li");
       const span = document.createElement("span");
       span.className = "liste-metin";
-      span.innerHTML = `<small class="muted">${n.tarih}</small><br>${escapeHtml(n.text)}`;
+      span.innerHTML = `<small>${n.tarih}</small><br>${escapeHtml(n.text)}`;
       const sil = document.createElement("button");
       sil.className = "sil";
       sil.textContent = "✕";
@@ -204,6 +346,8 @@ document.addEventListener("DOMContentLoaded", () => {
         Store.set("gratitude", notlar);
         cizSukran();
         cizRozetler();
+        if (window.Bahce) window.Bahce.ciz();
+        if (window.Enerji) window.Enerji.ciz();
       });
       li.append(span, sil);
       sukranListesi.appendChild(li);
@@ -219,90 +363,86 @@ document.addEventListener("DOMContentLoaded", () => {
     inp.value = "";
     cizSukran();
     cizRozetler();
+    if (window.Bahce) window.Bahce.ciz();
+    if (window.Enerji) window.Enerji.ciz();
   }
   $("#sukran-ekle").addEventListener("click", sukranEkle);
   $("#sukran-input").addEventListener("keydown", e => { if (e.key === "Enter") sukranEkle(); });
   cizSukran();
 
-  /* ====================================================
-     9. GÜNLÜK
-     ==================================================== */
-  const gunlukMetin = $("#gunluk-metin");
-  gunlukMetin.value = Store.get("journal-" + today, "");
-  $("#gunluk-kaydet").addEventListener("click", () => {
-    Store.set("journal-" + today, gunlukMetin.value.trim());
-    flash("#gunluk-bilgi", "Kaydedildi ✓");
-    cizGunlukGecmis();
-    cizRozetler();
-  });
-  function cizGunlukGecmis() {
-    const ul = $("#gunluk-gecmis");
-    ul.innerHTML = "";
-    Store.allKeys()
-      .filter(k => k.startsWith(Store.PREFIX + "journal-"))
-      .map(k => k.replace(Store.PREFIX + "journal-", ""))
-      .sort().reverse()
-      .forEach(gun => {
-        const metin = Store.get("journal-" + gun, "");
-        if (!metin) return;
-        const li = document.createElement("li");
-        li.innerHTML = `<small class="muted">${gun}</small><br>${escapeHtml(metin).slice(0, 200)}`;
-        ul.appendChild(li);
-      });
-  }
-  cizGunlukGecmis();
+  /* 9. GÜNLÜK — js/gunluk.js modülünde yönetilir. */
 
   /* ====================================================
-     10. HAFTALIK ROZETLER
+     10. BAŞARIMLAR (kümülatif)
      ==================================================== */
-  function haftalikSayac() {
-    const hafta = weekId();
-    const gunler = lastNDays(7).filter(g => weekId(new Date(g)) === hafta);
-    let gorev = 0, mood = 0, gunluk = 0, soru = 0;
-    gunler.forEach(g => {
-      if (Store.get("task-" + g)) gorev++;
-      if (Store.get("mood-" + g)) mood++;
-      if (Store.get("journal-" + g)) gunluk++;
-      if (Store.get("awa-" + g)) soru++;
-    });
-    const sukran = Store.get("gratitude", []).filter(n => weekId(new Date(n.tarih)) === hafta).length;
-    return { gorev, mood, gunluk, soru, sukran };
+  function gunSayisi(prefix) {
+    return Store.allKeys()
+      .filter(k => k.startsWith(Store.PREFIX + prefix))
+      .filter(k => Store.get(k.slice(Store.PREFIX.length)))   // truthy
+      .length;
+  }
+  function basarimSayaclari() {
+    return {
+      girisGun:  gunSayisi("visit-"),
+      medGun:    gunSayisi("med-"),
+      sukranTop: Store.get("gratitude", []).length,
+      gorevTop:  gunSayisi("task-"),
+      moodSeri:  mevcutSeri("mood-"),
+      moodTop:   gunSayisi("mood-")
+    };
   }
   function cizRozetler() {
-    const sayac = haftalikSayac();
+    const sayac = basarimSayaclari();
     const grid = $("#rozet-grid");
     grid.innerHTML = "";
     DATA.rozetler.forEach(r => {
       const deger = sayac[r.metrik] || 0;
       const kazanildi = deger >= r.hedef;
+      const yuzde = Math.min(100, Math.round(deger / r.hedef * 100));
       const div = document.createElement("div");
       div.className = "rozet" + (kazanildi ? " kazanildi" : "");
-      div.title = r.aciklama;
       div.innerHTML = `
-        <div class="rozet-ikon">${r.ad}</div>
-        <div class="rozet-ilerleme">${Math.min(deger, r.hedef)}/${r.hedef}</div>
-        <div class="rozet-bar"><span style="width:${Math.min(100, deger / r.hedef * 100)}%"></span></div>`;
+        <div class="rozet-madalya">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${r.ikon}</svg>
+        </div>
+        <div class="rozet-govde">
+          <div class="rozet-ad">${escapeHtml(r.ad)}${kazanildi ? " ✦" : ""}</div>
+          <div class="rozet-aciklama">${escapeHtml(r.aciklama)}</div>
+          <div class="rozet-bar"><span style="width:${yuzde}%"></span></div>
+          <div class="rozet-sayi">${Math.min(deger, r.hedef)} / ${r.hedef}</div>
+        </div>`;
       grid.appendChild(div);
     });
   }
   cizRozetler();
 
   /* ====================================================
-     11. ÜRÜN LİNKLERİ
+     11. PROFİL — isim düzenleme (görsel/seviye/grafik js/profil.js'te)
      ==================================================== */
-  const urunGrid = $("#urun-grid");
-  DATA.urunler.forEach(u => {
-    const a = document.createElement("a");
-    a.className = "urun";
-    a.href = u.link;
-    a.target = "_blank";
-    a.rel = "noopener";
-    a.innerHTML = `<h4>${escapeHtml(u.ad)}</h4><p>${escapeHtml(u.aciklama)}</p><span class="urun-link">Satın Al →</span>`;
-    urunGrid.appendChild(a);
+  const profilForm = $("#profil-form");
+  const isimInput = $("#profil-isim-input");
+  $("#profil-duzenle").addEventListener("click", () => {
+    const acik = !profilForm.hidden;
+    profilForm.hidden = acik;
+    if (!acik) { isimInput.value = (Store.get("profil", {}).isim || ""); isimInput.focus(); }
   });
+  function profilKaydet() {
+    const p = Store.get("profil", { baslangic: today });
+    p.isim = isimInput.value.trim();
+    Store.set("profil", p);
+    profilForm.hidden = true;
+    if (window.Profil) window.Profil.ciz();
+    setKarsilama();
+  }
+  $("#profil-kaydet").addEventListener("click", profilKaydet);
+  isimInput.addEventListener("keydown", e => { if (e.key === "Enter") profilKaydet(); });
 
   /* ====================================================
-     12. YEDEKLEME
+     12. SPİRİTÜEL MAĞAZA — js/magaza.js modülünde yönetilir.
+     ==================================================== */
+
+  /* ====================================================
+     13. YEDEKLEME
      ==================================================== */
   $("#export-btn").addEventListener("click", () => Store.exportAll());
   $("#import-input").addEventListener("change", e => {
@@ -320,8 +460,10 @@ document.addEventListener("DOMContentLoaded", () => {
     el.textContent = mesaj;
     setTimeout(() => { el.textContent = ""; }, 2000);
   }
-  function escapeHtml(s) {
-    return String(s).replace(/[&<>"']/g, c =>
-      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-  }
 });
+
+/* escapeHtml — global */
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
