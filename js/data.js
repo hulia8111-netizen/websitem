@@ -407,6 +407,31 @@ const DATA = {
     { id: "istikrar", ad: "Grup İstikrarı 🔥", ipucu: "Grup serini 3 güne çıkar." }
   ],
 
+  /* ============ Herkese Açık Topluluk Akışı ============ */
+  akisEtkinlikleri: [
+    { id: "e1", ikon: "🌿", baslik: "Cumartesi Sabah Yürüyüşü", tarih: "2026-06-06", saat: "08:00", konum: "Sahil Parkı", sahip: "Elif", katilim: 24, aciklama: "Güne birlikte yürüyerek ve nefes alarak başlıyoruz." },
+    { id: "e2", ikon: "🌙", baslik: "Toplu Meditasyon Gecesi", tarih: "2026-06-09", saat: "21:00", konum: "Online · Zoom", sahip: "Deniz", katilim: 58, aciklama: "Dolunaya yakın, birlikte sessizleşip niyet belirliyoruz." },
+    { id: "e3", ikon: "📚", baslik: "Birlikte Kitap Okuma", tarih: "2026-06-11", saat: "20:00", konum: "Online", sahip: "Ayşe", katilim: 17, aciklama: "Bu hafta: 'Şimdinin Gücü'. Bölüm 3 üzerine sohbet." },
+    { id: "e4", ikon: "🌊", baslik: "Deniz & Gün Batımı Buluşması", tarih: "2026-06-14", saat: "19:30", konum: "Kıyı, 2. iskele", sahip: "Mert", katilim: 31, aciklama: "Gün batımında topraklanma ve şükran çemberi." },
+    { id: "e5", ikon: "✨", baslik: "21 Günlük Farkındalık Challenge", tarih: "2026-06-15", saat: "07:00", konum: "Uygulama içi", sahip: "Topluluk", katilim: 142, aciklama: "21 gün boyunca her sabah küçük bir farkındalık adımı." }
+  ],
+  akisGorevleri: [
+    { id: "g1", ikon: "🧘", metin: "Bugün hep birlikte 15 dakika meditasyon", bazYuzde: 72, katilim: 96 },
+    { id: "g2", ikon: "👟", metin: "Bugün 5 bin adım challenge", bazYuzde: 58, katilim: 130 },
+    { id: "g3", ikon: "📵", metin: "3 günlük dijital detoks", bazYuzde: 41, katilim: 64 }
+  ],
+  akisChallengeleri: [
+    { id: "c1", ikon: "✨", baslik: "21 Günlük Farkındalık", gun: 21, aciklama: "Her gün küçük bir farkındalık pratiği." },
+    { id: "c2", ikon: "🙏", baslik: "7 Günlük Şükran Serisi", gun: 7, aciklama: "7 gün boyunca her akşam 3 şükran." },
+    { id: "c3", ikon: "📵", baslik: "3 Günlük Dijital Detoks", gun: 3, aciklama: "Akşamları ekransız zaman." }
+  ],
+  akisPaylasimlari: [
+    { kim: "Elif", metin: "Bu sabahki yürüyüş muhteşemdi, herkese teşekkürler 🌿", oncesiSaat: 2 },
+    { kim: "Can", metin: "Meditasyon serisinin 5. günündeyim, içim çok huzurlu 🌙", oncesiSaat: 6 },
+    { kim: "Zeynep", metin: "Bugün dijital detoksa başladım, tavsiye ederim ✨", oncesiSaat: 20 }
+  ],
+  akisEmojiler: ["✨", "🙏", "💜", "🌙", "🔥", "🤍"],
+
   /* ============ Haftalık Kendini Değerlendirme ============ */
   /* Her kategori için yüzde eşiğine göre yorum + gelişim önerisi. */
   haftalikDenge: {

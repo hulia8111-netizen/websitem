@@ -22,6 +22,19 @@
     <span class="blob blob-3"></span>
   </div>
 
+  <!-- Herkese Açık Topluluk Akışı overlay -->
+  <div class="akis-overlay" id="akis-overlay" hidden>
+    <div class="akis-yildizlar" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="akis-ic">
+      <button class="gece-kapat" id="akis-kapat" aria-label="Kapat">✕</button>
+      <h2 class="akis-baslik">Topluluk Akışı 🌍</h2>
+      <p class="akis-not muted small">Herkese açık alan 🤍 Demo akış bu cihazda çalışır; paylaşım linki uygulamayı paylaşır.</p>
+      <button class="btn ghost sm akis-genel-btn" id="akis-genel">💬 Genel Sohbet</button>
+      <div class="akis-feed" id="akis-feed"></div>
+      <div class="akis-sohbet-panel" id="akis-sohbet-panel" hidden></div>
+    </div>
+  </div>
+
   <!-- Topluluk & Birlik Alanı overlay -->
   <div class="top-overlay" id="top-overlay" hidden>
     <div class="top-yildizlar" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
@@ -29,6 +42,7 @@
       <button class="gece-kapat" id="top-kapat" aria-label="Kapat">✕</button>
       <h2 class="top-baslik">Topluluk &amp; Birlik Alanı 👥</h2>
       <p class="top-not muted small">Birlikte gelişelim 🤍 Bu alan şimdilik bu cihazda çalışır; davet linki uygulamayı paylaşır.</p>
+      <button class="btn ghost sm akis-genel-btn" id="akis-ac-2">🌍 Herkese Açık Topluluk Akışı →</button>
       <div class="top-rozetler" id="top-rozetler"></div>
       <div class="top-sekmeler" id="top-sekmeler">
         <button class="top-sek aktif" data-sek="gruplar">🌿 Topluluklar</button>
@@ -444,6 +458,10 @@
             <button class="arac-tile" id="top-ac">
               <span class="at-ikon">👥</span><span class="at-ad">Topluluk &amp; Birlik</span>
               <span class="at-alt">birlikte gelişin</span>
+            </button>
+            <button class="arac-tile" id="akis-ac">
+              <span class="at-ikon">🌍</span><span class="at-ad">Topluluk Akışı</span>
+              <span class="at-alt">herkese açık feed</span>
             </button>
           </div>
         </section>
@@ -1012,6 +1030,7 @@
   <script src="js/takvim.js"></script>
   <script src="js/hafta.js"></script>
   <script src="js/topluluk.js"></script>
+  <script src="js/akis.js"></script>
   <script src="js/kapi.js"></script>
   <script src="js/kozmik.js"></script>
   <script>
