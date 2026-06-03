@@ -1372,6 +1372,18 @@ code { background: rgba(255,255,255,0.08); padding: 1px 5px; border-radius: 6px;
 .vb-aksiyon { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: var(--sp-3); justify-content: center; }
 .vb-yukle { background: transparent; border: 1px solid var(--accent-2); color: var(--accent); border-radius: 8px; padding: 0.2rem 0.6rem; cursor: pointer; font-size: 0.78rem; margin-left: 0.4rem; }
 
+/* ---------- Ritüeller & Araçlar ızgarası ---------- */
+.card-araclar .araclar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.7rem; margin-top: var(--sp-3); }
+.arac-tile { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; text-align: center; cursor: pointer; background: var(--card-bg-soft); border: 1px solid rgba(179,140,255,0.14); border-radius: 18px; padding: 1rem 0.7rem; font-family: inherit; color: var(--metin); transition: transform var(--gecis), box-shadow var(--gecis), border-color var(--gecis); }
+.arac-tile:hover { transform: translateY(-4px); border-color: var(--gold); box-shadow: var(--glow-gold), var(--glow-mor); }
+.arac-tile:active { transform: scale(0.97); }
+.at-ikon { font-size: 1.9rem; filter: drop-shadow(0 0 10px rgba(233,196,106,0.45)); }
+.at-ad { font-family: var(--font-baslik); font-size: 0.92rem; color: var(--gold-soft); line-height: 1.2; }
+.at-alt { font-size: 0.7rem; color: var(--metin-faint); min-height: 0.9em; }
+.arac-tile.oneri-aktif { border-color: var(--gold); box-shadow: var(--glow-gold); }
+.arac-tile.oneri-aktif .at-alt { color: var(--gold-soft); }
+.arac-tile.oneri-aktif .at-ikon { animation: auraNefes 3s ease-in-out infinite; }
+
 /* ---------- Ayna Modu / Kendinle Konuş ---------- */
 .card-ayna-giris .am-ikon { font-size: 1.9rem; filter: drop-shadow(0 0 12px rgba(179,140,255,0.6)); animation: auraNefes 5s ease-in-out infinite; }
 

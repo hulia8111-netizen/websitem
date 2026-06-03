@@ -210,7 +210,7 @@ const Gece = window.Gece = (() => {
     const el = $("gg-streak");
     if (!el) return;
     const seri = (typeof mevcutSeri === "function") ? mevcutSeri("gece-") : 0;
-    el.textContent = seri > 0 ? `🌙 ${seri} gece üst üste` : "Uyku öncesi huzurlu bir rutin";
+    el.textContent = seri > 0 ? `🌙 ${seri} gece seri` : "";
   }
 
   /* ---------- yıldızlar ---------- */

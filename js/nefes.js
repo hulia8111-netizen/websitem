@@ -145,11 +145,11 @@ const Nefes = window.Nefes = (() => {
 
   /* Ana ekran giriş kartı + ruh hali önerisi */
   function girisGuncelle() {
-    const el = $("nf-oneri"), kart = $("nefes-giris");
+    const el = $("nf-oneri"), kart = $("nefes-ac");
     if (!el) return;
     const mood = (typeof moodKeyNormalize === "function") ? moodKeyNormalize(Store.get("mood-" + todayKey())) : null;
     const dusuk = mood === "low" || mood === "down";
-    el.textContent = dusuk ? "Şu an kısa bir nefes egzersizi sana iyi gelebilir 🌙" : "Stres veya yoğunlukta tek tıkla sakinleş";
+    el.textContent = dusuk ? "🌙 Sana iyi gelebilir" : "";
     if (kart) kart.classList.toggle("oneri-aktif", dusuk);
   }
 

@@ -120,7 +120,8 @@ const Ayna = window.Ayna = (() => {
   }
   function girisGuncelle() {
     const el = $("am-puan"); if (!el) return;
-    el.textContent = `🤍 Bugünkü öz şefkat: %${puan()}`;
+    const p = puan();
+    el.textContent = p > 0 ? `🤍 Öz şefkat %${p}` : "";
   }
   function parcacikDoldur() {
     const k = $("ayna-parcaciklar"); if (!k || k.dataset.dolu) return;

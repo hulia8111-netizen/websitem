@@ -153,7 +153,7 @@ const Sabah = window.Sabah = (() => {
   function girisGuncelle() {
     const el = $("sg-streak"); if (!el) return;
     const seri = (typeof mevcutSeri === "function") ? mevcutSeri("sabah-") : 0;
-    el.textContent = seri > 0 ? `☀️ ${seri} gün üst üste` : "Güne bilinçli bir başlangıç yap";
+    el.textContent = seri > 0 ? `☀️ ${seri} gün seri` : "";
   }
   function parcacikDoldur() {
     const k = $("sabah-parcaciklar"); if (!k || k.dataset.dolu) return;

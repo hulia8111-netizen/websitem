@@ -169,7 +169,7 @@ const Vision = window.Vision = (() => {
   function girisGuncelle() {
     const el = $("vis-alt"); if (!el) return;
     const b = Store.get("vision-board", { items: [] });
-    el.textContent = b.items.length ? `Hayallerine bir göz at 🌟 · ${b.items.length} öğe` : "Hedeflerini görsel bir panoda topla";
+    el.textContent = b.items.length ? `🌟 ${b.items.length} öğe` : "";
   }
 
   function baglan() {
