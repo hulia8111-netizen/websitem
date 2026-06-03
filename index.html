@@ -22,6 +22,93 @@
     <span class="blob blob-3"></span>
   </div>
 
+  <!-- Nefes & Sakinleşme overlay -->
+  <div class="nefes-overlay" id="nefes-overlay" hidden>
+    <div class="nefes-parcaciklar" id="nefes-parcaciklar" aria-hidden="true"></div>
+    <div class="nefes-ic">
+      <button class="gece-kapat" id="nefes-kapat" aria-label="Kapat">✕</button>
+
+      <div class="nefes-setup" id="nefes-setup">
+        <div class="nefes-ay">🌬️</div>
+        <h2 class="nefes-baslik">Nefes &amp; Sakinleşme</h2>
+        <p class="muted small">Bir nefes türü ve süre seç</p>
+        <div class="nefes-turler" id="nefes-turler"></div>
+        <p class="muted small nefes-alt-baslik">Süre</p>
+        <div class="nefes-sureler" id="nefes-sureler"></div>
+        <div class="nefes-ayarlar">
+          <label class="nefes-ayar"><span>Arka plan sesi</span><span class="switch"><input type="checkbox" id="nefes-ses-toggle"/><span class="switch-yuva"></span></span></label>
+          <label class="nefes-ayar"><span>Titreşim</span><span class="switch"><input type="checkbox" id="nefes-titresim-toggle"/><span class="switch-yuva"></span></span></label>
+        </div>
+        <button class="btn nefes-basla" id="nefes-basla">Başla 🌬️</button>
+        <div id="nefes-gecmis"></div>
+      </div>
+
+      <div class="nefes-seans" id="nefes-seans" hidden>
+        <div class="nefes-tur-ad" id="nefes-tur-ad"></div>
+        <div class="nefes-kure-sar">
+          <div class="nefes-kure" id="nefes-kure"><span id="nefes-faz">Hazırlan</span></div>
+        </div>
+        <div class="nefes-sayac" id="nefes-sayac"></div>
+        <button class="btn ghost sm" id="nefes-bitir-erken">Bitir</button>
+      </div>
+
+      <div class="nefes-bitti" id="nefes-bitti" hidden></div>
+    </div>
+  </div>
+
+  <!-- Sabah Ritüeli overlay -->
+  <div class="sabah-overlay" id="sabah-overlay" hidden>
+    <div class="sabah-gok" aria-hidden="true">
+      <div class="sabah-gunes-glow"></div>
+      <div class="sabah-parcaciklar" id="sabah-parcaciklar"></div>
+    </div>
+    <div class="gece-ic sabah-ic">
+      <button class="gece-kapat" id="sabah-kapat" aria-label="Kapat">✕</button>
+      <div class="sabah-gunes">☀️</div>
+      <h2 class="gece-baslik" id="sabah-baslik">Günaydın</h2>
+      <p class="gece-mesaj" id="sabah-mesaj"></p>
+      <div class="gece-streak" id="sabah-streak"></div>
+      <div class="gece-ilerleme"><span id="sabah-ilerleme-dolu"></span></div>
+      <div class="gece-rutin" id="sabah-rutin"></div>
+      <div class="gece-kart gece-soru-kart">
+        <label class="gece-soru-baslik">Bugünkü niyetin nedir?</label>
+        <textarea id="sabah-niyet" rows="2" placeholder="Bugün için bir niyet…"></textarea>
+        <button class="btn ghost sm" id="sabah-niyet-kaydet">Kaydet</button>
+      </div>
+      <button class="btn sabah-bitir" id="sabah-bitir">Güne Hazırım ☀️</button>
+      <div class="gece-tamam" id="sabah-tamam" hidden></div>
+    </div>
+  </div>
+
+  <!-- Uyku & Gece Rutini overlay -->
+  <div class="gece-overlay" id="gece-overlay" hidden>
+    <div class="gece-gok" aria-hidden="true">
+      <div class="gece-neb"></div>
+      <div class="gece-yildizlar" id="gece-yildizlar"></div>
+    </div>
+    <div class="gece-ic">
+      <button class="gece-kapat" id="gece-kapat" aria-label="Kapat">✕</button>
+      <div class="gece-ay">🌙</div>
+      <h2 class="gece-baslik" id="gece-baslik">İyi geceler</h2>
+      <p class="gece-mesaj" id="gece-mesaj"></p>
+      <div class="gece-streak" id="gece-streak"></div>
+      <div class="gece-ilerleme"><span id="gece-ilerleme-dolu"></span></div>
+      <div class="gece-rutin" id="gece-rutin"></div>
+      <div class="gece-kart gece-soru-kart">
+        <label class="gece-soru-baslik">Bu gece kendin için ne yaptın?</label>
+        <textarea id="gece-soru" rows="2" placeholder="Birkaç kelime…"></textarea>
+        <button class="btn ghost sm" id="gece-soru-kaydet">Kaydet</button>
+      </div>
+      <div class="gece-kart gece-sayac-kart">
+        <div class="gece-sayac-baslik">Uyku Sayacı 🌙</div>
+        <div class="gece-sayac-btns"><button data-dk="15">15 dk</button><button data-dk="30">30 dk</button><button data-dk="45">45 dk</button></div>
+        <div class="gece-sayac-durum" id="gece-sayac-durum"></div>
+      </div>
+      <button class="btn gece-bitir" id="gece-bitir">Uykuya Hazırım 🌙</button>
+      <div class="gece-tamam" id="gece-tamam" hidden></div>
+    </div>
+  </div>
+
   <!-- Spiritüel Başlangıç Testi -->
   <div class="test-overlay" id="test-overlay" hidden>
     <div class="test-kart" id="test-kart">
@@ -150,6 +237,42 @@
           <div class="streak-bar"><span id="streak-bar-dolu"></span></div>
           <div class="streak-seviye-bilgi" id="streak-seviye-bilgi"></div>
           <div class="streak-tier-serit" id="streak-tier-serit"></div>
+        </section>
+
+        <!-- Nefes & Sakinleşme girişi -->
+        <section class="card card-wide card-nefes-giris" id="nefes-giris">
+          <div class="gg-ic">
+            <div class="nf-ikon">🌬️</div>
+            <div class="gg-bilgi">
+              <div class="gg-baslik">Nefes &amp; Sakinleşme</div>
+              <div class="gg-alt muted small" id="nf-oneri">Stres veya yoğunlukta tek tıkla sakinleş</div>
+            </div>
+            <button class="btn gg-btn" id="nefes-ac">Şu an sakinleşmek istiyorum 🌬️</button>
+          </div>
+        </section>
+
+        <!-- Sabah Ritüeli girişi -->
+        <section class="card card-wide card-sabah-giris" id="sabah-giris">
+          <div class="gg-ic">
+            <div class="sg-gunes">☀️</div>
+            <div class="gg-bilgi">
+              <div class="gg-baslik">Sabah Ritüeli</div>
+              <div class="gg-alt muted small" id="sg-streak">Güne bilinçli bir başlangıç yap</div>
+            </div>
+            <button class="btn gg-btn" id="sabah-ac">Bugüne Başla ☀️</button>
+          </div>
+        </section>
+
+        <!-- Uyku & Gece Rutini girişi -->
+        <section class="card card-wide card-gece-giris" id="gece-giris">
+          <div class="gg-ic">
+            <div class="gg-ay">🌙</div>
+            <div class="gg-bilgi">
+              <div class="gg-baslik">Uyku &amp; Gece Rutini</div>
+              <div class="gg-alt muted small" id="gg-streak">Uyku öncesi huzurlu bir rutin</div>
+            </div>
+            <button class="btn gg-btn" id="gece-ac">Gece Moduna Geç 🌙</button>
+          </div>
         </section>
 
         <!-- Günün Enerji Seviyesi -->
@@ -519,6 +642,24 @@
           <div class="profil-ozet" id="profil-ozet"></div>
         </section>
 
+        <section class="card card-wide card-cakra" id="cakra">
+          <h2>Aura &amp; Çakra Dengesi 🌀</h2>
+          <div class="aura-sahne">
+            <span class="aura-cember c1" aria-hidden="true"></span>
+            <span class="aura-cember c2" aria-hidden="true"></span>
+            <div class="aura-orb" id="aura-orb"></div>
+          </div>
+          <div class="aura-ad" id="aura-ad">…</div>
+          <p class="aura-aciklama" id="aura-aciklama"></p>
+          <div class="cakra-headline" id="cakra-headline"></div>
+          <div class="cakra-liste" id="cakra-liste"></div>
+          <div class="cakra-gorev" id="cakra-gorev"></div>
+          <details class="gecmis">
+            <summary>Aura geçmişi</summary>
+            <div id="aura-gecmis-liste"></div>
+          </details>
+        </section>
+
         <section class="card card-wide card-enerjitipi" id="enerjitipi">
           <h2>Enerji Tipin 💞</h2>
           <div class="et-aura">
@@ -668,6 +809,10 @@
   <script src="js/test.js"></script>
   <script src="js/kader.js"></script>
   <script src="js/enerjitipi.js"></script>
+  <script src="js/cakra.js"></script>
+  <script src="js/gece.js"></script>
+  <script src="js/sabah.js"></script>
+  <script src="js/nefes.js"></script>
   <script src="js/ciftsaat.js"></script>
   <script src="js/kozmik.js"></script>
   <script>

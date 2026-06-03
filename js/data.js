@@ -375,6 +375,66 @@ const DATA = {
     { ad: "Solan Hilal",    emoji: "🌘", aciklama: "Dinlen ve arın; içe dönüş ve huzur zamanı." }
   ],
 
+  /* Nefes & Sakinleşme — nefes türleri (al/tut/ver saniye) */
+  nefesTurleri: [
+    { id: "444",    ad: "4-4-4 Nefesi",       al: 4, tut: 4, ver: 4, renk: ["#7c3aed", "#b38cff"], aciklama: "Dengeleyici kutu nefesi; odak ve sakinlik." },
+    { id: "rahat",  ad: "Rahatlatıcı Nefes",  al: 4, tut: 7, ver: 8, renk: ["#5aa9ff", "#3a5a86"], aciklama: "4-7-8 tekniğiyle derin gevşeme." },
+    { id: "uyku",   ad: "Uyku Nefesi",        al: 4, tut: 6, ver: 8, renk: ["#3a3a6d", "#8b6fd6"], aciklama: "Uzun veriş ile uykuya hazırlık." },
+    { id: "kaygi",  ad: "Kaygı Azaltıcı",     al: 4, tut: 4, ver: 6, renk: ["#6fe0a8", "#2a7a5a"], aciklama: "Sinir sistemini yatıştırır, kaygıyı düşürür." },
+    { id: "enerji", ad: "Enerji Yükseltici",  al: 4, tut: 1, ver: 4, renk: ["#f3d98c", "#ff8a3a"], aciklama: "Canlandıran ritim; güne enerji katar." }
+  ],
+
+  /* Sabah Ritüeli & Güne Başlangıç — mesajlar */
+  sabahMesajlari: [
+    "Yeni bir gün, yeni bir enerji ✨",
+    "Bugün ışığını büyütmek için güzel bir gün.",
+    "Bugün kendine nazik davran 🌿",
+    "Güne bir niyetle başla; gerisi akacak ☀️",
+    "Bugün senin günün; ışıldamaya hazır ol 🌅"
+  ],
+  sabahOlumlamalari: [
+    "Bugüne minnetle ve umutla başlıyorum.",
+    "Enerjim yüksek; güne güçlü adımlarla başlıyorum.",
+    "Bugün bana iyi gelen seçimleri yapıyorum.",
+    "Yeni gün, yeni fırsatlar; ben hazırım.",
+    "İçimdeki ışığı bugün dünyaya taşıyorum."
+  ],
+  sabahEnerjiMesajlari: [
+    "Bugün enerjin yükselişte; akışta kal ☀️",
+    "Sakin ama kararlı bir enerji seni bekliyor 🌿",
+    "Bugün yaratıcı bir gün; ilhamına güven ✨",
+    "Şefkat enerjisi bugüne çok iyi gelecek 🤍",
+    "Odak ve netlik bugün seninle 🎯"
+  ],
+
+  /* Uyku & Gece Rutini — mesajlar ve gece olumlamaları */
+  geceMesajlari: [
+    "Bugünü sevgiyle bırak 🌙",
+    "Artık dinlenme ve yenilenme zamanı.",
+    "Bugün elinden gelenin en iyisini yaptın ✨",
+    "Zihnini sakinleştir; her şey yolunda 🤍",
+    "Geceye güven, sabaha yenilenerek uyan 🌌"
+  ],
+  geceOlumlamalari: [
+    "Günü bırakıyor, huzura teslim oluyorum.",
+    "Bedenim ve zihnim dinlenmeye hazır.",
+    "Güvendeyim; kendimi geceye güvenle bırakıyorum.",
+    "Her nefeste daha da gevşiyor, hafifliyorum.",
+    "Bu gece sadece dinleniyorum; yarın yeni bir başlangıç."
+  ],
+
+  /* Aura ve Çakra Dengesi — 7 çakra.
+     med: muzikKategorileri id | renk: çakra bar/aura tonu */
+  cakralar: [
+    { id: "kok",       ad: "Kök Çakra",      ikon: "❤️", renk: "#ff6a6a", med: "rahatlama",     aciklama: "Güven, topraklanma ve güvende hissetme merkezi.",        olumlama: "Güvendeyim ve hayat tarafından destekleniyorum.",        gorev: "Çıplak ayakla birkaç dakika toprağa/zemine bas." },
+    { id: "sakral",    ad: "Sakral Çakra",   ikon: "🧡", renk: "#ff9a5a", med: "rahatlama",     aciklama: "Yaratıcılık, duygular ve zevk merkezi.",                 olumlama: "Duygularıma ve yaratıcılığıma akmasına izin veriyorum.", gorev: "Sevdiğin bir müzikle birkaç dakika serbestçe dans et." },
+    { id: "solar",     ad: "Solar Pleksus",  ikon: "💛", renk: "#f3d98c", med: "odak",          aciklama: "Kişisel güç, irade ve özgüven merkezi.",                olumlama: "Kendi gücüme güveniyor, net adımlar atıyorum.",         gorev: "Bir hedefine bugün küçük ama somut bir adım at." },
+    { id: "kalp",      ad: "Kalp Çakrası",   ikon: "💚", renk: "#6fe0a8", med: "disil",         aciklama: "Sevgi, şefkat ve bağ kurma merkezi.",                   olumlama: "Sevgiye açığım; veriyor ve alıyorum.",                  gorev: "Birine içten şefkat göster ya da 3 şey için şükret." },
+    { id: "bogaz",     ad: "Boğaz Çakrası",  ikon: "💙", renk: "#5aa9ff", med: "rahatlama",     aciklama: "İfade, gerçeklik ve iletişim merkezi.",                 olumlama: "Gerçeğimi sevgiyle ve net şekilde ifade ediyorum.",     gorev: "Hissettiğin bir şeyi günlüğüne yaz ya da sesli söyle." },
+    { id: "ucuncuGoz", ad: "Üçüncü Göz",     ikon: "💜", renk: "#b38cff", med: "yuksekFrekans", aciklama: "Sezgi, farkındalık ve içsel görüş merkezi.",            olumlama: "Sezgilerime güveniyor, içsel bilgeliğimi dinliyorum.",  gorev: "Gözlerini kapat, 5 dakika iç sesini dinle." },
+    { id: "tac",       ad: "Taç Çakra",      ikon: "🤍", renk: "#e6dcff", med: "yuksekFrekans", aciklama: "Ruhsal bağlantı ve bütünlük merkezi.",                  olumlama: "Evrenle bir ve bağlıyım; ışığa açığım.",               gorev: "Birkaç dakika meditasyon yap veya minnet duy." }
+  ],
+
   /* Ruh Eşleşmesi / Enerji Uyumu — enerji tipleri.
      Sıra hem günlük rotasyon nudge'ı hem eşitlik önceliği için kullanılır.
      renk: aura orb degrade tonları | uyumlu: en uyumlu tip id | med: muzikKategorileri id */

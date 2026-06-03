@@ -148,6 +148,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.Profil) window.Profil.ciz();
     if (window.Kader) window.Kader.ciz();
     if (window.EnerjiTipi) window.EnerjiTipi.ciz();
+    if (window.Cakra) window.Cakra.ciz();
+    if (window.Nefes) window.Nefes.girisGuncelle();
   });
 
   /* Son 7 gün — yatay mini kartlar (gün adı + ikon) */

@@ -30,6 +30,7 @@ const Enerji = window.Enerji = (() => {
     p += g >= 2 ? 15 : (g === 1 ? 10 : 0);                         // şükran
     p += Math.round(Math.min(mevcutSeri("visit-"), 7) / 7 * 15);  // streak
     if (Store.get("rehber-" + today)) p += 15;                     // AI rehber
+    if (Store.get("sabah-" + today)) p += 10;                      // sabah ritüeli bonusu
     return Math.min(100, p);
   }
 
