@@ -25,7 +25,10 @@ const Enerji = window.Enerji = (() => {
     let p = 0;
     if (Store.get("mood-" + today)) p += 20;                       // ruh hali
     if (Store.get("med-" + today)) p += 20;                        // meditasyon
-    if (Store.get("task-" + today)) p += 15;                       // görev
+    // görev: Günün Görevleri (3 kategori) tamamlandıkça artar; yoksa ritüel bayrağı
+    const gv = (window.Gorevler && Gorevler.tamamSayi) ? Gorevler.tamamSayi() : 0;
+    let gorevP = gv > 0 ? Math.round(gv / 3 * 15) : (Store.get("task-" + today) ? 15 : 0);
+    p += gorevP;
     const g = (Store.get("gratitude", []) || []).filter(n => n.tarih === today).length;
     p += g >= 2 ? 15 : (g === 1 ? 10 : 0);                         // şükran
     p += Math.round(Math.min(mevcutSeri("visit-"), 7) / 7 * 15);  // streak

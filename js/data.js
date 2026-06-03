@@ -343,6 +343,41 @@ const DATA = {
     "Bugün yargılamadan, sadece fark et."
   ],
 
+  /* ============ Günün Görevleri (3 kategori) ============ */
+  /* Her gün her kategoriden bir görev (pickByDate ile) seçilir. */
+  gorevHavuzlari: {
+    fiziksel: [
+      "10 dakika yürüyüş yap",
+      "Bir bardak su iç",
+      "Esneme hareketi yap",
+      "Birkaç dakika temiz hava al",
+      "Omuzlarını ve boynunu gevşet",
+      "5 dakika ayakta durup derin nefes al",
+      "Bugün biraz daha hareket et",
+      "Sağlıklı bir atıştırmalık seç"
+    ],
+    ruhsal: [
+      "5 dakika meditasyon yap",
+      "Kısa bir dua / niyet et",
+      "Bir şükran cümlesi yaz",
+      "1 dakika sessizlik anı oluştur",
+      "Nefes çalışması yap (4-7-8)",
+      "Bir an için sadece 'ol' ve hisset",
+      "Elini kalbine koy ve teşekkür et",
+      "Doğayla küçük bir bağ kur"
+    ],
+    zihinsel: [
+      "10 sayfa kitap oku",
+      "Yeni bir şey öğren",
+      "Hedeflerini yaz",
+      "İlham veren bir içerik izle",
+      "Günlük planını yap",
+      "Bir fikrini not et",
+      "Telefonsuz 15 dakika geçir",
+      "Merak ettiğin bir konuyu araştır"
+    ]
+  },
+
   /* Bildirim mesajları — kategoriye ve akıllı duruma göre seçilir. */
   bildirimMesajlari: {
     olumlama: [
