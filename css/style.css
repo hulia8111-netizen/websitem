@@ -2411,3 +2411,14 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
 .hk-story-viewer input[type="text"] { flex: 1; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25); color: #fff; border-radius: 999px; padding: 0.6rem 1rem; }
 
 @media (max-width: 480px) { .hk-sv-metin { font-size: 1.25rem; } }
+
+/* moderasyon: şikayet / engelle / kara liste */
+.hk-sikayet-btn, .hk-engel-btn { background: rgba(255,122,156,0.1); border: 1px solid rgba(255,122,156,0.3); color: #ffb3c5; border-radius: 999px; padding: 0.25rem 0.55rem; font-size: 0.78rem; cursor: pointer; transition: all 0.2s; }
+.hk-sikayet-btn:hover, .hk-engel-btn:hover { background: rgba(255,122,156,0.2); border-color: var(--uyari); }
+.hk-engel-det { margin-bottom: var(--sp-2); }
+.hk-engel-det summary { color: var(--metin-soft); }
+.hk-engel-sat { display: flex; align-items: center; gap: 0.6rem; background: var(--card-bg-soft); border-radius: 12px; padding: 0.45rem 0.7rem; margin-top: 0.4rem; }
+.hk-engel-ad { flex: 1; color: var(--metin); }
+.hk-kara-bilgi { margin-top: 0.6rem; font-size: 0.8rem; color: #ffb3c5; background: rgba(255,122,156,0.08); border: 1px solid rgba(255,122,156,0.25); border-radius: 10px; padding: 0.5rem 0.7rem; }
+.hk-sv-mod { margin-left: auto; display: flex; gap: 0.3rem; }
+.hk-sv-mod button { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); border-radius: 999px; padding: 0.2rem 0.5rem; font-size: 0.85rem; cursor: pointer; }

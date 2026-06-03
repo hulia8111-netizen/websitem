@@ -15,7 +15,35 @@ const Hikaye = window.Hikaye = (() => {
   function isim() { return (Store.get("profil", {}) || {}).isim || "Sen"; }
 
   const STORY = "hikaye-storyler", POST = "hikaye-postlar", PREAK = "hikaye-postreak", YORUM = "hikaye-yorum", SREAK = "hikaye-storyreak";
+  const SIK = "hikaye-sikayet", ENGEL = "hikaye-engel", KARA = "hikaye-blacklist";
+  const SIKAYET_ESIK = 20;
   let aktifStory = null;
+
+  /* ---------- moderasyon ---------- */
+  function engelliler() { return Store.get(ENGEL, []) || []; }
+  function karaListe() { return Store.get(KARA, []) || []; }
+  function gizliMi(kim) { return engelliler().includes(kim) || karaListe().includes(kim); }
+  function sikayetler() { return Store.get(SIK, {}) || {}; }
+  function sikayetEt(id, kim) {
+    const all = sikayetler();
+    const kayit = all[id] || { sayi: 0, benim: false };
+    if (kayit.benim) { bana("Bu paylaşımı zaten şikayet ettin 🤍"); return; }
+    kayit.sayi += 1; kayit.benim = true; all[id] = kayit; Store.set(SIK, all);
+    if (kayit.sayi >= SIKAYET_ESIK && kim && !karaListe().includes(kim)) {
+      const kl = karaListe(); kl.push(kim); Store.set(KARA, kl);
+      bana(`${kim} topluluk tarafından kara listeye alındı 🚫`);
+    } else {
+      bana(`Şikayetin alındı (${kayit.sayi}/${SIKAYET_ESIK}). Teşekkürler 🤍`);
+    }
+    ciz();
+  }
+  function engelle(kim) {
+    if (!kim) return;
+    const l = engelliler();
+    if (!l.includes(kim)) { l.push(kim); Store.set(ENGEL, l); bana(`${kim} engellendi. Artık paylaşımlarını görmeyeceksin 🤍`); }
+    storyKapat(); ciz();
+  }
+  function engelKaldir(kim) { Store.set(ENGEL, engelliler().filter(x => x !== kim)); ciz(); }
 
   function zaman(ts) { const f = Math.round((Date.now() - ts) / 60000); if (f < 60) return f + " dk"; if (f < 1440) return Math.round(f / 60) + " sa"; return Math.round(f / 1440) + " g"; }
   function harf(a) { return (a || "?").charAt(0).toUpperCase(); }
@@ -34,7 +62,7 @@ const Hikaye = window.Hikaye = (() => {
     const sinir = Date.now() - 86400000;
     return (Store.get(STORY, []) || []).filter(s => s.ts > sinir);
   }
-  function tumStoryler() { return kullaniciStoryler().concat(seedStoryler()).sort((a, b) => b.ts - a.ts); }
+  function tumStoryler() { return kullaniciStoryler().concat(seedStoryler()).filter(s => !gizliMi(s.kim)).sort((a, b) => b.ts - a.ts); }
 
   function cizStoryBar() {
     const bar = $("hk-story-bar"); if (!bar) return;
@@ -61,13 +89,15 @@ const Hikaye = window.Hikaye = (() => {
     v.innerHTML = `
       <div class="hk-sv-bar"><span></span></div>
       <button class="hk-sv-kapat" id="hk-sv-kapat" aria-label="Kapat">✕</button>
-      <div class="hk-sv-ust"><span class="top-avatar sm"><span>${esc(harf(s.kim))}</span></span><b>${esc(s.kim)}</b><span class="muted small">${zaman(s.ts)} önce</span></div>
+      <div class="hk-sv-ust"><span class="top-avatar sm"><span>${esc(harf(s.kim))}</span></span><b>${esc(s.kim)}</b><span class="muted small">${zaman(s.ts)} önce</span>${s.kim !== isim() ? `<span class="hk-sv-mod"><button id="hk-sv-sikayet" title="Şikayet et">⚠️</button><button id="hk-sv-engelle" title="Engelle">🚫</button></span>` : ""}</div>
       <div class="hk-sv-icerik"><div class="hk-sv-emoji">${esc(s.emoji || "✨")}</div><p class="hk-sv-metin">${esc(s.metin)}</p></div>
       <div class="hk-sv-reak">${DATA.hikayeReaksiyonlar.map(r => `<button class="hk-reak-btn" data-sr="${r.em}">${r.em}${reak[r.em] ? " " + reak[r.em] : ""}</button>`).join("")}</div>
       <div class="hk-sv-cevap"><input type="text" id="hk-sv-inp" placeholder="Hızlı cevap gönder…"/><button class="btn sm" id="hk-sv-gonder">Gönder</button></div>`;
     v.hidden = false; v.classList.remove("gor"); void v.offsetWidth; v.classList.add("gor");
     $("hk-sv-kapat").addEventListener("click", storyKapat);
     $("hk-sv-gonder").addEventListener("click", () => { const i = $("hk-sv-inp"); if ((i.value || "").trim()) { bana("Cevabın gönderildi 💜"); i.value = ""; } });
+    const svS = $("hk-sv-sikayet"); if (svS) svS.addEventListener("click", () => sikayetEt("story:" + s.kim, s.kim));
+    const svE = $("hk-sv-engelle"); if (svE) svE.addEventListener("click", () => engelle(s.kim));
     v.querySelectorAll("[data-sr]").forEach(b => b.addEventListener("click", () => { const all = Store.get(SREAK, {}); all[id] = all[id] || {}; all[id][b.dataset.sr] = (all[id][b.dataset.sr] || 0) + 1; Store.set(SREAK, all); b.textContent = b.dataset.sr + " " + all[id][b.dataset.sr]; ucanReak(b, b.dataset.sr); }));
   }
   function storyKapat() { const v = $("hk-story-viewer"); v.classList.remove("gor"); setTimeout(() => { v.hidden = true; v.innerHTML = ""; }, 300); aktifStory = null; }
@@ -86,7 +116,7 @@ const Hikaye = window.Hikaye = (() => {
   }
   function tumPostlar() {
     const benim = (Store.get(POST, []) || []);
-    return benim.concat(seedPostlar());
+    return benim.concat(seedPostlar()).filter(p => !gizliMi(p.kim));
   }
   function postReak(id) { return (Store.get(PREAK, {})[id]) || { rx: {}, liked: false }; }
   function reakSay(p) { const r = postReak(p.id).rx || {}; const baz = p.baz || {}; const t = {}; DATA.hikayeReaksiyonlar.forEach(x => t[x.em] = (baz[x.em] || 0) + (r[x.em] || 0)); return t; }
@@ -119,6 +149,8 @@ const Hikaye = window.Hikaye = (() => {
     f.querySelectorAll("[data-sabit]").forEach(b => b.addEventListener("click", () => sabitle(b.dataset.sabit)));
     f.querySelectorAll("[data-sil]").forEach(b => b.addEventListener("click", () => postSil(b.dataset.sil)));
     f.querySelectorAll("[data-yorumgonder]").forEach(b => b.addEventListener("click", () => yorumGonder(b.dataset.yorumgonder)));
+    f.querySelectorAll("[data-sikayet]").forEach(b => b.addEventListener("click", () => sikayetEt(b.dataset.sikayet, b.dataset.kim)));
+    f.querySelectorAll("[data-engelle]").forEach(b => b.addEventListener("click", () => engelle(b.dataset.engelle)));
   }
   function postKart(p) {
     const r = postReak(p.id); const say = reakSay(p);
@@ -136,7 +168,9 @@ const Hikaye = window.Hikaye = (() => {
         <button class="hk-like${liked ? " aktif" : ""}" data-like="${p.id}">♥ ${ (p.baz && p.baz.like || 0) + (liked ? 1 : 0) }</button>
         ${DATA.hikayeReaksiyonlar.map(x => `<button class="hk-rx" data-rx="${p.id}" data-em="${x.em}" title="${x.ad}">${x.em} ${say[x.em] || 0}</button>`).join("")}
         <button class="hk-yorum-btn" data-yorumla="${p.id}">💬 ${yorumlar.length}</button>
-        ${benim ? `<button class="hk-sabit-btn" data-sabit="${p.id}" title="Profile sabitle">📌</button><button class="hk-sil-btn" data-sil="${p.id}" aria-label="Sil">✕</button>` : ""}
+        ${benim
+        ? `<button class="hk-sabit-btn" data-sabit="${p.id}" title="Profile sabitle">📌</button><button class="hk-sil-btn" data-sil="${p.id}" aria-label="Sil">✕</button>`
+        : `<button class="hk-sikayet-btn" data-sikayet="${p.id}" data-kim="${esc(p.kim)}" title="Şikayet et">⚠️${(sikayetler()[p.id] && sikayetler()[p.id].sayi) ? " " + sikayetler()[p.id].sayi : ""}</button><button class="hk-engel-btn" data-engelle="${esc(p.kim)}" title="Engelle">🚫</button>`}
       </div>
       <div class="hk-yorumlar" id="hk-yorum-${p.id}" hidden>
         ${yorumlar.map(y => `<div class="hk-yorum"><b>${esc(y.kim)}</b> ${esc(y.metin)}</div>`).join("")}
@@ -177,7 +211,17 @@ const Hikaye = window.Hikaye = (() => {
     Store.set(POST, l); bana("Paylaşımın topluluğa eklendi 📸✨"); fotoData = null; cizOlustur(); cizFeed(); cizIlham();
   }
 
-  function ciz() { cizStoryBar(); cizEnerji(); cizIlham(); cizOlustur(); cizFeed(); }
+  function cizEngel() {
+    const el = $("hk-engel"); if (!el) return;
+    const eng = engelliler(), kara = karaListe();
+    el.innerHTML = `
+      <p class="muted small">Görmek/görünmek istemediğin kişileri engelle; engellediklerinin paylaşım ve hikayeleri sana görünmez.</p>
+      ${eng.length ? eng.map(k => `<div class="hk-engel-sat"><span class="top-avatar sm"><span>${esc(harf(k))}</span></span><span class="hk-engel-ad">${esc(k)}</span><button class="btn ghost sm" data-engelkaldir="${esc(k)}">Engeli kaldır</button></div>`).join("") : `<p class="muted small">Engellediğin kimse yok.</p>`}
+      ${kara.length ? `<p class="hk-kara-bilgi">🚫 Kara listede (topluluk şikayetiyle, ${SIKAYET_ESIK}+ ): ${kara.map(esc).join(", ")}</p>` : ""}`;
+    el.querySelectorAll("[data-engelkaldir]").forEach(b => b.addEventListener("click", () => engelKaldir(b.dataset.engelkaldir)));
+  }
+
+  function ciz() { cizStoryBar(); cizEnerji(); cizIlham(); cizEngel(); cizOlustur(); cizFeed(); }
 
   function ac() {
     if (!$("hk-overlay")) return;
