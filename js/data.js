@@ -378,6 +378,35 @@ const DATA = {
     ]
   },
 
+  /* ============ Topluluk & Birlik Alanı ============ */
+  toplulukOnerileri: [
+    { ad: "Sabah Yürüyüş Grubu", ikon: "🌿", aciklama: "Güne birlikte yürüyerek başlayanlar." },
+    { ad: "Meditasyon Çemberi", ikon: "🌙", aciklama: "Birlikte sessizleşen ruhlar." },
+    { ad: "Kitap Kulübü", ikon: "📚", aciklama: "Okuyup paylaşanlar." },
+    { ad: "Kadın Çemberi", ikon: "✨", aciklama: "Destekleyici bir kız kardeşlik." },
+    { ad: "Ruhsal Gelişim Topluluğu", ikon: "🔮", aciklama: "Birlikte büyüyenler." },
+    { ad: "Deniz & Doğa Grubu", ikon: "🌊", aciklama: "Doğada şifa bulanlar." }
+  ],
+  grupGorevOnerileri: [
+    "Bugün hep birlikte 20 dakika yürüyüş",
+    "Akşam meditasyon buluşması",
+    "3 gün şükür challenge",
+    "7 günlük farkındalık serisi",
+    "Birlikte sabah olumlaması",
+    "Günde 2 litre su challenge"
+  ],
+  etkinlikOnerileri: [
+    "Sahil Yürüyüşü", "Pazar Meditasyon Buluşması", "Dolunay Pikniği 🌕",
+    "Birlikte Kitap Okuma Günü", "Yoga & Deniz Günü", "Doğa Yürüyüşü"
+  ],
+  toplulukRozetleri: [
+    { id: "ilk", ad: "İlk Adım 🌱", ipucu: "İlk topluluğuna katıl." },
+    { id: "kurucu", ad: "Kurucu 👑", ipucu: "Kendi topluluğunu kur." },
+    { id: "planlayici", ad: "Planlayıcı 📅", ipucu: "Bir etkinlik oluştur." },
+    { id: "birlik", ad: "Birlik 🤝", ipucu: "3 arkadaş ekle." },
+    { id: "istikrar", ad: "Grup İstikrarı 🔥", ipucu: "Grup serini 3 güne çıkar." }
+  ],
+
   /* ============ Haftalık Kendini Değerlendirme ============ */
   /* Her kategori için yüzde eşiğine göre yorum + gelişim önerisi. */
   haftalikDenge: {

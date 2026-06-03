@@ -22,6 +22,24 @@
     <span class="blob blob-3"></span>
   </div>
 
+  <!-- Topluluk & Birlik Alanı overlay -->
+  <div class="top-overlay" id="top-overlay" hidden>
+    <div class="top-yildizlar" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="top-ic">
+      <button class="gece-kapat" id="top-kapat" aria-label="Kapat">✕</button>
+      <h2 class="top-baslik">Topluluk &amp; Birlik Alanı 👥</h2>
+      <p class="top-not muted small">Birlikte gelişelim 🤍 Bu alan şimdilik bu cihazda çalışır; davet linki uygulamayı paylaşır.</p>
+      <div class="top-rozetler" id="top-rozetler"></div>
+      <div class="top-sekmeler" id="top-sekmeler">
+        <button class="top-sek aktif" data-sek="gruplar">🌿 Topluluklar</button>
+        <button class="top-sek" data-sek="etkinlik">📅 Etkinlikler</button>
+        <button class="top-sek" data-sek="arkadas">👋 Arkadaşlar</button>
+      </div>
+      <div class="top-panel" id="top-panel"></div>
+      <div class="top-detay" id="top-detay" hidden></div>
+    </div>
+  </div>
+
   <!-- Haftalık Kendini Değerlendirme overlay -->
   <div class="hafta-overlay" id="hafta-overlay" hidden>
     <div class="hafta-yildizlar" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
@@ -422,6 +440,10 @@
             <button class="arac-tile" id="hafta-ac">
               <span class="at-ikon">📊</span><span class="at-ad">Haftalık Rapor</span>
               <span class="at-alt">denge analizini gör</span>
+            </button>
+            <button class="arac-tile" id="top-ac">
+              <span class="at-ikon">👥</span><span class="at-ad">Topluluk &amp; Birlik</span>
+              <span class="at-alt">birlikte gelişin</span>
             </button>
           </div>
         </section>
@@ -989,6 +1011,7 @@
   <script src="js/ciftsaat.js"></script>
   <script src="js/takvim.js"></script>
   <script src="js/hafta.js"></script>
+  <script src="js/topluluk.js"></script>
   <script src="js/kapi.js"></script>
   <script src="js/kozmik.js"></script>
   <script>
