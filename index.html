@@ -22,6 +22,79 @@
     <span class="blob blob-3"></span>
   </div>
 
+  <!-- Hayal Panosu (Vision Board) overlay -->
+  <div class="vision-overlay" id="vision-overlay" hidden>
+    <div class="vision-ic">
+      <button class="gece-kapat" id="vision-kapat" aria-label="Kapat">✕</button>
+      <h2 class="vision-baslik">Hayal Panosu 🌟</h2>
+      <div class="vb-arac">
+        <div class="vb-kat-chips" id="vb-kat-chips"></div>
+        <div class="vb-ekle-satir">
+          <input type="text" id="vb-metin-input" placeholder="Motivasyon cümlesi…"/>
+          <button class="btn sm" id="vb-metin-ekle">Cümle</button>
+          <label class="btn ghost sm vb-gorsel-label">Görsel<input type="file" id="vb-gorsel-input" accept="image/*" hidden/></label>
+        </div>
+        <div class="vb-stickerlar" id="vb-stickerlar"></div>
+      </div>
+      <div class="vb-canvas bos" id="vb-canvas">
+        <span class="vb-canvas-ipucu">Görsel, cümle veya sticker ekle ✨<br>öğeleri sürükleyerek düzenle</span>
+      </div>
+      <div class="gece-kart vb-niyet-kart">
+        <label class="gece-soru-baslik">Bugünkü niyetin</label>
+        <textarea id="vb-niyet" rows="2" placeholder="Bugün hangi niyetle ilerliyorsun…"></textarea>
+        <button class="btn ghost sm" id="vb-niyet-kaydet">Kaydet</button>
+      </div>
+      <div class="vb-ai" id="vb-ai"></div>
+      <div class="vb-aksiyon">
+        <button class="btn ghost sm" id="vb-favori">Panoyu Kaydet ♥</button>
+        <button class="btn ghost sm" id="vb-paylas">Paylaş</button>
+        <button class="btn ghost sm" id="vb-temizle">Temizle</button>
+      </div>
+      <details class="gecmis"><summary>Kaydedilen Panolar</summary><div id="vb-favori-liste"></div></details>
+    </div>
+  </div>
+
+  <!-- Ayna Modu overlay -->
+  <div class="ayna-overlay" id="ayna-overlay" hidden>
+    <div class="ayna-parcaciklar" id="ayna-parcaciklar" aria-hidden="true"></div>
+    <div class="ayna-ic">
+      <button class="gece-kapat" id="ayna-kapat" aria-label="Kapat">✕</button>
+      <div class="ayna-puan" id="ayna-puan"></div>
+      <div class="ayna-glass" id="ayna-glass">
+        <video id="ayna-video" autoplay playsinline muted hidden></video>
+        <span class="ayna-shine" aria-hidden="true"></span>
+        <div class="ayna-yansima" id="ayna-yansima">🤍</div>
+        <p class="ayna-olumlama" id="ayna-olumlama"></p>
+      </div>
+      <div class="ayna-cam-satir">
+        <button class="btn ghost sm" id="ayna-cam"><span id="ayna-cam-yazi">📷 Kamerayı Aç</span></button>
+        <button class="btn ghost sm" id="ayna-dinle">🔊 Dinle</button>
+        <button class="ayna-fav-btn" id="ayna-fav" aria-label="Favori">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.35-7-9a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 4.65-7 9-7 9z"/></svg>
+        </button>
+        <button class="btn ghost sm" id="ayna-yeni">Yeni ↻</button>
+      </div>
+      <div class="ayna-cam-not muted small" id="ayna-cam-not"></div>
+
+      <div class="gece-kart ayna-kart">
+        <label class="gece-soru-baslik">Kendi olumlamanı yaz</label>
+        <div class="ekle-satir"><input type="text" id="ayna-yazi-input" placeholder="Kendine söylemek istediğin…"/><button class="btn sm" id="ayna-yazi-ekle">Ekle</button></div>
+      </div>
+      <div class="gece-kart ayna-kart">
+        <label class="gece-soru-baslik">Bugün kendine ne söylemek istersin?</label>
+        <textarea id="ayna-mesaj" rows="2" placeholder="Kalbinden geçeni yaz…"></textarea>
+        <button class="btn ghost sm" id="ayna-mesaj-kaydet">Kaydet</button>
+      </div>
+      <div class="gece-kart ayna-kart ayna-gorev-kart">
+        <span class="ck-et">Bugünün Öz Şefkat Görevi</span>
+        <p id="ayna-gorev-metin"></p>
+        <button class="btn ghost sm" id="ayna-gorev-btn">Tamamladım ✦</button>
+      </div>
+      <details class="gecmis"><summary>Yazdıkların &amp; Favoriler</summary><div id="ayna-liste"></div></details>
+      <button class="btn ayna-bitir" id="ayna-bitir">Tamam 🤍</button>
+    </div>
+  </div>
+
   <!-- Nefes & Sakinleşme overlay -->
   <div class="nefes-overlay" id="nefes-overlay" hidden>
     <div class="nefes-parcaciklar" id="nefes-parcaciklar" aria-hidden="true"></div>
@@ -237,6 +310,30 @@
           <div class="streak-bar"><span id="streak-bar-dolu"></span></div>
           <div class="streak-seviye-bilgi" id="streak-seviye-bilgi"></div>
           <div class="streak-tier-serit" id="streak-tier-serit"></div>
+        </section>
+
+        <!-- Hayal Panosu girişi -->
+        <section class="card card-wide card-vision-giris" id="vision-giris">
+          <div class="gg-ic">
+            <div class="vis-ikon">🌟</div>
+            <div class="gg-bilgi">
+              <div class="gg-baslik">Hayal Panosu</div>
+              <div class="gg-alt muted small" id="vis-alt">Hedeflerini görsel bir panoda topla</div>
+            </div>
+            <button class="btn gg-btn" id="vision-ac">Panonu Oluştur 🌟</button>
+          </div>
+        </section>
+
+        <!-- Ayna Modu girişi -->
+        <section class="card card-wide card-ayna-giris" id="ayna-giris">
+          <div class="gg-ic">
+            <div class="am-ikon">🪞</div>
+            <div class="gg-bilgi">
+              <div class="gg-baslik">Ayna Modu</div>
+              <div class="gg-alt muted small" id="am-puan">Kendinle bağ kur, öz şefkat göster</div>
+            </div>
+            <button class="btn gg-btn" id="ayna-ac">Kendinle Konuş 🪞</button>
+          </div>
         </section>
 
         <!-- Nefes & Sakinleşme girişi -->
@@ -813,6 +910,8 @@
   <script src="js/gece.js"></script>
   <script src="js/sabah.js"></script>
   <script src="js/nefes.js"></script>
+  <script src="js/ayna.js"></script>
+  <script src="js/vision.js"></script>
   <script src="js/ciftsaat.js"></script>
   <script src="js/kozmik.js"></script>
   <script>

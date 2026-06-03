@@ -375,6 +375,43 @@ const DATA = {
     { ad: "Solan Hilal",    emoji: "🌘", aciklama: "Dinlen ve arın; içe dönüş ve huzur zamanı." }
   ],
 
+  /* Dijital Vision Board — hedef kategorileri (AI öneri için) + sticker + mesaj */
+  visionKategorileri: [
+    { id: "ask",     ad: "Aşk",            ikon: "💞", renk: "#ff7a9c", olumlama: "Sevgiye layığım ve sevgiyle çevriliyim.",        gorev: "Bugün sevdiğin birine içten bir şey söyle." },
+    { id: "kariyer", ad: "Kariyer",        ikon: "💼", renk: "#5aa9ff", olumlama: "Yeteneklerim bana bolca fırsat getiriyor.",      gorev: "Hedefine yönelik tek bir somut adım at." },
+    { id: "ruhsal",  ad: "Ruhsal Gelişim", ikon: "🌙", renk: "#b38cff", olumlama: "Her gün daha bilge ve farkında oluyorum.",       gorev: "5 dakika meditasyon yap." },
+    { id: "saglik",  ad: "Sağlık",         ikon: "🌿", renk: "#6fe0a8", olumlama: "Bedenim güçlü, sağlıklı ve dengede.",            gorev: "Bugün bedenine iyi gelen bir şey yap." },
+    { id: "bolluk",  ad: "Bolluk",         ikon: "💰", renk: "#f3d98c", olumlama: "Bolluk bana doğal olarak akıyor.",               gorev: "Şu an sahip olduğun 3 şey için şükret." },
+    { id: "seyahat", ad: "Seyahat",        ikon: "✈️", renk: "#7ad0ff", olumlama: "Dünya bana keşfedilecek güzelliklerle açılıyor.", gorev: "Gitmek istediğin bir yeri araştır." },
+    { id: "ozsevgi", ad: "Öz Sevgi",       ikon: "✨", renk: "#ffd98a", olumlama: "Kendimi olduğum gibi seviyorum.",                gorev: "Kendine küçük bir iyilik yap ve fark et." }
+  ],
+  visionStickerlar: ["✨", "🌙", "💫", "⭐", "🔮", "🌿", "💞", "🕯️", "🌸", "🦋", "☀️", "🌌", "🪷", "👑"],
+  visionMesajlari: [
+    "Hayallerin için küçük ama güçlü adımlar atıyorsun ✨",
+    "Niyetini netleştir; evren gerisini hizalıyor 🌙",
+    "Gördüğün hayal, yarının gerçeği olabilir 🌟",
+    "Panona baktıkça niyetin güçleniyor 💫"
+  ],
+
+  /* Ayna Modu / Kendinle Konuş — öz sevgi cümleleri ve görevleri */
+  aynaOlumlamalari: [
+    "Bugün kendine nazik davran 🤍",
+    "Olduğun halinle değerlisin.",
+    "İçindeki ışık büyümeye devam ediyor ✨",
+    "Kendimi olduğum gibi seviyorum.",
+    "Yeterince iyiyim; tam da olduğum gibi.",
+    "Kendime şefkat göstermeyi hak ediyorum.",
+    "Bedenime ve ruhuma teşekkür ediyorum.",
+    "Bugün de kendim için buradayım."
+  ],
+  aynaGorevleri: [
+    "Aynaya bak ve kendine 3 güzel şey söyle.",
+    "Bugün bir kez içtenlikle 'seni seviyorum' de.",
+    "Bedeninin bir bölümüne teşekkür et.",
+    "Kendine küçük bir iyilik yap ve bunu fark et.",
+    "Bir hatan için kendini nazikçe affet."
+  ],
+
   /* Nefes & Sakinleşme — nefes türleri (al/tut/ver saniye) */
   nefesTurleri: [
     { id: "444",    ad: "4-4-4 Nefesi",       al: 4, tut: 4, ver: 4, renk: ["#7c3aed", "#b38cff"], aciklama: "Dengeleyici kutu nefesi; odak ve sakinlik." },
