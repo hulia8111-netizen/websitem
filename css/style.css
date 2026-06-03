@@ -2495,3 +2495,88 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
 .pkf-ic { text-align: center; font-size: 4rem; animation: pkfPop 1.6s ease; }
 .pkf-ic span { display: block; font-family: var(--font-baslik); font-size: 1.3rem; color: var(--gold-soft); margin-top: 0.5rem; text-shadow: 0 2px 16px rgba(233,196,106,0.6); }
 @keyframes pkfPop { 0% { transform: scale(0.4) rotate(-12deg); opacity: 0; } 40% { transform: scale(1.2) rotate(6deg); opacity: 1; } 70% { transform: scale(1) rotate(0); } 100% { transform: scale(1.05); } }
+
+/* ============================================================
+   Birlik Enerjisi / Topluluk Enerji Haritası 🌍
+   ============================================================ */
+/* ana ekran mini gösterge */
+.card-birlik-mini { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; width: 100%; text-align: left; cursor: pointer; border: 1px solid rgba(111,224,168,0.25); font-family: inherit; color: var(--metin); }
+.card-birlik-mini:hover { border-color: var(--gold); box-shadow: var(--glow-gold); transform: translateY(-2px); }
+.birlik-mini-ic { display: flex; align-items: center; gap: 0.8rem; flex: 1; }
+.bm-sol { display: flex; flex-direction: column; gap: 0.25rem; min-width: 84px; }
+.bm-yuzde { font-family: var(--font-baslik); font-size: 1.5rem; color: var(--basari); line-height: 1; }
+.bm-bar { height: 6px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow: hidden; }
+.bm-bar span { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--basari), var(--accent), var(--gold)); animation: bmBar 3s ease-in-out infinite; }
+@keyframes bmBar { 0%,100% { filter: brightness(1); } 50% { filter: brightness(1.25); } }
+.bm-baslik { font-family: var(--font-baslik); color: var(--gold-soft); }
+.bm-trend { font-size: 0.82rem; color: var(--metin-soft); }
+.bm-ac { font-size: 0.78rem; color: var(--accent); white-space: nowrap; }
+
+.birlik-overlay {
+  position: fixed; inset: 0; z-index: 191; overflow-y: auto; padding: 1.5rem 1.1rem 3rem;
+  background: radial-gradient(900px 800px at 50% 12%, #16224a 0%, transparent 60%), linear-gradient(170deg, #070a1e, #0c1430 60%, #08101f);
+  opacity: 0; transition: opacity 0.6s ease;
+}
+.birlik-overlay.gor { opacity: 1; }
+.birlik-overlay[hidden] { display: none; }
+.birlik-yildizlar { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+.birlik-yildizlar span { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: radial-gradient(circle, #fff4d6, rgba(111,224,168,0.5)); box-shadow: 0 0 8px 2px rgba(111,224,168,0.4); opacity: 0; animation: tkYildiz 7s ease-in-out infinite; }
+.birlik-yildizlar span:nth-child(1){left:12%;top:16%} .birlik-yildizlar span:nth-child(2){left:32%;top:62%;animation-delay:1.1s} .birlik-yildizlar span:nth-child(3){left:52%;top:22%;animation-delay:2.3s} .birlik-yildizlar span:nth-child(4){left:70%;top:70%;animation-delay:.6s} .birlik-yildizlar span:nth-child(5){left:84%;top:18%;animation-delay:3s} .birlik-yildizlar span:nth-child(6){left:20%;top:86%;animation-delay:2.1s}
+.birlik-ic { position: relative; z-index: 1; max-width: 560px; margin: 0 auto; }
+.birlik-baslik { font-family: var(--font-baslik); color: var(--gold-soft); font-size: 1.5rem; text-align: center; margin: 0.2rem 0 0.2rem; }
+.birlik-not { text-align: center; margin: 0 0 var(--sp-3); }
+.birlik-bolum-bas { font-family: var(--font-baslik); color: var(--gold-soft); font-size: 1.05rem; margin: var(--sp-4) 0 0.6rem; }
+
+/* büyük gösterge */
+.birlik-gosterge { text-align: center; border-radius: var(--radius); padding: 1.2rem 1rem; background: radial-gradient(120% 90% at 50% 0%, rgba(111,224,168,0.16), transparent 60%), var(--card-bg); border: 1px solid rgba(111,224,168,0.3); margin-bottom: var(--sp-3); }
+.birlik-gosterge.zirve { border-color: rgba(233,196,106,0.5); box-shadow: var(--glow-gold); }
+.bg-yuzde { font-family: var(--font-baslik); font-size: 2.6rem; color: var(--basari); animation: bgPulse 3s ease-in-out infinite; }
+.birlik-gosterge.zirve .bg-yuzde { color: var(--gold-soft); }
+@keyframes bgPulse { 0%,100% { text-shadow: 0 0 16px rgba(111,224,168,0.3); } 50% { text-shadow: 0 0 30px rgba(111,224,168,0.6); } }
+.bg-trend { color: var(--metin-soft); font-size: 0.9rem; }
+.bg-yuva { height: 10px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow: hidden; margin: 0.6rem 0; }
+.bg-yuva span { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--basari), var(--accent) 55%, var(--gold)); box-shadow: 0 0 14px rgba(111,224,168,0.5); transition: width 0.9s ease; }
+.bg-mesaj { font-family: var(--font-baslik); font-style: italic; color: var(--gold-soft); font-size: 0.95rem; }
+
+.birlik-basari { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; margin-bottom: var(--sp-2); }
+.birlik-rozet { font-size: 0.74rem; padding: 0.28rem 0.65rem; border-radius: 999px; background: rgba(255,255,255,0.05); border: 1px solid rgba(179,140,255,0.18); color: var(--metin-faint); }
+.birlik-rozet.kazanildi { color: #14112c; background: linear-gradient(120deg, var(--gold), var(--gold-soft)); border-color: var(--gold); position: relative; overflow: hidden; box-shadow: var(--glow-gold); }
+.birlik-rozet.kazanildi::after { content: ""; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; background: linear-gradient(120deg, transparent, rgba(255,255,255,0.7), transparent); transform: skewX(-20deg); animation: topShine 3.5s ease-in-out infinite; }
+
+/* harita */
+.birlik-harita-sar { position: relative; width: 100%; aspect-ratio: 1.1; border-radius: var(--radius); overflow: hidden; background: radial-gradient(circle at 50% 45%, rgba(124,58,237,0.18), rgba(10,12,30,0.6) 70%); border: 1px solid var(--card-border); }
+.birlik-dunya { position: absolute; left: 50%; top: 48%; width: 78%; aspect-ratio: 1; transform: translate(-50%,-50%); border-radius: 50%; background: radial-gradient(circle at 42% 38%, rgba(91,169,255,0.25), rgba(124,58,237,0.18) 55%, transparent 72%); border: 1px solid rgba(179,140,255,0.25); }
+.birlik-dunya::before, .birlik-dunya::after { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 1px solid rgba(111,224,168,0.3); animation: birlikDalga 4s ease-out infinite; }
+.birlik-dunya::after { animation-delay: 2s; }
+@keyframes birlikDalga { 0% { transform: scale(0.6); opacity: 0.7; } 100% { transform: scale(1.25); opacity: 0; } }
+.birlik-harita { position: absolute; inset: 0; }
+.bh-nokta { position: absolute; transform: translate(-50%,-50%); cursor: default; }
+.bh-glow { display: block; width: calc(12px + var(--e) * 0.16px); height: calc(12px + var(--e) * 0.16px); border-radius: 50%; background: radial-gradient(circle, #fff7e0, var(--gold)); box-shadow: 0 0 calc(6px + var(--e) * 0.18px) calc(1px + var(--e) * 0.04px) rgba(233,196,106,0.6); animation: bhNokta 2.6s ease-in-out infinite; }
+.bh-nokta.en-aktif .bh-glow { background: radial-gradient(circle, #fff, var(--basari)); box-shadow: 0 0 22px 6px rgba(111,224,168,0.7); animation-duration: 1.6s; }
+@keyframes bhNokta { 0%,100% { transform: scale(0.9); opacity: 0.8; } 50% { transform: scale(1.15); opacity: 1; } }
+.bh-etiket { position: absolute; left: 50%; top: calc(100% + 2px); transform: translateX(-50%); white-space: nowrap; font-size: 0.62rem; color: var(--gold-soft); text-shadow: 0 1px 4px #000; }
+
+.birlik-sehir-liste { display: flex; flex-direction: column; gap: 0.4rem; margin-top: var(--sp-3); }
+.bsl-sat { display: flex; align-items: center; gap: 0.6rem; background: var(--card-bg-soft); border-radius: 11px; padding: 0.45rem 0.7rem; border: 1px solid transparent; }
+.bsl-sat.benim { border-color: var(--accent); }
+.bsl-sat.lider { border-color: rgba(111,224,168,0.4); }
+.bsl-ad { flex: 0 0 auto; min-width: 120px; font-size: 0.84rem; color: var(--metin); }
+.bsl-yuva { flex: 1; height: 7px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow: hidden; }
+.bsl-yuva span { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--accent), var(--basari)); }
+.bsl-yuzde { font-family: var(--font-baslik); color: var(--gold-soft); font-size: 0.9rem; min-width: 38px; text-align: right; }
+
+/* haftalık hedefler */
+.birlik-hedefler { display: flex; flex-direction: column; gap: 0.6rem; }
+.bh-hedef { background: var(--card-bg-soft); border: 1px solid var(--card-border); border-radius: var(--radius-sm); padding: 0.7rem 0.9rem; }
+.bh-hedef.tamam { border-color: var(--basari); box-shadow: 0 0 14px rgba(111,224,168,0.25); }
+.bhh-bas { display: flex; justify-content: space-between; align-items: center; color: var(--metin-soft); font-size: 0.9rem; }
+.bhh-bas b { color: var(--gold-soft); font-family: var(--font-baslik); }
+.bhh-yuva { height: 8px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow: hidden; margin-top: 0.4rem; }
+.bhh-yuva span { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--accent), var(--gold)); transition: width 0.9s ease; }
+.bhh-rozet { display: inline-block; margin-top: 0.4rem; font-size: 0.72rem; color: #14112c; background: linear-gradient(120deg, var(--gold), var(--gold-soft)); border-radius: 999px; padding: 0.1rem 0.5rem; }
+
+/* zirve başarı flash */
+.birlik-shine { position: fixed; inset: 0; z-index: 320; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 50% 50%, rgba(111,224,168,0.25), rgba(8,12,28,0.85)); opacity: 0; transition: opacity 0.4s ease; pointer-events: none; }
+.birlik-shine.gor { opacity: 1; }
+.bs-ic { text-align: center; font-size: 3.5rem; animation: pkfPop 1.7s ease; }
+.bs-ic span { display: block; font-family: var(--font-baslik); font-size: 1.2rem; color: var(--gold-soft); margin-top: 0.4rem; }

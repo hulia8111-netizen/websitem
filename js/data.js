@@ -432,6 +432,22 @@ const DATA = {
   ],
   akisEmojiler: ["✨", "🙏", "💜", "🌙", "🔥", "🤍"],
 
+  /* ============ Birlik Enerjisi / Topluluk Enerji Haritası ============ */
+  birlikSehirKonum: [
+    { ad: "İstanbul", x: 34, y: 28 },
+    { ad: "Bursa", x: 38, y: 40 },
+    { ad: "Ankara", x: 54, y: 40 },
+    { ad: "İzmir", x: 20, y: 54 },
+    { ad: "Muğla", x: 30, y: 70 },
+    { ad: "Antalya", x: 46, y: 72 }
+  ],
+  birlikHedefleri: [
+    { id: "med", ikon: "🌙", ad: "Toplu Meditasyon Hedefi" },
+    { id: "yuruyus", ikon: "🌿", ad: "Topluluk Yürüyüş Hedefi" },
+    { id: "mood", ikon: "💜", ad: "Ruh Hali Dengeleme Hedefi" },
+    { id: "sukran", ikon: "🙏", ad: "Şükran Challenge Hedefi" }
+  ],
+
   /* ============ Premium Üyelik & Kurucu Rehber Etkinlikleri ============ */
   premiumTipleri: {
     canli:     { ikon: "🔴", ad: "Canlı Meditasyon" },

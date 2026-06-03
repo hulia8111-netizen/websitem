@@ -22,6 +22,23 @@
     <span class="blob blob-3"></span>
   </div>
 
+  <!-- Birlik Enerjisi / Topluluk Enerji Haritası overlay -->
+  <div class="birlik-overlay" id="birlik-overlay" hidden>
+    <div class="birlik-yildizlar" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="birlik-ic">
+      <button class="gece-kapat" id="birlik-kapat" aria-label="Kapat">✕</button>
+      <h2 class="birlik-baslik">Birlik Enerjisi 🌍</h2>
+      <p class="birlik-not muted small">Birlikte hareket ettikçe ortak enerji oluşur ✨ (şehirler örnek; senin aktiviten kendi şehrine katkı verir)</p>
+      <div class="birlik-gosterge" id="birlik-gosterge"></div>
+      <div class="birlik-basari" id="birlik-basari"></div>
+      <h3 class="birlik-bolum-bas">🗺️ Topluluk Enerji Haritası</h3>
+      <div class="birlik-harita-sar"><div class="birlik-dunya" aria-hidden="true"></div><div class="birlik-harita" id="birlik-harita"></div></div>
+      <div class="birlik-sehir-liste" id="birlik-sehir-liste"></div>
+      <h3 class="birlik-bolum-bas">🎯 Haftalık Topluluk Hedefleri</h3>
+      <div class="birlik-hedefler" id="birlik-hedefler"></div>
+    </div>
+  </div>
+
   <!-- Premium Üyelik & Kurucu Rehber Etkinlikleri overlay -->
   <div class="prem-overlay" id="prem-overlay" hidden>
     <div class="prem-yildizlar" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
@@ -537,6 +554,10 @@
               <span class="at-ikon">👑</span><span class="at-ad">Kurucu Rehber Etkinlikleri</span>
               <span class="at-alt">premium &amp; canlı</span>
             </button>
+            <button class="arac-tile" id="birlik-ac">
+              <span class="at-ikon">🌍</span><span class="at-ad">Birlik Enerjisi</span>
+              <span class="at-alt">topluluk enerji haritası</span>
+            </button>
           </div>
         </section>
 
@@ -566,6 +587,12 @@
           <div class="enerji-grafik" id="enerji-grafik"></div>
           <div class="e-rozet-serit" id="enerji-rozet"></div>
         </section>
+
+        <!-- Birlik Enerjisi (ana ekran canlı gösterge) -->
+        <button class="card card-wide card-birlik-mini" id="birlik-mini">
+          <div class="birlik-mini-ic" id="birlik-mini-ic"></div>
+          <span class="bm-ac">Enerji haritasını aç →</span>
+        </button>
 
         <!-- Günün Görevleri (3 kategori) -->
         <section class="card card-wide card-gorevler" id="gorevler">
@@ -1108,6 +1135,7 @@
   <script src="js/lider.js"></script>
   <script src="js/hikaye.js"></script>
   <script src="js/premium.js"></script>
+  <script src="js/birlik.js"></script>
   <script src="js/kapi.js"></script>
   <script src="js/kozmik.js"></script>
   <script>
