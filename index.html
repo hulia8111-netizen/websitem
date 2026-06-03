@@ -22,6 +22,21 @@
     <span class="blob blob-3"></span>
   </div>
 
+  <!-- Haftalık Kendini Değerlendirme overlay -->
+  <div class="hafta-overlay" id="hafta-overlay" hidden>
+    <div class="hafta-yildizlar" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="hafta-ic">
+      <button class="gece-kapat" id="hafta-kapat" aria-label="Kapat">✕</button>
+      <h2 class="hafta-baslik">Haftalık Değerlendirme 📊</h2>
+      <p class="hafta-tarih" id="hafta-tarih"></p>
+      <div class="hafta-rozet" id="hafta-rozet"></div>
+      <div class="hafta-kategoriler" id="hafta-kategoriler"></div>
+      <div class="hafta-ozet" id="hafta-ozet"></div>
+      <h3 class="hafta-graf-baslik">Haftalık Enerji Gelişimi</h3>
+      <div class="hafta-grafik" id="hafta-grafik"></div>
+    </div>
+  </div>
+
   <!-- Günün Kapısı (sinematik portal) overlay -->
   <div class="kapi-overlay" id="kapi-overlay" hidden>
     <div class="kapi-nebula" aria-hidden="true"></div>
@@ -403,6 +418,10 @@
             <button class="arac-tile" id="kapi-ac">
               <span class="at-ikon">🚪</span><span class="at-ad">Günün Kapısı</span>
               <span class="at-alt">bugünün enerjisini aç</span>
+            </button>
+            <button class="arac-tile" id="hafta-ac">
+              <span class="at-ikon">📊</span><span class="at-ad">Haftalık Rapor</span>
+              <span class="at-alt">denge analizini gör</span>
             </button>
           </div>
         </section>
@@ -969,6 +988,7 @@
   <script src="js/vision.js"></script>
   <script src="js/ciftsaat.js"></script>
   <script src="js/takvim.js"></script>
+  <script src="js/hafta.js"></script>
   <script src="js/kapi.js"></script>
   <script src="js/kozmik.js"></script>
   <script>

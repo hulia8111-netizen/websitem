@@ -378,6 +378,35 @@ const DATA = {
     ]
   },
 
+  /* ============ Haftalık Kendini Değerlendirme ============ */
+  /* Her kategori için yüzde eşiğine göre yorum + gelişim önerisi. */
+  haftalikDenge: {
+    fiziksel: {
+      ad: "Fiziksel Denge", ikon: "🌿", renk: "#6fe0a8",
+      tiers: [
+        { min: 75, yorum: "Bedenine güzel bakıyorsun; enerjin akışta 🌿", oneri: "Bu ritmi koru; küçük yeni bir hareket ekle." },
+        { min: 45, yorum: "Fiziksel rutinlerin oturmaya başlıyor.", oneri: "Günde 10 dakika yürüyüş eklemeyi dene." },
+        { min: 0,  yorum: "Bedenin biraz daha ilgi istiyor.", oneri: "Yarın kısa bir yürüyüş ya da esnemeyle başla." }
+      ]
+    },
+    ruhsal: {
+      ad: "Ruhsal Denge", ikon: "🌙", renk: "#8b9cff",
+      tiers: [
+        { min: 75, yorum: "Bu hafta içsel farkındalığın güçlenmiş görünüyor ✨", oneri: "Sabah ya da akşam kısa meditasyonla derinleş." },
+        { min: 45, yorum: "Ruhsal bağın canlanıyor.", oneri: "Günlük 5 dk meditasyon veya bir şükran notu ekle." },
+        { min: 0,  yorum: "Ruhuna biraz alan açmaya ihtiyacın var.", oneri: "Bugün 1 dakikalık sessizlik anıyla başla." }
+      ]
+    },
+    zihinsel: {
+      ad: "Zihinsel Denge", ikon: "🧠", renk: "#e9c46a",
+      tiers: [
+        { min: 75, yorum: "Zihnin berrak ve üretken 🧠", oneri: "Öğrendiklerini bir yere not etmeyi sürdür." },
+        { min: 45, yorum: "Zihinsel dengen iyi yolda.", oneri: "Günde birkaç sayfa okuma eklemeyi dene." },
+        { min: 0,  yorum: "Biraz dinlenmek ve zihnini sadeleştirmek sana iyi gelebilir.", oneri: "Telefonsuz 15 dk ve kısa bir günlük dene." }
+      ]
+    }
+  },
+
   /* Bildirim mesajları — kategoriye ve akıllı duruma göre seçilir. */
   bildirimMesajlari: {
     olumlama: [
