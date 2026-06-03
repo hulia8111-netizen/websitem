@@ -22,6 +22,42 @@
     <span class="blob blob-3"></span>
   </div>
 
+  <!-- Spiritüel Takvim overlay -->
+  <div class="takvim-overlay" id="takvim-overlay" hidden>
+    <div class="tk-yildizlar" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="takvim-ic">
+      <button class="gece-kapat" id="takvim-kapat" aria-label="Kapat">✕</button>
+      <h2 class="tk-baslik">Spiritüel Takvim 📅</h2>
+      <p class="muted small tk-ust-not">Ay döngüleri, enerji geçişleri ve özel günlerin</p>
+      <div class="tk-ay-gez-bar">
+        <button class="tk-ay-gez" id="tk-onceki" aria-label="Önceki ay">‹</button>
+        <span class="tk-ay-ad" id="tk-ay-ad"></span>
+        <button class="tk-ay-gez" id="tk-sonraki" aria-label="Sonraki ay">›</button>
+      </div>
+      <div class="tk-haftalik" id="tk-haftalik"></div>
+      <div class="tk-grid" id="tk-grid"></div>
+      <div class="tk-aciklama" id="tk-aciklama"></div>
+      <div class="tk-detay" id="tk-detay"></div>
+      <details class="gecmis tk-ekle-detay">
+        <summary>Kendi özel günümü ekle ⭐</summary>
+        <div class="tk-ekle">
+          <input type="date" id="tk-ekle-tarih" />
+          <input type="text" id="tk-ekle-baslik" placeholder="Başlık (örn. Şükran ritüeli)" />
+          <textarea id="tk-ekle-not" rows="2" placeholder="Not / niyet (opsiyonel)"></textarea>
+          <div class="tk-ekle-satir">
+            <select id="tk-ekle-tip" aria-label="Tür">
+              <option value="kisisel">⭐ Kişisel Ritüel</option>
+              <option value="farkindalik">🌸 Farkındalık Günü</option>
+            </select>
+            <label class="tk-hatirlat"><input type="checkbox" id="tk-ekle-hatirlat" /> Hatırlat</label>
+            <input type="time" id="tk-ekle-saat" value="09:00" aria-label="Hatırlatma saati" />
+          </div>
+          <button class="btn sm" id="tk-ekle-btn">Ekle</button>
+        </div>
+      </details>
+    </div>
+  </div>
+
   <!-- Hayal Panosu (Vision Board) overlay -->
   <div class="vision-overlay" id="vision-overlay" hidden>
     <div class="vision-ic">
@@ -338,6 +374,10 @@
             <button class="arac-tile" id="vision-ac">
               <span class="at-ikon">🌟</span><span class="at-ad">Hayal Panosu</span>
               <span class="at-alt" id="vis-alt"></span>
+            </button>
+            <button class="arac-tile" id="takvim-ac">
+              <span class="at-ikon">📅</span><span class="at-ad">Spiritüel Takvim</span>
+              <span class="at-alt" id="tk-alt"></span>
             </button>
           </div>
         </section>
@@ -890,6 +930,7 @@
   <script src="js/ayna.js"></script>
   <script src="js/vision.js"></script>
   <script src="js/ciftsaat.js"></script>
+  <script src="js/takvim.js"></script>
   <script src="js/kozmik.js"></script>
   <script>
     if ("serviceWorker" in navigator) {

@@ -271,6 +271,38 @@ const DATA = {
   /* Listede olmayan ayna saatler için genel anlam */
   ciftSaatGenel: { mesaj: "Bir senkronizasyon anı.", yorum: "Dur, nefes al ve içinden geçen niyeti fark et.", olumlama: "Evrenle uyum içindeyim." },
 
+  /* ============ Spiritüel Takvim ============ */
+  /* Olay tipleri: ikon, renk ve varsayılan enerji yorumu/ritüel/meditasyon/olumlama.
+     Ay fazları (dolunay/yeniay) takvim modülünde gerçek zamanlı hesaplanır;
+     içerikleri buradan gelir. */
+  takvimTipleri: {
+    dolunay:     { ikon: "🌕", ad: "Dolunay",          renk: "#f3d98c", mesaj: "Bırakma ve dönüşüm enerjisi güçlü hissediliyor.", rituel: "Bugün niyetlerini yaz ve seni yoran enerjileri bırak.", meditasyon: "Dolunay şükran meditasyonu (10 dk).", olumlama: "Bana hizmet etmeyeni huzurla bırakıyorum." },
+    yeniay:      { ikon: "🌑", ad: "Yeni Ay",           renk: "#b38cff", mesaj: "Yeni başlangıçlar ve niyet tohumları için ideal bir gün.", rituel: "Yeni ay niyet listeni yaz; bir mum yak ve dile.", meditasyon: "Niyet belirleme meditasyonu (10 dk).", olumlama: "Yeni başlangıçlara güvenle açığım." },
+    retro:       { ikon: "🪐", ad: "Merkür Retrosu",    renk: "#7ad0ff", mesaj: "İletişim ve teknolojide dikkat; içe dönüş ve gözden geçirme zamanı.", rituel: "Önemli kararları ertele; geçmişi şefkatle gözden geçir.", meditasyon: "Topraklanma meditasyonu (8 dk).", olumlama: "Sabırla ve farkındalıkla ilerliyorum." },
+    gecis:       { ikon: "✨", ad: "Enerji Geçişi",      renk: "#6fe0a8", mesaj: "Bir enerji/mevsim geçişi; dengeni yenilemek için güçlü bir an.", rituel: "Doğada vakit geçir; bedenini esnet ve nefes al.", meditasyon: "Denge ve uyum meditasyonu (10 dk).", olumlama: "Değişimle uyum içinde akıyorum." },
+    farkindalik: { ikon: "🌸", ad: "Farkındalık Günü",  renk: "#ff7a9c", mesaj: "Kendine ve içsel sesine yönelmek için özel bir gün.", rituel: "Bugün bir farkındalık sorusu yanıtla ve günlüğüne yaz.", meditasyon: "Farkındalık nefesi (5 dk).", olumlama: "Anın içinde, tam da buradayım." },
+    kisisel:     { ikon: "⭐", ad: "Kişisel Ritüel",     renk: "#e9c46a", mesaj: "Kendine ayırdığın özel bir gün.", rituel: "Bugün için belirlediğin ritüeli uygula.", meditasyon: "Sana iyi gelen bir meditasyon seç.", olumlama: "Kendime ayırdığım zaman kutsaldır." }
+  },
+  /* Yıl bağımsız (her yıl tekrar eden) özel günler — ay (1-12) ve gün.
+     tip, takvimTipleri içindeki bir anahtar olmalı. mesaj girilirse onu kullanır. */
+  spirituelGunler: [
+    { ay: 1,  gun: 1,  tip: "farkindalik", baslik: "Niyet Günü",            mesaj: "Yeni yıla niyetlerini netleştirerek başla." },
+    { ay: 2,  gun: 14, tip: "farkindalik", baslik: "Öz Sevgi Günü",         mesaj: "Bugün sevgiyi önce kendine yönelt." },
+    { ay: 3,  gun: 20, tip: "gecis",       baslik: "İlkbahar Ekinoksu 🌱",   mesaj: "Gece ve gündüz eşitleniyor; yeni büyüme ve denge zamanı." },
+    { ay: 5,  gun: 21, tip: "farkindalik", baslik: "Dünya Meditasyon Günü",  mesaj: "Küresel bir sessizlik ve içe dönüş günü." },
+    { ay: 6,  gun: 21, tip: "gecis",       baslik: "Yaz Gündönümü ☀️",       mesaj: "Yılın en uzun günü; ışık ve canlılık doruğunda." },
+    { ay: 9,  gun: 22, tip: "gecis",       baslik: "Sonbahar Ekinoksu 🍂",   mesaj: "Hasat ve denge; içe dönüş yavaşça başlıyor." },
+    { ay: 10, gun: 10, tip: "farkindalik", baslik: "Ruh Sağlığı Günü",       mesaj: "İç dünyana şefkatle yönel; kendine alan aç." },
+    { ay: 12, gun: 21, tip: "gecis",       baslik: "Kış Gündönümü ❄️",       mesaj: "Yılın en uzun gecesi; içe dönüş ve yeniden doğuş." },
+    { ay: 12, gun: 31, tip: "farkindalik", baslik: "Bırakma Günü",           mesaj: "Yılı şükran ve affedişle kapat." }
+  ],
+  /* Merkür retrosu dönemleri (yaklaşık; istediğin gibi güncelleyebilirsin). */
+  merkurRetro: [
+    { bas: "2026-02-25", bit: "2026-03-20" },
+    { bas: "2026-06-29", bit: "2026-07-23" },
+    { bas: "2026-10-13", bit: "2026-11-03" }
+  ],
+
   /* Bildirim mesajları — kategoriye ve akıllı duruma göre seçilir. */
   bildirimMesajlari: {
     olumlama: [

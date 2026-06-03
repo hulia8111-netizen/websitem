@@ -1734,3 +1734,90 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
     transition-duration: 0.001ms !important;
   }
 }
+
+/* ============================================================
+   Spiritüel Takvim 📅 — kozmik takvim overlay
+   ============================================================ */
+.takvim-overlay {
+  position: fixed; inset: 0; z-index: 175; overflow-y: auto; padding: 1.5rem 1.1rem 3rem;
+  background: radial-gradient(900px 700px at 50% 8%, #241a52 0%, transparent 60%), linear-gradient(170deg, #0a0820, #120b2e 60%, #0f0a24);
+  opacity: 0; transition: opacity 0.5s;
+}
+.takvim-overlay.gor { opacity: 1; }
+.takvim-overlay[hidden] { display: none; }
+.takvim-ic { position: relative; max-width: 560px; margin: 0 auto; }
+.tk-baslik { font-family: var(--font-baslik); color: var(--gold-soft); font-size: 1.5rem; text-align: center; margin: 0.2rem 0 0.2rem; }
+.tk-ust-not { text-align: center; margin: 0 0 var(--sp-3); }
+
+/* floating yıldız parçacıkları */
+.tk-yildizlar { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+.tk-yildizlar span { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: radial-gradient(circle, #fff4d6, rgba(179,140,255,0.5)); box-shadow: 0 0 8px 2px rgba(179,140,255,0.4); opacity: 0; animation: tkYildiz 7s ease-in-out infinite; }
+.tk-yildizlar span:nth-child(1){left:8%;top:14%;animation-delay:0s} .tk-yildizlar span:nth-child(2){left:22%;top:60%;animation-delay:1s;width:3px;height:3px} .tk-yildizlar span:nth-child(3){left:40%;top:24%;animation-delay:2.2s} .tk-yildizlar span:nth-child(4){left:58%;top:72%;animation-delay:0.6s;width:5px;height:5px} .tk-yildizlar span:nth-child(5){left:74%;top:18%;animation-delay:3s} .tk-yildizlar span:nth-child(6){left:88%;top:54%;animation-delay:1.7s} .tk-yildizlar span:nth-child(7){left:15%;top:84%;animation-delay:2.6s;width:3px;height:3px} .tk-yildizlar span:nth-child(8){left:66%;top:40%;animation-delay:4s} .tk-yildizlar span:nth-child(9){left:48%;top:90%;animation-delay:1.2s}
+@keyframes tkYildiz { 0%,100% { opacity: 0; transform: translateY(0) scale(0.8); } 50% { opacity: 0.9; transform: translateY(-12px) scale(1.2); } }
+
+.takvim-ic > *:not(.tk-yildizlar) { position: relative; z-index: 1; }
+
+/* ay gezinme */
+.tk-ay-gez-bar { display: flex; align-items: center; justify-content: center; gap: var(--sp-3); margin-bottom: var(--sp-3); }
+.tk-ay-gez { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(179,140,255,0.3); background: var(--card-bg-soft); color: var(--gold-soft); font-size: 1.3rem; line-height: 1; cursor: pointer; transition: all 0.2s; }
+.tk-ay-gez:hover { border-color: var(--gold); box-shadow: var(--glow-gold); }
+.tk-ay-ad { font-family: var(--font-baslik); font-size: 1.2rem; color: var(--metin); min-width: 150px; text-align: center; }
+
+/* haftalık + ızgara */
+.tk-haftalik { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.3rem; margin-bottom: 0.4rem; }
+.tk-haftalik span { text-align: center; font-size: 0.7rem; color: var(--metin-faint); text-transform: uppercase; letter-spacing: 0.5px; }
+.tk-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.3rem; }
+.tk-bos { aspect-ratio: 1; }
+.tk-gun {
+  position: relative; aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border-radius: 13px; border: 1px solid rgba(179,140,255,0.12); background: var(--card-bg-soft);
+  color: var(--metin-soft); cursor: pointer; font-family: inherit; padding: 2px; transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+.tk-gun:hover { transform: translateY(-2px); border-color: var(--accent-2); box-shadow: var(--glow-mor); }
+.tk-gun-no { font-size: 0.86rem; font-weight: 600; }
+.tk-gun-ikon { display: flex; gap: 1px; font-size: 0.62rem; line-height: 1; min-height: 0.7em; }
+.tk-gun.olayli { border-color: color-mix(in srgb, var(--renk, var(--accent)) 55%, transparent); background: color-mix(in srgb, var(--renk, var(--accent)) 12%, var(--card-bg-soft)); }
+.tk-gun.olayli .tk-gun-no { color: var(--metin); }
+.tk-gun.secili { border-color: var(--gold); box-shadow: var(--glow-gold); }
+.tk-gun.bugun { border-color: var(--gold); color: var(--metin); }
+.tk-gun.bugun::before { content: ""; position: absolute; inset: -3px; border-radius: 15px; border: 1.5px solid var(--gold); animation: tkPulse 2.2s ease-in-out infinite; pointer-events: none; }
+@keyframes tkPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(233,196,106,0.5); opacity: 1; } 50% { box-shadow: 0 0 14px 3px rgba(233,196,106,0.45); opacity: 0.65; } }
+
+/* açıklama (legend) */
+.tk-aciklama { display: flex; flex-wrap: wrap; gap: 0.5rem 0.9rem; justify-content: center; margin: var(--sp-3) 0; }
+.tk-lg { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.72rem; color: var(--metin-faint); }
+.tk-lg-ikon { font-size: 0.95rem; }
+
+/* gün detayı */
+.tk-detay { margin-top: var(--sp-2); }
+.tk-detay.tk-fade { animation: tkFade 0.45s ease; }
+@keyframes tkFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.tk-detay-tarih { font-family: var(--font-baslik); color: var(--gold-soft); font-size: 1.1rem; margin: 0 0 0.6rem; text-transform: capitalize; }
+.tk-enerji { display: block; width: 100%; text-align: left; background: rgba(179,140,255,0.1); border: 1px solid rgba(179,140,255,0.25); border-radius: var(--radius-sm); padding: 0.6rem 0.9rem; color: var(--metin-soft); cursor: pointer; margin-bottom: 0.7rem; font-family: inherit; }
+.tk-enerji b { color: var(--gold-soft); }
+.tk-olay { border: 1px solid color-mix(in srgb, var(--renk) 40%, transparent); background: color-mix(in srgb, var(--renk) 9%, var(--card-bg-soft)); border-left: 3px solid var(--renk); border-radius: var(--radius-sm); padding: 0.8rem 1rem; margin-bottom: 0.7rem; }
+.tk-olay-bas { display: flex; align-items: center; gap: 0.5rem; }
+.tk-olay-bas b { font-family: var(--font-baslik); color: var(--metin); flex: 1; }
+.tk-olay-ikon { font-size: 1.3rem; filter: drop-shadow(0 0 8px color-mix(in srgb, var(--renk) 60%, transparent)); }
+.tk-olay-mesaj { margin: 0.4rem 0 0.5rem; color: var(--metin-soft); font-size: 0.92rem; }
+.tk-sat { display: flex; gap: 0.5rem; font-size: 0.86rem; color: var(--metin-soft); margin-top: 0.3rem; }
+.tk-et { flex: 0 0 auto; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); padding-top: 0.15rem; min-width: 72px; }
+.tk-olumlama { font-family: var(--font-baslik); font-style: italic; color: var(--gold-soft); margin-top: 0.5rem; }
+.tk-sil { background: transparent; border: none; color: var(--uyari); cursor: pointer; font-size: 0.85rem; padding: 0.1rem 0.3rem; }
+.tk-bos-mesaj { text-align: center; padding: 0.8rem 0; }
+
+/* özel gün ekleme */
+.tk-ekle-detay { margin-top: var(--sp-3); }
+.tk-ekle { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.6rem; }
+.tk-ekle-satir { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+.tk-ekle-satir select, .tk-ekle input, .tk-ekle textarea, .tk-ekle-satir input[type="time"] {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(179,140,255,0.25); color: var(--metin); border-radius: 10px; padding: 0.55rem 0.7rem; font-family: inherit; font-size: 0.9rem;
+}
+.tk-ekle input, .tk-ekle textarea { width: 100%; }
+.tk-hatirlat { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.85rem; color: var(--metin-soft); }
+
+@media (max-width: 480px) {
+  .tk-gun-no { font-size: 0.78rem; }
+  .tk-ay-ad { min-width: 120px; font-size: 1.05rem; }
+  .tk-grid, .tk-haftalik { gap: 0.22rem; }
+}
