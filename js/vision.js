@@ -44,7 +44,7 @@ const Vision = window.Vision = (() => {
   /* ---------- sürükle-bırak ---------- */
   function dragBagla(el) {
     el.addEventListener("pointerdown", e => {
-      if (e.target.closest(".vb-sil")) return;
+      if (e.target.closest(".vb-sil") || e.target.closest(".vb-resize")) return;
       suruklenen = el; el.classList.add("suru");
       canvasRect = $("vb-canvas").getBoundingClientRect();
       try { el.setPointerCapture(e.pointerId); } catch (x) {}
@@ -68,6 +68,31 @@ const Vision = window.Vision = (() => {
     el.addEventListener("pointercancel", bitir);
   }
 
+  /* ---------- görsel yeniden boyutlandırma ---------- */
+  function resizeBagla(el, it) {
+    const h = el.querySelector(".vb-resize");
+    if (!h) return;
+    h.addEventListener("pointerdown", e => {
+      e.preventDefault(); e.stopPropagation();
+      const startW = el.offsetWidth, sx = e.clientX, sy = e.clientY;
+      try { h.setPointerCapture(e.pointerId); } catch (x) {}
+      function mv(ev) {
+        const d = Math.max(ev.clientX - sx, ev.clientY - sy);
+        const w = Math.max(60, Math.min(280, startW + d));
+        el.style.width = w + "px"; el.style.height = w + "px"; it.w = w;
+      }
+      function up() {
+        h.removeEventListener("pointermove", mv);
+        h.removeEventListener("pointerup", up);
+        h.removeEventListener("pointercancel", up);
+        kaydet();
+      }
+      h.addEventListener("pointermove", mv);
+      h.addEventListener("pointerup", up);
+      h.addEventListener("pointercancel", up);
+    });
+  }
+
   /* ---------- render ---------- */
   function cizCanvas() {
     const c = $("vb-canvas");
@@ -81,12 +106,16 @@ const Vision = window.Vision = (() => {
       el.style.left = it.x + "%"; el.style.top = it.y + "%";
       el.style.setProperty("--kat", kat.renk);
       let ic = "";
-      if (it.tip === "gorsel") ic = `<img src="${it.img}" alt="hayal"/>`;
-      else if (it.tip === "sticker") ic = `<span class="vb-sticker-ic">${it.sembol}</span>`;
+      if (it.tip === "gorsel") {
+        const w = it.w || 110;
+        el.style.width = w + "px"; el.style.height = w + "px";
+        ic = `<img src="${it.img}" alt="hayal"/><span class="vb-resize" aria-label="Boyutlandır"></span>`;
+      } else if (it.tip === "sticker") ic = `<span class="vb-sticker-ic">${it.sembol}</span>`;
       else ic = `<span class="vb-metin-ic">${esc(it.metin)}</span>`;
       el.innerHTML = ic + `<button class="vb-sil" aria-label="Sil">✕</button>`;
       el.querySelector(".vb-sil").addEventListener("click", () => { board.items = board.items.filter(i => i.id !== it.id); kaydet(); cizCanvas(); aiCiz(); });
       dragBagla(el);
+      if (it.tip === "gorsel") resizeBagla(el, it);
       c.appendChild(el);
     });
   }
@@ -97,7 +126,7 @@ const Vision = window.Vision = (() => {
       b.className = "vb-kat-chip" + (aktifKat === c.id ? " aktif" : "");
       b.style.setProperty("--kat", c.renk);
       b.innerHTML = `${c.ikon} ${c.ad}`;
-      b.addEventListener("click", () => { aktifKat = c.id; cizKategoriler(); });
+      b.addEventListener("click", () => { aktifKat = c.id; cizKategoriler(); cizGaleri(); });
       k.appendChild(b);
     });
   }
@@ -108,6 +137,23 @@ const Vision = window.Vision = (() => {
       b.className = "vb-sticker-btn"; b.textContent = sem;
       b.addEventListener("click", () => itemEkle({ tip: "sticker", sembol: sem }));
       s.appendChild(b);
+    });
+  }
+  /* Hazır ilham görseli URL'si (Unsplash, kırpılmış) */
+  function GALERI_URL(id, w = 600) { return `https://images.unsplash.com/photo-${id}?w=${w}&q=70&auto=format&fit=crop`; }
+  /* Seçili kategoriye göre hazır görsel galerisi */
+  function cizGaleri() {
+    const g = $("vb-galeri"); if (!g) return;
+    const ids = (DATA.visionGaleri && DATA.visionGaleri[aktifKat]) || [];
+    g.innerHTML = "";
+    if (!ids.length) { g.innerHTML = `<span class="muted small">Bu kategori için hazır görsel yok.</span>`; return; }
+    ids.forEach(id => {
+      const b = document.createElement("button");
+      b.className = "vb-galeri-thumb";
+      b.title = "Panoya ekle";
+      b.innerHTML = `<img src="${GALERI_URL(id, 200)}" alt="ilham" loading="lazy"/><span class="vb-galeri-arti">＋</span>`;
+      b.addEventListener("click", () => itemEkle({ tip: "gorsel", img: GALERI_URL(id), w: 120 }));
+      g.appendChild(b);
     });
   }
   function aiCiz() {
@@ -155,7 +201,7 @@ const Vision = window.Vision = (() => {
   function ac() {
     yukle();
     document.body.classList.add("vision-mod");
-    cizKategoriler(); cizStickerlar(); cizCanvas(); cizFavoriler(); aiCiz();
+    cizKategoriler(); cizGaleri(); cizStickerlar(); cizCanvas(); cizFavoriler(); aiCiz();
     $("vb-niyet").value = board.niyet || "";
     const ov = $("vision-overlay");
     ov.hidden = false; ov.classList.remove("gor"); void ov.offsetWidth; ov.classList.add("gor");

@@ -1354,6 +1354,13 @@ code { background: rgba(255,255,255,0.08); padding: 1px 5px; border-radius: 6px;
 .vb-stickerlar { display: flex; flex-wrap: wrap; gap: 0.3rem; }
 .vb-sticker-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(179,140,255,0.2); border-radius: 10px; width: 38px; height: 38px; font-size: 1.2rem; cursor: pointer; transition: all 0.2s; }
 .vb-sticker-btn:hover { border-color: var(--gold); box-shadow: var(--glow-gold); transform: translateY(-2px); }
+.vb-bolum-baslik { margin: 0.6rem 0 0.3rem; }
+/* hazır ilham galerisi */
+.vb-galeri { display: flex; gap: 0.45rem; overflow-x: auto; padding-bottom: 0.3rem; scrollbar-width: thin; }
+.vb-galeri-thumb { position: relative; flex: 0 0 auto; width: 70px; height: 70px; padding: 0; border: 1px solid rgba(179,140,255,0.25); border-radius: 12px; overflow: hidden; cursor: pointer; background: rgba(255,255,255,0.04); transition: all 0.2s; }
+.vb-galeri-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.vb-galeri-thumb:hover { border-color: var(--gold); box-shadow: var(--glow-gold); transform: translateY(-2px); }
+.vb-galeri-arti { position: absolute; right: 3px; bottom: 2px; width: 18px; height: 18px; border-radius: 50%; background: rgba(20,14,44,0.8); color: var(--gold, #e9c46a); font-size: 0.8rem; line-height: 18px; text-align: center; pointer-events: none; }
 
 .vb-canvas { position: relative; width: 100%; height: 380px; border-radius: var(--radius); overflow: hidden; margin-top: var(--sp-2); touch-action: none; background: radial-gradient(120% 90% at 50% 0%, rgba(124,58,237,0.18), transparent 60%), rgba(255,255,255,0.03); border: 1px solid rgba(233,196,106,0.22); box-shadow: inset 0 0 40px rgba(124,58,237,0.12); }
 .vb-canvas-ipucu { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; text-align: center; color: var(--metin-faint); font-size: 0.9rem; padding: 1rem; line-height: 1.6; }
@@ -1361,7 +1368,10 @@ code { background: rgba(255,255,255,0.08); padding: 1px 5px; border-radius: 6px;
 .vb-item { position: absolute; transform: translate(-50%, -50%); cursor: grab; touch-action: none; border-radius: 14px; border: 1.5px solid var(--kat, var(--gold)); box-shadow: 0 4px 16px rgba(0,0,0,0.4); transition: box-shadow 0.2s; }
 .vb-item:hover { box-shadow: 0 6px 22px rgba(0,0,0,0.5), 0 0 18px rgba(179,140,255,0.5); }
 .vb-item.suru { cursor: grabbing; z-index: 10; box-shadow: 0 8px 28px rgba(0,0,0,0.5), 0 0 24px rgba(233,196,106,0.5); }
-.vb-gorsel img { width: 110px; height: 110px; object-fit: cover; border-radius: 13px; display: block; }
+.vb-gorsel { width: 110px; height: 110px; }
+.vb-gorsel img { width: 100%; height: 100%; object-fit: cover; border-radius: 13px; display: block; pointer-events: none; }
+.vb-resize { position: absolute; right: -7px; bottom: -7px; width: 18px; height: 18px; border-radius: 50%; background: var(--gold, #e9c46a); border: 2px solid rgba(20,14,44,0.9); cursor: nwse-resize; display: none; touch-action: none; z-index: 3; box-shadow: 0 0 8px rgba(233,196,106,0.7); }
+.vb-item.vb-gorsel:hover .vb-resize, .vb-item.vb-gorsel.suru .vb-resize { display: block; }
 .vb-metin { background: rgba(20,14,44,0.85); backdrop-filter: blur(6px); padding: 0.5rem 0.8rem; max-width: 170px; }
 .vb-metin-ic { font-family: var(--font-baslik); font-style: italic; color: var(--metin); font-size: 0.92rem; }
 .vb-item.vb-sticker { border: none; box-shadow: none; background: transparent; }

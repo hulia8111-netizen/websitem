@@ -392,6 +392,18 @@ const DATA = {
     "Gördüğün hayal, yarının gerçeği olabilir 🌟",
     "Panona baktıkça niyetin güçleniyor 💫"
   ],
+  /* Hazır ilham görselleri (Unsplash, telifsiz). Kategori id → fotoğraf id listesi.
+     URL js/vision.js içindeki GALERI_URL ile üretilir. Yeni görsel eklemek için
+     ilgili kategoriye Unsplash fotoğraf id'si ekle. */
+  visionGaleri: {
+    ask:     ["1518621736915-f3b1c41bfd00", "1494774157365-9e04c6720e47", "1516589178581-6cd7833ae3b2"],
+    kariyer: ["1497215728101-856f4ea42174", "1486312338219-ce68d2c6f44d", "1454165804606-c3d57bc86b40"],
+    ruhsal:  ["1506126613408-eca07ce68773", "1528319725582-ddc096101511", "1545389336-cf090694435e"],
+    saglik:  ["1571019613454-1cb2f99b2d8b", "1518611012118-696072aa579a", "1490645935967-10de6ba17061"],
+    bolluk:  ["1554224155-6726b3ff858f", "1611974789855-9c2a0a7236a3", "1526304640581-d334cdbbf45e"],
+    seyahat: ["1500530855697-b586d89ba3ee", "1488646953014-85cb44e25828", "1469854523086-cc02fe5d8800"],
+    ozsevgi: ["1515378791036-0648a3ef77b2", "1517021897933-0e0319cfbc28", "1499209974431-9dddcece7f88"]
+  },
 
   /* Ayna Modu / Kendinle Konuş — öz sevgi cümleleri ve görevleri */
   aynaOlumlamalari: [
