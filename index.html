@@ -22,6 +22,29 @@
     <span class="blob blob-3"></span>
   </div>
 
+  <!-- Haftanın Yıldızları & Liderlik overlay -->
+  <div class="lider-overlay" id="lider-overlay" hidden>
+    <div class="lider-yildizlar" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="lider-ic">
+      <button class="gece-kapat" id="lider-kapat" aria-label="Kapat">✕</button>
+      <h2 class="lider-baslik">Haftanın Yıldızları 🏆</h2>
+      <p class="lider-not muted small">Her hafta sıfırlanır · diğer üyeler örnektir ✨</p>
+      <div class="lider-yildiz" id="lider-yildiz"></div>
+      <div class="lider-durum" id="lider-durum"></div>
+      <div class="lider-rozetler" id="lider-rozetler"></div>
+      <div class="lider-filtre-bar">
+        <div class="lider-filtreler" id="lider-filtreler">
+          <button class="lider-fil aktif" data-fil="genel">Genel</button>
+          <button class="lider-fil" data-fil="sehir">Şehrim</button>
+          <button class="lider-fil" data-fil="topluluk">Topluluğum</button>
+        </div>
+        <select id="lider-sehir" class="lider-sehir-sec" aria-label="Şehir"></select>
+      </div>
+      <div class="lider-tablo" id="lider-tablo"></div>
+      <div class="lider-plan" id="lider-plan"></div>
+    </div>
+  </div>
+
   <!-- Herkese Açık Topluluk Akışı overlay -->
   <div class="akis-overlay" id="akis-overlay" hidden>
     <div class="akis-yildizlar" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
@@ -29,7 +52,10 @@
       <button class="gece-kapat" id="akis-kapat" aria-label="Kapat">✕</button>
       <h2 class="akis-baslik">Topluluk Akışı 🌍</h2>
       <p class="akis-not muted small">Herkese açık alan 🤍 Demo akış bu cihazda çalışır; paylaşım linki uygulamayı paylaşır.</p>
-      <button class="btn ghost sm akis-genel-btn" id="akis-genel">💬 Genel Sohbet</button>
+      <div class="akis-ust-btnlar">
+        <button class="btn ghost sm" id="akis-genel">💬 Genel Sohbet</button>
+        <button class="btn ghost sm" id="lider-ac-2">🏆 Haftanın Yıldızları</button>
+      </div>
       <div class="akis-feed" id="akis-feed"></div>
       <div class="akis-sohbet-panel" id="akis-sohbet-panel" hidden></div>
     </div>
@@ -43,6 +69,7 @@
       <h2 class="top-baslik">Topluluk &amp; Birlik Alanı 👥</h2>
       <p class="top-not muted small">Birlikte gelişelim 🤍 Bu alan şimdilik bu cihazda çalışır; davet linki uygulamayı paylaşır.</p>
       <button class="btn ghost sm akis-genel-btn" id="akis-ac-2">🌍 Herkese Açık Topluluk Akışı →</button>
+      <button class="btn ghost sm akis-genel-btn" id="lider-ac-3">🏆 Haftanın Yıldızları & Liderlik →</button>
       <div class="top-rozetler" id="top-rozetler"></div>
       <div class="top-sekmeler" id="top-sekmeler">
         <button class="top-sek aktif" data-sek="gruplar">🌿 Topluluklar</button>
@@ -462,6 +489,10 @@
             <button class="arac-tile" id="akis-ac">
               <span class="at-ikon">🌍</span><span class="at-ad">Topluluk Akışı</span>
               <span class="at-alt">herkese açık feed</span>
+            </button>
+            <button class="arac-tile" id="lider-ac">
+              <span class="at-ikon">🏆</span><span class="at-ad">Haftanın Yıldızları</span>
+              <span class="at-alt">liderlik tablosu</span>
             </button>
           </div>
         </section>
@@ -1031,6 +1062,7 @@
   <script src="js/hafta.js"></script>
   <script src="js/topluluk.js"></script>
   <script src="js/akis.js"></script>
+  <script src="js/lider.js"></script>
   <script src="js/kapi.js"></script>
   <script src="js/kozmik.js"></script>
   <script>

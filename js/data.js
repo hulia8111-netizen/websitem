@@ -432,6 +432,24 @@ const DATA = {
   ],
   akisEmojiler: ["✨", "🙏", "💜", "🌙", "🔥", "🤍"],
 
+  /* ============ Haftanın Yıldızları & Liderlik ============ */
+  liderIsimler: ["Elif", "Deniz", "Ayşe", "Mert", "Can", "Zeynep", "Selin", "Burak", "Ece", "Kaan", "Naz", "Emre", "İrem", "Onur", "Derya", "Berk", "Su", "Ali", "Yağmur", "Cem", "Dilara", "Tolga", "Pınar", "Sinan", "Melis", "Arda", "Gizem", "Efe", "Ceren", "Barış", "Aslı", "Kerem"],
+  liderSehirler: ["İstanbul", "Ankara", "İzmir", "Bursa", "Antalya", "Muğla"],
+  liderRozetleri: [
+    { id: "lider", ad: "Topluluk Lideri 👑", ipucu: "Haftayı 1. sırada bitir." },
+    { id: "enerji", ad: "Enerji Yükselten ✨", ipucu: "Bu hafta 150+ puan topla." },
+    { id: "sifa", ad: "Şifa Rehberi 🌿", ipucu: "Bu hafta 3+ arkadaş davet et." },
+    { id: "meditasyon", ad: "Meditasyon Ustası 🌙", ipucu: "Bu hafta 4+ gün meditasyon yap." },
+    { id: "isik", ad: "Işığını Yayan 💫", ipucu: "Toplulukta aktif etkileşim kur." }
+  ],
+  liderPlanOrnekleri: [
+    "Bu hafta hep birlikte sahil yürüyüşü yapalım 🌊",
+    "Cuma günü toplu meditasyon etkinliği ✨",
+    "Pazar günü kitap & kahve buluşması ☕",
+    "7 günlük şükran challenge başlatalım 🙏",
+    "Dolunay gecesi niyet çemberi 🌕"
+  ],
+
   /* ============ Haftalık Kendini Değerlendirme ============ */
   /* Her kategori için yüzde eşiğine göre yorum + gelişim önerisi. */
   haftalikDenge: {
