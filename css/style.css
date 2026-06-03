@@ -1146,6 +1146,13 @@ code { background: rgba(255,255,255,0.08); padding: 1px 5px; border-radius: 6px;
 .profil-seviye-bar span { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--accent), var(--gold)); transition: width 0.7s; }
 .profil-seviye-bilgi { font-size: 0.78rem; color: var(--metin-faint); margin-top: 0.4rem; text-align: center; }
 
+/* Profil alt sekmeleri */
+.profil-sekme { display: flex; gap: 0.5rem; }
+.psek-btn { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(179,140,255,0.18); color: var(--metin-soft); border-radius: 12px; padding: 0.6rem 0.4rem; font-family: inherit; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
+.psek-btn:hover { color: var(--metin); border-color: var(--accent-2); }
+.psek-btn.aktif { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff; border-color: transparent; box-shadow: var(--glow-mor); }
+.profil-gizli { display: none !important; }
+
 /* 30 günlük gelişim grafiği */
 .profil-graf-baslik { margin: 0 0 0.5rem; }
 .profil-grafik { display: flex; gap: 2px; align-items: flex-end; height: 70px; }
@@ -1702,6 +1709,12 @@ code { background: rgba(255,255,255,0.08); padding: 1px 5px; border-radius: 6px;
 @media (min-width: 1000px) {
   .grid { grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); }
 }
+
+/* ---------- Performans: animasyon duraklatma ---------- */
+/* Sekme arka plandayken tüm animasyonları durdur (pil/CPU tasarrufu) */
+body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { animation-play-state: paused !important; }
+/* Ekran dışı öğelerin animasyonlarını durdur (js/perf.js) */
+.anim-duraklat, .anim-duraklat *, .anim-duraklat::before, .anim-duraklat::after { animation-play-state: paused !important; }
 
 /* ---------- Erişilebilirlik: hareketi azalt ---------- */
 @media (prefers-reduced-motion: reduce) {

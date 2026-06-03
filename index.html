@@ -706,7 +706,13 @@
           <div class="profil-ozet" id="profil-ozet"></div>
         </section>
 
-        <section class="card card-wide card-cakra" id="cakra">
+        <div class="profil-sekme card-wide" id="profil-sekme">
+          <button class="psek-btn aktif" data-pgrup="enerji">Enerji & Aura</button>
+          <button class="psek-btn" data-pgrup="basarim">Başarımlar</button>
+          <button class="psek-btn" data-pgrup="ayarlar">Ayarlar</button>
+        </div>
+
+        <section class="card card-wide card-cakra" id="cakra" data-pgrup="enerji">
           <h2>Aura &amp; Çakra Dengesi 🌀</h2>
           <div class="aura-sahne">
             <span class="aura-cember c1" aria-hidden="true"></span>
@@ -724,7 +730,7 @@
           </details>
         </section>
 
-        <section class="card card-wide card-enerjitipi" id="enerjitipi">
+        <section class="card card-wide card-enerjitipi" id="enerjitipi" data-pgrup="enerji">
           <h2>Enerji Tipin 💞</h2>
           <div class="et-aura">
             <div class="et-orb" id="et-orb"><span class="et-ikon" id="et-ikon">🌙</span></div>
@@ -741,19 +747,19 @@
           </details>
         </section>
 
-        <section class="card" id="rozetler">
+        <section class="card" id="rozetler" data-pgrup="basarim">
           <h2>Başarımlar</h2>
           <p class="muted small">Yolculuğunda kazandıkların</p>
           <div class="rozet-grid" id="rozet-grid"></div>
         </section>
 
-        <section class="card" id="med-gecmis-bolum">
+        <section class="card" id="med-gecmis-bolum" data-pgrup="basarim">
           <h2>Meditasyon Geçmişi</h2>
           <p class="muted small">Dinleme yaptığın günler</p>
           <div class="gun-rozet-serit" id="med-gecmis"></div>
         </section>
 
-        <section class="card card-wide" id="bildirim">
+        <section class="card card-wide" id="bildirim" data-pgrup="ayarlar">
           <h2>Bildirimler 🔔</h2>
           <div class="bildirim-izin" id="bildirim-izin"></div>
           <div class="ayar-satir">
@@ -786,7 +792,7 @@
           </div>
         </section>
 
-        <section class="card card-wide" id="atmosfer">
+        <section class="card card-wide" id="atmosfer" data-pgrup="ayarlar">
           <h2>Atmosfer</h2>
           <div class="ayar-satir">
             <div>
@@ -800,7 +806,7 @@
           </div>
         </section>
 
-        <section class="card card-wide" id="ayarlar">
+        <section class="card card-wide" id="ayarlar" data-pgrup="ayarlar">
           <h2>Yedekleme</h2>
           <p class="muted small">Verilerin yalnızca bu tarayıcıda saklanır. Yedek almayı unutma.</p>
           <div class="satir-arasi">
@@ -856,6 +862,7 @@
 
   <script src="js/data.js"></script>
   <script src="js/store.js"></script>
+  <script src="js/perf.js"></script>
   <script src="js/audio.js"></script>
   <script src="js/muzik.js"></script>
   <script src="js/rehber.js"></script>

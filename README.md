@@ -1,63 +1,85 @@
 # ✨ Işığını Bul · Spiritüel Wellness
 
-Statik, sunucusuz bir spiritüel farkındalık & wellbeing panosu — **koyu premium**
-tema (gece mavisi/mor zemin, altın & lila glow). Tüm veriler tarayıcıda
-(`localStorage`) saklanır; giriş veya internet gerektirmez. **PWA**: telefonda
-"ana ekrana ekle" ile tam ekran/offline çalışır.
+Statik, sunucusuz bir **spiritüel wellbeing** uygulaması — koyu premium tema
+(gece mavisi/mor zemin, altın & lila glow). Tüm veriler tarayıcıda
+(`localStorage`) saklanır; giriş ya da internet gerektirmez (Google Fonts hariç).
+**PWA**: telefonda "ana ekrana ekle" ile tam ekran/offline çalışır.
 
-## Gezinme (5 görünüm + bottom navigation)
-Mobil uygulama mantığında alt navigasyon: **Ana Sayfa · Kartlar · Meditasyon ·
-Günlük · Profil**.
+**Canlı:** https://hulia8111-netizen.github.io/websitem/
 
-- **Ana Sayfa**: Günün cümlesi (gün boyu sabit) · İçsel Rehber (AI) · Ruh hali
-  (modern ikonlar) · Mini görev · Farkındalık sorusu.
-- **Kartlar**: Günün kartı (glow + giriş animasyonu) · Kart geçmişi.
-- **Meditasyon**: Kategorili meditasyon & Web Audio frekans tonları.
-- **Günlük**: Günlük yazma · Şükran defteri · Manifest hedefleri.
-- **Profil**: İsim/avatar · streak & kullanım sayaçları · başarımlar ·
-  meditasyon geçmişi · önerilen ürünler · JSON yedek al/yükle.
+---
 
-## İçsel Rehber (yerel AI rehber)
-Kullanıcı nasıl hissettiğini yazar; [js/rehber.js](js/rehber.js) içindeki kural
-tabanlı motor metni anahtar kelimelerle eşler ve **uygun kart + meditasyon
-kategorisi + olumlama + mini görev** önerir. Tamamen offline çalışır, harici AI
-servisi gerektirmez. Kurallar `DATA.rehber` içinden düzenlenir.
+## Genel bakış
 
-## Profil & Streak
-Yerel profil (isim/avatar) `localStorage`'ta saklanır. `streakBilgisi()`
-([js/store.js](js/store.js)) `visit-*` anahtarlarından güncel/en uzun seri ve
-toplam aktif günü hesaplar; günlük açılış sayacı da tutulur.
+7 sekmeli alt navigasyon: **Ana Sayfa · Bahçe · Kartlar · Meditasyon · Günlük ·
+Mağaza · Profil**. İlk açılışta isim onboarding'i + kısa **Spiritüel Başlangıç
+Testi**; sabah saatlerinde otomatik **Sabah Ritüeli** karşılaması.
 
-## Başarımlar
-Kümülatif (lifetime) takip: **7 gün giriş**, **21 gün meditasyon**, **30 şükran
-kaydı**, **10 görev tamamlama**. İlerleme `localStorage`'taki `visit-*`, `med-*`,
-`gratitude`, `task-*` anahtarlarından hesaplanır.
+Uygulama ruh hali + test sonucu + enerji seviyesine göre **kişiselleşir**
+(günlük rehber, müzik önerisi, enerji tipi, çakra dengesi vb. hepsi uyum sağlar).
 
-## Meditasyon & Frekans
-5 kategori: **Uyku · Frekans · Şifa · Odak · Rahatlama**. "Frekans" tonları
-(396/432/528/639/741/852/174 Hz) tarayıcıda Web Audio API ile üretilir
-([js/audio.js](js/audio.js)) — telif sorunu yoktur. Kendi mp3'lerini
-`DATA.sesler` içine `kategori` alanıyla ekleyebilirsin.
+---
+
+## Modüller
+
+### Ana Sayfa
+- **Streak widget** — ateş/glow, seviye sistemi (`js/streak.js`)
+- **Günün Enerji Seviyesi** — dairesel gösterge + 7 günlük grafik (`js/energy.js`)
+- **Günlük Spiritüel Rehber (Kader)** — flip oracle kartı, kişiselleşen tema (`js/kader.js`)
+- **Günün Cümlesi** · **Sesli Olumlama** (TTS, kategoriler, favoriler `js/olumlama.js`)
+- **Ay Evresi** — gerçek zamanlı astronomik hesap (`js/ay.js`)
+- **Çift Saat Anlamları** — ayna saat algılama + kozmik popup (`js/ciftsaat.js`)
+- **İçsel Rehber / AI Ruh Rehberi** — sohbet arayüzü (`js/rehber.js`)
+- **Ruh Hali** — modern ikonlar, haftalık analiz, rozetler
+- **Günün Ritüeli** — tarot kartı, XP, zorluk, rozetler (`js/rituel.js`)
+- **Ritüeller & Araçlar** ızgarası → tam ekran overlay'ler:
+  - ☀️ **Sabah Ritüeli** (`js/sabah.js`) · 🌙 **Gece Rutini** (`js/gece.js`)
+  - 🌬️ **Nefes & Sakinleşme** (`js/nefes.js`) · 🪞 **Ayna Modu** (`js/ayna.js`)
+  - 🌟 **Hayal Panosu / Vision Board** (`js/vision.js`)
+
+### Diğer sekmeler
+- **Bahçe** — Ruh Bahçesi: aktivitelerle büyüyen 6 seviyeli SVG bahçe + günlük ritüel + rozetler (`js/bahce.js`)
+- **Kartlar** — Günün kartı (glow + giriş animasyonu) + kart geçmişi
+- **Meditasyon** — **Spiritüel Müzik & Frekans Alanı**: premium çalar, 7 kategori, 15 parça (Web Audio ile sentezlenen tonlar/yağmur/orman/Tibet çanı/lo-fi pad), favori + öneri + otomatik geçiş (`js/muzik.js`, `js/audio.js`)
+- **Günlük** — Spiritüel günlük (mood bağlantılı, arama, favori, AI analiz `js/gunluk.js`) + Şükran defteri + Manifest hedefleri
+- **Mağaza** — Spiritüel butik: kategoriler, filtre, favori, ürün detay popup, dış bağlantı (`js/magaza.js`)
+- **Profil** — Kişisel Spiritüel Profil (`js/profil.js`): ruhsal seviye + foto + istatistikler + 30 günlük grafik · **Aura & Çakra Dengesi** (`js/cakra.js`) · **Enerji Tipi** (`js/enerjitipi.js`) · Başarımlar · Meditasyon geçmişi · **Bildirimler** (`js/bildirim.js`) · **Atmosfer / Gece Kozmik Modu** (`js/kozmik.js`) · Yedekleme
+
+### Sistem
+- **İçsel Rehber motoru** (`js/rehber.js`) — yerel kural-tabanlı, harici AI gerektirmez
+- **Bildirimler** (`js/bildirim.js`) — günlük saat, kategoriler, sessiz/gece DND, akıllı tetikleyiciler, in-app toast
+- **Spiritüel Başlangıç Testi** (`js/test.js`) · **Onboarding & karşılama** (`js/app.js`)
+- **Performans** (`js/perf.js`) — görünmeyen/arka plan animasyonları otomatik duraklatır
+
+---
+
+## Mimari
+
+- **Vanilla JS, bağımlılıksız, modüler.** Her özellik kendi dosyasında bir IIFE
+  (`window.X = (() => {...})()`) ve `DOMContentLoaded`'da kendini bağlar.
+- **Veri katmanı:** [js/store.js](js/store.js) — `Store` (localStorage + JSON),
+  tarih/streak yardımcıları (`todayKey`, `pickByDate`, `mevcutSeri`, `streakBilgisi`,
+  `aktifGunSayisi` …).
+- **Tüm içerik** [js/data.js](js/data.js) içinde (`DATA.*`): cümleler, kartlar,
+  frekanslar, kategoriler, ritüeller, çakralar, enerji tipleri, ürünler, test,
+  rehber kuralları vb. — tek yerden düzenlenir.
+- **Ses motoru** [js/audio.js](js/audio.js) — `SesMotoru`: Web Audio ile ton/gürültü/çan/pad sentezi (telifsiz, offline).
+- **PWA:** `manifest.webmanifest` + `service-worker.js` (network-first; her sürümde `CACHE` adı artar).
 
 ## Çalıştırma
-Sesler, görseller ve service worker'ın düzgün çalışması için yerel bir sunucuyla aç:
 
 ```bash
 node .claude/server.js
-# sonra tarayıcıda: http://localhost:5500
+# tarayıcıda: http://localhost:5500
 ```
 
-## Özelleştirme
-İçerikler [js/data.js](js/data.js) içinde: motivasyon cümleleri, kart destesi,
-görevler, sorular, ses/frekans listeleri, kategoriler, başarımlar ve ürün linkleri.
-
 ## Tasarım
-Koyu premium tema; başlıklar **Playfair Display**, gövde **Inter** (Google Fonts).
-Tutarlı spacing ölçeği (`--sp-*`), optimize blur, desktop hover yükselme + glow,
-buton ışık animasyonu, görünüm geçiş animasyonları.
 
-## Dosyalar
-`index.html` · `css/style.css` (tema) · `js/data.js` (içerik + rehber/ürün verisi) ·
-`js/store.js` (localStorage + tarih/streak yardımcıları) · `js/audio.js` (frekans
-üretici) · `js/rehber.js` (İçsel Rehber) · `js/app.js` (gezinme + profil + mantık) ·
-`manifest.webmanifest` + `service-worker.js` (PWA, network-first).
+Koyu premium tema; başlıklar **Playfair Display**, gövde **Inter** (Google Fonts).
+Tutarlı spacing ölçeği (`--sp-*`), glow/pulse animasyonları, cam efekti kartlar,
+hover yükselme. Tüm animasyonlar `prefers-reduced-motion` ile kapanır.
+
+## Veri & gizlilik
+
+Tüm kişisel veriler yalnızca kullanıcının tarayıcısında (`localStorage`) kalır;
+hiçbir sunucuya gönderilmez. **Profil → Yedekleme**'den JSON dışa/içe aktarılabilir.

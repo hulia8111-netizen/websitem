@@ -195,6 +195,17 @@ const Profil = window.Profil = (() => {
       btn.addEventListener("click", () => inp.click());
       inp.addEventListener("change", e => { const f = e.target.files[0]; if (f) fotoIsle(f); });
     }
+    // Alt sekmeler (Enerji & Aura / Başarımlar / Ayarlar)
+    const sekme = document.querySelector("#profil-sekme");
+    if (sekme) {
+      const gruplar = document.querySelectorAll("section[data-pgrup]");
+      const goster = g => {
+        sekme.querySelectorAll(".psek-btn").forEach(b => b.classList.toggle("aktif", b.dataset.pgrup === g));
+        gruplar.forEach(c => c.classList.toggle("profil-gizli", c.dataset.pgrup !== g));
+      };
+      sekme.querySelectorAll(".psek-btn").forEach(b => b.addEventListener("click", () => goster(b.dataset.pgrup)));
+      goster("enerji");
+    }
     ciz();
   }
 
