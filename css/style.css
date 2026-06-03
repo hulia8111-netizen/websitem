@@ -2422,3 +2422,76 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
 .hk-kara-bilgi { margin-top: 0.6rem; font-size: 0.8rem; color: #ffb3c5; background: rgba(255,122,156,0.08); border: 1px solid rgba(255,122,156,0.25); border-radius: 10px; padding: 0.5rem 0.7rem; }
 .hk-sv-mod { margin-left: auto; display: flex; gap: 0.3rem; }
 .hk-sv-mod button { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); border-radius: 999px; padding: 0.2rem 0.5rem; font-size: 0.85rem; cursor: pointer; }
+
+/* ============================================================
+   Premium Üyelik & Kurucu Rehber Etkinlikleri 👑 — luxury
+   ============================================================ */
+.prem-tile { border-color: rgba(233,196,106,0.4) !important; box-shadow: 0 0 18px rgba(233,196,106,0.18); }
+.prem-tile .at-ad { color: var(--gold); }
+.prem-overlay {
+  position: fixed; inset: 0; z-index: 190; overflow-y: auto; padding: 1.5rem 1.1rem 3rem;
+  background: radial-gradient(900px 700px at 50% 6%, #2a2348 0%, transparent 60%), linear-gradient(170deg, #0a0820, #140f2c 60%, #0d0a22);
+  opacity: 0; transition: opacity 0.6s ease;
+}
+.prem-overlay.gor { opacity: 1; }
+.prem-overlay[hidden] { display: none; }
+.prem-yildizlar { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+.prem-yildizlar span { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: radial-gradient(circle, #fff4d6, rgba(233,196,106,0.6)); box-shadow: 0 0 8px 2px rgba(233,196,106,0.4); opacity: 0; animation: tkYildiz 7s ease-in-out infinite; }
+.prem-yildizlar span:nth-child(1){left:12%;top:16%} .prem-yildizlar span:nth-child(2){left:32%;top:62%;animation-delay:1.1s} .prem-yildizlar span:nth-child(3){left:52%;top:22%;animation-delay:2.3s} .prem-yildizlar span:nth-child(4){left:70%;top:70%;animation-delay:.6s} .prem-yildizlar span:nth-child(5){left:84%;top:18%;animation-delay:3s} .prem-yildizlar span:nth-child(6){left:20%;top:86%;animation-delay:2.1s}
+.prem-ic { position: relative; z-index: 1; max-width: 580px; margin: 0 auto; }
+.prem-baslik { font-family: var(--font-baslik); color: var(--gold-soft); font-size: 1.5rem; text-align: center; margin: 0.2rem 0 0.2rem; }
+.prem-not { text-align: center; margin: 0 0 var(--sp-3); }
+.prem-overlay input, .prem-overlay textarea, .prem-overlay select { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(179,140,255,0.22); color: var(--metin); border-radius: 11px; padding: 0.55rem 0.75rem; font-family: inherit; font-size: 0.9rem; }
+.prem-overlay input:focus, .prem-overlay textarea:focus, .prem-overlay select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(233,196,106,0.18); }
+
+/* üyelik kartı */
+.prem-uyelik { text-align: center; border-radius: var(--radius); padding: 1.2rem 1rem; margin-bottom: var(--sp-3); background: var(--card-bg); border: 1px solid var(--card-border); }
+.prem-uyelik.aktif { border-color: rgba(233,196,106,0.5); background: radial-gradient(120% 90% at 50% 0%, rgba(233,196,106,0.18), transparent 60%), var(--card-bg); box-shadow: var(--glow-gold); position: relative; overflow: hidden; }
+.prem-uyelik.aktif::after { content: ""; position: absolute; top: 0; left: -60%; width: 45%; height: 100%; background: linear-gradient(120deg, transparent, rgba(255,255,255,0.2), transparent); transform: skewX(-20deg); animation: topShine 4s ease-in-out infinite; }
+.pu-rozet { font-family: var(--font-baslik); font-size: 1.3rem; color: var(--gold-soft); }
+.pu-rozet.free { color: var(--metin-soft); }
+.pu-btnlar { margin-top: 0.5rem; }
+.prem-gec-btn { background: linear-gradient(135deg, var(--gold), var(--gold-soft)); color: #14112c; font-weight: 600; border: none; animation: kapiBtn 2.6s ease-in-out infinite; margin-top: 0.4rem; }
+
+.prem-rozetler { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; margin-bottom: var(--sp-3); }
+.prem-rozet { font-size: 0.72rem; padding: 0.28rem 0.65rem; border-radius: 999px; background: rgba(255,255,255,0.05); border: 1px solid rgba(179,140,255,0.18); color: var(--metin-faint); }
+.prem-rozet.kazanildi { color: #14112c; background: linear-gradient(120deg, var(--gold), var(--gold-soft)); border-color: var(--gold); position: relative; overflow: hidden; box-shadow: var(--glow-gold); }
+.prem-rozet.kazanildi::after { content: ""; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; background: linear-gradient(120deg, transparent, rgba(255,255,255,0.7), transparent); transform: skewX(-20deg); animation: topShine 3.5s ease-in-out infinite; }
+
+.prem-admin-giris-btn { display: block; margin: 0 auto var(--sp-3); }
+.prem-admin { background: var(--card-bg-soft); border: 1px solid rgba(233,196,106,0.3); border-radius: var(--radius-sm); padding: 0.9rem; margin-bottom: var(--sp-3); display: flex; flex-direction: column; gap: 0.5rem; }
+.prem-satir { display: flex; gap: 0.5rem; }
+.prem-satir > * { flex: 1; }
+.prem-admin-liste { margin-top: 0.4rem; }
+.pa-sat { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.04); border-radius: 10px; padding: 0.4rem 0.7rem; margin-top: 0.3rem; font-size: 0.85rem; color: var(--metin-soft); }
+.prem-bolum-bas { font-family: var(--font-baslik); color: var(--gold-soft); font-size: 1.05rem; margin: var(--sp-3) 0 0.6rem; }
+
+/* etkinlik kartları */
+.prem-etkinlikler { display: flex; flex-direction: column; gap: 0.7rem; }
+.prem-etk { background: var(--card-bg); backdrop-filter: blur(var(--blur)); border: 1px solid var(--card-border); border-radius: var(--radius-sm); padding: 0.9rem; box-shadow: var(--shadow); transition: transform var(--gecis), box-shadow var(--gecis); }
+.prem-etk:hover { transform: translateY(-2px); box-shadow: var(--glow-gold); }
+.prem-etk.kilitli { border-color: rgba(233,196,106,0.35); border-style: dashed; }
+.pe-bas { display: flex; align-items: center; gap: 0.6rem; }
+.pe-ikon { font-size: 1.6rem; filter: drop-shadow(0 0 10px rgba(233,196,106,0.5)); }
+.pe-tip { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); }
+.pe-baslik { font-family: var(--font-baslik); color: var(--metin); font-size: 1.02rem; }
+.pe-kilit { margin-left: auto; font-size: 1.2rem; }
+.pe-meta { font-size: 0.76rem; color: var(--metin-faint); margin: 0.45rem 0; }
+.pe-acik { font-size: 0.88rem; color: var(--metin-soft); margin: 0.2rem 0 0.6rem; }
+.prem-etk.kilitli .pe-acik { opacity: 0.7; }
+.pe-btnlar { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
+.pe-kilit-mesaj { font-size: 0.85rem; color: var(--gold-soft); background: rgba(233,196,106,0.1); border: 1px solid rgba(233,196,106,0.3); border-radius: 12px; padding: 0.6rem 0.8rem; text-align: center; margin-bottom: 0.5rem; }
+
+/* kurucu sohbet */
+.prem-sohbet-bolum { margin-top: var(--sp-4); }
+.prem-sohbet { display: flex; flex-direction: column; gap: 0.4rem; max-height: 40vh; overflow-y: auto; margin-bottom: 0.6rem; }
+.prem-msg { background: rgba(255,255,255,0.04); border-radius: 11px; padding: 0.4rem 0.7rem; font-size: 0.88rem; color: var(--metin-soft); }
+.prem-msg.ben { background: color-mix(in srgb, var(--gold) 14%, var(--card-bg)); }
+.prem-msg b { color: var(--gold-soft); }
+
+/* kilit açılma flash */
+.prem-kilit-flash { position: fixed; inset: 0; z-index: 320; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 50% 50%, rgba(233,196,106,0.25), rgba(12,10,28,0.85)); opacity: 0; transition: opacity 0.4s ease; pointer-events: none; }
+.prem-kilit-flash.gor { opacity: 1; }
+.pkf-ic { text-align: center; font-size: 4rem; animation: pkfPop 1.6s ease; }
+.pkf-ic span { display: block; font-family: var(--font-baslik); font-size: 1.3rem; color: var(--gold-soft); margin-top: 0.5rem; text-shadow: 0 2px 16px rgba(233,196,106,0.6); }
+@keyframes pkfPop { 0% { transform: scale(0.4) rotate(-12deg); opacity: 0; } 40% { transform: scale(1.2) rotate(6deg); opacity: 1; } 70% { transform: scale(1) rotate(0); } 100% { transform: scale(1.05); } }

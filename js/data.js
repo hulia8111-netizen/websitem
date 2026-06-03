@@ -432,6 +432,32 @@ const DATA = {
   ],
   akisEmojiler: ["✨", "🙏", "💜", "🌙", "🔥", "🤍"],
 
+  /* ============ Premium Üyelik & Kurucu Rehber Etkinlikleri ============ */
+  premiumTipleri: {
+    canli:     { ikon: "🔴", ad: "Canlı Meditasyon" },
+    yayin:     { ikon: "🎙️", ad: "Kurucu Rehber Yayını" },
+    oda:       { ikon: "🚪", ad: "Özel Topluluk Odası" },
+    challenge: { ikon: "🏆", ad: "Premium Challenge" },
+    gorev:     { ikon: "✅", ad: "Özel Grup Görevi" },
+    sohbet:    { ikon: "💬", ad: "Kurucu Sohbet" }
+  },
+  premiumEtkinlikleri: [
+    { id: "pe1", tip: "canli", baslik: "Canlı Dolunay Meditasyonu", tarih: "2026-06-09", saat: "21:00", aciklama: "Kurucu rehber eşliğinde canlı, rehberli meditasyon seansı." },
+    { id: "pe2", tip: "yayin", baslik: "Kurucu Rehber Yayını: İçsel Denge", tarih: "2026-06-12", saat: "20:00", aciklama: "Özel canlı yayın + soru-cevap. Yalnızca premium üyelere açık." },
+    { id: "pe3", tip: "oda", baslik: "Özel Oda: Şifa Çemberi", tarih: "2026-06-14", saat: "19:00", aciklama: "Sınırlı kişilik, derin paylaşım için özel topluluk odası." },
+    { id: "pe4", tip: "challenge", baslik: "Premium 21 Günlük Dönüşüm", tarih: "2026-06-15", saat: "07:00", aciklama: "Rehber destekli premium challenge serisi." },
+    { id: "pe5", tip: "gorev", baslik: "Özel Grup Görevi: Sabah Ritmi", tarih: "2026-06-10", saat: "06:30", aciklama: "Premium gruba özel, rehber tarafından hazırlanan görev serisi." }
+  ],
+  premiumRozetleri: [
+    { id: "kurucu", ad: "Kurucu Çemberi 👑", ipucu: "Premium üye ol." },
+    { id: "isik", ad: "Işık Elçisi 💫", ipucu: "Bir premium etkinliğe katıl." },
+    { id: "derinlik", ad: "Derinlik Ustası 🌊", ipucu: "Kurucu sohbetine katıl." }
+  ],
+  premiumSohbetSeed: [
+    { kim: "Kurucu Rehber", metin: "Çembere hoş geldin 🤍 Bu hafta içsel dengeye odaklanıyoruz.", oncesiSaat: 4 },
+    { kim: "Selin", metin: "Canlı meditasyon için sabırsızlanıyorum ✨", oncesiSaat: 1 }
+  ],
+
   /* ============ Topluluk Hikayeleri & Anlık Paylaşım ============ */
   hikayeReaksiyonlar: [
     { em: "✨", ad: "İlham Verdi" },

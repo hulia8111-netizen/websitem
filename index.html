@@ -22,6 +22,23 @@
     <span class="blob blob-3"></span>
   </div>
 
+  <!-- Premium Üyelik & Kurucu Rehber Etkinlikleri overlay -->
+  <div class="prem-overlay" id="prem-overlay" hidden>
+    <div class="prem-yildizlar" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="prem-ic">
+      <button class="gece-kapat" id="prem-kapat-btn" aria-label="Kapat">✕</button>
+      <h2 class="prem-baslik">Kurucu Rehber Etkinlikleri 👑</h2>
+      <p class="prem-not muted small">Premium üyelere özel ✨ Ücretsiz üyeler görebilir ve önizleyebilir.</p>
+      <div class="prem-uyelik" id="prem-uyelik"></div>
+      <div class="prem-rozetler" id="prem-rozetler"></div>
+      <button class="btn ghost sm prem-admin-giris-btn" id="prem-admin-giris">👑 Kurucu Girişi</button>
+      <div class="prem-admin" id="prem-admin" hidden></div>
+      <h3 class="prem-bolum-bas">✨ Premium Etkinlikler</h3>
+      <div class="prem-etkinlikler" id="prem-etkinlikler"></div>
+      <div class="prem-sohbet-bolum" id="prem-sohbet-bolum"></div>
+    </div>
+  </div>
+
   <!-- Topluluk Hikayeleri & Anlık Paylaşım overlay -->
   <div class="hk-overlay" id="hk-overlay" hidden>
     <div class="hk-yildizlar" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
@@ -515,6 +532,10 @@
             <button class="arac-tile" id="hk-ac">
               <span class="at-ikon">📸</span><span class="at-ad">Hikayeler &amp; Paylaşım</span>
               <span class="at-alt">anını paylaş</span>
+            </button>
+            <button class="arac-tile prem-tile" id="prem-ac">
+              <span class="at-ikon">👑</span><span class="at-ad">Kurucu Rehber Etkinlikleri</span>
+              <span class="at-alt">premium &amp; canlı</span>
             </button>
           </div>
         </section>
@@ -1086,6 +1107,7 @@
   <script src="js/akis.js"></script>
   <script src="js/lider.js"></script>
   <script src="js/hikaye.js"></script>
+  <script src="js/premium.js"></script>
   <script src="js/kapi.js"></script>
   <script src="js/kozmik.js"></script>
   <script>
