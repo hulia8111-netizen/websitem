@@ -22,6 +22,22 @@
     <span class="blob blob-3"></span>
   </div>
 
+  <!-- Topluluk Hikayeleri & Anlık Paylaşım overlay -->
+  <div class="hk-overlay" id="hk-overlay" hidden>
+    <div class="hk-yildizlar" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="hk-ic">
+      <button class="gece-kapat" id="hk-kapat" aria-label="Kapat">✕</button>
+      <h2 class="hk-baslik">Topluluk Hikayeleri 📸</h2>
+      <p class="hk-not muted small">Anlarını paylaş · hikayeler 24 saatte kaybolur ✨ (yerel/örnek içerik)</p>
+      <div class="hk-story-bar" id="hk-story-bar"></div>
+      <div class="hk-enerji" id="hk-enerji"></div>
+      <div class="hk-ilham" id="hk-ilham"></div>
+      <div class="hk-olustur" id="hk-olustur"></div>
+      <div class="hk-feed" id="hk-feed"></div>
+    </div>
+    <div class="hk-story-viewer" id="hk-story-viewer" hidden></div>
+  </div>
+
   <!-- Haftanın Yıldızları & Liderlik overlay -->
   <div class="lider-overlay" id="lider-overlay" hidden>
     <div class="lider-yildizlar" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
@@ -55,6 +71,7 @@
       <div class="akis-ust-btnlar">
         <button class="btn ghost sm" id="akis-genel">💬 Genel Sohbet</button>
         <button class="btn ghost sm" id="lider-ac-2">🏆 Haftanın Yıldızları</button>
+        <button class="btn ghost sm" id="hk-ac-2">📸 Hikayeler</button>
       </div>
       <div class="akis-feed" id="akis-feed"></div>
       <div class="akis-sohbet-panel" id="akis-sohbet-panel" hidden></div>
@@ -493,6 +510,10 @@
             <button class="arac-tile" id="lider-ac">
               <span class="at-ikon">🏆</span><span class="at-ad">Haftanın Yıldızları</span>
               <span class="at-alt">liderlik tablosu</span>
+            </button>
+            <button class="arac-tile" id="hk-ac">
+              <span class="at-ikon">📸</span><span class="at-ad">Hikayeler &amp; Paylaşım</span>
+              <span class="at-alt">anını paylaş</span>
             </button>
           </div>
         </section>
@@ -1063,6 +1084,7 @@
   <script src="js/topluluk.js"></script>
   <script src="js/akis.js"></script>
   <script src="js/lider.js"></script>
+  <script src="js/hikaye.js"></script>
   <script src="js/kapi.js"></script>
   <script src="js/kozmik.js"></script>
   <script>

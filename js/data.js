@@ -432,6 +432,27 @@ const DATA = {
   ],
   akisEmojiler: ["✨", "🙏", "💜", "🌙", "🔥", "🤍"],
 
+  /* ============ Topluluk Hikayeleri & Anlık Paylaşım ============ */
+  hikayeReaksiyonlar: [
+    { em: "✨", ad: "İlham Verdi" },
+    { em: "🌿", ad: "Huzurlu" },
+    { em: "💜", ad: "Yanındayım" },
+    { em: "🌙", ad: "Enerjin Güzel" }
+  ],
+  hikayeSeedStory: [
+    { kim: "Elif", emoji: "🌿", metin: "Sabah yürüyüşü çok iyi geldi ✨", oncesiSaat: 1 },
+    { kim: "Deniz", emoji: "🌙", metin: "Meditasyonumu tamamladım", oncesiSaat: 3 },
+    { kim: "Ayşe", emoji: "📚", metin: "Bugün 20 sayfa okudum", oncesiSaat: 5 },
+    { kim: "Mert", emoji: "🌊", metin: "Deniz kenarında gün batımı…", oncesiSaat: 8 }
+  ],
+  hikayeSeedPost: [
+    { kim: "Elif", emoji: "🌿", metin: "Bugünkü yürüyüşüm çok iyi geldi, herkese öneririm.", oncesiSaat: 2, baz: { "✨": 12, "🌿": 8 } },
+    { kim: "Deniz", emoji: "🌙", metin: "Meditasyonumu tamamladım ✨ İçim huzur dolu.", oncesiSaat: 5, baz: { "🌙": 15, "💜": 6 }, challenge: true },
+    { kim: "Ayşe", emoji: "📚", metin: "Bugün 20 sayfa kitap okudum, zihnim çok berrak.", oncesiSaat: 9, baz: { "✨": 5 } },
+    { kim: "Mert", emoji: "🌊", metin: "Deniz kenarında gün batımı… Şükran doluyum 🌅", oncesiSaat: 14, baz: { "✨": 21, "💜": 9, "🌿": 7 } }
+  ],
+  hikayeEnerjiSeed: [62, 78, 54, 88, 71, 66, 80, 59],
+
   /* ============ Haftanın Yıldızları & Liderlik ============ */
   liderIsimler: ["Elif", "Deniz", "Ayşe", "Mert", "Can", "Zeynep", "Selin", "Burak", "Ece", "Kaan", "Naz", "Emre", "İrem", "Onur", "Derya", "Berk", "Su", "Ali", "Yağmur", "Cem", "Dilara", "Tolga", "Pınar", "Sinan", "Melis", "Arda", "Gizem", "Efe", "Ceren", "Barış", "Aslı", "Kerem"],
   liderSehirler: ["İstanbul", "Ankara", "İzmir", "Bursa", "Antalya", "Muğla"],
