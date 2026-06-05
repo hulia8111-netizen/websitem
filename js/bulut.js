@@ -48,6 +48,8 @@ const Bulut = window.Bulut = (() => {
     window.addEventListener("focus", () => { if (girisli() && !indiriliyor) indir().then(d => { if (d) softTazele(); }); });
     window.addEventListener("online", durumCiz);
     window.addEventListener("offline", durumCiz);
+    // Güvence: realtime çalışmasa da düzenli çek (yakın-anlık senkron)
+    setInterval(() => { if (girisli() && cevrimici() && !indiriliyor && document.visibilityState === "visible") indir().then(d => { if (d) softTazele(); }); }, 25000);
   }
 
   /* ---------- AUTH ---------- */

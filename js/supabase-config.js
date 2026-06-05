@@ -7,4 +7,4 @@
    ============================================================ */
 
 const SUPABASE_URL = "https://liotmhoyoduwidojwrkd.supabase.co";
-const SUPABASE_ANON = "sb_publishable_vmi-nDGF4SPihD1naR0JsQ_D15wan0Z";
+const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxpb3RtaG95b2R1d2lkb2p3cmtkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2NDgwNjksImV4cCI6MjA5NjIyNDA2OX0.xeqD_ioMXJTzsPeyF7YUHFC7urRnreuK3EYQiCBijZE";
