@@ -259,6 +259,8 @@ const Bulut = window.Bulut = (() => {
     const al = () => ({ email: ($("hesap-email") || {}).value || "", sifre: ($("hesap-sifre") || {}).value || "" });
     if (g) g.addEventListener("click", async () => { const { email, sifre } = al(); if (!email || !sifre) return bilgi("E-posta ve şifre gir", true); g.disabled = true; const r = await girisYap(email, sifre); g.disabled = false; bilgi(r.mesaj, !r.ok); });
     if (k) k.addEventListener("click", async () => { const { email, sifre } = al(); if (!email || !sifre) return bilgi("E-posta ve şifre gir", true); k.disabled = true; const r = await kayitOl(email, sifre); k.disabled = false; bilgi(r.mesaj, !r.ok); });
+    const gost = $("hesap-sifre-goster");
+    if (gost) gost.addEventListener("change", () => { const s = $("hesap-sifre"); if (s) s.type = gost.checked ? "text" : "password"; });
   }
   document.addEventListener("DOMContentLoaded", baglan);
 

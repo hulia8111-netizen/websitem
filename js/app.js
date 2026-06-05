@@ -99,6 +99,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const r = await window.Bulut.girisYap(email, sifre);
       kayitBtn.disabled = false; girisBtn.disabled = false; obBilgi(r.mesaj, !r.ok);
     };
+    const gost = $("#ob-sifre-goster");
+    if (gost) gost.onchange = () => { const s = $("#ob-sifre"); if (s) s.type = gost.checked ? "text" : "password"; };
+    const unut = $("#ob-unuttum");
+    if (unut) unut.onclick = async () => {
+      const { email } = al(); if (!window.Bulut || !window.Bulut.sifreSifirla) return;
+      const r = await window.Bulut.sifreSifirla(email);
+      obBilgi(r.mesaj, !r.ok);
+    };
   }
   function girisKapisiGoster() {
     if (!ob) return;

@@ -345,12 +345,14 @@
       <!-- Adım 2: hesap (mail + şifre) -->
       <div id="ob-adim-hesap" hidden>
         <p class="ob-alt" id="ob-hesap-baslik">Verilerin tüm cihazlarında saklansın mı?</p>
-        <input type="email" id="ob-email" placeholder="E-posta" autocomplete="email" />
-        <input type="password" id="ob-sifre" placeholder="Şifre (en az 6 karakter)" autocomplete="new-password" />
+        <input type="email" id="ob-email" placeholder="E-posta" autocomplete="email" autocapitalize="off" spellcheck="false" />
+        <input type="password" id="ob-sifre" placeholder="Şifre (en az 6 karakter)" autocomplete="current-password" />
+        <label class="sifre-goster"><input type="checkbox" id="ob-sifre-goster" /> Şifreyi göster</label>
         <div class="ob-hesap-btnlar">
           <button class="btn" id="ob-kayit">Hesap Oluştur</button>
           <button class="btn ghost" id="ob-giris">Giriş Yap</button>
         </div>
+        <button class="hesap-link" id="ob-unuttum" type="button">Şifremi unuttum</button>
         <span class="ob-hesap-bilgi" id="ob-hesap-bilgi"></span>
         <p class="ob-not">Verilerin güvende olsun ve tüm cihazlarında açılsın diye giriş gerekli 🤍</p>
       </div>
@@ -784,8 +786,9 @@
           <h2>☁️ Hesap &amp; Bulut Senkron</h2>
           <div id="hesap-durum"></div>
           <div class="hesap-form" id="hesap-form" hidden>
-            <input type="email" id="hesap-email" placeholder="E-posta" autocomplete="email" />
+            <input type="email" id="hesap-email" placeholder="E-posta" autocomplete="email" autocapitalize="off" spellcheck="false" />
             <input type="password" id="hesap-sifre" placeholder="Şifre (en az 6 karakter)" autocomplete="current-password" />
+            <label class="sifre-goster"><input type="checkbox" id="hesap-sifre-goster" /> Şifreyi göster</label>
             <div class="hesap-btnlar">
               <button class="btn" id="hesap-giris">Giriş Yap</button>
               <button class="btn ghost" id="hesap-kayit">Kayıt Ol</button>
