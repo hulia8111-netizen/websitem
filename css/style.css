@@ -249,6 +249,9 @@ input[type="time"]::-webkit-calendar-picker-indicator { filter: invert(1) sepia(
 .ob-kart input { margin-bottom: 1rem; text-align: center; font-size: 1.05rem; padding: 0.85rem; }
 .ob-basla { width: 100%; padding: 0.9rem; font-size: 1rem; }
 .ob-not { font-size: 0.75rem; color: var(--metin-faint); margin: 1.1rem 0 0; }
+.ob-hesap-btnlar { display: flex; gap: 0.5rem; }
+.ob-hesap-btnlar .btn { flex: 1; padding: 0.85rem; }
+.ob-hesap-bilgi { display: block; min-height: 1.1em; font-size: 0.82rem; margin-top: 0.6rem; }
 @media (max-width: 640px) {
   .ob-kart { padding: 2rem 1.3rem; border-radius: 22px; }
   .ob-kart h2 { font-size: 1.7rem; }

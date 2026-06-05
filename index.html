@@ -333,10 +333,27 @@
         </svg>
       </div>
       <h2>Işığını <span>Bul</span> <span class="kivilcim">✨</span></h2>
-      <p class="ob-alt">Yolculuğuna başlamadan önce, sana nasıl hitap edelim?</p>
-      <input type="text" id="ob-isim" placeholder="İsmin…" maxlength="24" autocomplete="off" />
-      <button class="btn ob-basla" id="ob-basla">Başla ✨</button>
-      <p class="ob-not">İsmin yalnızca bu cihazda saklanır.</p>
+
+      <!-- Adım 1: isim -->
+      <div id="ob-adim-isim">
+        <p class="ob-alt">Yolculuğuna başlamadan önce, sana nasıl hitap edelim?</p>
+        <input type="text" id="ob-isim" placeholder="İsmin…" maxlength="24" autocomplete="off" />
+        <button class="btn ob-basla" id="ob-basla">Devam ✨</button>
+        <p class="ob-not">İsmin yalnızca bu cihazda saklanır.</p>
+      </div>
+
+      <!-- Adım 2: hesap (mail + şifre) -->
+      <div id="ob-adim-hesap" hidden>
+        <p class="ob-alt" id="ob-hesap-baslik">Verilerin tüm cihazlarında saklansın mı?</p>
+        <input type="email" id="ob-email" placeholder="E-posta" autocomplete="email" />
+        <input type="password" id="ob-sifre" placeholder="Şifre (en az 6 karakter)" autocomplete="new-password" />
+        <div class="ob-hesap-btnlar">
+          <button class="btn" id="ob-kayit">Hesap Oluştur</button>
+          <button class="btn ghost" id="ob-giris">Giriş Yap</button>
+        </div>
+        <span class="ob-hesap-bilgi" id="ob-hesap-bilgi"></span>
+        <p class="ob-not">Verilerin güvende olsun ve tüm cihazlarında açılsın diye giriş gerekli 🤍</p>
+      </div>
     </div>
   </div>
 

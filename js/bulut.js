@@ -20,6 +20,11 @@ const Bulut = window.Bulut = (() => {
   function kullaniciId() { return oturum && oturum.user ? oturum.user.id : null; }
   function girisli() { return !!kullaniciId(); }
   function cevrimici() { return navigator.onLine !== false; }
+  // Senkron (kaba) oturum tespiti — Supabase token'ı localStorage'da var mı?
+  function oturumVarMi() {
+    try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && /^sb-.*-auth-token$/.test(k) && localStorage.getItem(k)) return true; } } catch (e) {}
+    return false;
+  }
 
   /* ---------- başlat ---------- */
   function init() {
@@ -30,12 +35,13 @@ const Bulut = window.Bulut = (() => {
     sb.auth.getSession().then(({ data }) => {
       oturum = data.session || null;
       durumCiz();
-      if (oturum) { acilisSenkron(); realtimeBaslat(); }
+      if (oturum) { if (window.girisKapisiGizle) window.girisKapisiGizle(); acilisSenkron(); realtimeBaslat(); }
+      else if (window.girisKapisiGoster) window.girisKapisiGoster();
     });
     sb.auth.onAuthStateChange((event, session) => {
       oturum = session || null;
       if (event === "PASSWORD_RECOVERY") kurtarmaModu = true;
-      if (event === "SIGNED_OUT") { realtimeDur(); }
+      if (event === "SIGNED_OUT") { realtimeDur(); if (window.girisKapisiGoster) window.girisKapisiGoster(); }
       if (event === "SIGNED_IN" && oturum) realtimeBaslat();
       durumCiz();
     });
@@ -254,5 +260,5 @@ const Bulut = window.Bulut = (() => {
   }
   document.addEventListener("DOMContentLoaded", baglan);
 
-  return { kaydet, girisYap, kayitOl, cikis, manuelSenkron, sifreSifirla, durum: () => ({ girisli: girisli(), email: oturum && oturum.user ? oturum.user.email : null, sonSenkron, realtime: !!kanal }) };
+  return { kaydet, girisYap, kayitOl, cikis, manuelSenkron, sifreSifirla, oturumVarMi, durum: () => ({ girisli: girisli(), email: oturum && oturum.user ? oturum.user.email : null, sonSenkron, realtime: !!kanal }) };
 })();

@@ -58,33 +58,79 @@ document.addEventListener("DOMContentLoaded", () => {
       ? `Hoş geldin ${ad} ✨`
       : pickByDate(DATA.karsilamalar).replace("{ad}", ad);
   }
-  function onboardingBitir(ad) {
-    const p = Store.get("profil", { baslangic: today });
-    p.isim = ad;
-    Store.set("profil", p);
-    const ob = $("#onboarding");
-    ob.classList.add("kapaniyor");
-    setTimeout(() => { ob.hidden = true; ob.classList.remove("kapaniyor"); }, 500);
+  /* ---------- GİRİŞ KAPISI (zorunlu): isim → mail+şifre ---------- */
+  const ob = $("#onboarding");
+  const bulutVar = (typeof SUPABASE_URL !== "undefined" && /^https/.test(SUPABASE_URL || ""));
+
+  function obBilgi(m, hata) { const el = $("#ob-hesap-bilgi"); if (el) { el.textContent = m || ""; el.style.color = hata ? "var(--uyari)" : "var(--basari)"; } }
+
+  function obIsimAdimi() {
+    if ($("#ob-adim-isim")) $("#ob-adim-isim").hidden = false;
+    if ($("#ob-adim-hesap")) $("#ob-adim-hesap").hidden = true;
+    const inp = $("#ob-isim"), btn = $("#ob-basla");
+    const mevcut = (Store.get("profil", {}).isim || "").trim();
+    if (inp && mevcut) inp.value = mevcut;
+    setTimeout(() => { if (inp) inp.focus(); }, 300);
+    const ileri = () => {
+      const v = (inp.value || "").trim(); if (!v) { inp.focus(); return; }
+      const p = Store.get("profil", { baslangic: today }); p.isim = v; Store.set("profil", p);
+      if (bulutVar) obHesapAdimi(v); else girisKapisiGizle();
+    };
+    if (btn) btn.onclick = ileri;
+    if (inp) inp.onkeydown = e => { if (e.key === "Enter") ileri(); };
+  }
+  function obHesapAdimi(ad) {
+    if ($("#ob-adim-isim")) $("#ob-adim-isim").hidden = true;
+    const h = $("#ob-adim-hesap"); if (h) h.hidden = false;
+    const bas = $("#ob-hesap-baslik"); if (bas) bas.textContent = `Hoş geldin ${ad || ""} ✨ Devam etmek için giriş yap ya da hesap oluştur.`;
+    setTimeout(() => { const e = $("#ob-email"); if (e) e.focus(); }, 200);
+    const al = () => ({ email: ($("#ob-email") || {}).value || "", sifre: ($("#ob-sifre") || {}).value || "" });
+    const kayitBtn = $("#ob-kayit"), girisBtn = $("#ob-giris");
+    if (kayitBtn) kayitBtn.onclick = async () => {
+      const { email, sifre } = al(); if (!email || sifre.length < 6) return obBilgi("E-posta ve en az 6 karakter şifre gir", true);
+      kayitBtn.disabled = true; girisBtn.disabled = true; obBilgi("Hesap oluşturuluyor…");
+      try { sessionStorage.setItem("ob-yeni", "1"); } catch (e) {}
+      const r = await window.Bulut.kayitOl(email, sifre);
+      kayitBtn.disabled = false; girisBtn.disabled = false; obBilgi(r.mesaj, !r.ok);
+    };
+    if (girisBtn) girisBtn.onclick = async () => {
+      const { email, sifre } = al(); if (!email || !sifre) return obBilgi("E-posta ve şifre gir", true);
+      kayitBtn.disabled = true; girisBtn.disabled = true; obBilgi("Giriş yapılıyor…");
+      const r = await window.Bulut.girisYap(email, sifre);
+      kayitBtn.disabled = false; girisBtn.disabled = false; obBilgi(r.mesaj, !r.ok);
+    };
+  }
+  function girisKapisiGoster() {
+    if (!ob) return;
+    ob.hidden = false; ob.classList.remove("kapaniyor");
+    if (bulutVar && (Store.get("profil", {}).isim || "").trim()) obHesapAdimi((Store.get("profil", {}).isim || "").trim());
+    else obIsimAdimi();
+  }
+  function girisKapisiGizle() {
+    if (!ob) return;
+    const zatenGizli = ob.hidden;
+    if (!zatenGizli) { ob.classList.add("kapaniyor"); setTimeout(() => { ob.hidden = true; ob.classList.remove("kapaniyor"); }, 500); }
     setKarsilama(true);
     if (window.Profil) window.Profil.ciz();
-    // İsim alındıktan sonra Spiritüel Başlangıç Testi
-    setTimeout(() => { if (window.SpiriTest && !Store.get("spiritest-sonuc")) window.SpiriTest.baslat(); }, 750);
+    try {
+      if (sessionStorage.getItem("ob-yeni") && !Store.get("spiritest-sonuc")) {
+        sessionStorage.removeItem("ob-yeni");
+        setTimeout(() => { if (window.SpiriTest) window.SpiriTest.baslat(); }, 800);
+      }
+    } catch (e) {}
   }
-  (function onboardingBaslat() {
-    const ob = $("#onboarding");
-    const adVar = (profil.isim || "").trim();
-    if (adVar) { setKarsilama(); return; }
-    ob.hidden = false;
-    const inp = $("#ob-isim");
-    const btn = $("#ob-basla");
-    setTimeout(() => inp.focus(), 450);
-    function basla() {
-      const v = inp.value.trim();
-      if (!v) { inp.focus(); return; }
-      onboardingBitir(v);
+  window.girisKapisiGoster = girisKapisiGoster;
+  window.girisKapisiGizle = girisKapisiGizle;
+
+  (function girisKapisiBaslat() {
+    if (!bulutVar) { // Bulut yoksa: yalnız isim (zorunlu değil)
+      if ((profil.isim || "").trim()) { setKarsilama(); return; }
+      girisKapisiGoster(); return;
     }
-    btn.addEventListener("click", basla);
-    inp.addEventListener("keydown", e => { if (e.key === "Enter") basla(); });
+    // Bulut var → oturum yoksa kapı kapalı kalsın. Bulut.init asıl kararı verir.
+    const muhtemelGiris = window.Bulut && Bulut.oturumVarMi && Bulut.oturumVarMi();
+    if (muhtemelGiris) { if (ob) ob.hidden = true; setKarsilama(); }
+    else { girisKapisiGoster(); }
   })();
 
   /* ====================================================
