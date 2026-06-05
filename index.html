@@ -22,118 +22,6 @@
     <span class="blob blob-3"></span>
   </div>
 
-  <!-- Birlik Enerjisi / Topluluk Enerji Haritası overlay -->
-  <div class="birlik-overlay" id="birlik-overlay" hidden>
-    <div class="birlik-yildizlar" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
-    <div class="birlik-ic">
-      <button class="gece-kapat" id="birlik-kapat" aria-label="Kapat">✕</button>
-      <h2 class="birlik-baslik">Birlik Enerjisi 🌍</h2>
-      <p class="birlik-not muted small">Birlikte hareket ettikçe ortak enerji oluşur ✨ (şehirler örnek; senin aktiviten kendi şehrine katkı verir)</p>
-      <div class="birlik-gosterge" id="birlik-gosterge"></div>
-      <div class="birlik-basari" id="birlik-basari"></div>
-      <h3 class="birlik-bolum-bas">🗺️ Topluluk Enerji Haritası</h3>
-      <div class="birlik-harita-sar"><div class="birlik-dunya" aria-hidden="true"></div><div class="birlik-harita" id="birlik-harita"></div></div>
-      <div class="birlik-sehir-liste" id="birlik-sehir-liste"></div>
-      <h3 class="birlik-bolum-bas">🎯 Haftalık Topluluk Hedefleri</h3>
-      <div class="birlik-hedefler" id="birlik-hedefler"></div>
-    </div>
-  </div>
-
-  <!-- Premium Üyelik & Kurucu Rehber Etkinlikleri overlay -->
-  <div class="prem-overlay" id="prem-overlay" hidden>
-    <div class="prem-yildizlar" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
-    <div class="prem-ic">
-      <button class="gece-kapat" id="prem-kapat-btn" aria-label="Kapat">✕</button>
-      <h2 class="prem-baslik">Kurucu Rehber Etkinlikleri 👑</h2>
-      <p class="prem-not muted small">Premium üyelere özel ✨ Ücretsiz üyeler görebilir ve önizleyebilir.</p>
-      <div class="prem-uyelik" id="prem-uyelik"></div>
-      <div class="prem-rozetler" id="prem-rozetler"></div>
-      <button class="btn ghost sm prem-admin-giris-btn" id="prem-admin-giris">👑 Kurucu Girişi</button>
-      <div class="prem-admin" id="prem-admin" hidden></div>
-      <h3 class="prem-bolum-bas">✨ Premium Etkinlikler</h3>
-      <div class="prem-etkinlikler" id="prem-etkinlikler"></div>
-      <div class="prem-sohbet-bolum" id="prem-sohbet-bolum"></div>
-    </div>
-  </div>
-
-  <!-- Topluluk Hikayeleri & Anlık Paylaşım overlay -->
-  <div class="hk-overlay" id="hk-overlay" hidden>
-    <div class="hk-yildizlar" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
-    <div class="hk-ic">
-      <button class="gece-kapat" id="hk-kapat" aria-label="Kapat">✕</button>
-      <h2 class="hk-baslik">Topluluk Hikayeleri 📸</h2>
-      <p class="hk-not muted small">Anlarını paylaş · hikayeler 24 saatte kaybolur ✨ (yerel/örnek içerik)</p>
-      <div class="hk-story-bar" id="hk-story-bar"></div>
-      <details class="gecmis hk-engel-det"><summary>🚫 Engellenenler & Güvenlik</summary><div id="hk-engel"></div></details>
-      <div class="hk-enerji" id="hk-enerji"></div>
-      <div class="hk-ilham" id="hk-ilham"></div>
-      <div class="hk-olustur" id="hk-olustur"></div>
-      <div class="hk-feed" id="hk-feed"></div>
-    </div>
-    <div class="hk-story-viewer" id="hk-story-viewer" hidden></div>
-  </div>
-
-  <!-- Haftanın Yıldızları & Liderlik overlay -->
-  <div class="lider-overlay" id="lider-overlay" hidden>
-    <div class="lider-yildizlar" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
-    <div class="lider-ic">
-      <button class="gece-kapat" id="lider-kapat" aria-label="Kapat">✕</button>
-      <h2 class="lider-baslik">Haftanın Yıldızları 🏆</h2>
-      <p class="lider-not muted small">Her hafta sıfırlanır · diğer üyeler örnektir ✨</p>
-      <div class="lider-yildiz" id="lider-yildiz"></div>
-      <div class="lider-durum" id="lider-durum"></div>
-      <div class="lider-rozetler" id="lider-rozetler"></div>
-      <div class="lider-filtre-bar">
-        <div class="lider-filtreler" id="lider-filtreler">
-          <button class="lider-fil aktif" data-fil="genel">Genel</button>
-          <button class="lider-fil" data-fil="sehir">Şehrim</button>
-          <button class="lider-fil" data-fil="topluluk">Topluluğum</button>
-        </div>
-        <select id="lider-sehir" class="lider-sehir-sec" aria-label="Şehir"></select>
-      </div>
-      <div class="lider-tablo" id="lider-tablo"></div>
-      <div class="lider-plan" id="lider-plan"></div>
-    </div>
-  </div>
-
-  <!-- Herkese Açık Topluluk Akışı overlay -->
-  <div class="akis-overlay" id="akis-overlay" hidden>
-    <div class="akis-yildizlar" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
-    <div class="akis-ic">
-      <button class="gece-kapat" id="akis-kapat" aria-label="Kapat">✕</button>
-      <h2 class="akis-baslik">Topluluk Akışı 🌍</h2>
-      <p class="akis-not muted small">Herkese açık alan 🤍 Demo akış bu cihazda çalışır; paylaşım linki uygulamayı paylaşır.</p>
-      <div class="akis-ust-btnlar">
-        <button class="btn ghost sm" id="akis-genel">💬 Genel Sohbet</button>
-        <button class="btn ghost sm" id="lider-ac-2">🏆 Haftanın Yıldızları</button>
-        <button class="btn ghost sm" id="hk-ac-2">📸 Hikayeler</button>
-      </div>
-      <div class="akis-feed" id="akis-feed"></div>
-      <div class="akis-sohbet-panel" id="akis-sohbet-panel" hidden></div>
-    </div>
-  </div>
-
-  <!-- Topluluk & Birlik Alanı overlay -->
-  <div class="top-overlay" id="top-overlay" hidden>
-    <div class="top-yildizlar" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
-    <div class="top-ic">
-      <button class="gece-kapat" id="top-kapat" aria-label="Kapat">✕</button>
-      <h2 class="top-baslik">Topluluk &amp; Birlik Alanı 👥</h2>
-      <p class="top-not muted small">Birlikte gelişelim 🤍 Bu alan şimdilik bu cihazda çalışır; davet linki uygulamayı paylaşır.</p>
-      <button class="btn ghost sm akis-genel-btn" id="akis-ac-2">🌍 Herkese Açık Topluluk Akışı →</button>
-      <button class="btn ghost sm akis-genel-btn" id="lider-ac-3">🏆 Haftanın Yıldızları & Liderlik →</button>
-      <div class="top-rozetler" id="top-rozetler"></div>
-      <div class="top-sekmeler" id="top-sekmeler">
-        <button class="top-sek aktif" data-sek="gruplar">🌿 Topluluklar</button>
-        <button class="top-sek" data-sek="etkinlik">📅 Etkinlikler</button>
-        <button class="top-sek" data-sek="arkadas">👋 Arkadaşlar</button>
-      </div>
-      <div class="top-panel" id="top-panel"></div>
-      <div class="top-detay" id="top-detay" hidden></div>
-    </div>
-  </div>
-
-  <!-- Haftalık Kendini Değerlendirme overlay -->
   <div class="hafta-overlay" id="hafta-overlay" hidden>
     <div class="hafta-yildizlar" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
     <div class="hafta-ic">
@@ -534,30 +422,7 @@
               <span class="at-ikon">📊</span><span class="at-ad">Haftalık Rapor</span>
               <span class="at-alt">denge analizini gör</span>
             </button>
-            <button class="arac-tile" id="top-ac">
-              <span class="at-ikon">👥</span><span class="at-ad">Topluluk &amp; Birlik</span>
-              <span class="at-alt">birlikte gelişin</span>
-            </button>
-            <button class="arac-tile" id="akis-ac">
-              <span class="at-ikon">🌍</span><span class="at-ad">Topluluk Akışı</span>
-              <span class="at-alt">herkese açık feed</span>
-            </button>
-            <button class="arac-tile" id="lider-ac">
-              <span class="at-ikon">🏆</span><span class="at-ad">Haftanın Yıldızları</span>
-              <span class="at-alt">liderlik tablosu</span>
-            </button>
-            <button class="arac-tile" id="hk-ac">
-              <span class="at-ikon">📸</span><span class="at-ad">Hikayeler &amp; Paylaşım</span>
-              <span class="at-alt">anını paylaş</span>
-            </button>
-            <button class="arac-tile prem-tile" id="prem-ac">
-              <span class="at-ikon">👑</span><span class="at-ad">Kurucu Rehber Etkinlikleri</span>
-              <span class="at-alt">premium &amp; canlı</span>
-            </button>
-            <button class="arac-tile" id="birlik-ac">
-              <span class="at-ikon">🌍</span><span class="at-ad">Birlik Enerjisi</span>
-              <span class="at-alt">topluluk enerji haritası</span>
-            </button>
+            
           </div>
         </section>
 
@@ -588,11 +453,7 @@
           <div class="e-rozet-serit" id="enerji-rozet"></div>
         </section>
 
-        <!-- Birlik Enerjisi (ana ekran canlı gösterge) -->
-        <button class="card card-wide card-birlik-mini" id="birlik-mini">
-          <div class="birlik-mini-ic" id="birlik-mini-ic"></div>
-          <span class="bm-ac">Enerji haritasını aç →</span>
-        </button>
+        
 
         <!-- Günün Görevleri (3 kategori) -->
         <section class="card card-wide card-gorevler" id="gorevler">
@@ -1130,12 +991,7 @@
   <script src="js/ciftsaat.js"></script>
   <script src="js/takvim.js"></script>
   <script src="js/hafta.js"></script>
-  <script src="js/topluluk.js"></script>
-  <script src="js/akis.js"></script>
-  <script src="js/lider.js"></script>
-  <script src="js/hikaye.js"></script>
-  <script src="js/premium.js"></script>
-  <script src="js/birlik.js"></script>
+  
   <script src="js/kapi.js"></script>
   <script src="js/kozmik.js"></script>
   <script>
