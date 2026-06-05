@@ -25,6 +25,33 @@ const KartBildirim = window.KartBildirim = (() => {
   function isaretle() { const l = Store.get(LOG, {}) || {}; l[todayKey()] = true; Store.set(LOG, l); }
   function hhmm(d = new Date()) { return String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0"); }
 
+  /* ---------- Web Push aboneliği (gerçek push) ---------- */
+  function b64ToUint8(b64) {
+    const pad = "=".repeat((4 - (b64.length % 4)) % 4);
+    const base64 = (b64 + pad).replace(/-/g, "+").replace(/_/g, "/");
+    const raw = atob(base64); const arr = new Uint8Array(raw.length);
+    for (let i = 0; i < raw.length; i++) arr[i] = raw.charCodeAt(i);
+    return arr;
+  }
+  async function pushAbonelik() {
+    try {
+      if (!("serviceWorker" in navigator) || !("PushManager" in window)) return;
+      if (typeof VAPID_PUBLIC === "undefined" || !VAPID_PUBLIC) return;
+      const reg = await navigator.serviceWorker.ready;
+      let sub = await reg.pushManager.getSubscription();
+      if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToUint8(VAPID_PUBLIC) });
+      if (window.Bulut && Bulut.pushAboneKaydet) await Bulut.pushAboneKaydet(sub.toJSON());
+    } catch (e) { console.warn("push abonelik:", e); }
+  }
+  async function pushAbonelikIptal() {
+    try {
+      if (window.Bulut && Bulut.pushAboneSil) await Bulut.pushAboneSil();
+      const reg = await navigator.serviceWorker.ready;
+      const sub = await reg.pushManager.getSubscription();
+      if (sub) await sub.unsubscribe();
+    } catch (e) {}
+  }
+
   /* ---------- bildirim gönder ---------- */
   async function gonder() {
     const liste = DATA.kartBildirimMesajlari || ["Bugünün kartını çekmeyi unutma ✨"];
@@ -78,8 +105,10 @@ const KartBildirim = window.KartBildirim = (() => {
           const izin = await Notification.requestPermission();
           if (izin !== "granted") { e.target.checked = false; durumCiz(); return; }
         } else if (Notification.permission === "denied") { e.target.checked = false; durumCiz(); return; }
-        a.aktif = true;
-      } else { a.aktif = false; }
+        a.aktif = true; ayarYaz(a); ciz();
+        pushAbonelik(); // gerçek push için buluta abone ol
+        return;
+      } else { a.aktif = false; pushAbonelikIptal(); }
       ayarYaz(a); ciz();
     });
     $("kb-saat").addEventListener("change", e => { const a = ayar(); a.saat = e.target.value || "15:00"; ayarYaz(a); });

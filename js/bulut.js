@@ -67,6 +67,18 @@ const Bulut = window.Bulut = (() => {
     oturum = data.session; await ilkSenkron();
     return { ok: true, mesaj: "Giriş yapıldı ✨" };
   }
+  // Web Push aboneliğini buluta kaydet (kullanıcı başına tek satır)
+  async function pushAboneKaydet(abone) {
+    if (!hazir || !girisli()) return { ok: false };
+    const { error } = await sb.from("push_abone").upsert({ user_id: kullaniciId(), abone, guncelleme: new Date().toISOString() }, { onConflict: "user_id" });
+    if (error) console.warn("push abone:", error.message);
+    return { ok: !error };
+  }
+  async function pushAboneSil() {
+    if (!hazir || !girisli()) return;
+    try { await sb.from("push_abone").delete().eq("user_id", kullaniciId()); } catch (e) {}
+  }
+
   async function cikis(temizle) {
     realtimeDur();
     if (sb) await sb.auth.signOut();
@@ -264,5 +276,5 @@ const Bulut = window.Bulut = (() => {
   }
   document.addEventListener("DOMContentLoaded", baglan);
 
-  return { kaydet, girisYap, kayitOl, cikis, manuelSenkron, sifreSifirla, oturumVarMi, durum: () => ({ girisli: girisli(), email: oturum && oturum.user ? oturum.user.email : null, sonSenkron, realtime: !!kanal }) };
+  return { kaydet, girisYap, kayitOl, cikis, manuelSenkron, sifreSifirla, oturumVarMi, pushAboneKaydet, pushAboneSil, durum: () => ({ girisli: girisli(), email: oturum && oturum.user ? oturum.user.email : null, sonSenkron, realtime: !!kanal }) };
 })();
