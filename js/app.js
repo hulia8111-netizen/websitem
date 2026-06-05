@@ -261,8 +261,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const kartCekBtn = $("#kart-cek");
   const kartTekrarBtn = $("#kart-tekrar");
 
-  function gosterKart(kart) {
-    kartAlani.innerHTML = "";
+  const kartLimitNot = $("#kart-limit-not");
+  function kartEkle(kart) {
     const wrap = document.createElement("div");
     wrap.className = "kart-icerik";
     const cerceve = document.createElement("div");
@@ -278,50 +278,32 @@ document.addEventListener("DOMContentLoaded", () => {
     p.textContent = kart.mesaj;
     wrap.append(cerceve, h, p);
     kartAlani.appendChild(wrap);
-    kartCekBtn.hidden = true;
-    kartTekrarBtn.hidden = false;
   }
-  function kartCek(zorla = false) {
-    let kayit = Store.get("card-" + today);
-    if (kayit === null || zorla) {
-      kayit = Math.floor(Math.random() * DATA.kartlar.length);
-      Store.set("card-" + today, kayit);
-      cizKartGecmis();
-    }
-    gosterKart(DATA.kartlar[kayit]);
+  // Günde en fazla 2 kart: card-<gün> (1.) + card2-<gün> (2.)
+  function gosterKartlar() {
+    const idx1 = Store.get("card-" + today);
+    const idx2 = Store.get("card2-" + today);
+    let sayi = 0;
+    kartAlani.innerHTML = "";
+    if (idx1 !== null && DATA.kartlar[idx1]) { kartEkle(DATA.kartlar[idx1]); sayi++; }
+    if (idx2 !== null && DATA.kartlar[idx2]) { kartEkle(DATA.kartlar[idx2]); sayi++; }
+    if (sayi === 0) kartAlani.innerHTML = `<div class="kart-placeholder">Kartını çekmek için butona dokun</div>`;
+    kartCekBtn.hidden = sayi >= 1;          // ilk karttan sonra gizle
+    kartTekrarBtn.hidden = sayi !== 1;      // tam 1 kart varken "+1 Kart Daha"
+    if (kartLimitNot) kartLimitNot.hidden = sayi < 2;
   }
-  if (Store.get("card-" + today) !== null) kartCek();
-  kartCekBtn.addEventListener("click", () => kartCek());
-  kartTekrarBtn.addEventListener("click", () => kartCek(true));
-
-  function cizKartGecmis() {
-    const grid = $("#kart-gecmis");
-    if (!grid) return;
-    const gunler = Store.allKeys()
-      .filter(k => k.startsWith(Store.PREFIX + "card-"))
-      .map(k => k.replace(Store.PREFIX + "card-", ""))
-      .sort().reverse();
-    grid.innerHTML = "";
-    if (!gunler.length) {
-      grid.innerHTML = `<p class="muted small">Henüz kart çekmedin.</p>`;
-      return;
-    }
-    gunler.forEach(gun => {
-      const idx = Store.get("card-" + gun);
-      const kart = DATA.kartlar[idx];
-      if (!kart) return;
-      const div = document.createElement("div");
-      div.className = "gecmis-kart";
-      div.innerHTML = `
-        <img src="${encodeURI(kart.img)}" alt="${escapeHtml(kart.baslik)}" loading="lazy" />
-        <div class="gecmis-kart-bilgi">
-          <strong>${escapeHtml(kart.baslik)}</strong>
-          <small>${gun}</small>
-        </div>`;
-      grid.appendChild(div);
-    });
+  function kartCek() {
+    if (Store.get("card-" + today) === null) Store.set("card-" + today, Math.floor(Math.random() * DATA.kartlar.length));
+    gosterKartlar();
   }
-  cizKartGecmis();
+  function ikinciKart() {
+    if (Store.get("card-" + today) !== null && Store.get("card2-" + today) === null)
+      Store.set("card2-" + today, Math.floor(Math.random() * DATA.kartlar.length));
+    gosterKartlar();
+  }
+  gosterKartlar();
+  kartCekBtn.addEventListener("click", kartCek);
+  kartTekrarBtn.addEventListener("click", ikinciKart);
 
   /* 5. GÜNÜN RİTÜELİ — js/rituel.js modülünde yönetilir (task-<gün> entegrasyonu orada). */
 
