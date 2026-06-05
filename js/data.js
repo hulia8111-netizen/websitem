@@ -43,13 +43,26 @@ const DATA = {
      baslik: kart açıldığında gösterilecek isim
      img: dosya yolu  | mesaj: kısa rehber cümlesi */
   kartlar: [
-    { baslik: "Taşınma",      img: "Görsellerim/47. TAŞINMA.jpg",      mesaj: "Bir değişim kapıda. Eskiyi bırakmaya hazır ol." },
-    { baslik: "Yükseliş",     img: "Görsellerim/48. YÜKSELİŞ.jpg",     mesaj: "Enerjin yükseliyor. Kendini daha yükseğe taşı." },
-    { baslik: "İlerle",       img: "Görsellerim/53. İLERLE.jpg",       mesaj: "Durma vakti değil. Bir adım daha at." },
-    { baslik: "Sorumluluk",   img: "Görsellerim/58. SORUMLULUK.jpg",   mesaj: "Hayatının dümeni sende. Sahiplen." },
-    { baslik: "Netlik",       img: "Görsellerim/62. NETLİK.jpg",       mesaj: "Sis dağılıyor. Gerçek niyetini gör." },
-    { baslik: "Temizlik",     img: "Görsellerim/71 TEMİZLİK.jpg",      mesaj: "Sana hizmet etmeyeni bırak. Alan aç." },
-    { baslik: "Biliyorsun",   img: "Görsellerim/95. BİLİYORSUN.jpg",   mesaj: "Cevap zaten içinde. Sezgine güven." }
+    { baslik: "Taşınma",       img: "Görsellerim/TAŞINMA.jpg",        mesaj: "Bir değişim kapıda. Eskiyi bırakmaya hazır ol." },
+    { baslik: "Yükseliş",      img: "Görsellerim/YÜKSELİŞ.jpg",       mesaj: "Enerjin yükseliyor. Kendini daha yükseğe taşı." },
+    { baslik: "İlerle",        img: "Görsellerim/İLERLE.jpg",         mesaj: "Durma vakti değil. Bir adım daha at." },
+    { baslik: "Sorumluluk",    img: "Görsellerim/SORUMLULUK.jpg",     mesaj: "Hayatının dümeni sende. Sahiplen." },
+    { baslik: "Netlik",        img: "Görsellerim/NETLİK.jpg",         mesaj: "Sis dağılıyor. Gerçek niyetini gör." },
+    { baslik: "Temizlik",      img: "Görsellerim/TEMİZLİK.jpg",       mesaj: "Sana hizmet etmeyeni bırak. Alan aç." },
+    { baslik: "Biliyorsun",    img: "Görsellerim/BİLİYORSUN.jpg",     mesaj: "Cevap zaten içinde. Sezgine güven." },
+    { baslik: "Arınma",        img: "Görsellerim/ARINMA.jpg",         mesaj: "Sana ağırlık veren her şeyi bırak; arın ve hafifle." },
+    { baslik: "Dur",           img: "Görsellerim/DUR.jpg",            mesaj: "Biraz dur, nefes al. Acele etmene gerek yok." },
+    { baslik: "Güvendesin",    img: "Görsellerim/GÜVENDESİN.jpg",     mesaj: "Korkma; tam da olman gereken yerdesin, güvendesin." },
+    { baslik: "Hatırla",       img: "Görsellerim/HATIRLA.jpg",        mesaj: "Ne kadar güçlü olduğunu hatırla." },
+    { baslik: "Huzur",         img: "Görsellerim/HUZUR.jpg",          mesaj: "Huzur dışarıda değil, içinde. Oraya dön." },
+    { baslik: "Kendin Ol",     img: "Görsellerim/KENDİN OL.jpg",      mesaj: "Maskeleri bırak; en güzel halin, gerçek halin." },
+    { baslik: "Liderlik",      img: "Görsellerim/LİDERLİK.jpg",       mesaj: "Önce kendi hayatının lideri ol." },
+    { baslik: "Bolluk",        img: "Görsellerim/PARA.jpg",           mesaj: "Bolluk sana akıyor; almaya izin ver." },
+    { baslik: "Paylaşım",      img: "Görsellerim/PAYLAŞIM.jpg",       mesaj: "Verdikçe çoğalır; sevgiyle paylaş." },
+    { baslik: "Sadelik",       img: "Görsellerim/SADELİK.jpg",        mesaj: "Sadeleş; gereksizi bırak, öz olana yer aç." },
+    { baslik: "Çekim Başladı", img: "Görsellerim/ÇEKİM BAŞLADI.jpg",  mesaj: "İstediğin şey sana doğru harekete geçti." },
+    { baslik: "İtibar",        img: "Görsellerim/İTİBAR.jpg",         mesaj: "Değerini bil; kendine saygıyla davran." },
+    { baslik: "Şimdi",         img: "Görsellerim/ŞİMDİ.jpg",          mesaj: "Güç şimdidedir. Ana dön." }
   ],
 
   /* Meditasyon kategorileri — sekme sırası ve etiketleri */
