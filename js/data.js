@@ -64,6 +64,15 @@ const DATA = {
     { baslik: "İtibar",        img: "Görsellerim/İTİBAR.jpg",         mesaj: "Değerini bil; kendine saygıyla davran." },
     { baslik: "Şimdi",         img: "Görsellerim/ŞİMDİ.jpg",          mesaj: "Güç şimdidedir. Ana dön." }
   ],
+  /* Günün Kartı hatırlatma bildirimi — rastgele dönüşümlü mesajlar */
+  kartBildirimMesajlari: [
+    "✨ Bugünün mesajı seni bekliyor. Kartını çekmek ister misin?",
+    "🌙 Belki de bugün ihtiyacın olan cevap kartında saklıdır.",
+    "💫 Günün enerjisini keşfetmek için kartını çek.",
+    "🔮 Evren sana küçük bir mesaj bırakmış olabilir.",
+    "🌿 Kendine bir dakika ayır ve bugünün kartını keşfet.",
+    "🤍 İç sesini dinlemek için güzel bir zaman. Kartın seni bekliyor."
+  ],
 
   /* Meditasyon kategorileri — sekme sırası ve etiketleri */
   kategoriler: [

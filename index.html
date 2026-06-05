@@ -878,6 +878,23 @@
           </div>
         </section>
 
+        <section class="card card-wide" id="kart-bildirim" data-pgrup="ayarlar">
+          <h2>Günün Kartı Hatırlatması 🔮</h2>
+          <div class="ayar-satir">
+            <div>
+              <div class="ayar-ad">Kart çekmeyi unutma hatırlatması</div>
+              <div class="ayar-aciklama muted small">O gün kartını çekmediysen belirlenen saatte nazikçe hatırlatır; çektiysen göndermez.</div>
+            </div>
+            <label class="switch"><input type="checkbox" id="kb-toggle" /><span class="switch-yuva"></span></label>
+          </div>
+          <div id="kb-detay">
+            <div class="altin-divider ince"></div>
+            <label class="bld-satir"><span>Hatırlatma saati</span><input type="time" id="kb-saat" /></label>
+            <button class="btn ghost" id="kb-dene">Bir bildirim dene ✦</button>
+          </div>
+          <p class="muted small" id="kb-durum"></p>
+        </section>
+
         <section class="card card-wide" id="atmosfer" data-pgrup="ayarlar">
           <h2>Atmosfer</h2>
           <div class="ayar-satir">
@@ -952,6 +969,7 @@
   <script src="js/olumlama.js"></script>
   <script src="js/gunluk.js"></script>
   <script src="js/bildirim.js"></script>
+  <script src="js/kartbildirim.js"></script>
   <script src="js/profil.js"></script>
   <script src="js/rituel.js"></script>
   <script src="js/test.js"></script>

@@ -154,6 +154,10 @@ document.addEventListener("DOMContentLoaded", () => {
   navBtns.forEach(b => b.addEventListener("click", () => gotoView(b.dataset.view)));
   window.gotoView = gotoView;  // rehber.js için
 
+  /* Günün Kartı bildiriminden açılış → Kartlar ekranı */
+  if (/[?&]kart=1\b/.test(location.search)) setTimeout(() => gotoView("kartlar"), 400);
+  if (navigator.serviceWorker) navigator.serviceWorker.addEventListener("message", e => { if (e.data && e.data.tip === "kart-goster") gotoView("kartlar"); });
+
   /* ====================================================
      1. GÜNÜN MOTİVASYON CÜMLESİ (gün boyu sabit)
      ==================================================== */

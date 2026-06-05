@@ -3,7 +3,7 @@
    Sürüm değişince CACHE adını artır ki eski dosyalar temizlensin.
    ============================================================ */
 
-const CACHE = "isigini-bul-v46";
+const CACHE = "isigini-bul-v47";
 const KABUK = [
   ".",
   "index.html",
@@ -22,6 +22,7 @@ const KABUK = [
   "js/olumlama.js",
   "js/gunluk.js",
   "js/bildirim.js",
+  "js/kartbildirim.js",
   "js/profil.js",
   "js/rituel.js",
   "js/test.js",
@@ -78,4 +79,22 @@ self.addEventListener("fetch", e => {
       return yanit;
     }).catch(() => caches.match(istek))
   );
+});
+
+/* Bildirime tıklayınca uygulamayı aç/odakla ve Günün Kartı ekranına git */
+self.addEventListener("notificationclick", e => {
+  e.notification.close();
+  const url = (e.notification.data && e.notification.data.url) || "./?kart=1";
+  e.waitUntil((async () => {
+    const list = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+    for (const c of list) { if ("focus" in c) { await c.focus(); c.postMessage({ tip: "kart-goster" }); return; } }
+    if (self.clients.openWindow) await self.clients.openWindow(url);
+  })());
+});
+
+/* Web Push (ileride sunucudan gönderim için hazır) */
+self.addEventListener("push", e => {
+  let v = { title: "Günün Kartı 🔮", body: "Bugünün kartını çekmeyi unutma ✨", url: "./?kart=1" };
+  try { if (e.data) v = Object.assign(v, e.data.json()); } catch (x) {}
+  e.waitUntil(self.registration.showNotification(v.title, { body: v.body, icon: "icon.svg", badge: "icon.svg", tag: "gunun-karti", data: { url: v.url } }));
 });
