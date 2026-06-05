@@ -1908,3 +1908,16 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
 .hg-bar.bugun .hg-ad { color: var(--gold-soft); }
 .hg-ad { font-size: 0.66rem; color: var(--metin-faint); text-transform: capitalize; }
 
+/* ============================================================
+   Hesap & Bulut Senkron ☁️
+   ============================================================ */
+.card-hesap h2 { color: var(--gold-soft); }
+.hesap-form { display: flex; flex-direction: column; gap: 0.5rem; margin-top: var(--sp-2); }
+.hesap-form input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(179,140,255,0.22); color: var(--metin); border-radius: 11px; padding: 0.6rem 0.8rem; font-family: inherit; font-size: 0.95rem; }
+.hesap-form input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.hesap-btnlar { display: flex; gap: 0.5rem; }
+.hesap-btnlar .btn { flex: 1; }
+.hesap-girisli { display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-start; }
+.hesap-rozet { display: inline-block; font-size: 0.74rem; color: #14112c; background: linear-gradient(120deg, var(--basari), #9be8c4); border-radius: 999px; padding: 0.15rem 0.6rem; }
+#hesap-durum code { background: rgba(255,255,255,0.06); padding: 0.1rem 0.35rem; border-radius: 6px; font-size: 0.85em; color: var(--gold-soft); }
+

@@ -762,6 +762,21 @@
           <div class="profil-ozet" id="profil-ozet"></div>
         </section>
 
+        <!-- Hesap & Bulut Senkron -->
+        <section class="card card-wide card-hesap" id="hesap">
+          <h2>☁️ Hesap &amp; Bulut Senkron</h2>
+          <div id="hesap-durum"></div>
+          <div class="hesap-form" id="hesap-form" hidden>
+            <input type="email" id="hesap-email" placeholder="E-posta" autocomplete="email" />
+            <input type="password" id="hesap-sifre" placeholder="Şifre (en az 6 karakter)" autocomplete="current-password" />
+            <div class="hesap-btnlar">
+              <button class="btn" id="hesap-giris">Giriş Yap</button>
+              <button class="btn ghost" id="hesap-kayit">Kayıt Ol</button>
+            </div>
+          </div>
+          <span class="kayit-bilgi" id="hesap-bilgi"></span>
+        </section>
+
         <div class="profil-sekme card-wide" id="profil-sekme">
           <button class="psek-btn aktif" data-pgrup="enerji">Enerji & Aura</button>
           <button class="psek-btn" data-pgrup="basarim">Başarımlar</button>
@@ -939,6 +954,10 @@
   
   <script src="js/kapi.js"></script>
   <script src="js/kozmik.js"></script>
+  <!-- Bulut üyelik & senkron (Supabase) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/bulut.js"></script>
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {

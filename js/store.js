@@ -10,6 +10,7 @@ const Store = {
   set(key, value) {
     try {
       localStorage.setItem(this.PREFIX + key, JSON.stringify(value));
+      if (window.Bulut && Bulut.kaydet) Bulut.kaydet(key, value); // bulut senkron (giriş varsa)
     } catch (e) {
       console.warn("Kaydedilemedi:", key, e);
     }
