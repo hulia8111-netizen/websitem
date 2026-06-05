@@ -1869,3 +1869,30 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
   .splash, .splash-ic, .splash-logo, .splash-yildizlar span { animation-duration: .01s; animation-iteration-count: 1; }
   .splash { animation: splashKaybol .3s ease 1.4s forwards; }
 }
+
+/* ---- Enerji puan dokumu ---- */
+.enerji-dokum-ac {
+  display: block; margin: 0.6rem auto 0; background: none; border: none;
+  color: var(--accent); font-family: inherit; font-size: 0.82rem;
+  cursor: pointer; text-decoration: underline; padding: 0.3rem;
+}
+.enerji-dokum-ac:hover { color: var(--gold-soft); }
+.enerji-dokum {
+  margin: 0.4rem 0 0.2rem; padding: 0.7rem 0.9rem;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(179,140,255,0.18);
+  border-radius: 14px;
+}
+.e-dokum-satir {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.4rem 0; font-size: 0.88rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.e-dokum-satir:last-of-type { border-bottom: none; }
+.e-dokum-satir.yok { opacity: 0.45; }
+.e-dokum-ad { color: var(--metin); }
+.e-dokum-puan { font-weight: 600; color: var(--gold-soft); white-space: nowrap; }
+.e-dokum-satir.yok .e-dokum-puan { color: var(--muted); }
+.e-dokum-toplam { margin-top: 0.2rem; border-top: 1px solid rgba(179,140,255,0.28); }
+.e-dokum-toplam .e-dokum-ad { font-weight: 600; }
+.e-dokum-toplam .e-dokum-puan { color: var(--accent); font-size: 1rem; }
+.e-dokum-not { margin: 0.6rem 0 0; font-size: 0.76rem; color: var(--muted); line-height: 1.4; }
