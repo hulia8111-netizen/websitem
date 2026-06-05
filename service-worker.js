@@ -3,7 +3,7 @@
    Sürüm değişince CACHE adını artır ki eski dosyalar temizlensin.
    ============================================================ */
 
-const CACHE = "isigini-bul-v45";
+const CACHE = "isigini-bul-v46";
 const KABUK = [
   ".",
   "index.html",
@@ -63,12 +63,15 @@ self.addEventListener("activate", e => {
 self.addEventListener("fetch", e => {
   const istek = e.request;
   if (istek.method !== "GET") return;
+  const ayniKaynak = istek.url.startsWith(self.location.origin);
 
-  // Network-first: online'ken her zaman en güncel sürüm gelir (kod değişiklikleri
-  // anında görünür), cache arka planda tazelenir. Offline'da cache'ten sunulur.
+  // Network-first + tarayıcı önbelleğini ATLA (no-store): aynı kaynaktaki
+  // dosyalar her zaman GitHub'dan taze gelir → kod değişiklikleri anında görünür,
+  // eski sürüm önbellekte takılı kalmaz. Offline'da SW cache'ten sunulur.
+  const ag = ayniKaynak ? fetch(istek.url, { cache: "no-store" }) : fetch(istek);
   e.respondWith(
-    fetch(istek).then(yanit => {
-      if (yanit.ok && istek.url.startsWith(self.location.origin)) {
+    ag.then(yanit => {
+      if (yanit.ok && ayniKaynak) {
         const kopya = yanit.clone();
         caches.open(CACHE).then(c => c.put(istek, kopya));
       }
