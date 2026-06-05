@@ -28,10 +28,10 @@ const Bulut = window.Bulut = (() => {
     sb.auth.getSession().then(({ data }) => {
       oturum = data.session || null;
       durumCiz();
-      if (oturum) ilkSenkron();
+      if (oturum) acilisSenkron();  // açılışta sadece çek (reload sadece veri değiştiyse)
     });
     sb.auth.onAuthStateChange((_e, session) => { oturum = session || null; durumCiz(); });
-    window.addEventListener("focus", () => { if (girisli() && !indiriliyor) indir(true); });
+    window.addEventListener("focus", () => { if (girisli() && !indiriliyor) indir().then(d => { if (d) softTazele(); }); });
   }
 
   /* ---------- AUTH ---------- */
@@ -57,41 +57,63 @@ const Bulut = window.Bulut = (() => {
     Store.allKeys().forEach(k => { o[k.slice(Store.PREFIX.length)] = localStorage.getItem(k); });
     return o;
   }
-  // İlk giriş: yereldekileri buluta gönder + buluttakileri yerele indir, sonra tazele
+  // Açılışta (oturum zaten varken): sessizce çek, reload YOK; değiştiyse yumuşak yeniden çiz
+  async function acilisSenkron() {
+    try { const d = await indir(); if (d) softTazele(); } catch (e) { console.warn("açılış senkron:", e); }
+    durumCiz();
+  }
+  // Görünür modülleri yeniden çiz (reload olmadan)
+  function softTazele() {
+    ["Profil", "Enerji", "Streak", "Kader", "Cakra", "EnerjiTipi", "Gorevler", "Hafta"].forEach(m => {
+      try { if (window[m] && window[m].ciz) window[m].ciz(); } catch (e) {}
+    });
+  }
+  // İlk GİRİŞ/KAYIT (kullanıcı eylemi): önce BULUTU çek (bulut kazanır), sonra
+  // yalnızca yerelde olup bulutta olmayan anahtarları yükle, sonra tazele.
   async function ilkSenkron() {
     durumCiz("senkron");
     try {
-      await yukleYerelleri();
-      await indir(false);
+      const bulutAnahtarlar = await indirMerge(); // bulut -> yerel (paylaşılan anahtarlarda bulut kazanır)
+      await yukleYerelEksikleri(bulutAnahtarlar);  // yalnızca yerele özgü anahtarları buluta gönder
     } catch (e) { console.warn("ilk senkron:", e); }
     durumCiz();
-    setTimeout(() => location.reload(), 400); // tüm modüller yerelden okuyor → tazele
+    setTimeout(() => location.reload(), 500); // tüm modüller yerelden okuyor → tazele
   }
-  async function yukleYerelleri() {
+  async function indirMerge() {
+    const id = kullaniciId(); const set = new Set(); if (!id) return set;
+    const { data, error } = await sb.from(TABLO).select("anahtar,deger").eq("user_id", id);
+    if (error) { console.warn("indirMerge:", error.message); return set; }
+    (data || []).forEach(r => { set.add(r.anahtar); localStorage.setItem(Store.PREFIX + r.anahtar, JSON.stringify(r.deger)); });
+    return set;
+  }
+  async function yukleYerelEksikleri(bulutSet) {
     const id = kullaniciId(); if (!id) return;
-    const yerel = tumYerel();
-    const satirlar = Object.entries(yerel).map(([anahtar, ham]) => {
-      let deger; try { deger = JSON.parse(ham); } catch { deger = ham; }
-      return { user_id: id, anahtar, deger, guncelleme: new Date().toISOString() };
+    const satirlar = [];
+    Store.allKeys().forEach(k => {
+      const ad = k.slice(Store.PREFIX.length);
+      if (bulutSet.has(ad)) return; // bulutta zaten var → dokunma
+      let deger; try { deger = JSON.parse(localStorage.getItem(k)); } catch { deger = localStorage.getItem(k); }
+      satirlar.push({ user_id: id, anahtar: ad, deger, guncelleme: new Date().toISOString() });
     });
     for (let i = 0; i < satirlar.length; i += 200) {
       const dilim = satirlar.slice(i, i + 200);
       if (dilim.length) await sb.from(TABLO).upsert(dilim, { onConflict: "user_id,anahtar" });
     }
   }
-  async function indir(sessiz) {
-    const id = kullaniciId(); if (!id) return;
+  // Buluttan çek → yerele yaz. Reload YAPMAZ; değişiklik oldu mu döndürür.
+  async function indir() {
+    const id = kullaniciId(); if (!id) return false;
     indiriliyor = true;
     const { data, error } = await sb.from(TABLO).select("anahtar,deger").eq("user_id", id);
     indiriliyor = false;
-    if (error) { console.warn("indir:", error.message); return; }
+    if (error) { console.warn("indir:", error.message); return false; }
     let degisti = false;
     (data || []).forEach(r => {
       const yeni = JSON.stringify(r.deger);
-      const tamAnahtar = Store.PREFIX + r.anahtar;
-      if (localStorage.getItem(tamAnahtar) !== yeni) { localStorage.setItem(tamAnahtar, yeni); degisti = true; }
+      const tam = Store.PREFIX + r.anahtar;
+      if (localStorage.getItem(tam) !== yeni) { localStorage.setItem(tam, yeni); degisti = true; }
     });
-    if (degisti && sessiz) location.reload();
+    return degisti;
   }
 
   // Store.set'ten çağrılır — değişikliği buluta (debounce) it

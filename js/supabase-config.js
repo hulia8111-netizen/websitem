@@ -6,5 +6,5 @@
    Boş bırakılırsa uygulama yalnızca yerel (localStorage) çalışır.
    ============================================================ */
 
-const SUPABASE_URL = "";   // örn: https://abcxyz.supabase.co
-const SUPABASE_ANON = "";  // anon public key (uzun bir jwt: "eyJ...")
+const SUPABASE_URL = "https://liotmhoyoduwidojwrkd.supabase.co";
+const SUPABASE_ANON = "sb_publishable_vmi-nDGF4SPihD1naR0JsQ_D15wan0Z";
