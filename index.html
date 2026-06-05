@@ -36,26 +36,6 @@
     </div>
   </div>
 
-  <!-- Günün Kapısı (sinematik portal) overlay -->
-  <div class="kapi-overlay" id="kapi-overlay" hidden>
-    <div class="kapi-nebula" aria-hidden="true"></div>
-    <div class="kapi-sis" aria-hidden="true"><span></span><span></span></div>
-    <div class="kapi-parcaciklar" id="kapi-parcaciklar" aria-hidden="true"></div>
-    <button class="gece-kapat" id="kapi-kapat" aria-label="Kapat" hidden>✕</button>
-    <div class="kapi-sahne">
-      <div class="kapi-kapali" id="kapi-kapali">
-        <div class="kapi-portal" id="kapi-portal" data-tasarim="0">
-          <div class="kapi-isik" aria-hidden="true"></div>
-          <div class="kapi-kanat sol"><span class="kanat-susleme"></span></div>
-          <div class="kapi-kanat sag"><span class="kanat-susleme"></span></div>
-          <div class="kapi-sembol" id="kapi-sembol">🌙</div>
-        </div>
-        <p class="kapi-soru" id="kapi-soru">Bugün senin için hangi enerji açılıyor?</p>
-        <button class="btn kapi-ac-btn" id="kapi-ac-btn">Kapıyı Aç ✨</button>
-      </div>
-      <div class="kapi-icerik" id="kapi-icerik" hidden></div>
-    </div>
-  </div>
 
   <!-- Spiritüel Takvim overlay -->
   <div class="takvim-overlay" id="takvim-overlay" hidden>
@@ -432,10 +412,6 @@
             <button class="arac-tile" id="takvim-ac">
               <span class="at-ikon">📅</span><span class="at-ad">Spiritüel Takvim</span>
               <span class="at-alt" id="tk-alt"></span>
-            </button>
-            <button class="arac-tile" id="kapi-ac">
-              <span class="at-ikon">🚪</span><span class="at-ad">Günün Kapısı</span>
-              <span class="at-alt">bugünün enerjisini aç</span>
             </button>
             <button class="arac-tile" id="hafta-ac">
               <span class="at-ikon">📊</span><span class="at-ad">Haftalık Rapor</span>
@@ -985,7 +961,6 @@
   <script src="js/takvim.js"></script>
   <script src="js/hafta.js"></script>
   
-  <script src="js/kapi.js"></script>
   <script src="js/kozmik.js"></script>
   <!-- Bulut üyelik & senkron (Supabase) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

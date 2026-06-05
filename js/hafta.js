@@ -140,7 +140,7 @@ const Hafta = window.Hafta = (() => {
 
   /* ---------- hafta sonu otomatik ---------- */
   function baskaOverlayAcik() {
-    return ["#onboarding", "#test-overlay", "#sabah-overlay", "#kapi-overlay", ".vision-overlay", ".takvim-overlay", ".ayna-overlay", ".nefes-overlay", ".gece-overlay"]
+    return ["#onboarding", "#test-overlay", "#sabah-overlay", ".vision-overlay", ".takvim-overlay", ".ayna-overlay", ".nefes-overlay", ".gece-overlay"]
       .some(sel => { const e = document.querySelector(sel); return e && !e.hidden && getComputedStyle(e).display !== "none"; });
   }
   function maybeAutoShow() {

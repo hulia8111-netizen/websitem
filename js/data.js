@@ -285,46 +285,6 @@ const DATA = {
     { bas: "2026-10-13", bit: "2026-11-03" }
   ],
 
-  /* ============ Günün Kapısı ============ */
-  /* Kapı açılınca beliren "günün mesajı" (kozmik başlık). */
-  kapiMesajlari: [
-    "Bugün evren sana yavaşlamanı ve iç sesini dinlemeni hatırlatıyor 🌙",
-    "Bugün önündeki kapılar sevgiyle açılıyor; cesaretle ilerle ✨",
-    "Bugün bırakman gereken bir yük var; nefes al ve serbest bırak 🍃",
-    "Bugün sezgilerin her zamankinden güçlü; onlara güven 🔮",
-    "Bugün bir tohum ekme günü; niyetini netleştir 🌱",
-    "Bugün şükranla bakan göz her yerde bolluk görür 🌟",
-    "Bugün dinlenmek de bir ilerlemedir; kendine izin ver 🌙",
-    "Bugün kalbinin sesi, aklının gürültüsünden daha bilge 💜",
-    "Bugün küçük bir cesaret, büyük bir kapı açacak 🚪",
-    "Bugün geçmişi affet ve bugünü özgürce yaşa 🤍",
-    "Bugün ışığın, fark etmeden birine umut olabilir ☀️",
-    "Bugün akışa güven; doğru olan sana doğru geliyor 🌊",
-    "Bugün enerjini kime ve neye verdiğini fark et ✨",
-    "Bugün sabır, en güzel dualarından biri 🕊️",
-    "Bugün kendine bir söz ver ve onu nazikçe tut 🌙",
-    "Bugün evren senin lehine çalışıyor; rahat ol ⭐"
-  ],
-  /* Kapı içeriğindeki mini spiritüel rehber (kısa, uygulanabilir öneri). */
-  kapiRehber: [
-    "Birkaç dakika gözlerini kapat ve sadece nefesini izle.",
-    "Bugün bir kişiye içten teşekkür et.",
-    "Telefonsuz 15 dakika geçir.",
-    "Bir bardak suyu farkındalıkla, yavaşça iç.",
-    "Sana iyi gelmeyen bir şeye nazikçe 'hayır' de.",
-    "Gökyüzünü birkaç dakika izle.",
-    "Ertelediğin küçük bir adımı şimdi at.",
-    "Aynaya bak ve kendine güzel bir şey söyle.",
-    "Bedenini esnet; omuzlarını gevşet.",
-    "Bir niyetini bir yere yaz.",
-    "Sevdiğin bir şarkıyı sonuna kadar dinle.",
-    "Bugün kendine küçük bir ödül ver.",
-    "Üç derin nefes al ve omuzlarını bırak.",
-    "Bir anını yaşamak için telefonu bırak.",
-    "Bir şükran cümlesi yaz.",
-    "Bugün yargılamadan, sadece fark et."
-  ],
-
   /* ============ Günün Görevleri (3 kategori) ============ */
   /* Her gün her kategoriden bir görev (pickByDate ile) seçilir. */
   gorevHavuzlari: {
