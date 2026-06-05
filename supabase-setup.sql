@@ -24,3 +24,6 @@ create policy "kendi verisini okur"     on public.kullanici_veri for select usin
 create policy "kendi verisini ekler"     on public.kullanici_veri for insert with check (auth.uid() = user_id);
 create policy "kendi verisini gunceller" on public.kullanici_veri for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
 create policy "kendi verisini siler"     on public.kullanici_veri for delete using (auth.uid() = user_id);
+
+-- Anlık (realtime) senkron için tabloyu yayına ekle
+alter publication supabase_realtime add table public.kullanici_veri;
