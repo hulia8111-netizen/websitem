@@ -1835,7 +1835,7 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
   position: fixed; inset: 0; z-index: 99999;
   display: flex; align-items: center; justify-content: center;
   background: radial-gradient(120% 90% at 50% 30%, #2a1d52 0%, #161033 55%, #0c0a1c 100%);
-  animation: splashKaybol 0.7s ease 2.8s forwards;
+  animation: splashKaybol 0.7s ease 3.5s forwards;
 }
 .splash-ic { text-align: center; animation: splashGir 0.8s ease both; }
 .splash-logo {
