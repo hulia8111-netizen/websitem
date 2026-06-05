@@ -151,7 +151,6 @@ const Profil = window.Profil = (() => {
 
     // İstatistikler
     const rz = rozetDurum();
-    const bahce = (window.Bahce && window.Bahce.bilgi) ? window.Bahce.bilgi().ad : "—";
     const st = streakBilgisi();
     const stats = [
       { et: "Güncel Seri", d: st.guncel, b: "gün" },
@@ -160,7 +159,6 @@ const Profil = window.Profil = (() => {
       { et: "Tamamlanan Görev", d: sayim().gorev, b: "" },
       { et: "Açılan Rozet", d: rz.acik + "/" + rz.toplam, b: "" },
       { et: "Enerji Ort.", d: enerjiOrt(), b: "%" },
-      { et: "Bahçe Seviyesi", d: bahce, b: "", metin: true },
       { et: "Aktif Gün", d: st.toplam, b: "gün" }
     ];
     const grid = $("#stat-grid");
