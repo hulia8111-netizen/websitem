@@ -199,7 +199,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.Bahce) window.Bahce.ciz();
     if (window.Enerji) window.Enerji.ciz();
     if (window.Profil) window.Profil.ciz();
-    if (window.Kader) window.Kader.ciz();
     if (window.EnerjiTipi) window.EnerjiTipi.ciz();
     if (window.Cakra) window.Cakra.ciz();
     if (window.Nefes) window.Nefes.girisGuncelle();
