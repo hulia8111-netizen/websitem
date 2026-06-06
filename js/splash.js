@@ -8,7 +8,7 @@
    (acilis-cumleler.js → Word dosyasından üretilir).
    ============================================================ */
 (function () {
-  var TOPLAM = 7000;        // açılıştan itibaren toplam ekranda kalma (ms)
+  var TOPLAM = 10000;       // açılıştan itibaren toplam ekranda kalma (ms)
   var FADEOUT_SURE = 800;   // kapanış solması (ms)
 
   function rastgeleCumle() {
