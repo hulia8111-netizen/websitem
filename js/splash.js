@@ -8,8 +8,7 @@
    (acilis-cumleler.js → Word dosyasından üretilir).
    ============================================================ */
 (function () {
-  var FADEIN_SURE = 1400;   // cümlenin görünür hale gelmesi (ms)
-  var BEKLE = 7000;         // cümle ekranda kalsın (ms)
+  var TOPLAM = 7000;        // açılıştan itibaren toplam ekranda kalma (ms)
   var FADEOUT_SURE = 800;   // kapanış solması (ms)
 
   function rastgeleCumle() {
@@ -25,14 +24,14 @@
     var sozEl = document.getElementById("splash-soz");
     if (sozEl) sozEl.textContent = rastgeleCumle();
 
-    // cümle fade-in animasyonunu tetikle
+    // simge + isim + cümle hemen ard arda fade-in olsun
     requestAnimationFrame(function () { splash.classList.add("soz-gir"); });
 
-    // cümle göründükten sonra 5 sn bekle → kapat
+    // açılıştan itibaren toplam 7 sn → fade-out → ana sayfa
     setTimeout(function () {
       splash.classList.add("kapali");
       setTimeout(function () { splash.style.display = "none"; }, FADEOUT_SURE);
-    }, FADEIN_SURE + BEKLE);
+    }, TOPLAM);
   }
 
   if (document.readyState === "loading") {
