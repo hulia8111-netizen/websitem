@@ -19,7 +19,13 @@ const Gorevler = window.Gorevler = (() => {
   ];
   const CEK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
 
-  function bugunGorev(katId) { return pickByDate((DATA.gorevHavuzlari || {})[katId] || []); }
+  /* Görevler Word dosyasından (js/mini-gorevler.js → window.MINI_GOREVLER)
+     gelir; yoksa DATA.gorevHavuzlari'na güvenli geri dönüş. */
+  function bugunGorev(katId) {
+    const wd = window.MINI_GOREVLER && window.MINI_GOREVLER[katId];
+    const havuz = (wd && wd.length) ? wd : ((DATA.gorevHavuzlari || {})[katId] || []);
+    return pickByDate(havuz);
+  }
   function durum() { return Store.get(ANAHTAR + todayKey(), {}) || {}; }
   function durumYaz(d) { Store.set(ANAHTAR + todayKey(), d); }
   function tamamSayi() { const d = durum(); return KATLAR.filter(k => d[k.id]).length; }
@@ -38,8 +44,11 @@ const Gorevler = window.Gorevler = (() => {
         <p class="gk-gorev">${esc(bugunGorev(k.id))}</p>
         <button class="gk-check" aria-label="${tamam ? "Tamamlandı" : "Tamamla"}">${CEK}</button>`;
       kart.querySelector(".gk-check").addEventListener("click", () => topla(k.id, kart));
+      kart.classList.add("gir");   // zarif fade-in (kademeli)
       wrap.appendChild(kart);
     });
+    // fade-in bitince 'gir' sınıfını kaldır (glow animasyonuyla çakışmasın)
+    setTimeout(() => wrap.querySelectorAll(".gorev-kart.gir").forEach(k => k.classList.remove("gir")), 1000);
     cizIlerleme();
   }
 
