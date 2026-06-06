@@ -160,7 +160,6 @@ const DATA = {
   rituelKategorileri: {
     nefes:      { ad: "Nefes Çalışması", ikon: "🌬️" },
     sukran:     { ad: "Şükran Pratiği",  ikon: "🙏" },
-    ayna:       { ad: "Ayna Olumlaması", ikon: "🪞" },
     sessizlik:  { ad: "Sessizlik Anı",   ikon: "🌙" },
     meditasyon: { ad: "Meditasyon",      ikon: "🎧" },
     su:         { ad: "Su İçme",         ikon: "💧" },
@@ -175,8 +174,6 @@ const DATA = {
     { id: "r2",  kategori: "nefes",      zorluk: "Orta",  xp: 20, metin: "4-7-8 ritminde 4 tur nefes egzersizi yap." },
     { id: "r3",  kategori: "sukran",     zorluk: "Hafif", xp: 10, metin: "Bugün şükrettiğin 3 şeyi yaz ✨" },
     { id: "r4",  kategori: "sukran",     zorluk: "Orta",  xp: 20, metin: "Bir kişiye içten bir teşekkür mesajı gönder." },
-    { id: "r5",  kategori: "ayna",       zorluk: "Hafif", xp: 10, metin: "Aynaya bak ve kendine güzel bir cümle söyle." },
-    { id: "r6",  kategori: "ayna",       zorluk: "Derin", xp: 30, metin: "Aynada gözlerine bakarak 1 dakika 'Seni seviyorum' de." },
     { id: "r7",  kategori: "sessizlik",  zorluk: "Hafif", xp: 10, metin: "5 dakika sessizce otur 🌙" },
     { id: "r8",  kategori: "sessizlik",  zorluk: "Orta",  xp: 20, metin: "10 dakika telefonsuz, sessiz bir mola ver." },
     { id: "r9",  kategori: "meditasyon", zorluk: "Orta",  xp: 20, metin: "Bir frekans seç ve 5 dakika dinle 🎧" },

@@ -117,7 +117,7 @@ const Rituel = window.Rituel = (() => {
     if (favEl) {
       const f = favAl().map(rituelById).filter(Boolean);
       favEl.innerHTML = `<p class="cs-alt-baslik">Favori Ritüeller</p>` + (f.length
-        ? `<ul class="liste">${f.map(r => `<li><span class="liste-metin">${DATA.rituelKategorileri[r.kategori].ikon} ${escapeHtml(r.metin)}</span></li>`).join("")}</ul>`
+        ? `<ul class="liste">${f.map(r => `<li><span class="liste-metin">${(DATA.rituelKategorileri[r.kategori] || {}).ikon || "✨"} ${escapeHtml(r.metin)}</span></li>`).join("")}</ul>`
         : `<p class="muted small">Henüz favori ritüel yok.</p>`);
     }
     if (gecEl) {
