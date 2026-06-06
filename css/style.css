@@ -1911,3 +1911,8 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
 .e-dokum-toplam .e-dokum-ad { font-weight: 600; }
 .e-dokum-toplam .e-dokum-puan { color: var(--accent); font-size: 1rem; }
 .e-dokum-not { margin: 0.6rem 0 0; font-size: 0.76rem; color: var(--muted); line-height: 1.4; }
+
+/* ---- Farkindalik sorusu: zarif fade-in ---- */
+.soru-metin { opacity: 0; transform: translateY(8px); }
+.soru-metin.gir { animation: soruGir 0.9s ease forwards; }
+@keyframes soruGir { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }

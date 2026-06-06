@@ -3,7 +3,7 @@
    Sürüm değişince CACHE adını artır ki eski dosyalar temizlensin.
    ============================================================ */
 
-const CACHE = "isigini-bul-v64";
+const CACHE = "isigini-bul-v65";
 const KABUK = [
   ".",
   "index.html",
@@ -11,6 +11,7 @@ const KABUK = [
   "js/acilis-cumleler.js",
   "js/splash.js",
   "js/data.js",
+  "js/farkindalik-sorulari.js",
   "js/store.js",
   "js/perf.js",
   "js/audio.js",

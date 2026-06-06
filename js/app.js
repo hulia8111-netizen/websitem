@@ -307,8 +307,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ====================================================
      6. FARKINDALIK SORUSU
+     Sorular Word dosyasından (js/farkindalik-sorulari.js →
+     window.FARKINDALIK_SORULARI) gelir; her gün 1 farklı soru.
      ==================================================== */
-  $("#soru-metin").textContent = pickByDate(DATA.sorular);
+  const soruHavuzu = (window.FARKINDALIK_SORULARI && window.FARKINDALIK_SORULARI.length)
+    ? window.FARKINDALIK_SORULARI : DATA.sorular;
+  const soruMetin = $("#soru-metin");
+  soruMetin.textContent = pickByDate(soruHavuzu);
+  requestAnimationFrame(() => soruMetin.classList.add("gir"));   // zarif fade-in
   const soruCevap = $("#soru-cevap");
   soruCevap.value = Store.get("awa-" + today, "");
   $("#soru-kaydet").addEventListener("click", () => {
