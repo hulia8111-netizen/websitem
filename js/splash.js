@@ -9,7 +9,7 @@
    ============================================================ */
 (function () {
   var FADEIN_SURE = 1400;   // cümlenin görünür hale gelmesi (ms)
-  var BEKLE = 5000;         // cümle ekranda kalsın (ms)
+  var BEKLE = 7000;         // cümle ekranda kalsın (ms)
   var FADEOUT_SURE = 800;   // kapanış solması (ms)
 
   function rastgeleCumle() {
