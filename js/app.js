@@ -159,12 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (navigator.serviceWorker) navigator.serviceWorker.addEventListener("message", e => { if (e.data && e.data.tip === "kart-goster") gotoView("kartlar"); });
 
   /* ====================================================
-     1. GÜNÜN MOTİVASYON CÜMLESİ (gün boyu sabit)
-     ==================================================== */
-  $("#motivasyon-metin").textContent = pickByDate(DATA.motivasyon);
-
-  /* ====================================================
-     2. SPİRİTÜEL MÜZİK & FREKANS — js/muzik.js modülünde yönetilir.
+     SPİRİTÜEL MÜZİK & FREKANS — js/muzik.js modülünde yönetilir.
         (med-<gün> + med-sure-sn entegrasyonu ve window.setMeditasyonKategori orada)
      ==================================================== */
 
