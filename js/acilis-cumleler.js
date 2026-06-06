@@ -1,11 +1,9 @@
 /* ============================================================
    acilis-cumleler.js — Açılış (splash) ilham cümleleri
    ------------------------------------------------------------
-   Kaynak: "Açılış cümlelerim/Açılış cümleleri.docx"
-   Bu liste o Word dosyasından üretilmiştir. Word'e yeni cümle
-   eklendiğinde bu dosya yeniden üretilerek güncellenir
-   (cümleler kodda elle sabitlenmek yerine tek yerde, bu dizide
-   tutulur → splash.js buradan rastgele seçer).
+   OTOMATIK ÜRETİLDİ — elle düzenleme. Kaynak:
+   "Açılış cümlelerim/Açılış cümleleri.docx"
+   Güncellemek için: scripts\cumleleri-guncelle.ps1 çalıştır.
    Global: window.ACILIS_CUMLELERI
    ============================================================ */
 window.ACILIS_CUMLELERI = [
