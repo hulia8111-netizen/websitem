@@ -2021,3 +2021,9 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
 @media (prefers-reduced-motion: reduce) {
   .defter-acik.acilis-anim, .defter-sayfa.cevir-ileri, .defter-sayfa.cevir-geri, .kilit-anahtar, .kilit-ikon { animation: none; transition: none; }
 }
+
+/* ---- Defter içi şifre revize ---- */
+.defter-sifre-revize { display: flex; flex-direction: column; gap: 0.5rem; max-width: 280px; margin: 0.7rem auto 0; padding: 0.8rem; border-radius: 12px; background: rgba(20,16,40,0.55); border: 1px solid rgba(243,217,140,0.25); }
+.defter-sifre-revize input { width: 100%; box-sizing: border-box; background: rgba(255,255,255,0.06); border: 1px solid rgba(243,217,140,0.3); color: var(--metin); border-radius: 11px; padding: 0.55rem 0.8rem; font-family: inherit; font-size: 0.95rem; }
+.defter-sifre-revize input:focus { outline: none; border-color: var(--gold-soft); box-shadow: 0 0 0 3px rgba(243,217,140,0.18); }
+.dsr-btnlar { display: flex; gap: 0.5rem; justify-content: center; }

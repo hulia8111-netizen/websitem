@@ -607,8 +607,19 @@
                 <span class="kayit-bilgi" id="defter-bilgi"></span>
                 <div class="sayfa-alt-btn">
                   <button class="btn" id="defter-kaydet">Kaydet ✦</button>
+                  <button class="btn ghost sm" id="defter-sifre-degis">🔑 Şifre</button>
                   <button class="btn ghost sm" id="defter-kilitle">Kilitle 🔒</button>
                 </div>
+              </div>
+              <div class="defter-sifre-revize" id="defter-sifre-revize" hidden>
+                <p class="defter-sifre-baslik">Yeni şifre belirle 🔑</p>
+                <input type="password" id="dsr-yeni" maxlength="40" placeholder="Yeni şifre (en az 4)" autocomplete="off" />
+                <input type="password" id="dsr-yeni2" maxlength="40" placeholder="Yeni şifre (tekrar)" autocomplete="off" />
+                <div class="dsr-btnlar">
+                  <button class="btn sm" id="dsr-kaydet">Güncelle</button>
+                  <button class="btn ghost sm" id="dsr-iptal">İptal</button>
+                </div>
+                <span class="kayit-bilgi" id="dsr-bilgi"></span>
               </div>
             </div>
           </div>

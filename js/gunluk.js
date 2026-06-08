@@ -75,7 +75,7 @@ const Gunluk = window.Gunluk = (() => {
     $("#defter-sifre2").hidden = !ilk;
     $("#defter-sifre").value = ""; $("#defter-sifre2").value = "";
     $("#defter-uyari").textContent = "";
-    $("#defter-sifre-onay").textContent = ilk ? "Oluştur" : "Aç";
+    $("#defter-sifre-onay").textContent = ilk ? "Oluştur" : "Anahtar 🔑";
     setTimeout(() => $("#defter-sifre").focus(), 60);
   }
   async function sifreOnayla() {
@@ -116,6 +116,7 @@ const Gunluk = window.Gunluk = (() => {
   function kilitle() {
     acik = false;
     $("#defter-acik").hidden = true;
+    const rev = $("#defter-sifre-revize"); if (rev) rev.hidden = true;
     $("#defter-kapak").hidden = false;
     const kilit = $("#defter-kilit"); kilit.classList.remove("acildi", "salla");
     $("#defter-sifre-alan").hidden = true;
@@ -208,6 +209,25 @@ const Gunluk = window.Gunluk = (() => {
     $("#sayfa-ileri").addEventListener("click", () => sayfaCevir(1));
     $("#defter-kaydet").addEventListener("click", () => kaydet(false));
     $("#defter-kilitle").addEventListener("click", kilitle);
+
+    // İçeri girmiş kullanıcı şifresini revize edebilir (kimliği zaten doğruladı)
+    $("#defter-sifre-degis").addEventListener("click", () => {
+      const f = $("#defter-sifre-revize");
+      f.hidden = !f.hidden;
+      if (!f.hidden) { $("#dsr-yeni").value = ""; $("#dsr-yeni2").value = ""; $("#dsr-bilgi").textContent = ""; setTimeout(() => $("#dsr-yeni").focus(), 50); }
+    });
+    $("#dsr-iptal").addEventListener("click", () => { $("#defter-sifre-revize").hidden = true; });
+    $("#dsr-kaydet").addEventListener("click", async () => {
+      const y = $("#dsr-yeni").value || "", y2 = $("#dsr-yeni2").value || "";
+      const bilgi = $("#dsr-bilgi");
+      const goster = (m, ok) => { bilgi.textContent = m; bilgi.style.color = ok ? "var(--basari)" : "var(--uyari)"; };
+      if (y.length < 4) return goster("Şifre en az 4 karakter olmalı.", false);
+      if (y !== y2) return goster("Şifreler aynı değil.", false);
+      Store.set(SIFRE, await hash(y));
+      sifreAyarCiz();
+      goster("Şifren güncellendi ✦", true);
+      setTimeout(() => { $("#defter-sifre-revize").hidden = true; }, 1200);
+    });
 
     // otomatik kayıt (bugünün sayfası) — yazarken Supabase'e gider
     $("#defter-metin").addEventListener("input", () => {
