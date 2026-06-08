@@ -857,7 +857,7 @@ const DATA = {
       ikon: '<path d="M20 6L9 17l-5-5"/>'
     },
     {
-      id: "moodSeri", ad: "Kendini Tanıyorum", metrik: "moodSeri", hedef: 7,
+      id: "moodSeri", ad: "Kendimi Tanıyorum", metrik: "moodSeri", hedef: 7,
       aciklama: "7 gün üst üste ruh halini kaydet.",
       ikon: '<circle cx="12" cy="12" r="9"/><path d="M8.5 14c1 .9 2.2 1.3 3.5 1.3s2.5-.4 3.5-1.3"/><path d="M9 9h.01M15 9h.01"/>'
     },
