@@ -323,52 +323,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* ====================================================
-     7. MANİFEST HEDEFLERİ
-     ==================================================== */
-  const hedefListesi = $("#hedef-listesi");
-  function cizHedefler() {
-    const hedefler = Store.get("goals", []);
-    hedefListesi.innerHTML = "";
-    hedefler.forEach((h, i) => {
-      const li = document.createElement("li");
-      li.className = h.done ? "tamam" : "";
-      const span = document.createElement("span");
-      span.className = "liste-metin";
-      span.textContent = h.text;
-      span.title = "Gerçekleşti olarak işaretle";
-      span.addEventListener("click", () => {
-        hedefler[i].done = !hedefler[i].done;
-        Store.set("goals", hedefler);
-        cizHedefler();
-      });
-      const sil = document.createElement("button");
-      sil.className = "sil";
-      sil.textContent = "✕";
-      sil.addEventListener("click", () => {
-        hedefler.splice(i, 1);
-        Store.set("goals", hedefler);
-        cizHedefler();
-      });
-      li.append(span, sil);
-      hedefListesi.appendChild(li);
-    });
-  }
-  function hedefEkle() {
-    const inp = $("#hedef-input");
-    const v = inp.value.trim();
-    if (!v) return;
-    const hedefler = Store.get("goals", []);
-    hedefler.push({ text: v, done: false });
-    Store.set("goals", hedefler);
-    inp.value = "";
-    cizHedefler();
-  }
-  $("#hedef-ekle").addEventListener("click", hedefEkle);
-  $("#hedef-input").addEventListener("keydown", e => { if (e.key === "Enter") hedefEkle(); });
-  cizHedefler();
-
-  /* ====================================================
-     8. ŞÜKRAN DEFTERİ
+     ŞÜKRAN DEFTERİ
      ==================================================== */
   const sukranListesi = $("#sukran-listesi");
   function cizSukran() {
