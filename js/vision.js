@@ -2,7 +2,7 @@
    vision.js — Dijital Vision Board / Hayal Panosu 🌟✨
    Sürükle-bırak tuvalde görsel, motivasyon cümlesi ve glow sticker'lar
    ile hayal panosu oluşturma. Hedef kategorileri, AI öneri (mesaj +
-   olumlama + mini görev), "Bugünkü niyetin", kaydedilen panolar
+   olumlama + mini görev), pano adı, kaydedilen panolar
    (favoriler), günlük hatırlatma ve paylaşım altyapısı.
    Global: window.Vision
    ============================================================ */
@@ -184,7 +184,8 @@ const Vision = window.Vision = (() => {
   }
   function panoKaydet() {
     const f = favListe();
-    const ad = "Pano · " + new Date().toLocaleDateString("tr-TR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+    const ad = (board.niyet || "").trim() ||
+      ("Pano · " + new Date().toLocaleDateString("tr-TR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }));
     f.unshift({ id: yeniId(), ad, items: JSON.parse(JSON.stringify(board.items)), niyet: board.niyet });
     while (f.length > 6) f.pop();
     Store.set("vision-favoriler", f); cizFavoriler();
@@ -192,7 +193,8 @@ const Vision = window.Vision = (() => {
   }
   function paylas() {
     const cumleler = board.items.filter(i => i.tip === "metin").map(i => i.metin);
-    const ozet = `🌟 Hayal Panom${cumleler.length ? "\n• " + cumleler.join("\n• ") : ""}${board.niyet ? "\n\nBugünkü niyetim: " + board.niyet : ""}\n\nIşığını Bul ✨`;
+    const ad = (board.niyet || "").trim();
+    const ozet = `🌟 ${ad || "Hayal Panom"}${cumleler.length ? "\n• " + cumleler.join("\n• ") : ""}\n\nIşığını Bul ✨`;
     if (navigator.share) navigator.share({ title: "Hayal Panom ✨", text: ozet }).catch(() => {});
     else if (navigator.clipboard) { navigator.clipboard.writeText(ozet); const b = $("vb-paylas"); b.textContent = "Kopyalandı ✓"; setTimeout(() => b.textContent = "Paylaş", 1600); }
   }
