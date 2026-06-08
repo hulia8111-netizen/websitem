@@ -3,7 +3,7 @@
    Sürüm değişince CACHE adını artır ki eski dosyalar temizlensin.
    ============================================================ */
 
-const CACHE = "isigini-bul-v73";
+const CACHE = "isigini-bul-v74";
 const KABUK = [
   ".",
   "index.html",
