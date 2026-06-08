@@ -48,9 +48,6 @@ const CiftSaat = window.CiftSaat = (() => {
     $("#cs-mesaj").textContent = a.mesaj;
     $("#cs-yorum").textContent = a.yorum;
     $("#cs-olumlama").textContent = "“" + a.olumlama + "”";
-    const favBtn = $("#cs-fav");
-    favBtn.classList.toggle("aktif", favMi(saat));
-    favBtn.onclick = () => { favToggle(saat); favBtn.classList.toggle("aktif", favMi(saat)); cizFavGecmis(); cizGrid(); };
     const pop = $("#cs-popup");
     pop.hidden = false;
     pop.classList.remove("gor"); void pop.offsetWidth; pop.classList.add("gor");
@@ -89,22 +86,14 @@ const CiftSaat = window.CiftSaat = (() => {
     grid.innerHTML = "";
     (DATA.ciftSaatler || []).forEach(x => {
       const b = document.createElement("button");
-      b.className = "cs-cip" + (favMi(x.saat) ? " fav" : "");
-      b.innerHTML = `${x.saat}${favMi(x.saat) ? " ★" : ""}`;
+      b.className = "cs-cip";
+      b.textContent = x.saat;
       b.addEventListener("click", () => popupAc(x.saat, false));
       grid.appendChild(b);
     });
   }
   function cizFavGecmis() {
-    const favEl = $("#cs-fav-liste");
     const gecEl = $("#cs-gecmis-liste");
-    if (favEl) {
-      const f = favAl();
-      favEl.innerHTML = `<p class="cs-alt-baslik">Favori Saatler</p>` + (f.length
-        ? `<div class="cs-mini-grid">${f.map(s => `<button class="cs-cip fav" data-s="${s}">${s} ★</button>`).join("")}</div>`
-        : `<p class="muted small">Henüz favori saat yok.</p>`);
-      favEl.querySelectorAll("[data-s]").forEach(b => b.addEventListener("click", () => popupAc(b.dataset.s, false)));
-    }
     if (gecEl) {
       const g = gecmisAl().slice(0, 12);
       gecEl.innerHTML = `<p class="cs-alt-baslik">Son Görülenler</p>` + (g.length
