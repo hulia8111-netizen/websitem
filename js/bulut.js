@@ -46,8 +46,15 @@ const Bulut = window.Bulut = (() => {
       durumCiz();
     });
     window.addEventListener("focus", () => { if (girisli() && !indiriliyor) indir().then(d => { if (d) softTazele(); }); });
-    window.addEventListener("online", durumCiz);
+    window.addEventListener("online", () => { durumCiz(); it(); if (girisli() && !indiriliyor) indir().then(d => { if (d) softTazele(); }); });
     window.addEventListener("offline", durumCiz);
+    // Uygulama arka plana atılınca / kapanınca: bekleyen değişiklikleri HEMEN gönder
+    // (mobilde kritik — kullanıcı manuel senkron yapmak zorunda kalmasın)
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden") { it(); }
+      else if (girisli() && cevrimici() && !indiriliyor) { indir().then(d => { if (d) softTazele(); }); }
+    });
+    window.addEventListener("pagehide", () => { it(); });
     // Güvence: realtime çalışmasa da düzenli çek (yakın-anlık senkron)
     setInterval(() => { if (girisli() && cevrimici() && !indiriliyor && document.visibilityState === "visible") indir().then(d => { if (d) softTazele(); }); }, 25000);
   }
@@ -184,10 +191,10 @@ const Bulut = window.Bulut = (() => {
   }
 
   function kaydet(key, value) {
-    if (!hazir || !girisli() || indiriliyor) return;
+    if (!hazir || !girisli()) return;   // indirme sırasında da kuyruğa al (kayıp olmasın)
     bekleyen[key] = value;
     clearTimeout(pushTimer);
-    pushTimer = setTimeout(it, 900);
+    pushTimer = setTimeout(it, 400);    // neredeyse anlık otomatik gönderim
   }
   async function it() {
     const id = kullaniciId(); if (!id) return;
