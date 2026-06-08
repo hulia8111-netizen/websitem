@@ -1949,3 +1949,75 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
   margin: 0.3rem 0 0.5rem;
 }
 .vb-niyet-kart input[type="text"]:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+/* ============================================================
+   Kilitli Günlük Defteri 📖🔐
+   ============================================================ */
+.defter-kart { position: relative; overflow: hidden; }
+
+/* ---- KAPAK (kilitli) ---- */
+.defter-kapak { position: relative; border-radius: 16px; padding: 1.6rem 1.1rem 1.9rem; text-align: center;
+  background: linear-gradient(160deg, #2c1f57 0%, #1a1340 55%, #110b2c 100%);
+  border: 1px solid rgba(243,217,140,0.28); box-shadow: inset 0 0 60px rgba(0,0,0,0.4), 0 10px 30px rgba(0,0,0,0.3); }
+.defter-kapak-ic { position: relative; max-width: 360px; margin: 0 auto; }
+.defter-kose { position: absolute; width: 22px; height: 22px; border: 2px solid rgba(243,217,140,0.5); }
+.defter-kose.tl { top: -6px; left: -6px; border-right: none; border-bottom: none; border-radius: 6px 0 0 0; }
+.defter-kose.tr { top: -6px; right: -6px; border-left: none; border-bottom: none; border-radius: 0 6px 0 0; }
+.defter-kose.bl { bottom: -6px; left: -6px; border-right: none; border-top: none; border-radius: 0 0 0 6px; }
+.defter-kose.br { bottom: -6px; right: -6px; border-left: none; border-top: none; border-radius: 0 0 6px 0; }
+.defter-amblem { font-size: 2.6rem; filter: drop-shadow(0 0 16px rgba(243,217,140,0.4)); }
+.defter-baslik { font-family: var(--font-baslik); color: var(--gold-soft); margin: 0.4rem 0 0.2rem; font-size: 1.5rem; }
+.defter-slogan { color: rgba(255,255,255,0.62); font-size: 0.85rem; margin: 0 0 0.8rem; }
+.defter-kilit { position: relative; height: 80px; display: flex; align-items: center; justify-content: center; margin: 0.4rem 0 1rem; }
+.kilit-ikon { font-size: 3rem; filter: drop-shadow(0 0 16px rgba(243,217,140,0.55)); transition: transform 0.5s ease, opacity 0.5s ease; }
+.kilit-anahtar { position: absolute; font-size: 1.9rem; transform: translateX(46px) rotate(0deg); opacity: 0.9; transition: transform 0.85s ease, opacity 0.85s ease; }
+.defter-kilit.acildi .kilit-anahtar { transform: translateX(2px) rotate(395deg); opacity: 0; }
+.defter-kilit.acildi .kilit-ikon { transform: rotate(-22deg) translateY(-6px) scale(1.05); opacity: 0.35; }
+.defter-kilit.salla { animation: defterSalla 0.5s; }
+@keyframes defterSalla { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-9px)} 40%{transform:translateX(9px)} 60%{transform:translateX(-6px)} 80%{transform:translateX(6px)} }
+.defter-ac-btn { margin-top: 0.2rem; }
+.defter-sifre-alan { display: flex; flex-direction: column; gap: 0.5rem; max-width: 280px; margin: 0.6rem auto 0; }
+.defter-sifre-baslik { color: var(--metin); font-size: 0.9rem; margin: 0 0 0.2rem; }
+.defter-sifre-alan input { width: 100%; box-sizing: border-box; background: rgba(255,255,255,0.06); border: 1px solid rgba(243,217,140,0.3); color: var(--metin); border-radius: 11px; padding: 0.6rem 0.8rem; font-family: inherit; font-size: 0.95rem; text-align: center; letter-spacing: 2px; }
+.defter-sifre-alan input:focus { outline: none; border-color: var(--gold-soft); box-shadow: 0 0 0 3px rgba(243,217,140,0.18); }
+.defter-uyari { color: #ff9a9a; font-size: 0.82rem; min-height: 1em; margin: 0; }
+.defter-yildiz span { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #f3d98c; opacity: 0.6; animation: splashParla 3s ease-in-out infinite; }
+.defter-yildiz span:nth-child(1){ top:14%; left:18% } .defter-yildiz span:nth-child(2){ top:24%; right:16%; background:#b38cff; animation-delay:.8s } .defter-yildiz span:nth-child(3){ bottom:18%; left:30%; animation-delay:1.4s }
+
+/* ---- AÇIK DEFTER (kağıt sayfa) ---- */
+.defter-acik { perspective: 1400px; }
+.defter-acik.acilis-anim { animation: defterAcilis 0.65s ease; }
+@keyframes defterAcilis { from { opacity: 0; transform: rotateX(-14deg) scale(0.95); } to { opacity: 1; transform: none; } }
+.defter-sayfa { position: relative; border-radius: 12px; padding: 1rem 1.15rem 1.1rem;
+  color: #3a2f1a; background: linear-gradient(180deg, #fbf4df 0%, #f4e8c9 100%);
+  box-shadow: inset 0 0 40px rgba(150,110,50,0.18), 0 8px 22px rgba(0,0,0,0.3);
+  background-image: linear-gradient(180deg, #fbf4df 0%, #f4e8c9 100%), repeating-linear-gradient(transparent 0, transparent 31px, rgba(120,90,40,0.13) 32px);
+  transform-origin: left center; }
+.defter-sayfa.cevir-ileri { animation: cevirIleri 0.45s ease; transform-origin: left center; }
+.defter-sayfa.cevir-geri  { animation: cevirGeri 0.45s ease; transform-origin: right center; }
+@keyframes cevirIleri { 0%{transform:rotateY(0)} 45%{transform:rotateY(-20deg); opacity:.55} 100%{transform:rotateY(0); opacity:1} }
+@keyframes cevirGeri  { 0%{transform:rotateY(0)} 45%{transform:rotateY(20deg);  opacity:.55} 100%{transform:rotateY(0); opacity:1} }
+.sayfa-ust { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.sayfa-tarih { font-family: var(--font-baslik); font-style: italic; color: #5a4422; font-size: 0.98rem; text-align: center; flex: 1; }
+.sayfa-ok { background: none; border: none; font-size: 1.9rem; line-height: 1; color: #8a6526; cursor: pointer; padding: 0 0.3rem; transition: transform 0.15s ease, opacity 0.2s ease; }
+.sayfa-ok:hover:not(:disabled) { transform: scale(1.2); }
+.sayfa-ok:disabled { opacity: 0.22; cursor: default; }
+.sayfa-cizgi { height: 1px; background: linear-gradient(90deg, transparent, rgba(150,110,50,0.4), transparent); margin: 0.4rem 0 0.6rem; }
+.sayfa-govde { min-height: 200px; }
+#defter-metin { width: 100%; box-sizing: border-box; background: transparent; border: none; resize: vertical;
+  color: #3a2f1a; font-family: "Playfair Display", Georgia, serif; font-size: 1rem; line-height: 32px; padding: 0; }
+#defter-metin:focus { outline: none; }
+#defter-metin::placeholder { color: #a8946a; font-style: italic; }
+.sayfa-okuma .okuma-metin { white-space: pre-wrap; color: #3a2f1a; font-family: "Playfair Display", Georgia, serif; font-size: 1rem; line-height: 32px; margin: 0; }
+.sayfa-okuma .okuma-bos { color: #9a8a66; font-style: italic; line-height: 32px; }
+.sayfa-alt { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; margin-top: 0.6rem; flex-wrap: wrap; }
+.sayfa-alt .kayit-bilgi { color: #6a5430; }
+.sayfa-alt-btn { display: flex; gap: 0.5rem; align-items: center; }
+
+/* ---- Profil > Günlük şifresi ---- */
+.gunluk-sifre-alan { display: flex; flex-direction: column; gap: 0.5rem; max-width: 320px; }
+.gunluk-sifre-alan input { width: 100%; box-sizing: border-box; background: rgba(255,255,255,0.05); border: 1px solid rgba(179,140,255,0.22); color: var(--metin); border-radius: 11px; padding: 0.6rem 0.8rem; font-family: inherit; font-size: 0.95rem; }
+.gunluk-sifre-alan input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+@media (prefers-reduced-motion: reduce) {
+  .defter-acik.acilis-anim, .defter-sayfa.cevir-ileri, .defter-sayfa.cevir-geri, .kilit-anahtar, .kilit-ikon { animation: none; transition: none; }
+}
