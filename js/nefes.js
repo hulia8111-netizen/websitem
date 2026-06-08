@@ -11,9 +11,11 @@ const Nefes = window.Nefes = (() => {
   const $ = id => document.getElementById(id);
   function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
 
-  let seciliTur = DATA.nefesTurleri[0], seciliSure = 180;  // saniye
+  // Varsayılan: 4-7-8 (Rahatlatıcı Nefes) — yoksa ilk tür
+  let seciliTur = DATA.nefesTurleri.find(t => t.al === 4 && t.tut === 7 && t.ver === 8) || DATA.nefesTurleri[0];
+  let seciliSure = 180;  // saniye
   let sesAcik = true, titresimAcik = true;
-  let calisiyor = false, fazTimer = null, sayacTimer = null, seansBitis = 0, dongu = 0;
+  let calisiyor = false, fazTimer = null, sayacTimer = null, seansBitis = 0, dongu = 0, fazBitis = 0;
 
   function seanslar() { return Store.get("nefes-seanslar", []); }
   function seansKaydet(turAd, dk) {
@@ -44,19 +46,25 @@ const Nefes = window.Nefes = (() => {
       if (Date.now() >= seansBitis) { bitir(true); return; }
       const f = fazlar[fi];
       faz.textContent = f.ad;
+      fazBitis = Date.now() + f.sure * 1000;     // bu fazın bitiş anı (saniye sayımı için)
       kure.style.transitionDuration = f.sure + "s";
       kure.className = "nefes-kure " + f.sinif;
       if (titresimAcik && navigator.vibrate) navigator.vibrate(f.sinif === "genis" ? 180 : f.sinif === "dar" ? [60, 60, 60] : 40);
+      sayacGuncelle();                            // sayıyı hemen güncelle
       if (fi === fazlar.length - 1) dongu++;
       fi = (fi + 1) % fazlar.length;
       fazTimer = setTimeout(adim, f.sure * 1000);
     };
     adim();
-    sayacTimer = setInterval(sayacGuncelle, 500);
+    sayacTimer = setInterval(sayacGuncelle, 200);
   }
   function sayacGuncelle() {
     if (!calisiyor) return;
-    const kalan = Math.max(0, Math.round((seansBitis - Date.now()) / 1000));
+    const now = Date.now();
+    // fazın kalan saniyesi (bilinçli geri sayım: 4..1, 7..1, 8..1)
+    const fazKalan = Math.max(1, Math.ceil((fazBitis - now) / 1000));
+    const sayiEl = $("nefes-sayi"); if (sayiEl) sayiEl.textContent = fazKalan;
+    const kalan = Math.max(0, Math.round((seansBitis - now) / 1000));
     $("nefes-sayac").textContent = `${Math.floor(kalan / 60)}:${String(kalan % 60).padStart(2, "0")} · ${dongu} döngü`;
   }
   function bitir(tamam) {
@@ -125,8 +133,19 @@ const Nefes = window.Nefes = (() => {
   }
   function basla() {
     $("nefes-setup").hidden = true; $("nefes-bitti").hidden = true; $("nefes-seans").hidden = false;
-    const kure = $("nefes-kure"); kure.className = "nefes-kure"; $("nefes-faz").textContent = "Hazırlan";
-    setTimeout(seansBaslat, 500);
+    const kure = $("nefes-kure");
+    kure.className = "nefes-kure baslat-hazir";
+    $("nefes-faz").textContent = "Başlat";
+    $("nefes-sayi").textContent = "";
+    $("nefes-tur-ad").textContent = seciliTur.ad;
+    $("nefes-sayac").textContent = "Hazır olunca topa dokun";
+    // Topa dokununca başla (bilinçli başlangıç)
+    const start = () => {
+      kure.removeEventListener("click", start);
+      kure.classList.remove("baslat-hazir");
+      seansBaslat();
+    };
+    kure.addEventListener("click", start);
   }
   function kapat() {
     if (calisiyor) bitir(false);

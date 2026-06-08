@@ -1402,13 +1402,20 @@ code { background: rgba(255,255,255,0.08); padding: 1px 5px; border-radius: 6px;
 .nefes-tur-ad { font-family: var(--font-baslik); color: var(--gold-soft); font-size: 1.1rem; margin-bottom: var(--sp-4); }
 .nefes-kure-sar { height: 300px; display: flex; align-items: center; justify-content: center; position: relative; }
 .nefes-kure {
-  width: 160px; height: 160px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  color: #fff; font-family: var(--font-baslik); font-size: 1.1rem;
+  width: 160px; height: 160px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  color: #fff; font-family: var(--font-baslik); font-size: 1.1rem; text-align: center;
   background: radial-gradient(circle at 38% 32%, #b38cff, #3a2a6d); box-shadow: 0 0 40px rgba(179,140,255,0.5);
   transform: scale(0.65); transition: transform 4s ease, box-shadow 4s ease;
 }
 .nefes-kure.genis, .nefes-kure.tut { transform: scale(1.15); box-shadow: 0 0 70px rgba(179,140,255,0.85); }
 .nefes-kure.dar { transform: scale(0.65); box-shadow: 0 0 24px rgba(179,140,255,0.35); }
+/* bilinçli geri sayım sayısı (top içinde) */
+.nefes-sayi:empty { display: none; }
+.nefes-sayi { font-size: 1.9rem; font-weight: 700; line-height: 1; opacity: 0.95; }
+/* "Başlat" — dokunmaya davet eden top */
+.nefes-kure.baslat-hazir { transform: scale(1); cursor: pointer; transition: transform 0.4s ease, box-shadow 0.4s ease; animation: nefesBaslatNabiz 2.4s ease-in-out infinite; }
+.nefes-kure.baslat-hazir:hover { box-shadow: 0 0 80px rgba(179,140,255,0.9); }
+@keyframes nefesBaslatNabiz { 0%,100% { box-shadow: 0 0 40px rgba(179,140,255,0.5); } 50% { box-shadow: 0 0 75px rgba(179,140,255,0.85); } }
 .nefes-sayac { color: var(--metin-soft); margin: var(--sp-3) 0; }
 
 .nefes-bitti { padding-top: var(--sp-4); }
