@@ -15,7 +15,6 @@ const Sabah = window.Sabah = (() => {
   const RUTIN = [
     { id: "olumlama", ad: "Günün Olumlaması", ikon: "☀️" },
     { id: "nefes",    ad: "Mini Nefes",       ikon: "🫧" },
-    { id: "enerji",   ad: "Günlük Enerji",    ikon: "⚡" },
     { id: "ruhhali",  ad: "Ruh Hali Seçimi",  ikon: "💫" },
     { id: "kart",     ad: "Günün Kartı",      ikon: "🃏" },
     { id: "hedef",    ad: "Mini Hedef",       ikon: "🎯" }
@@ -43,7 +42,6 @@ const Sabah = window.Sabah = (() => {
     switch (id) {
       case "olumlama": return `<p class="gr-olumlama">“${esc(pickByDate(DATA.sabahOlumlamalari))}”</p><button class="btn ghost sm gr-tamam">Hissettim ✦</button>`;
       case "nefes": return `<div class="nefes-orb sabah" id="sr-nefes-orb"><span id="sr-nefes-yazi">Hazırlan</span></div><button class="btn ghost sm gr-tamam">Tamamladım ✦</button>`;
-      case "enerji": return `<p class="sr-enerji">${esc(pickByDate(DATA.sabahEnerjiMesajlari))}</p><button class="btn ghost sm gr-tamam">Okudum ✦</button>`;
       case "ruhhali": return `<div class="gr-mood" id="sr-mood"></div>`;
       case "kart": return `<button class="btn ghost sm sr-kart-cek">Günün kartını çek ✦</button><div class="sr-kart-alan" id="sr-kart-alan"></div>`;
       case "hedef": return `<div class="ekle-satir"><input type="text" id="sr-hedef-input" placeholder="Bugün için küçük bir hedef…"/><button class="btn sm sr-hedef-ekle">Belirle</button></div>`;
