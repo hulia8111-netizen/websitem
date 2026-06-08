@@ -2,8 +2,8 @@
    sabah.js — Sabah Ritüeli & Güne Başlangıç ☀️✨
    "Bugüne Başla" ile açılan, gün doğumu hissi veren karşılama ekranı.
    Sabah rutini: günün olumlaması, mini nefes, günlük enerji mesajı,
-   ruh hali, günün kartı, mini hedef. "Bugünkü niyetin nedir?" alanı,
-   sabah streak ve tamamlanınca enerji puanı artışı.
+   ruh hali, günün kartı, mini hedef. Günün Farkındalık Sorusu (ana
+   uygulamayla ortak awa-<gün>), sabah streak ve tamamlanınca enerji bonusu.
    Sabah saatlerinde otomatik karşılar. Global: window.Sabah
    ============================================================ */
 
@@ -139,7 +139,15 @@ const Sabah = window.Sabah = (() => {
     $("sabah-mesaj").textContent = pickByDate(DATA.sabahMesajlari);
     $("sabah-tamam").hidden = true;
     cizRutin(); guncelleDurum();
-    $("sabah-niyet").value = Store.get("sabah-niyet-" + bugun(), "");
+    // Günün Farkındalık Sorusu (ana uygulamayla aynı soru havuzu + cevap = awa-<gün>)
+    const soruHavuzu = (window.FARKINDALIK_SORULARI && window.FARKINDALIK_SORULARI.length)
+      ? window.FARKINDALIK_SORULARI : DATA.sorular;
+    const soruEl = $("sabah-fark-soru");
+    if (soruEl) {
+      soruEl.textContent = pickByDate(soruHavuzu);
+      soruEl.classList.remove("gir"); void soruEl.offsetWidth; soruEl.classList.add("gir"); // zarif fade-in
+    }
+    if ($("sabah-fark-cevap")) $("sabah-fark-cevap").value = Store.get("awa-" + bugun(), "");
     Store.set("sabah-gosterildi-" + bugun(), true);
     ov.hidden = false; ov.classList.remove("gor"); void ov.offsetWidth; ov.classList.add("gor");
   }
@@ -170,9 +178,10 @@ const Sabah = window.Sabah = (() => {
     parcacikDoldur();
     $("sabah-kapat").addEventListener("click", kapat);
     $("sabah-bitir").addEventListener("click", kapat);
-    $("sabah-niyet-kaydet").addEventListener("click", () => {
-      Store.set("sabah-niyet-" + bugun(), ($("sabah-niyet").value || "").trim());
-      const b = $("sabah-niyet-kaydet"); b.textContent = "Kaydedildi ✓"; setTimeout(() => b.textContent = "Kaydet", 1800);
+    const farkBtn = $("sabah-fark-kaydet");
+    if (farkBtn) farkBtn.addEventListener("click", () => {
+      Store.set("awa-" + bugun(), ($("sabah-fark-cevap").value || "").trim());  // ana uygulamayla ortak + Supabase senkron
+      farkBtn.textContent = "Kaydedildi ✓"; setTimeout(() => farkBtn.textContent = "Kaydet", 1800);
     });
     // Sabah saatlerinde (05:00–11:00) otomatik karşılama
     const h = new Date().getHours();
