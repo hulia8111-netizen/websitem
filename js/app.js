@@ -152,33 +152,33 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.kilitGuncelle) window.kilitGuncelle();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
-  navBtns.forEach(b => b.addEventListener("click", () => gotoView(b.dataset.view)));
+  navBtns.forEach(b => b.addEventListener("click", () => {
+    gunBilgiToast(b.dataset.view);   // kaç gün sonra açılır bilgisi (engellemez)
+    gotoView(b.dataset.view);
+  }));
   window.gotoView = gotoView;  // rehber.js için
 
   /* ====================================================
-     SEVİYE KİLİDİ — bölümler toplam gün eşiğinde açılır
-     Kartlar:3 · Meditasyon:7 · Günlük:21 · 30 gün: profil rozeti
+     SEVİYE BİLGİSİ — bölümler KİLİTLİ DEĞİL (her zaman açık).
+     Tıklayınca "kaç gün sonra açılır" bilgisi gösterilir (motivasyon).
+     30 gün: profil fotoğrafına İçsel Uyanış rozeti.
      ==================================================== */
   const KILIT = { kartlar: 3, meditasyon: 7, gunluk: 21 };
+  const KILIT_AD = { kartlar: "Kartlar", meditasyon: "Meditasyon", gunluk: "Günlük" };
   function toplamGun() { try { return streakBilgisi().toplam || 0; } catch (e) { return 0; } }
+  function gunBilgiToast(id) {
+    const N = KILIT[id]; if (!N) return;          // home/profil → bilgi yok
+    const t = toplamGun(); if (t >= N) return;     // hedefe ulaşıldı → bilgi gösterme
+    const kalan = N - t;
+    let el = document.getElementById("kilit-toast");
+    if (!el) { el = document.createElement("div"); el.id = "kilit-toast"; el.className = "kilit-toast"; document.body.appendChild(el); }
+    el.innerHTML = `🌙 <b>${KILIT_AD[id]}</b> bölümü <b>${N}.</b> günde açılır · <b>${kalan} gün</b> kaldı (şu an ${t} gün)`;
+    el.classList.remove("gor"); void el.offsetWidth; el.classList.add("gor");
+    clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove("gor"), 3200);
+  }
   function kilitGuncelle() {
-    const t = toplamGun();
-    Object.keys(KILIT).forEach(v => {
-      const gerek = KILIT[v];
-      const acik = t >= gerek;
-      const view = document.getElementById("view-" + v);
-      const btn = document.querySelector('.bottom-nav .nav-btn[data-view="' + v + '"]');
-      if (view) {
-        view.classList.toggle("kilitli", !acik);
-        const bilgi = view.querySelector(".vk-bilgi");
-        if (bilgi) bilgi.textContent = Math.min(t, gerek) + " / " + gerek + " gün";
-        const bar = view.querySelector(".vk-bar-dolu");
-        if (bar) bar.style.width = Math.min(100, Math.round(t / gerek * 100)) + "%";
-      }
-      if (btn) btn.classList.toggle("kilitli", !acik);
-    });
     const rozet = document.getElementById("profil-rozet");   // 30 gün → İçsel Uyanış rozeti
-    if (rozet) rozet.hidden = t < 30;
+    if (rozet) rozet.hidden = toplamGun() < 30;
   }
   window.kilitGuncelle = kilitGuncelle;
   kilitGuncelle();
