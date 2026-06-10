@@ -2096,3 +2096,15 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
 .streak-tier .st-acilim { display: block; font-size: 0.66rem; margin-top: 3px; color: var(--muted); line-height: 1.25; opacity: 0.85; }
 .streak-tier.kazanildi .st-acilim { color: var(--gold-soft); opacity: 1; }
 @media (max-width: 480px) { .streak-tier .st-acilim { font-size: 0.58rem; } }
+
+/* Kilitli sekme uyarısı (toast) */
+.kilit-toast {
+  position: fixed; left: 50%; bottom: 86px; transform: translate(-50%, 12px);
+  z-index: 9000; max-width: 88%; pointer-events: none;
+  background: linear-gradient(160deg, #2c1f57, #161033); color: var(--metin);
+  border: 1px solid rgba(243,217,140,0.35); border-radius: 14px;
+  padding: 0.7rem 1rem; font-size: 0.85rem; text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.45); opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.kilit-toast b { color: var(--gold-soft); }
+.kilit-toast.gor { opacity: 1; transform: translate(-50%, 0); }
