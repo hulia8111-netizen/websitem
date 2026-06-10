@@ -1,8 +1,8 @@
 /* ============================================================
-   streak.js — İstikrar serisi (streak) widget'ı.
-   Ardışık günlük kullanımı motive eder. Seri verisi visit-* (localStorage)
-   anahtarlarından streakBilgisi() ile okunur; gün atlanırsa sıfırlanır.
-   Görev tamamlama / ruh hali kaydı seriyi daha güçlü gösterir.
+   streak.js — Yolculuk / toplam aktif gün widget'ı.
+   Uygulamayı kullandığın TOPLAM (farklı) gün sayısını gösterir; asla
+   sıfırlanmaz, her yeni günde artar. Veri visit-* (localStorage) anahtarlarından
+   streakBilgisi().toplam ile okunur. Görev/ruh hali kaydı bonus gösterir.
    app.js'ten sonra yüklenir (bugünün ziyareti önce işlenir). Global: window.Streak
    ============================================================ */
 
@@ -23,13 +23,13 @@ const Streak = window.Streak = (() => {
     if (!widget || !DATA.streakSeviyeleri) return;
 
     const today = todayKey();
-    const g = streakBilgisi().guncel;           // gün atlanınca otomatik sıfırlanır
+    const g = streakBilgisi().toplam;           // TOPLAM aktif gün (asla sıfırlanmaz)
     const gorevTamam = !!Store.get("task-" + today);
     const moodVar = !!Store.get("mood-" + today);
 
     // Sayı + başlık
     $("streak-sayi").textContent = g > 0 ? g : "";
-    $("streak-baslik-metin").textContent = g > 0 ? "günlük seri 🔥" : "Seriye başla";
+    $("streak-baslik-metin").textContent = g > 0 ? "gün · toplam yolculuk ✨" : "Yolculuğa başla 🌙";
 
     // Motive edici mesaj
     let mesaj;
