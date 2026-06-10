@@ -2051,3 +2051,43 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
 .streak-tier .st-rozet { display: block; font-size: 1.05rem; margin: 1px 0; filter: grayscale(1) opacity(0.5); transition: filter 0.3s ease; }
 .streak-tier.kazanildi .st-rozet { filter: none; }
 @media (prefers-reduced-motion: reduce) { .odul-rozet, .odul-yildizlar span { animation: none; } }
+/* ============================================================
+   Seviye kilidi — bölüm açılımı (Kartlar/Meditasyon/Günlük) + profil rozeti
+   ============================================================ */
+.view-kilit { display: none; }
+.view.kilitli > .grid { display: none; }
+.view.kilitli > .view-kilit { display: flex; }
+.view-kilit {
+  min-height: 60vh; align-items: center; justify-content: center; text-align: center; padding: 2rem 1.2rem;
+}
+.vk-ic {
+  max-width: 340px; padding: 2rem 1.4rem; border-radius: 20px;
+  background: linear-gradient(160deg, #2c1f57 0%, #1a1340 55%, #110b2c 100%);
+  border: 1px solid rgba(243,217,140,0.25); box-shadow: inset 0 0 50px rgba(0,0,0,0.35);
+}
+.vk-ikon { font-size: 2.8rem; filter: drop-shadow(0 0 16px rgba(243,217,140,0.45)); animation: vkNabiz 2.6s ease-in-out infinite; }
+@keyframes vkNabiz { 0%,100% { transform: scale(1); opacity: .9; } 50% { transform: scale(1.08); opacity: 1; } }
+.vk-baslik { font-family: var(--font-baslik); color: var(--gold-soft); margin: 0.6rem 0 0.2rem; }
+.vk-mesaj { color: var(--metin); margin: 0 0 0.9rem; font-size: 0.95rem; }
+.vk-bar { height: 8px; border-radius: 99px; background: rgba(255,255,255,0.1); overflow: hidden; margin: 0 auto 0.4rem; }
+.vk-bar-dolu { display: block; height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, #f3d98c, #b38cff); transition: width 0.6s ease; }
+.vk-bilgi { color: var(--gold-soft); font-weight: 600; font-size: 0.85rem; margin: 0 0 0.8rem; }
+.vk-not { color: var(--muted); font-size: 0.78rem; line-height: 1.5; margin: 0; }
+
+/* Alt menüde kilitli sekme */
+.bottom-nav .nav-btn.kilitli { opacity: 0.55; position: relative; }
+.bottom-nav .nav-btn.kilitli::after {
+  content: "🔒"; position: absolute; top: 2px; right: 50%; transform: translateX(14px);
+  font-size: 0.72rem; filter: grayscale(0.2);
+}
+
+/* Profil fotoğrafı üzerinde İçsel Uyanış rozeti (30 gün) */
+.profil-avatar-sar { position: relative; }
+.profil-rozet {
+  position: absolute; top: -4px; right: -4px; z-index: 3;
+  width: 30px; height: 30px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-size: 1rem;
+  background: radial-gradient(circle at 35% 30%, #fff2cc, #f3d98c 60%, #d9a93a);
+  box-shadow: 0 0 14px rgba(243,217,140,0.7); border: 2px solid #1a1340;
+  animation: vkNabiz 3s ease-in-out infinite;
+}

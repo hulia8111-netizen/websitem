@@ -149,10 +149,39 @@ document.addEventListener("DOMContentLoaded", () => {
   function gotoView(id) {
     views.forEach(v => v.classList.toggle("active", v.id === "view-" + id));
     navBtns.forEach(b => b.classList.toggle("active", b.dataset.view === id));
+    if (window.kilitGuncelle) window.kilitGuncelle();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
   navBtns.forEach(b => b.addEventListener("click", () => gotoView(b.dataset.view)));
   window.gotoView = gotoView;  // rehber.js için
+
+  /* ====================================================
+     SEVİYE KİLİDİ — bölümler toplam gün eşiğinde açılır
+     Kartlar:3 · Meditasyon:7 · Günlük:21 · 30 gün: profil rozeti
+     ==================================================== */
+  const KILIT = { kartlar: 3, meditasyon: 7, gunluk: 21 };
+  function toplamGun() { try { return streakBilgisi().toplam || 0; } catch (e) { return 0; } }
+  function kilitGuncelle() {
+    const t = toplamGun();
+    Object.keys(KILIT).forEach(v => {
+      const gerek = KILIT[v];
+      const acik = t >= gerek;
+      const view = document.getElementById("view-" + v);
+      const btn = document.querySelector('.bottom-nav .nav-btn[data-view="' + v + '"]');
+      if (view) {
+        view.classList.toggle("kilitli", !acik);
+        const bilgi = view.querySelector(".vk-bilgi");
+        if (bilgi) bilgi.textContent = Math.min(t, gerek) + " / " + gerek + " gün";
+        const bar = view.querySelector(".vk-bar-dolu");
+        if (bar) bar.style.width = Math.min(100, Math.round(t / gerek * 100)) + "%";
+      }
+      if (btn) btn.classList.toggle("kilitli", !acik);
+    });
+    const rozet = document.getElementById("profil-rozet");   // 30 gün → İçsel Uyanış rozeti
+    if (rozet) rozet.hidden = t < 30;
+  }
+  window.kilitGuncelle = kilitGuncelle;
+  kilitGuncelle();
 
   /* Günün Kartı bildiriminden açılış → Kartlar ekranı */
   if (/[?&]kart=1\b/.test(location.search)) setTimeout(() => gotoView("kartlar"), 400);
