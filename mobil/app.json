@@ -2,6 +2,7 @@
   "expo": {
     "name": "Işığını Bul",
     "slug": "isigini-bul",
+    "owner": "hulia.turgut",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -23,6 +24,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "acbf06e4-8da6-40c8-88e7-ef8136491fd0"
+      }
     }
   }
 }

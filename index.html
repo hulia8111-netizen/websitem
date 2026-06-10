@@ -936,8 +936,19 @@
   <script src="js/bulut.js"></script>
   <script>
     if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("service-worker.js").catch(() => {});
+      // Yeni sürüm yayınlanınca uygulamayı OTOMATİK güncelle (tek seferde tazele)
+      var _ilkKontrolor = !!navigator.serviceWorker.controller;
+      var _yenilendi = false;
+      navigator.serviceWorker.addEventListener("controllerchange", function () {
+        if (_yenilendi) return;
+        _yenilendi = true;
+        if (_ilkKontrolor) location.reload();   // ilk kurulumda değil, sadece güncellemede
+      });
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("service-worker.js").then(function (reg) {
+          reg.update();                                   // hemen güncelleme kontrolü
+          setInterval(function () { reg.update(); }, 60000); // her dakika kontrol
+        }).catch(function () {});
       });
     }
   </script>
