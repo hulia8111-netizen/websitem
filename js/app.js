@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const kalan = N - t;
     let el = document.getElementById("kilit-toast");
     if (!el) { el = document.createElement("div"); el.id = "kilit-toast"; el.className = "kilit-toast"; document.body.appendChild(el); }
-    el.innerHTML = `🌙 <b>${KILIT_AD[id]}</b> bölümü <b>${N}.</b> günde açılır · <b>${kalan} gün</b> kaldı (şu an ${t} gün)`;
+    el.innerHTML = `🌙 <b>${KILIT_AD[id]}</b> · <b>${N}. gün</b> özel açılımına <b>${kalan} gün</b> kaldı (şu an ${t}/${N}) ✨`;
     el.classList.remove("gor"); void el.offsetWidth; el.classList.add("gor");
     clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove("gor"), 3200);
   }
