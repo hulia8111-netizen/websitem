@@ -2091,3 +2091,8 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
   box-shadow: 0 0 14px rgba(243,217,140,0.7); border: 2px solid #1a1340;
   animation: vkNabiz 3s ease-in-out infinite;
 }
+
+/* Seviye çipinde açılan özellik etiketi */
+.streak-tier .st-acilim { display: block; font-size: 0.66rem; margin-top: 3px; color: var(--muted); line-height: 1.25; opacity: 0.85; }
+.streak-tier.kazanildi .st-acilim { color: var(--gold-soft); opacity: 1; }
+@media (max-width: 480px) { .streak-tier .st-acilim { font-size: 0.58rem; } }

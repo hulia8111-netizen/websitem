@@ -402,10 +402,10 @@ const DATA = {
 
   /* Toplam aktif gün seviyeleri — her birinin rozeti + kazanılınca gösterilen özel ödül sözü. */
   streakSeviyeleri: [
-    { gun: 3,  ad: "Başlangıç",    rozet: "🌱", odul: "İlk tohumu ektin. Kendine ayırdığın bu küçük anlar, içindeki ışığı büyütüyor." },
-    { gun: 7,  ad: "İstikrar",     rozet: "🔥", odul: "Bir haftadır buradasın. İstikrar, ruhun sessiz ama en güçlü duasıdır." },
-    { gun: 21, ad: "Farkındalık",  rozet: "🌟", odul: "21 gün… Yeni bir alışkanlık, yeni bir sen. Farkındalığın her gün biraz daha derinleşiyor." },
-    { gun: 30, ad: "İçsel Uyanış", rozet: "🌙", odul: "Bir ay boyunca kendine sadık kaldın. İçindeki ışık artık daha parlak; sen uyanıyorsun ✨" }
+    { gun: 3,  ad: "Başlangıç",    rozet: "🌱", acilim: "🃏 Kartlar",       odul: "İlk tohumu ektin. Kendine ayırdığın bu küçük anlar, içindeki ışığı büyütüyor." },
+    { gun: 7,  ad: "İstikrar",     rozet: "🔥", acilim: "🎧 Meditasyon",    odul: "Bir haftadır buradasın. İstikrar, ruhun sessiz ama en güçlü duasıdır." },
+    { gun: 21, ad: "Farkındalık",  rozet: "🌟", acilim: "📖 Günlük",        odul: "21 gün… Yeni bir alışkanlık, yeni bir sen. Farkındalığın her gün biraz daha derinleşiyor." },
+    { gun: 30, ad: "İçsel Uyanış", rozet: "🌙", acilim: "🌙 Profil rozeti", odul: "Bir ay boyunca kendine sadık kaldın. İçindeki ışık artık daha parlak; sen uyanıyorsun ✨" }
   ],
 
   /* Kişisel Spiritüel Profil — ruhsal seviyeler (puana göre, index 0..5).

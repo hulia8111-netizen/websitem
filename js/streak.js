@@ -55,7 +55,7 @@ const Streak = window.Streak = (() => {
 
     // Seviye çipleri (3 / 7 / 21 / 30) + rozet
     $("streak-tier-serit").innerHTML = DATA.streakSeviyeleri.map(t =>
-      `<span class="streak-tier${g >= t.gun ? " kazanildi" : ""}"><b>${t.gun}</b><span class="st-rozet">${t.rozet || "✦"}</span>${t.ad}</span>`
+      `<span class="streak-tier${g >= t.gun ? " kazanildi" : ""}"><b>${t.gun}</b><span class="st-rozet">${t.rozet || "✦"}</span>${t.ad}${t.acilim ? `<span class="st-acilim">${t.acilim}</span>` : ""}</span>`
     ).join("");
 
     // Ödül kontrolü: yeni ulaşılan seviye varsa kutla (geçmişte ulaşılanlar sessizce işaretlenir)
