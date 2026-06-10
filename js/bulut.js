@@ -132,7 +132,7 @@ const Bulut = window.Bulut = (() => {
     durumCiz();
   }
   function softTazele() {
-    ["Profil", "Enerji", "Streak", "Kader", "Cakra", "EnerjiTipi", "Gorevler", "Hafta"].forEach(m => {
+    ["RuhHali", "Profil", "Enerji", "Streak", "Cakra", "EnerjiTipi", "Gorevler", "Hafta"].forEach(m => {
       try { if (window[m] && window[m].ciz) window[m].ciz(); } catch (e) {}
     });
   }

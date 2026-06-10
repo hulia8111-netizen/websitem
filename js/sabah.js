@@ -86,7 +86,7 @@ const Sabah = window.Sabah = (() => {
           Store.set("mood-" + bugun(), m.key);
           moodKutu.querySelectorAll(".gr-mood-btn").forEach(x => x.classList.remove("aktif"));
           b.classList.add("aktif"); yap(id);
-          ["Enerji", "Bahce", "Profil", "Cakra", "Kader", "EnerjiTipi"].forEach(md => { if (window[md]) window[md].ciz(); });
+          if (window.tazeleDurum) window.tazeleDurum();   // ana sayfa + enerji + aura + haftalık hepsi yenilensin
         });
         moodKutu.appendChild(b);
       });

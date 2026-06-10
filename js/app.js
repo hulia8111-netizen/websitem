@@ -192,16 +192,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!seciliMood) { flash("#mood-bilgi", "Önce bir ruh hali seç"); return; }
     Store.set("mood-" + today, seciliMood);   // gün başına tek kayıt; tekrar = güncelle
     flash("#mood-bilgi", "Kaydedildi ✓");
-    cizMoodSerit();
-    cizMoodIstatistik();
     cizRozetler();
-    if (window.Streak) window.Streak.ciz();
-    if (window.Bahce) window.Bahce.ciz();
-    if (window.Enerji) window.Enerji.ciz();
-    if (window.Profil) window.Profil.ciz();
-    if (window.EnerjiTipi) window.EnerjiTipi.ciz();
-    if (window.Cakra) window.Cakra.ciz();
-    if (window.Nefes) window.Nefes.girisGuncelle();
+    if (window.tazeleDurum) window.tazeleDurum();   // tüm bağımlı bölümleri tek noktadan tazele
   });
 
   /* Son 7 gün — yatay mini kartlar (gün adı + ikon) */
@@ -247,6 +239,23 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="mood-ist-mesaj">${sik.mesaj}</div>
       <div class="mood-ist-alt">${kayitlar.length}/7 gün kayıt · Haftalık ruh hali ortalaması: <strong>${ortMood.label}</strong> (${ort.toFixed(1)}/5)</div>`;
   }
+
+  /* Dışarıdan (sabah ritüeli, bulut senkron) ana sayfa ruh hali bölümünü yenile */
+  window.RuhHali = {
+    ciz() {
+      const k = moodKeyNormalize(Store.get("mood-" + todayKey()));
+      if (k) seciliMood = k;
+      isaretleMood(); cizMoodSerit(); cizMoodIstatistik();
+    }
+  };
+  /* Ruh hali / günlük veri değişince tüm bağımlı bölümleri TEK noktadan tazele.
+     (Ana sayfa ruh hali UI'ı, enerji, aura/çakra, profil, streak, bahçe, haftalık…) */
+  window.tazeleDurum = function () {
+    ["RuhHali", "Enerji", "Cakra", "Profil", "Streak", "Bahce", "EnerjiTipi", "Hafta"].forEach(m => {
+      try { if (window[m] && window[m].ciz) window[m].ciz(); } catch (e) {}
+    });
+    try { if (window.Nefes && window.Nefes.girisGuncelle) window.Nefes.girisGuncelle(); } catch (e) {}
+  };
 
   isaretleMood();
   cizMoodSerit();
