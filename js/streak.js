@@ -53,10 +53,13 @@ const Streak = window.Streak = (() => {
       $("streak-seviye-bilgi").textContent = `${akt ? akt.ad : ""} · En yüksek seviye ✦`;
     }
 
-    // Seviye çipleri (3 / 7 / 21 / 30)
+    // Seviye çipleri (3 / 7 / 21 / 30) + rozet
     $("streak-tier-serit").innerHTML = DATA.streakSeviyeleri.map(t =>
-      `<span class="streak-tier${g >= t.gun ? " kazanildi" : ""}"><b>${t.gun}</b>${t.ad}</span>`
+      `<span class="streak-tier${g >= t.gun ? " kazanildi" : ""}"><b>${t.gun}</b><span class="st-rozet">${t.rozet || "✦"}</span>${t.ad}</span>`
     ).join("");
+
+    // Ödül kontrolü: yeni ulaşılan seviye varsa kutla (geçmişte ulaşılanlar sessizce işaretlenir)
+    odulKontrol(g);
 
     // Görev / ruh hali bonus durumu
     widget.classList.toggle("gorev-tamam", gorevTamam);
@@ -69,6 +72,45 @@ const Streak = window.Streak = (() => {
     bonus.hidden = notlar.length === 0;
   }
 
-  document.addEventListener("DOMContentLoaded", ciz);
+  /* ---------- Seviye ödülü ---------- */
+  function odulKontrol(g) {
+    const alinan = Store.get("streak-odul", null);
+    const ulasilan = (DATA.streakSeviyeleri || []).filter(t => g >= t.gun);
+    if (alinan === null) {
+      // İlk çalıştırma: geçmişte zaten ulaşılmış seviyeleri sessizce işaretle (retro kutlama yok)
+      const ilk = {}; ulasilan.forEach(t => ilk[t.gun] = true);
+      Store.set("streak-odul", ilk);
+      return;
+    }
+    const yeni = ulasilan.filter(t => !alinan[t.gun]);
+    if (!yeni.length) return;
+    yeni.forEach(t => alinan[t.gun] = true);
+    Store.set("streak-odul", alinan);
+    odulGoster(yeni[yeni.length - 1]);   // en yüksek yeni seviyeyi kutla
+  }
+  function odulGoster(t) {
+    const pop = $("odul-popup"); if (!pop) return;
+    $("odul-rozet").textContent = t.rozet || "✨";
+    $("odul-ad").textContent = t.ad;
+    $("odul-mesaj").textContent = t.odul || "";
+    const yk = $("odul-yildizlar");
+    if (yk) {
+      yk.innerHTML = Array.from({ length: 16 }, () => "<span></span>").join("");
+      [...yk.children].forEach(s => {
+        s.style.left = (Math.random() * 100).toFixed(1) + "%";
+        s.style.top = (Math.random() * 100).toFixed(1) + "%";
+        s.style.animationDelay = (Math.random() * 0.7).toFixed(2) + "s";
+      });
+    }
+    pop.hidden = false; pop.classList.remove("gor"); void pop.offsetWidth; pop.classList.add("gor");
+  }
+  function odulKapat() { const p = $("odul-popup"); if (!p) return; p.classList.remove("gor"); setTimeout(() => { p.hidden = true; }, 350); }
+
+  function baglan() {
+    const k = $("odul-kapat"); if (k) k.addEventListener("click", odulKapat);
+    const pop = $("odul-popup"); if (pop) pop.addEventListener("click", e => { if (e.target === pop) odulKapat(); });
+    ciz();
+  }
+  document.addEventListener("DOMContentLoaded", baglan);
   return { ciz };
 })();

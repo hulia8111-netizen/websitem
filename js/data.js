@@ -400,12 +400,12 @@ const DATA = {
     ]
   },
 
-  /* İstikrar serisi (streak) seviyeleri — ardışık gün sayısına göre. */
+  /* Toplam aktif gün seviyeleri — her birinin rozeti + kazanılınca gösterilen özel ödül sözü. */
   streakSeviyeleri: [
-    { gun: 3,  ad: "Başlangıç" },
-    { gun: 7,  ad: "İstikrar" },
-    { gun: 21, ad: "Farkındalık" },
-    { gun: 30, ad: "İçsel Uyanış" }
+    { gun: 3,  ad: "Başlangıç",    rozet: "🌱", odul: "İlk tohumu ektin. Kendine ayırdığın bu küçük anlar, içindeki ışığı büyütüyor." },
+    { gun: 7,  ad: "İstikrar",     rozet: "🔥", odul: "Bir haftadır buradasın. İstikrar, ruhun sessiz ama en güçlü duasıdır." },
+    { gun: 21, ad: "Farkındalık",  rozet: "🌟", odul: "21 gün… Yeni bir alışkanlık, yeni bir sen. Farkındalığın her gün biraz daha derinleşiyor." },
+    { gun: 30, ad: "İçsel Uyanış", rozet: "🌙", odul: "Bir ay boyunca kendine sadık kaldın. İçindeki ışık artık daha parlak; sen uyanıyorsun ✨" }
   ],
 
   /* Kişisel Spiritüel Profil — ruhsal seviyeler (puana göre, index 0..5).

@@ -2027,3 +2027,27 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
 .defter-sifre-revize input { width: 100%; box-sizing: border-box; background: rgba(255,255,255,0.06); border: 1px solid rgba(243,217,140,0.3); color: var(--metin); border-radius: 11px; padding: 0.55rem 0.8rem; font-family: inherit; font-size: 0.95rem; }
 .defter-sifre-revize input:focus { outline: none; border-color: var(--gold-soft); box-shadow: 0 0 0 3px rgba(243,217,140,0.18); }
 .dsr-btnlar { display: flex; gap: 0.5rem; justify-content: center; }
+
+/* ============================================================
+   Seviye Odulu kutlama popup (level reward)
+   ============================================================ */
+.odul-popup { position: fixed; inset: 0; z-index: 99990; display: flex; align-items: center; justify-content: center;
+  background: rgba(8,6,20,0.72); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); opacity: 0; transition: opacity 0.35s ease; padding: 1.2rem; }
+.odul-popup.gor { opacity: 1; }
+.odul-ic { position: relative; max-width: 360px; width: 100%; text-align: center; padding: 1.8rem 1.4rem 1.5rem; border-radius: 20px;
+  background: radial-gradient(120% 90% at 50% 25%, #2c1f57 0%, #1a1340 55%, #110b2c 100%);
+  border: 1px solid rgba(243,217,140,0.35); box-shadow: 0 20px 60px rgba(0,0,0,0.5), inset 0 0 50px rgba(179,140,255,0.12);
+  transform: scale(0.86); transition: transform 0.4s cubic-bezier(.2,.9,.3,1.2); }
+.odul-popup.gor .odul-ic { transform: scale(1); }
+.odul-rozet { font-size: 3.6rem; line-height: 1; filter: drop-shadow(0 0 20px rgba(243,217,140,0.6)); animation: odulRozet 2.6s ease-in-out infinite; }
+@keyframes odulRozet { 0%,100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-8px) rotate(4deg); } }
+.odul-seviye-et { margin-top: 0.6rem; font-size: 0.78rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-soft); opacity: 0.9; }
+.odul-ad { font-family: var(--font-baslik); font-size: 1.7rem; margin: 0.15rem 0 0.6rem;
+  background: linear-gradient(120deg, #fff0c2, #f3d98c, #e9c46a); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.odul-mesaj { color: rgba(255,255,255,0.85); font-size: 0.98rem; line-height: 1.6; margin: 0 0 1.2rem; font-family: "Playfair Display", serif; font-style: italic; }
+.odul-yildizlar span { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: #f3d98c; opacity: 0; animation: odulYildiz 1.8s ease-in-out infinite; }
+.odul-yildizlar span:nth-child(odd) { background: #b38cff; }
+@keyframes odulYildiz { 0% { opacity: 0; transform: scale(0.4); } 50% { opacity: 1; transform: scale(1.4); } 100% { opacity: 0; transform: scale(0.4); } }
+.streak-tier .st-rozet { display: block; font-size: 1.05rem; margin: 1px 0; filter: grayscale(1) opacity(0.5); transition: filter 0.3s ease; }
+.streak-tier.kazanildi .st-rozet { filter: none; }
+@media (prefers-reduced-motion: reduce) { .odul-rozet, .odul-yildizlar span { animation: none; } }
