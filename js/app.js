@@ -152,11 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.kilitGuncelle) window.kilitGuncelle();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
-  navBtns.forEach(b => b.addEventListener("click", () => {
-    const id = b.dataset.view;
-    if (KILIT[id] && toplamGun() < KILIT[id]) { kilitUyari(id); return; }  // kilitli → girme, uyar
-    gotoView(id);
-  }));
+  navBtns.forEach(b => b.addEventListener("click", () => gotoView(b.dataset.view)));
   window.gotoView = gotoView;  // rehber.js için
 
   /* ====================================================
@@ -186,17 +182,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   window.kilitGuncelle = kilitGuncelle;
   kilitGuncelle();
-
-  /* Kilitli sekmeye tıklayınca: girme, kısa uyarı göster */
-  const KILIT_AD = { kartlar: "Kartlar", meditasyon: "Meditasyon", gunluk: "Günlük" };
-  function kilitUyari(id) {
-    const gerek = KILIT[id], t = toplamGun();
-    let el = document.getElementById("kilit-toast");
-    if (!el) { el = document.createElement("div"); el.id = "kilit-toast"; el.className = "kilit-toast"; document.body.appendChild(el); }
-    el.innerHTML = `🔒 <b>${KILIT_AD[id] || ""}</b> ${gerek}. günde açılır · ${t}/${gerek} gün`;
-    el.classList.remove("gor"); void el.offsetWidth; el.classList.add("gor");
-    clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove("gor"), 2800);
-  }
 
   /* Günün Kartı bildiriminden açılış → Kartlar ekranı */
   if (/[?&]kart=1\b/.test(location.search)) setTimeout(() => gotoView("kartlar"), 400);
