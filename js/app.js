@@ -152,10 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.kilitGuncelle) window.kilitGuncelle();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
-  navBtns.forEach(b => b.addEventListener("click", () => {
-    gunBilgiToast(b.dataset.view);   // kaç gün sonra açılır bilgisi (engellemez)
-    gotoView(b.dataset.view);
-  }));
+  navBtns.forEach(b => b.addEventListener("click", () => gotoView(b.dataset.view)));
   window.gotoView = gotoView;  // rehber.js için
 
   /* ====================================================
@@ -166,19 +163,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const KILIT = { kartlar: 3, meditasyon: 7, gunluk: 21 };
   const KILIT_AD = { kartlar: "Kartlar", meditasyon: "Meditasyon", gunluk: "Günlük" };
   function toplamGun() { try { return streakBilgisi().toplam || 0; } catch (e) { return 0; } }
-  function gunBilgiToast(id) {
-    const N = KILIT[id]; if (!N) return;          // home/profil → bilgi yok
-    const t = toplamGun(); if (t >= N) return;     // hedefe ulaşıldı → bilgi gösterme
-    const kalan = N - t;
-    let el = document.getElementById("kilit-toast");
-    if (!el) { el = document.createElement("div"); el.id = "kilit-toast"; el.className = "kilit-toast"; document.body.appendChild(el); }
-    el.innerHTML = `🌙 <b>${KILIT_AD[id]}</b> · <b>${N}. gün</b> özel açılımına <b>${kalan} gün</b> kaldı (şu an ${t}/${N}) ✨`;
-    el.classList.remove("gor"); void el.offsetWidth; el.classList.add("gor");
-    clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove("gor"), 3200);
-  }
+  // Bölümler kilitli DEĞİL. Henüz seviyesine ulaşılmadıysa sayfanın içinde
+  // "kaçıncı seviye + kaç gün kaldı" bilgi şeridi gösterilir; ulaşılınca gizlenir.
   function kilitGuncelle() {
+    const t = toplamGun();
+    Object.keys(KILIT).forEach(v => {
+      const N = KILIT[v];
+      const bilgi = document.getElementById("bilgi-" + v);
+      if (!bilgi) return;
+      if (t >= N) { bilgi.hidden = true; return; }          // açılım geldi → şerit yok
+      bilgi.hidden = false;
+      const kalan = N - t, ad = bilgi.dataset.ad || "";
+      const metin = bilgi.querySelector(".bb-metin");
+      if (metin) metin.innerHTML = `<b>${ad}</b> seviyesi · <b>${KILIT_AD[v]}</b> ${N}. günde özel açılım · <b>${kalan} gün</b> kaldı (${t}/${N})`;
+      const bar = bilgi.querySelector(".bb-bar-dolu");
+      if (bar) bar.style.width = Math.min(100, Math.round(t / N * 100)) + "%";
+    });
     const rozet = document.getElementById("profil-rozet");   // 30 gün → İçsel Uyanış rozeti
-    if (rozet) rozet.hidden = toplamGun() < 30;
+    if (rozet) rozet.hidden = t < 30;
   }
   window.kilitGuncelle = kilitGuncelle;
   kilitGuncelle();

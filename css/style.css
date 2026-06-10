@@ -2108,3 +2108,18 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
 }
 .kilit-toast b { color: var(--gold-soft); }
 .kilit-toast.gor { opacity: 1; transform: translate(-50%, 0); }
+
+/* Bölüm içi seviye bilgi şeridi (kilit YOK — sadece bilgi) */
+.bolum-bilgi {
+  display: flex; align-items: center; gap: 0.7rem;
+  margin: 0 0 0.9rem; padding: 0.7rem 0.9rem; border-radius: 14px;
+  background: linear-gradient(160deg, rgba(44,31,87,0.7), rgba(26,19,64,0.7));
+  border: 1px solid rgba(243,217,140,0.28);
+}
+.bolum-bilgi[hidden] { display: none; }
+.bolum-bilgi .bb-ikon { font-size: 1.5rem; filter: drop-shadow(0 0 10px rgba(243,217,140,0.4)); }
+.bolum-bilgi .bb-ic { flex: 1; min-width: 0; }
+.bolum-bilgi .bb-metin { font-size: 0.82rem; color: var(--metin); line-height: 1.4; }
+.bolum-bilgi .bb-metin b { color: var(--gold-soft); }
+.bolum-bilgi .bb-bar { height: 6px; border-radius: 99px; background: rgba(255,255,255,0.1); overflow: hidden; margin-top: 0.45rem; }
+.bolum-bilgi .bb-bar-dolu { display: block; height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, #f3d98c, #b38cff); transition: width 0.6s ease; }
