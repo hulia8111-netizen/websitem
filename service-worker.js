@@ -3,7 +3,7 @@
    Sürüm değişince CACHE adını artır ki eski dosyalar temizlensin.
    ============================================================ */
 
-const CACHE = "isigini-bul-v90";
+const CACHE = "isigini-bul-v91";
 const KABUK = [
   ".",
   "index.html",
@@ -58,6 +58,9 @@ self.addEventListener("activate", e => {
     caches.keys()
       .then(adlar => Promise.all(adlar.filter(a => a !== CACHE).map(a => caches.delete(a))))
       .then(() => self.clients.claim())
+      // Yeni sürüm devreye girince açık ekranları otomatik tazele (eski sürüm takılmasın)
+      .then(() => self.clients.matchAll({ type: "window" }))
+      .then(clients => clients.forEach(c => { try { c.navigate(c.url); } catch (e) {} }))
   );
 });
 

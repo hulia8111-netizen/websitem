@@ -44,6 +44,8 @@ export default function App() {
         allowsInlineMediaPlayback
         mediaPlaybackRequiresUserAction={false}
         setSupportMultipleWindows={false}
+        cacheEnabled={false}
+        cacheMode="LOAD_NO_CACHE"
       />
       {yukleniyor && (
         <View style={styles.yukleyici} pointerEvents="none">
