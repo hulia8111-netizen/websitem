@@ -91,6 +91,17 @@ const DATA = {
     { baslik: "Uzak",                img: "Görsellerim/UZAK.jpg",                  mesaj: "Sana iyi gelmeyenden uzaklaş; enerjini koru." },
     { baslik: "Üretim",              img: "Görsellerim/ÜRETİM.jpg",                mesaj: "Yaratıcılığın akıyor; üret, paylaş, çoğalt." }
   ],
+
+  /* Rehberin Sesinden — İstikrar (7 gün) seviyesinde açılan özel ödül meditasyonları.
+     ses: "Meditasyon seslerim/" klasöründeki mp3 (sonra eklenecek). Yeni ekleme: bu diziye satır ekle. */
+  rehberMeditasyonlari: [
+    { id: "rm1", ad: "İçsel Huzur Yolculuğu",   aciklama: "Rehberin sesiyle derin bir sükûnete in.",        ses: "Meditasyon seslerim/1.mp3" },
+    { id: "rm2", ad: "Bırakma & Arınma",        aciklama: "Seni yoran her şeyi nefesinle bırak.",          ses: "Meditasyon seslerim/2.mp3" },
+    { id: "rm3", ad: "Bolluk Bilinci",          aciklama: "Bolluğa açılan içsel kapıları arala.",          ses: "Meditasyon seslerim/3.mp3" },
+    { id: "rm4", ad: "Topraklanma & Güven",     aciklama: "Köklen, dengelen ve güvende hisset.",           ses: "Meditasyon seslerim/4.mp3" },
+    { id: "rm5", ad: "Şükran ve Işık",          aciklama: "Kalbini şükranla doldur, ışığını büyüt.",       ses: "Meditasyon seslerim/5.mp3" }
+  ],
+
   /* Günün Kartı hatırlatma bildirimi — rastgele dönüşümlü mesajlar */
   kartBildirimMesajlari: [
     "✨ Bugünün mesajı seni bekliyor. Kartını çekmek ister misin?",
