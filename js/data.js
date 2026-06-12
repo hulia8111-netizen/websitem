@@ -99,7 +99,7 @@ const DATA = {
     { id: "rm2", ad: "Bırakma & Arınma",        aciklama: "Seni yoran her şeyi nefesinle bırak.",          ses: "Meditasyon seslerim/birakma-ve-arinma.m4a" },
     { id: "rm3", ad: "Bolluk Bilinci",          aciklama: "Bolluğa açılan içsel kapıları arala.",          ses: "Meditasyon seslerim/bolluk-bilinci.m4a" },
     { id: "rm4", ad: "Topraklanma & Güven",     aciklama: "Köklen, dengelen ve güvende hisset.",           ses: "Meditasyon seslerim/topraklanma-ve-guven.m4a" },
-    { id: "rm5", ad: "Şükran ve Işık",          aciklama: "Kalbini şükranla doldur, ışığını büyüt.",       ses: "Meditasyon seslerim/5.mp3" }
+    { id: "rm5", ad: "Şükran ve Işık",          aciklama: "Kalbini şükranla doldur, ışığını büyüt.",       ses: "Meditasyon seslerim/sukran-ve-isik.m4a" }
   ],
 
   /* Günün Kartı hatırlatma bildirimi — rastgele dönüşümlü mesajlar */
