@@ -1,9 +1,9 @@
-/* ============================================================
-   service-worker.js — Uygulama kabuğunu cache'ler (offline + PWA).
-   Sürüm değişince CACHE adını artır ki eski dosyalar temizlensin.
+﻿/* ============================================================
+   service-worker.js â€” Uygulama kabuÄŸunu cache'ler (offline + PWA).
+   SÃ¼rÃ¼m deÄŸiÅŸince CACHE adÄ±nÄ± artÄ±r ki eski dosyalar temizlensin.
    ============================================================ */
 
-const CACHE = "isigini-bul-v93";
+const CACHE = "isigini-bul-v94";
 const KABUK = [
   ".",
   "index.html",
@@ -58,7 +58,7 @@ self.addEventListener("activate", e => {
     caches.keys()
       .then(adlar => Promise.all(adlar.filter(a => a !== CACHE).map(a => caches.delete(a))))
       .then(() => self.clients.claim())
-      // Yeni sürüm devreye girince açık ekranları otomatik tazele (eski sürüm takılmasın)
+      // Yeni sÃ¼rÃ¼m devreye girince aÃ§Ä±k ekranlarÄ± otomatik tazele (eski sÃ¼rÃ¼m takÄ±lmasÄ±n)
       .then(() => self.clients.matchAll({ type: "window" }))
       .then(clients => clients.forEach(c => { try { c.navigate(c.url); } catch (e) {} }))
   );
@@ -69,9 +69,9 @@ self.addEventListener("fetch", e => {
   if (istek.method !== "GET") return;
   const ayniKaynak = istek.url.startsWith(self.location.origin);
 
-  // Network-first + tarayıcı önbelleğini ATLA (no-store): aynı kaynaktaki
-  // dosyalar her zaman GitHub'dan taze gelir → kod değişiklikleri anında görünür,
-  // eski sürüm önbellekte takılı kalmaz. Offline'da SW cache'ten sunulur.
+  // Network-first + tarayÄ±cÄ± Ã¶nbelleÄŸini ATLA (no-store): aynÄ± kaynaktaki
+  // dosyalar her zaman GitHub'dan taze gelir â†’ kod deÄŸiÅŸiklikleri anÄ±nda gÃ¶rÃ¼nÃ¼r,
+  // eski sÃ¼rÃ¼m Ã¶nbellekte takÄ±lÄ± kalmaz. Offline'da SW cache'ten sunulur.
   const ag = ayniKaynak ? fetch(istek.url, { cache: "no-store" }) : fetch(istek);
   e.respondWith(
     ag.then(yanit => {
@@ -84,7 +84,7 @@ self.addEventListener("fetch", e => {
   );
 });
 
-/* Bildirime tıklayınca uygulamayı aç/odakla ve Günün Kartı ekranına git */
+/* Bildirime tÄ±klayÄ±nca uygulamayÄ± aÃ§/odakla ve GÃ¼nÃ¼n KartÄ± ekranÄ±na git */
 self.addEventListener("notificationclick", e => {
   e.notification.close();
   const url = (e.notification.data && e.notification.data.url) || "./?kart=1";
@@ -95,9 +95,9 @@ self.addEventListener("notificationclick", e => {
   })());
 });
 
-/* Web Push (ileride sunucudan gönderim için hazır) */
+/* Web Push (ileride sunucudan gÃ¶nderim iÃ§in hazÄ±r) */
 self.addEventListener("push", e => {
-  let v = { title: "Günün Kartı 🔮", body: "Bugünün kartını çekmeyi unutma ✨", url: "./?kart=1" };
+  let v = { title: "GÃ¼nÃ¼n KartÄ± ğŸ”®", body: "BugÃ¼nÃ¼n kartÄ±nÄ± Ã§ekmeyi unutma âœ¨", url: "./?kart=1" };
   try { if (e.data) v = Object.assign(v, e.data.json()); } catch (x) {}
   e.waitUntil(self.registration.showNotification(v.title, { body: v.body, icon: "icon.svg", badge: "icon.svg", tag: "gunun-karti", data: { url: v.url } }));
 });

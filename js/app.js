@@ -297,10 +297,13 @@ document.addEventListener("DOMContentLoaded", () => {
      ==================================================== */
   const kartAlani = $("#kart-alani");
   const kartCekBtn = $("#kart-cek");
-  const kartTekrarBtn = $("#kart-tekrar");
+  const kart2Alani = $("#kart2-alani");
+  const kart2CekBtn = $("#kart2-cek");
+  // İkinci kart, Başlangıç (3 gün) seviyesine ulaşınca ÖDÜL olarak açılır
+  const IKINCI_KART_GUN = (DATA.streakSeviyeleri && DATA.streakSeviyeleri[0] && DATA.streakSeviyeleri[0].gun) || 3;
+  function ikinciKartAcik() { return toplamGun() >= IKINCI_KART_GUN; }
 
-  const kartLimitNot = $("#kart-limit-not");
-  function kartEkle(kart) {
+  function kartEkle(hedef, kart) {
     const wrap = document.createElement("div");
     wrap.className = "kart-icerik";
     const cerceve = document.createElement("div");
@@ -315,33 +318,66 @@ document.addEventListener("DOMContentLoaded", () => {
     const p = document.createElement("p");
     p.textContent = kart.mesaj;
     wrap.append(cerceve, h, p);
-    kartAlani.appendChild(wrap);
+    hedef.appendChild(wrap);
   }
-  // Günde en fazla 2 kart: card-<gün> (1.) + card2-<gün> (2.)
   function gosterKartlar() {
     const idx1 = Store.get("card-" + today);
     const idx2 = Store.get("card2-" + today);
-    let sayi = 0;
+
+    // 1. kart (her zaman, günde 1)
     kartAlani.innerHTML = "";
-    if (idx1 !== null && DATA.kartlar[idx1]) { kartEkle(DATA.kartlar[idx1]); sayi++; }
-    if (idx2 !== null && DATA.kartlar[idx2]) { kartEkle(DATA.kartlar[idx2]); sayi++; }
-    if (sayi === 0) kartAlani.innerHTML = `<div class="kart-placeholder">Kartını çekmek için butona dokun</div>`;
-    kartCekBtn.hidden = sayi >= 1;          // ilk karttan sonra gizle
-    kartTekrarBtn.hidden = sayi !== 1;      // tam 1 kart varken "+1 Kart Daha"
-    if (kartLimitNot) kartLimitNot.hidden = sayi < 2;
+    if (idx1 !== null && DATA.kartlar[idx1]) kartEkle(kartAlani, DATA.kartlar[idx1]);
+    else kartAlani.innerHTML = `<div class="kart-placeholder">Kartını çekmek için butona dokun</div>`;
+    kartCekBtn.hidden = idx1 !== null;
+
+    // 2. kart (ödül — Başlangıç seviyesinde açılır)
+    kart2Alani.innerHTML = "";
+    if (!ikinciKartAcik()) {
+      // KİLİTLİ DEĞİL ama henüz seviye gelmedi → teaser (kilit ikonu YOK)
+      const kalan = Math.max(1, IKINCI_KART_GUN - toplamGun());
+      kart2Alani.innerHTML = `
+        <div class="kart2-teaser">
+          <div class="k2-ikon">⚡</div>
+          <div class="k2-ad">Enerji Dönümü</div>
+          <p class="k2-mesaj">Başlangıç seviyesine ulaşınca açılacak</p>
+          <p class="k2-kalan">🌱 Başlangıç seviyesine <b>${kalan} gün</b> kaldı</p>
+        </div>`;
+      kart2CekBtn.hidden = true;
+    } else if (idx2 !== null && DATA.kartlar[idx2]) {
+      // bugünün ödül kartı çekilmiş
+      kartEkle(kart2Alani, DATA.kartlar[idx2]);
+      kart2CekBtn.hidden = true;
+    } else {
+      // açık ama bugün henüz çekilmemiş
+      if (!Store.get("card2-acildi")) {
+        // ilk kez açıldı → kutlama
+        kart2Alani.innerHTML = `
+          <div class="kart2-acildi">
+            <div class="k2-tik">✅</div>
+            <div class="k2-ad">İkinci Kart Açıldı</div>
+            <p class="k2-mesaj">Başlangıç seviyesini geçtin — ödül kartın hazır ✨</p>
+          </div>`;
+        Store.set("card2-acildi", true);
+      } else {
+        kart2Alani.innerHTML = `<div class="kart-placeholder">⚡ Enerji Dönümü kartını çekmek için butona dokun</div>`;
+      }
+      kart2CekBtn.hidden = false;
+    }
   }
   function kartCek() {
     if (Store.get("card-" + today) === null) Store.set("card-" + today, Math.floor(Math.random() * DATA.kartlar.length));
     gosterKartlar();
   }
   function ikinciKart() {
-    if (Store.get("card-" + today) !== null && Store.get("card2-" + today) === null)
+    if (!ikinciKartAcik()) return;
+    if (Store.get("card2-" + today) === null)
       Store.set("card2-" + today, Math.floor(Math.random() * DATA.kartlar.length));
     gosterKartlar();
   }
   gosterKartlar();
+  window.kartlariTazele = gosterKartlar;   // seviye değişince dışarıdan tazelemek için
   kartCekBtn.addEventListener("click", kartCek);
-  kartTekrarBtn.addEventListener("click", ikinciKart);
+  kart2CekBtn.addEventListener("click", ikinciKart);
 
   /* 5. GÜNÜN RİTÜELİ — js/rituel.js modülünde yönetilir (task-<gün> entegrasyonu orada). */
 
