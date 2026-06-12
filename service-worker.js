@@ -1,9 +1,9 @@
-﻿/* ============================================================
+/* ============================================================
    service-worker.js â€” Uygulama kabuÄŸunu cache'ler (offline + PWA).
    SÃ¼rÃ¼m deÄŸiÅŸince CACHE adÄ±nÄ± artÄ±r ki eski dosyalar temizlensin.
    ============================================================ */
 
-const CACHE = "isigini-bul-v102";
+const CACHE = "isigini-bul-v103";
 const KABUK = [
   ".",
   "index.html",

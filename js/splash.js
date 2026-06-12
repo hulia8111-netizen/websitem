@@ -1,14 +1,16 @@
 /* ============================================================
    splash.js — Açılış (Splash Screen) deneyimi
    ------------------------------------------------------------
-   Akış: tam ekran açılış → logo + "Işığını Bul" + Word'den
-   rastgele bir ilham cümlesi (zarif fade-in) → 5 sn ekranda →
-   fade-out → ana sayfa görünür. Hiçbir buton/etkileşim yok.
+   Akış: tam ekran açılış → ÖNCE simge + "Işığını Bul" (6 sn tek
+   başına) → SONRA altında Word'den rastgele ilham cümlesi belirir
+   ve 15 sn ekranda kalır (rahatça okunsun) → fade-out → ana sayfa.
+   Hiçbir buton/etkileşim yok.
    Cümleler window.ACILIS_CUMLELERI dizisinden gelir
    (acilis-cumleler.js → Word dosyasından üretilir).
    ============================================================ */
 (function () {
-  var TOPLAM = 5000;        // açılış cümlesi ekranda toplam kalma süresi (ms) = 5 sn
+  var SIMGE_SURE = 6000;    // simge + "Işığını Bul" tek başına ekranda (ms) = 6 sn
+  var MESAJ_SURE = 15000;   // mesaj belirdikten sonra ekranda kalma süresi (ms) = 15 sn
   var FADEOUT_SURE = 800;   // kapanış solması (ms)
   var GECMIS_ANAHTAR = "kdm_acilis-gecmis";
 
@@ -39,14 +41,19 @@
     var sozEl = document.getElementById("splash-soz");
     if (sozEl) sozEl.textContent = rastgeleCumle();
 
-    // simge + isim + cümle hemen ard arda fade-in olsun
+    // 1) simge + "Işığını Bul" hemen fade-in olur (mesaj henüz görünmez)
     requestAnimationFrame(function () { splash.classList.add("soz-gir"); });
 
-    // açılıştan itibaren 5 sn → fade-out → ana sayfa
+    // 2) 6 sn sonra mesaj alttan yumuşak belirir
+    setTimeout(function () {
+      splash.classList.add("soz-goster");
+    }, SIMGE_SURE);
+
+    // 3) mesaj 15 sn ekranda kaldıktan sonra → fade-out → ana sayfa
     setTimeout(function () {
       splash.classList.add("kapali");
       setTimeout(function () { splash.style.display = "none"; }, FADEOUT_SURE);
-    }, TOPLAM);
+    }, SIMGE_SURE + MESAJ_SURE);
   }
 
   if (document.readyState === "loading") {
