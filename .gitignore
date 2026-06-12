@@ -7,3 +7,6 @@ Ses dosyalarım/
 # OS
 Thumbs.db
 .DS_Store
+
+.ffmpeg-tmp/
+supabase/.temp/
