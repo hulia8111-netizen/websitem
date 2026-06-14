@@ -9,7 +9,7 @@
    (acilis-cumleler.js → Word dosyasından üretilir).
    ============================================================ */
 (function () {
-  var SIMGE_SURE = 6000;    // simge + "Işığını Bul" tek başına ekranda (ms) = 6 sn
+  var SIMGE_SURE = 3000;    // simge + "Işığını Bul" tek başına ekranda (ms) = 3 sn
   var MESAJ_SURE = 15000;   // mesaj belirdikten sonra ekranda kalma süresi (ms) = 15 sn
   var FADEOUT_SURE = 800;   // kapanış solması (ms)
   var GECMIS_ANAHTAR = "kdm_acilis-gecmis";
