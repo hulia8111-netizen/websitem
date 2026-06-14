@@ -405,46 +405,41 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ====================================================
      ŞÜKRAN DEFTERİ
      ==================================================== */
-  const sukranListesi = $("#sukran-listesi");
-  function cizSukran() {
-    const notlar = Store.get("gratitude", []);
-    sukranListesi.innerHTML = "";
-    notlar.slice().reverse().forEach((n, revIdx) => {
-      const i = notlar.length - 1 - revIdx;
-      const li = document.createElement("li");
-      const span = document.createElement("span");
-      span.className = "liste-metin";
-      span.innerHTML = `<small>${n.tarih}</small><br>${escapeHtml(n.text)}`;
-      const sil = document.createElement("button");
-      sil.className = "sil";
-      sil.textContent = "✕";
-      sil.addEventListener("click", () => {
-        notlar.splice(i, 1);
-        Store.set("gratitude", notlar);
-        cizSukran();
-        cizRozetler();
-        if (window.Bahce) window.Bahce.ciz();
-        if (window.Enerji) window.Enerji.ciz();
-      });
-      li.append(span, sil);
-      sukranListesi.appendChild(li);
-    });
+  // Bugüne özel 3 alan — geçmiş gösterilmez, arşiv yok. Veriler "gratitude"
+  // dizisinde {text, tarih} olarak saklanır (enerji/çakra/başarım uyumu korunur).
+  function bugunSukur() {
+    return (Store.get("gratitude", []) || []).filter(n => n && n.tarih === today).map(n => n.text);
   }
-  function sukranEkle() {
-    const inp = $("#sukran-input");
-    const v = inp.value.trim();
-    if (!v) return;
-    const notlar = Store.get("gratitude", []);
-    notlar.push({ text: v, tarih: today });
-    Store.set("gratitude", notlar);
-    inp.value = "";
+  function cizSukran() {
+    const bugun = bugunSukur();
+    for (let i = 0; i < 3; i++) {
+      const el = $("#sukran-" + (i + 1));
+      if (el) el.value = bugun[i] || "";
+    }
+  }
+  function sukranKaydet() {
+    const yeni = [];
+    for (let i = 1; i <= 3; i++) {
+      const el = $("#sukran-" + i);
+      const v = el ? el.value.trim() : "";
+      if (v) yeni.push(v);              // her dolu satır ayrı kayıt, boşlar atlanır
+    }
+    const digerGunler = (Store.get("gratitude", []) || []).filter(n => n && n.tarih !== today);
+    Store.set("gratitude", digerGunler.concat(yeni.map(t => ({ text: t, tarih: today }))));  // → otomatik Supabase senkron
     cizSukran();
+    const b = $("#sukran-bilgi");
+    if (b) { b.textContent = yeni.length ? "Kaydedildi 🌿" : "Bugünün şükran sayfası boş."; setTimeout(() => { if (b.textContent) b.textContent = ""; }, 2200); }
     cizRozetler();
     if (window.Bahce) window.Bahce.ciz();
     if (window.Enerji) window.Enerji.ciz();
+    if (window.Cakra) window.Cakra.ciz();
   }
-  $("#sukran-ekle").addEventListener("click", sukranEkle);
-  $("#sukran-input").addEventListener("keydown", e => { if (e.key === "Enter") sukranEkle(); });
+  const sukranKaydetBtn = $("#sukran-kaydet");
+  if (sukranKaydetBtn) sukranKaydetBtn.addEventListener("click", sukranKaydet);
+  ["sukran-1", "sukran-2", "sukran-3"].forEach(id => {
+    const el = $("#" + id);
+    if (el) el.addEventListener("keydown", e => { if (e.key === "Enter") sukranKaydet(); });
+  });
   cizSukran();
 
   /* 9. GÜNLÜK — js/gunluk.js modülünde yönetilir. */

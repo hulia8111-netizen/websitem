@@ -2279,3 +2279,28 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
 }
 .ev-saatler { display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 0.7rem; }
 .ev-saatler .bld-satir { margin: 0; }
+/* ============================================================
+   Şükran Defteri — sade, huzurlu, kağıt hissi (bugüne özel 3 alan)
+   ============================================================ */
+.sukran-kart {
+  background:
+    radial-gradient(120% 90% at 0% 0%, rgba(150,120,60,0.08), transparent 55%),
+    repeating-linear-gradient(91deg, rgba(170,140,80,0.03) 0 7px, transparent 7px 15px),
+    linear-gradient(180deg, #fbf6e7 0%, #f4ecd4 100%);
+  border: 1px solid rgba(180,150,90,0.35);
+  box-shadow: inset 0 0 36px rgba(160,120,60,0.12), 0 8px 22px rgba(0,0,0,0.22);
+}
+.sukran-kart h2 { color: #5a4422; font-family: "Caveat", var(--font-baslik); font-weight: 700; font-size: 1.9rem; margin: 0 0 0.1rem; }
+.sukran-alt { color: #8a734a !important; margin: 0 0 1rem; }
+.sukran-alanlar { display: flex; flex-direction: column; gap: 0.85rem; }
+.sukran-satir { display: flex; align-items: center; gap: 0.7rem; }
+.sukran-no { flex: none; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; font-weight: 600; color: #6a5018;
+  background: linear-gradient(135deg, #f6e3a8, #d8af52); box-shadow: inset 0 0 3px rgba(255,255,255,0.6), 0 1px 3px rgba(0,0,0,0.2); }
+.sukran-kart .sukran-in { flex: 1; min-width: 0; background: transparent; border: none; border-radius: 0; border-bottom: 1.5px solid rgba(150,115,55,0.4);
+  color: #3a2f1a; font-family: "Caveat", "Segoe Print", cursive; font-weight: 500; font-size: 1.35rem; line-height: 1.6;
+  padding: 0.25rem 0.2rem; box-shadow: none; transition: border-color 0.2s ease; }
+.sukran-kart .sukran-in:focus { outline: none; border-bottom-color: #b88a2f; box-shadow: none; }
+.sukran-kart .sukran-in::placeholder { color: #b6a072; font-style: italic; font-size: 1.15rem; }
+.sukran-alt-bar { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; margin-top: 1.2rem; flex-wrap: wrap; }
+.sukran-alt-bar .kayit-bilgi { color: #6a5430; }
