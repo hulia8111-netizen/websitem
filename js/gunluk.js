@@ -139,7 +139,7 @@ const Gunluk = window.Gunluk = (() => {
       ta.hidden = true; oku.hidden = false; kaydet.hidden = true;
       oku.innerHTML = metin
         ? `<p class="okuma-metin">${escapeHtml(metin).replace(/\n/g, "<br>")}</p>`
-        : `<p class="okuma-bos">Bu güne ait bir kayıt yok 🌙</p>`;
+        : `<p class="okuma-bos">Bu tarihte bir kayıt bulunmuyor.</p>`;
       $("#defter-bilgi").textContent = "";
     }
     $("#sayfa-geri").disabled = gun <= enEskiGun();
@@ -153,8 +153,8 @@ const Gunluk = window.Gunluk = (() => {
     const sinif = yon < 0 ? "cevir-geri" : "cevir-ileri";
     sayfa.classList.remove("cevir-geri", "cevir-ileri"); void sayfa.offsetWidth;
     sayfa.classList.add(sinif);
-    setTimeout(() => sayfaGoster(hedef), 200);            // animasyon ortasında içerik değişir
-    setTimeout(() => sayfa.classList.remove(sinif), 460);
+    setTimeout(() => sayfaGoster(hedef), 290);            // sayfa dik konumdayken (90°) içerik değişir
+    setTimeout(() => sayfa.classList.remove(sinif), 640);
   }
   function kaydet(sessiz) {
     if (bakilanGun !== todayKey()) return;
