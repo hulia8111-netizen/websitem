@@ -16,7 +16,6 @@ const Bildirim = window.Bildirim = (() => {
 
   const KATEGORILER = [
     { id: "olumlama",   ad: "Günlük Olumlama" },
-    { id: "ciftSaat",   ad: "Çift Saat Mesajları" },
     { id: "ruhHali",    ad: "Ruh Hali Hatırlatması" },
     { id: "meditasyon", ad: "Meditasyon Zamanı" },
     { id: "sukran",     ad: "Şükran Hatırlatması" },
@@ -25,7 +24,7 @@ const Bildirim = window.Bildirim = (() => {
   const VARSAYILAN = {
     aktif: false, saat: "09:00", sessiz: false,
     gece: true, geceBas: "22:00", geceBit: "08:00", haftalik: true,
-    kategori: { olumlama: true, ciftSaat: true, ruhHali: true, meditasyon: true, sukran: true, kart: true }
+    kategori: { olumlama: true, ruhHali: true, meditasyon: true, sukran: true, kart: true }
   };
 
   const destekVar = "Notification" in window;
@@ -51,7 +50,7 @@ const Bildirim = window.Bildirim = (() => {
   function gunlukMesaj() {
     const ayar = ayarAl();
     const acik = KATEGORILER.map(k => k.id)
-      .filter(id => id !== "ciftSaat" && ayar.kategori[id]);
+      .filter(id => ayar.kategori[id]);
     if (!acik.length) return mesaj("olumlama");
     return mesaj(rast(acik));
   }

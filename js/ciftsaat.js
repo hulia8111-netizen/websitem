@@ -1,8 +1,10 @@
 /* ============================================================
    ciftsaat.js — Çift (Ayna) Saat Anlamları ⏰✨
-   Güncel saati izler; HH:MM eşit olduğunda (11:11, 22:22…) kozmik
-   glow popup ile spiritüel mesaj + farkındalık + olumlama gösterir.
-   Anlam kütüphanesi, favoriler, görülme geçmişi ve bildirim entegrasyonu.
+   Uygulama içinde okunan bir bilgi alanı: tüm çift saatlerin anlam
+   kütüphanesi + favoriler + son görülenler. Saat eşitleştiğinde
+   (11:11, 22:22…) yalnızca sessizce "Son Görülenler"e eklenir —
+   BİLDİRİM veya otomatik popup YOKTUR. Anlamları kullanıcı, karttaki
+   saatlere tıklayarak dilediği an okur.
    Widget altyapısı için window.CiftSaat API'si sunar.
    Global: window.CiftSaat
    ============================================================ */
@@ -65,14 +67,11 @@ const CiftSaat = window.CiftSaat = (() => {
     if (aynaMi(now)) {
       if (sonDakika !== t) {
         sonDakika = t;
+        // Bildirim ve otomatik popup KALDIRILDI: çift saatler yalnızca
+        // uygulama içinde okunan bir bilgi alanıdır. Yakalanan saat sessizce
+        // "Son Görülenler"e eklenir; kullanıcı dilediğinde tıklayıp okur.
         gecmisEkle(t);
         cizFavGecmis();
-        if (document.visibilityState === "visible") {
-          popupAc(t, false);
-        } else if (window.Bildirim && window.Bildirim.tetikle) {
-          const a = anlam(t);
-          window.Bildirim.tetikle(`${t} ✨ ${a.mesaj}`);  // arka planda OS bildirimi
-        }
       }
     } else if (now.getMinutes() !== Number(sonDakika && sonDakika.slice(3))) {
       sonDakika = null; // farklı dakikaya geçince sıfırla
