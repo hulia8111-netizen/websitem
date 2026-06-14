@@ -2173,3 +2173,25 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
 .rm-ad { font-weight: 600; color: var(--metin); font-size: 0.95rem; }
 .rm-alt { color: var(--muted); font-size: 0.78rem; }
 .rm-not { margin: 0.6rem 0 0; }
+/* === Evrenden Mesajını Al (bildirim ayarları) === */
+#ev-detay { display: none; }
+.ev-baslik { margin: 0.9rem 0 0.5rem; letter-spacing: .3px; }
+.ev-sayi-chips { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.ev-sayi {
+  flex: 1 1 0; min-width: 90px; padding: 0.6rem 0.4rem;
+  border-radius: 14px; cursor: pointer;
+  font: inherit; font-size: 0.92rem; font-weight: 500;
+  color: rgba(255,255,255,0.78);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(243,217,140,0.22);
+  transition: all .18s ease;
+}
+.ev-sayi:hover { border-color: rgba(243,217,140,0.45); color: #fff; }
+.ev-sayi.aktif {
+  color: #1a1430; font-weight: 600;
+  background: linear-gradient(120deg, #fff0c2, #f3d98c, #e9c46a);
+  border-color: transparent;
+  box-shadow: 0 4px 16px rgba(243,217,140,0.28);
+}
+.ev-saatler { display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 0.7rem; }
+.ev-saatler .bld-satir { margin: 0; }

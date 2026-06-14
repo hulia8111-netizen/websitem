@@ -3,7 +3,7 @@
    SÃ¼rÃ¼m deÄŸiÅŸince CACHE adÄ±nÄ± artÄ±r ki eski dosyalar temizlensin.
    ============================================================ */
 
-const CACHE = "isigini-bul-v104";
+const CACHE = "isigini-bul-v105";
 const KABUK = [
   ".",
   "index.html",
@@ -27,6 +27,7 @@ const KABUK = [
   "js/gunluk.js",
   "js/bildirim.js",
   "js/kartbildirim.js",
+  "js/evrenmesaji.js",
   "js/profil.js",
   "js/rituel.js",
   "js/test.js",
@@ -88,10 +89,12 @@ self.addEventListener("fetch", e => {
 /* Bildirime tÄ±klayÄ±nca uygulamayÄ± aÃ§/odakla ve GÃ¼nÃ¼n KartÄ± ekranÄ±na git */
 self.addEventListener("notificationclick", e => {
   e.notification.close();
-  const url = (e.notification.data && e.notification.data.url) || "./?kart=1";
+  const data = e.notification.data || {};
+  const url = data.url || "./?kart=1";
+  const tip = data.tip || "kart-goster";  // "ana-sayfa" → ana sayfa, "kart-goster" → Kartlar
   e.waitUntil((async () => {
     const list = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
-    for (const c of list) { if ("focus" in c) { await c.focus(); c.postMessage({ tip: "kart-goster" }); return; } }
+    for (const c of list) { if ("focus" in c) { await c.focus(); c.postMessage({ tip }); return; } }
     if (self.clients.openWindow) await self.clients.openWindow(url);
   })());
 });

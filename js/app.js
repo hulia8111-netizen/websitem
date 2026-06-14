@@ -187,7 +187,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* Günün Kartı bildiriminden açılış → Kartlar ekranı */
   if (/[?&]kart=1\b/.test(location.search)) setTimeout(() => gotoView("kartlar"), 400);
-  if (navigator.serviceWorker) navigator.serviceWorker.addEventListener("message", e => { if (e.data && e.data.tip === "kart-goster") gotoView("kartlar"); });
+  if (navigator.serviceWorker) navigator.serviceWorker.addEventListener("message", e => {
+    if (!e.data) return;
+    if (e.data.tip === "kart-goster") gotoView("kartlar");
+    else if (e.data.tip === "ana-sayfa") gotoView("home");   // Evrenden mesaj bildirimi
+  });
 
   /* ====================================================
      SPİRİTÜEL MÜZİK & FREKANS — js/muzik.js modülünde yönetilir.
