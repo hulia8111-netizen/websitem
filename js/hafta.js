@@ -98,9 +98,11 @@ const Hafta = window.Hafta = (() => {
     const el = $("hafta-ozet"); if (!el) return;
     const sirali = Object.keys(p).sort((a, b) => p[b] - p[a]);
     const guclu = DATA.haftalikDenge[sirali[0]], zayif = DATA.haftalikDenge[sirali[sirali.length - 1]];
+    const deneyim = (window.HaftalikHedef && HaftalikHedef.buHaftaDurum) ? HaftalikHedef.buHaftaDurum() : "";
     el.innerHTML = `
       <div class="ho-sat ho-guclu"><span class="ho-et">En güçlü alanın</span><span>${guclu.ikon} ${guclu.ad} · %${p[sirali[0]]}</span></div>
-      <div class="ho-sat ho-zayif"><span class="ho-et">En çok ihmal edilen</span><span>${zayif.ikon} ${zayif.ad} · %${p[sirali[sirali.length - 1]]}</span></div>`;
+      <div class="ho-sat ho-zayif"><span class="ho-et">En çok ihmal edilen</span><span>${zayif.ikon} ${zayif.ad} · %${p[sirali[sirali.length - 1]]}</span></div>
+      ${deneyim ? `<div class="ho-sat ho-deneyim"><span>${deneyim}</span></div>` : ""}`;
   }
   function cizGrafik(m) {
     const el = $("hafta-grafik"); if (!el) return;
