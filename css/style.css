@@ -1959,20 +1959,20 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
    ============================================================ */
 .defter-kart { position: relative; overflow: hidden; padding-top: 1.2rem; padding-bottom: 1.4rem;
   background:
-    radial-gradient(120% 80% at 50% -10%, rgba(255,196,120,0.10), transparent 60%),
+    radial-gradient(130% 90% at 50% -12%, rgba(255,196,120,0.22), transparent 62%),
     linear-gradient(180deg, #1a1330 0%, #140e28 100%); }
 
-/* ---- Mum ışığı (sıcak titreşen parıltı) ---- */
-.defter-mum { position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
-  width: 300px; height: 240px; pointer-events: none; z-index: 0;
-  background: radial-gradient(circle at 50% 30%, rgba(255,198,110,0.34), rgba(255,170,80,0.12) 42%, transparent 70%);
-  filter: blur(8px); animation: mumIsigi 4.5s ease-in-out infinite; }
-.kapak-mum { opacity: 0.85; }
+/* ---- Mum ışığı (sıcak, belirgin, titreşen parıltı) ---- */
+.defter-mum { position: absolute; top: -70px; left: 50%; transform: translateX(-50%);
+  width: 440px; height: 360px; max-width: 116%; pointer-events: none; z-index: 0;
+  background: radial-gradient(circle at 50% 32%, rgba(255,214,140,0.72), rgba(255,184,90,0.34) 38%, rgba(255,160,70,0.12) 60%, transparent 76%);
+  filter: blur(6px); mix-blend-mode: screen; animation: mumIsigi 4s ease-in-out infinite; }
+.kapak-mum { opacity: 1; }
 @keyframes mumIsigi {
-  0%,100% { opacity: 0.8; transform: translateX(-50%) scale(1); }
-  35% { opacity: 1; transform: translateX(-51%) scale(1.05); }
-  60% { opacity: 0.72; transform: translateX(-49%) scale(0.98); }
-  80% { opacity: 0.92; transform: translateX(-50%) scale(1.03); }
+  0%,100% { opacity: 0.95; transform: translateX(-50%) scale(1); }
+  30% { opacity: 1; transform: translateX(-52%) scale(1.08); }
+  55% { opacity: 0.82; transform: translateX(-48%) scale(0.96); }
+  78% { opacity: 1; transform: translateX(-50%) scale(1.04); }
 }
 
 /* ============================================================
