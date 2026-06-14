@@ -95,10 +95,22 @@ const EvrenMesaji = window.EvrenMesaji = (() => {
     }
   }
 
-  /* ---------- zamanlama kontrolü (uygulama açıkken çalışır) ---------- */
-  function kontrol(acilis) {
+  async function aboneVar() {
+    try {
+      if (!("serviceWorker" in navigator) || !("PushManager" in window)) return false;
+      const reg = await navigator.serviceWorker.ready;
+      return !!(await reg.pushManager.getSubscription());
+    } catch (e) { return false; }
+  }
+
+  /* ---------- zamanlama kontrolü ----------
+     Push aboneliği varsa teslimi SUNUCU (Edge Function cron) yapar → uygulama
+     kapalıyken de çalışır ve çift bildirim olmaz; istemci sadece push YOKKEN
+     (yedek) uygulama açıkken gönderir. */
+  async function kontrol(acilis) {
     const a = ayar();
     if (!a.aktif || !izinVar()) return;
+    if (await aboneVar()) return;   // sunucu push devrede → istemci göndermez
     const su = hhmm(), l = bugunLog();
     if (acilis) {
       // açılışta: saati geçmiş ama henüz gönderilmemiş EN SON slotu bir kez gönder (spam olmasın)
