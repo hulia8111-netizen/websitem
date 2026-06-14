@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=110" />
+  <link rel="stylesheet" href="css/style.css?v=111" />
 </head>
 <body>
   <!-- Açılış (splash) ekranı: logo + isim + Word'den rastgele ilham cümlesi -->
@@ -25,8 +25,8 @@
       <p class="splash-soz" id="splash-soz"></p>
     </div>
   </div>
-  <script src="js/acilis-cumleler.js?v=110"></script>
-  <script src="js/splash.js?v=110"></script>
+  <script src="js/acilis-cumleler.js?v=111"></script>
+  <script src="js/splash.js?v=111"></script>
 
   <div class="aura" aria-hidden="true">
     <span class="blob blob-1"></span>
@@ -154,59 +154,6 @@
     </div>
   </div>
 
-  <!-- Sabah Ritüeli overlay -->
-  <div class="sabah-overlay" id="sabah-overlay" hidden>
-    <div class="sabah-gok" aria-hidden="true">
-      <div class="sabah-gunes-glow"></div>
-      <div class="sabah-parcaciklar" id="sabah-parcaciklar"></div>
-    </div>
-    <div class="gece-ic sabah-ic">
-      <button class="gece-kapat" id="sabah-kapat" aria-label="Kapat">✕</button>
-      <div class="sabah-gunes">☀️</div>
-      <h2 class="gece-baslik" id="sabah-baslik">Günaydın</h2>
-      <p class="gece-mesaj" id="sabah-mesaj"></p>
-      <div class="gece-streak" id="sabah-streak"></div>
-      <div class="gece-ilerleme"><span id="sabah-ilerleme-dolu"></span></div>
-      <div class="gece-rutin" id="sabah-rutin"></div>
-      <div class="gece-kart gece-soru-kart">
-        <label class="gece-soru-baslik">Günün Farkındalık Sorusu</label>
-        <p class="sabah-fark-soru" id="sabah-fark-soru">…</p>
-        <textarea id="sabah-fark-cevap" rows="2" placeholder="Cevabını buraya yaz…"></textarea>
-        <button class="btn ghost sm" id="sabah-fark-kaydet">Kaydet</button>
-      </div>
-      <button class="btn sabah-bitir" id="sabah-bitir">Güne Hazırım ☀️</button>
-      <div class="gece-tamam" id="sabah-tamam" hidden></div>
-    </div>
-  </div>
-
-  <!-- Uyku & Gece Rutini overlay -->
-  <div class="gece-overlay" id="gece-overlay" hidden>
-    <div class="gece-gok" aria-hidden="true">
-      <div class="gece-neb"></div>
-      <div class="gece-yildizlar" id="gece-yildizlar"></div>
-    </div>
-    <div class="gece-ic">
-      <button class="gece-kapat" id="gece-kapat" aria-label="Kapat">✕</button>
-      <div class="gece-ay">🌙</div>
-      <h2 class="gece-baslik" id="gece-baslik">İyi geceler</h2>
-      <p class="gece-mesaj" id="gece-mesaj"></p>
-      <div class="gece-streak" id="gece-streak"></div>
-      <div class="gece-ilerleme"><span id="gece-ilerleme-dolu"></span></div>
-      <div class="gece-rutin" id="gece-rutin"></div>
-      <div class="gece-kart gece-soru-kart">
-        <label class="gece-soru-baslik">Bu gece kendin için ne yaptın?</label>
-        <textarea id="gece-soru" rows="2" placeholder="Birkaç kelime…"></textarea>
-        <button class="btn ghost sm" id="gece-soru-kaydet">Kaydet</button>
-      </div>
-      <div class="gece-kart gece-sayac-kart">
-        <div class="gece-sayac-baslik">Uyku Sayacı 🌙</div>
-        <div class="gece-sayac-btns"><button data-dk="15">15 dk</button><button data-dk="30">30 dk</button><button data-dk="45">45 dk</button></div>
-        <div class="gece-sayac-durum" id="gece-sayac-durum"></div>
-      </div>
-      <button class="btn gece-bitir" id="gece-bitir">Uykuya Hazırım 🌙</button>
-      <div class="gece-tamam" id="gece-tamam" hidden></div>
-    </div>
-  </div>
 
   <!-- Spiritüel Başlangıç Testi -->
   <div class="test-overlay" id="test-overlay" hidden>
@@ -370,14 +317,6 @@
         <section class="card card-wide card-araclar" id="araclar">
           <h2>Ritüeller &amp; Araçlar</h2>
           <div class="araclar-grid">
-            <button class="arac-tile" id="sabah-ac">
-              <span class="at-ikon">☀️</span><span class="at-ad">Sabah Ritüeli</span>
-              <span class="at-alt" id="sg-streak"></span>
-            </button>
-            <button class="arac-tile" id="gece-ac">
-              <span class="at-ikon">🌙</span><span class="at-ad">Gece Rutini</span>
-              <span class="at-alt" id="gg-streak"></span>
-            </button>
             <button class="arac-tile" id="nefes-ac">
               <span class="at-ikon">🌬️</span><span class="at-ad">Nefes &amp; Sakinleşme</span>
               <span class="at-alt" id="nf-oneri"></span>
@@ -936,42 +875,40 @@
     </button>
   </nav>
 
-  <script src="js/data.js?v=110"></script>
-  <script src="js/farkindalik-sorulari.js?v=110"></script>
-  <script src="js/mini-gorevler.js?v=110"></script>
-  <script src="js/store.js?v=110"></script>
-  <script src="js/perf.js?v=110"></script>
-  <script src="js/audio.js?v=110"></script>
-  <script src="js/muzik.js?v=110"></script>
-  <script src="js/rehbermed.js?v=110"></script>
-  <script src="js/rehber.js?v=110"></script>
-  <script src="js/ay.js?v=110"></script>
-  <script src="js/app.js?v=110"></script>
-  <script src="js/streak.js?v=110"></script>
-  <script src="js/gorevler.js?v=110"></script>
-  <script src="js/energy.js?v=110"></script>
-  <script src="js/gunluk.js?v=110"></script>
-  <script src="js/bildirim.js?v=110"></script>
-  <script src="js/kartbildirim.js?v=110"></script>
-  <script src="js/evrenmesaji.js?v=110"></script>
-  <script src="js/profil.js?v=110"></script>
-  <script src="js/rituel.js?v=110"></script>
-  <script src="js/test.js?v=110"></script>
-  <script src="js/enerjitipi.js?v=110"></script>
-  <script src="js/cakra.js?v=110"></script>
-  <script src="js/gece.js?v=110"></script>
-  <script src="js/sabah.js?v=110"></script>
-  <script src="js/nefes.js?v=110"></script>
-  <script src="js/vision.js?v=110"></script>
-  <script src="js/ciftsaat.js?v=110"></script>
-  <script src="js/takvim.js?v=110"></script>
-  <script src="js/hafta.js?v=110"></script>
+  <script src="js/data.js?v=111"></script>
+  <script src="js/farkindalik-sorulari.js?v=111"></script>
+  <script src="js/mini-gorevler.js?v=111"></script>
+  <script src="js/store.js?v=111"></script>
+  <script src="js/perf.js?v=111"></script>
+  <script src="js/audio.js?v=111"></script>
+  <script src="js/muzik.js?v=111"></script>
+  <script src="js/rehbermed.js?v=111"></script>
+  <script src="js/rehber.js?v=111"></script>
+  <script src="js/ay.js?v=111"></script>
+  <script src="js/app.js?v=111"></script>
+  <script src="js/streak.js?v=111"></script>
+  <script src="js/gorevler.js?v=111"></script>
+  <script src="js/energy.js?v=111"></script>
+  <script src="js/gunluk.js?v=111"></script>
+  <script src="js/bildirim.js?v=111"></script>
+  <script src="js/kartbildirim.js?v=111"></script>
+  <script src="js/evrenmesaji.js?v=111"></script>
+  <script src="js/profil.js?v=111"></script>
+  <script src="js/rituel.js?v=111"></script>
+  <script src="js/test.js?v=111"></script>
+  <script src="js/enerjitipi.js?v=111"></script>
+  <script src="js/cakra.js?v=111"></script>
+  <script src="js/nefes.js?v=111"></script>
+  <script src="js/vision.js?v=111"></script>
+  <script src="js/ciftsaat.js?v=111"></script>
+  <script src="js/takvim.js?v=111"></script>
+  <script src="js/hafta.js?v=111"></script>
   
-  <script src="js/kozmik.js?v=110"></script>
+  <script src="js/kozmik.js?v=111"></script>
   <!-- Bulut üyelik & senkron (Supabase) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/supabase-config.js?v=110"></script>
-  <script src="js/bulut.js?v=110"></script>
+  <script src="js/supabase-config.js?v=111"></script>
+  <script src="js/bulut.js?v=111"></script>
   <script>
     if ("serviceWorker" in navigator) {
       // Yeni sürüm yayınlanınca uygulamayı OTOMATİK güncelle (tek seferde tazele)

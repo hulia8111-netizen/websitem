@@ -27,17 +27,15 @@ const Enerji = window.Enerji = (() => {
     const gv = (window.Gorevler && Gorevler.tamamSayi) ? Gorevler.tamamSayi() : 0;
     const gorevP = gv > 0 ? Math.round(gv / 3 * 20) : (Store.get("task-" + today) ? 20 : 0);
     const g = (Store.get("gratitude", []) || []).filter(n => n.tarih === today).length;
-    const sukranP = g >= 2 ? 15 : (g === 1 ? 10 : 0);
+    const sukranP = g >= 3 ? 20 : (g === 2 ? 15 : (g === 1 ? 10 : 0));
     const seri = Math.min(mevcutSeri("visit-"), 7);
-    const streakP = Math.round(seri / 7 * 15);
-    const sabahP = Store.get("sabah-" + today) ? 10 : 0;
+    const streakP = Math.round(seri / 7 * 20);
     return [
       { simge: "🧘", ad: "Ruh hali girdin", kaz: moodP, max: 20 },
       { simge: "🌬️", ad: "Meditasyon yaptın", kaz: medP, max: 20 },
       { simge: "✅", ad: `Günün görevleri (${gv}/3)`, kaz: gorevP, max: 20 },
-      { simge: "🙏", ad: `Şükran yazdın (${g})`, kaz: sukranP, max: 15 },
-      { simge: "🔥", ad: `Giriş serin (${seri}/7 gün)`, kaz: streakP, max: 15 },
-      { simge: "🌅", ad: "Sabah ritüeli", kaz: sabahP, max: 10 }
+      { simge: "🙏", ad: `Şükran yazdın (${g})`, kaz: sukranP, max: 20 },
+      { simge: "🔥", ad: `Giriş serin (${seri}/7 gün)`, kaz: streakP, max: 20 }
     ];
   }
 
