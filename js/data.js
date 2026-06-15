@@ -891,7 +891,7 @@ const DATA = {
     },
     {
       id: "gorev", ad: "Kararlı Ruh", metrik: "gorevTop", hedef: 10,
-      aciklama: "Toplam 10 görev tamamla (mini görevler + haftalık deneyim hedefleri).",
+      aciklama: "10 gün Günün Görevleri'ni tamamla.",
       ikon: '<path d="M20 6L9 17l-5-5"/>'
     },
     {

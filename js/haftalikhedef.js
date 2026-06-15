@@ -114,8 +114,6 @@ const HaftalikHedef = window.HaftalikHedef = (() => {
     // XP ver
     Store.set(XP, xpToplam() + (h.xp || 100));
     ciz(); arsivCiz(); istatCiz();
-    if (window.cizRozetler) window.cizRozetler();   // "Kararlı Ruh" başarımı canlı güncellensin
-    if (window.Profil && Profil.ciz) Profil.ciz();
     if (window.Hafta && Hafta.ciz) Hafta.ciz();
     kutla(h);
   }
