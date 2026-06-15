@@ -103,19 +103,38 @@ const CiftSaat = window.CiftSaat = (() => {
   }
 
   function baglan() {
-    if (!$("#ciftsaat")) return;
-    const kapat = $("#cs-kapat");
-    if (kapat) kapat.addEventListener("click", popupKapat);
+    if (!$("#cs-grid")) return;
+    const popKapatBtn = $("#cs-kapat");
+    if (popKapatBtn) popKapatBtn.addEventListener("click", popupKapat);
     const pop = $("#cs-popup");
     if (pop) pop.addEventListener("click", e => { if (e.target === pop) popupKapat(); });
+    // Ritüeller & Araçlar kutucuğundan overlay aç/kapat
+    const acBtn = $("#ciftsaat-ac");
+    if (acBtn) acBtn.addEventListener("click", ac);
+    const ovKapat = $("#ciftsaat-kapat");
+    if (ovKapat) ovKapat.addEventListener("click", kapat);
+    const ov = $("#ciftsaat-overlay");
+    if (ov) ov.addEventListener("click", e => { if (e.target === ov) kapat(); });
     cizGrid();
     cizFavGecmis();
     kontrol();
     setInterval(kontrol, 1000);
   }
 
+  /* ---------- overlay aç/kapat ---------- */
+  function ac() {
+    const ov = $("#ciftsaat-overlay"); if (!ov) return;
+    document.body.classList.add("cs-aktif");
+    ov.hidden = false; ov.classList.remove("gor"); void ov.offsetWidth; ov.classList.add("gor");
+  }
+  function kapat() {
+    const ov = $("#ciftsaat-overlay"); if (!ov) return;
+    ov.classList.remove("gor");
+    setTimeout(() => { ov.hidden = true; document.body.classList.remove("cs-aktif"); }, 350);
+  }
+
   document.addEventListener("DOMContentLoaded", baglan);
 
   /* Widget altyapısı: dış kullanım için API */
-  return { anlam, suankiAnlam, sonGorulen, suanHHMM, aynaMi, favAl, gecmisAl };
+  return { anlam, suankiAnlam, sonGorulen, suanHHMM, aynaMi, favAl, gecmisAl, ac, kapat };
 })();
