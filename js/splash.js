@@ -22,7 +22,7 @@
     var gecmis;
     try { gecmis = JSON.parse(localStorage.getItem(GECMIS_ANAHTAR) || "[]"); } catch (e) { gecmis = []; }
     if (!Array.isArray(gecmis)) gecmis = [];
-    var maxGecmis = Math.min(liste.length - 1, 15);   // son ~15 cümleyi tekrarlama
+    var maxGecmis = liste.length - 1;   // tüm havuz dönmeden hiçbir söz tekrar etmesin (tam döngü)
     var adaylar = [];
     for (var i = 0; i < liste.length; i++) if (gecmis.indexOf(i) === -1) adaylar.push(i);
     var idx = adaylar.length

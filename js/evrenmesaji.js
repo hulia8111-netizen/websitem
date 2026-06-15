@@ -50,7 +50,7 @@ const EvrenMesaji = window.EvrenMesaji = (() => {
     let gecmis; try { gecmis = JSON.parse(localStorage.getItem(GECMIS) || "[]"); } catch (e) { gecmis = []; }
     if (!Array.isArray(gecmis)) gecmis = [];
     const bugun = bugunLog().soz;                       // bugün gönderilen söz indeksleri
-    const maxG = Math.min(liste.length - 1, 30);        // son ~30 sözü tekrarlama
+    const maxG = liste.length - 1;                      // tüm havuz dönmeden tekrar yok (21 gün+ aralık)
     let adaylar = [];
     for (let i = 0; i < liste.length; i++) if (bugun.indexOf(i) === -1 && gecmis.indexOf(i) === -1) adaylar.push(i);
     if (!adaylar.length) for (let i = 0; i < liste.length; i++) if (bugun.indexOf(i) === -1) adaylar.push(i); // bugünkü hariç hepsi
