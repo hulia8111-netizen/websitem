@@ -25,9 +25,10 @@ const Profil = window.Profil = (() => {
   /* Açılan rozet sayısı (app.js'teki başarım mantığıyla aynı) */
   function rozetDurum() {
     const c = sayim();
+    const haftalik = (window.HaftalikHedef && HaftalikHedef.istatistik) ? (HaftalikHedef.istatistik().tamamlanan || 0) : 0;
     const deger = {
       girisGun: c.giris, medGun: c.med, sukranTop: c.sukran,
-      gorevTop: c.gorev, moodSeri: mevcutSeri("mood-"), moodTop: c.mood
+      gorevTop: c.gorev + haftalik, moodSeri: mevcutSeri("mood-"), moodTop: c.mood   // Kararlı Ruh: mini + haftalık
     };
     let acik = 0;
     (DATA.rozetler || []).forEach(r => { if ((deger[r.metrik] || 0) >= r.hedef) acik++; });

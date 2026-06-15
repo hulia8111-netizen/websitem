@@ -453,12 +453,15 @@ document.addEventListener("DOMContentLoaded", () => {
       .filter(k => Store.get(k.slice(Store.PREFIX.length)))   // truthy
       .length;
   }
+  function haftalikTamam() {
+    return (window.HaftalikHedef && HaftalikHedef.istatistik) ? (HaftalikHedef.istatistik().tamamlanan || 0) : 0;
+  }
   function basarimSayaclari() {
     return {
       girisGun:  gunSayisi("visit-"),
       medGun:    gunSayisi("med-"),
       sukranTop: Store.get("gratitude", []).length,
-      gorevTop:  gunSayisi("task-"),
+      gorevTop:  gunSayisi("task-") + haftalikTamam(),   // Kararlı Ruh: mini görev + haftalık deneyim hedefi
       moodSeri:  mevcutSeri("mood-"),
       moodTop:   gunSayisi("mood-")
     };
@@ -486,6 +489,7 @@ document.addEventListener("DOMContentLoaded", () => {
       grid.appendChild(div);
     });
   }
+  window.cizRozetler = cizRozetler;   // dış modüller (ör. HaftalikHedef) canlı yenileyebilsin
   cizRozetler();
 
   /* ====================================================
