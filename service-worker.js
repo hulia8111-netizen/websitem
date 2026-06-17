@@ -3,7 +3,7 @@
    SÃ¼rÃ¼m deÄŸiÅŸince CACHE adÄ±nÄ± artÄ±r ki eski dosyalar temizlensin.
    ============================================================ */
 
-const CACHE = "isigini-bul-v107";
+const CACHE = "isigini-bul-v108";
 const KABUK = [
   ".",
   "index.html",
@@ -60,9 +60,8 @@ self.addEventListener("activate", e => {
     caches.keys()
       .then(adlar => Promise.all(adlar.filter(a => a !== CACHE).map(a => caches.delete(a))))
       .then(() => self.clients.claim())
-      // Yeni sÃ¼rÃ¼m devreye girince aÃ§Ä±k ekranlarÄ± otomatik tazele (eski sÃ¼rÃ¼m takÄ±lmasÄ±n)
-      .then(() => self.clients.matchAll({ type: "window" }))
-      .then(clients => clients.forEach(c => { try { c.navigate(c.url); } catch (e) {} }))
+      // NOT: aÃ§Ä±k pencereleri zorla yeniden yÃ¼klemeyiz (splash 2. kez oynamasÄ±n);
+      // network-first fetch sayesinde iÃ§erik bir sonraki aÃ§Ä±lÄ±ÅŸta zaten taze gelir.
   );
 });
 
