@@ -78,7 +78,7 @@ const Magaza = window.Magaza = (() => {
   // yoksa bu yerleşik ürün listeye eklenir → token gerekmeden canlı çalışır).
   const OZEL_URUNLER = [
     { kategori: "isik-kartlari", ad: "Işık Kartları", aciklama: "Sezgi, farkındalık ve dönüşüm için ilham ve bilinç kartları.", gorsel: "/kart.jpg", fiyat: "", link: "", _hakkinda: ISIK_HAKKINDA },
-    { kategori: "mumlar", ad: "Işık Mumları", aciklama: "Niyetle hazırlanmış, alanına huzur katan özel mum koleksiyonu.", gorsel: "", fiyat: "", link: "", _hakkinda: MUM_HAKKINDA }
+    { kategori: "mumlar", ad: "Işık Mumları", aciklama: "Niyetle hazırlanmış, alanına huzur katan özel mum koleksiyonu.", gorsel: "/mumlar.jpg", fiyat: "", link: "", _hakkinda: MUM_HAKKINDA }
   ];
 
   // Listeye özel ürünlerin Hakkında içeriğini bağla; yoksa yerleşik ürünü ekle.
