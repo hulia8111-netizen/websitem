@@ -2501,3 +2501,50 @@ body.mg-aktif { overflow: hidden; }
   .mg-urun { grid-template-columns: auto 1fr; }
   .mg-btn { grid-column: 1 / -1; text-align: center; }
 }
+/* === Magazam v2: kategoriler + gorselli kartlar + detay === */
+.mg-kat-chips { display: flex; flex-wrap: wrap; gap: 0.45rem; justify-content: center; margin-bottom: 1.1rem; }
+.mg-kat {
+  font: inherit; font-size: 0.82rem; font-weight: 500; cursor: pointer;
+  padding: 0.42rem 0.85rem; border-radius: 999px; color: rgba(255,255,255,0.78);
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(243,217,140,0.2); transition: all .18s ease;
+}
+.mg-kat:hover { border-color: rgba(243,217,140,0.45); color: #fff; }
+.mg-kat.aktif { color: #1a1430; font-weight: 600; background: linear-gradient(120deg,#fff0c2,#f3d98c,#e9c46a); border-color: transparent; }
+.mg-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+.mg-kart {
+  display: flex; flex-direction: column; text-align: left; cursor: pointer; overflow: hidden;
+  padding: 0; border-radius: 16px; background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(243,217,140,0.15); transition: border-color .2s ease, transform .2s ease;
+}
+.mg-kart:hover { border-color: rgba(243,217,140,0.42); transform: translateY(-3px); }
+.mg-kart-gorsel, .mgd-gorsel { width: 100%; aspect-ratio: 16/10; overflow: hidden; background: rgba(0,0,0,0.2); }
+.mg-kart-gorsel img, .mgd-gorsel img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mg-kart-gorsel.bos, .mgd-gorsel.bos {
+  display: flex; align-items: center; justify-content: center; font-size: 2.4rem;
+  background: linear-gradient(150deg, rgba(124,92,255,0.28), rgba(243,217,140,0.14));
+}
+.mgd-gorsel.bos { font-size: 4rem; }
+.mg-kart-ad { font-weight: 600; color: #fff; font-size: 0.95rem; margin: 0.6rem 0.7rem 0; }
+.mg-kart-aciklama { font-size: 0.8rem; color: rgba(255,255,255,0.68); line-height: 1.4; margin: 0.25rem 0.7rem 0; flex: 1; }
+.mg-incele { display: inline-block; margin: 0.6rem 0.7rem 0.75rem; font-size: 0.82rem; font-weight: 600; color: #f3d98c; }
+.mg-durum { text-align: center; margin-top: 1rem; }
+/* detay */
+.mg-detay { animation: mgDetayGir .3s ease; }
+@keyframes mgDetayGir { from { opacity: 0; transform: translateX(12px); } to { opacity: 1; transform: none; } }
+.mgd-geri { font: inherit; font-size: 0.9rem; color: rgba(255,255,255,0.8); background: none; border: none; cursor: pointer; padding: 0.2rem 0; margin-bottom: 0.7rem; }
+.mgd-geri:hover { color: #f3d98c; }
+.mgd-gorsel { border-radius: 16px; aspect-ratio: 16/10; }
+.mgd-kat { font-size: 0.8rem; color: #f3d98c; margin-top: 0.9rem; letter-spacing: .3px; }
+.mgd-ad { font-family: "Playfair Display", serif; font-size: 1.4rem; color: #fff; margin: 0.25rem 0 0; }
+.mgd-fiyat { font-size: 1.1rem; font-weight: 700; color: #f3d98c; margin-top: 0.4rem; }
+.mgd-aciklama { font-size: 0.95rem; color: rgba(255,255,255,0.82); line-height: 1.6; margin: 0.8rem 0 1.2rem; }
+.mgd-satinal {
+  display: block; text-align: center; text-decoration: none; font: inherit; font-weight: 600;
+  padding: 0.85rem 1rem; border-radius: 999px; color: #1a1430; cursor: pointer; border: none;
+  background: linear-gradient(120deg,#fff0c2,#f3d98c,#e9c46a); box-shadow: 0 6px 22px rgba(243,217,140,0.3);
+  transition: transform .18s ease;
+}
+.mgd-satinal:hover { transform: translateY(-2px); }
+.mgd-satinal.yakinda { color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.06); border: 1px solid rgba(243,217,140,0.22); box-shadow: none; cursor: default; }
+.mgd-not { text-align: center; margin-top: 0.7rem; }
+@media (max-width: 380px) { .mg-grid { grid-template-columns: 1fr 1fr; gap: 0.6rem; } .mg-kart-ad { font-size: 0.88rem; } }
