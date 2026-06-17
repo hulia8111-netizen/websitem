@@ -37,7 +37,20 @@ window.MINI_GOREVLER = {
     "Gün içinde daha çok hareket et.",
     "Yürüyüş yaparken çevreni gözlemle.",
     "Yatmadan önce hafif esneme yap.",
-    "Sevdiğin bir fiziksel aktiviteyi yap."
+    "Sevdiğin bir fiziksel aktiviteyi yap.",
+    "Dişlerini diğer elinle fırçala.",
+    "Farklı bir yoldan eve dön.",
+    "Kendine güzel bir kahve veya çay hazırla.",
+    "Yeni bir meyve veya yiyecek dene.",
+    "Bir çiçeği veya bitkiyi incele.",
+    "Güneş ışığında birkaç dakika kal.",
+    "Camı açıp derin nefes al.",
+    "Bir bitkiyi sula.",
+    "Yeni bir yerde otur.",
+    "Yüzünü soğuk suyla yıka.",
+    "Bir şeyleri yavaş yap.",
+    "Gökyüzünü fotoğrafla.",
+    "Kendini küçük bir ödülle mutlu et."
   ],
   "ruhsal": [
     "Şükrettiğin 3 şeyi yaz.",
@@ -81,7 +94,15 @@ window.MINI_GOREVLER = {
     "Kalbinden geçen bir dileği yaz.",
     "Doğaya çıplak ayakla temas et.",
     "Yeni ay için bir niyet belirle.",
-    "Kendini kutlayan bir teşekkür mesajı yaz."
+    "Kendini kutlayan bir teşekkür mesajı yaz.",
+    "İçinden geçen ilk duyguyu yaz.",
+    "Sevdiğin bir anıyı tekrar yaşa.",
+    "Aynada gözlerinin içine bak.",
+    "Kendine sarıl.",
+    "Bir yükünü kağıda yaz.",
+    "Bugün neye ihtiyacın olduğunu sor.",
+    "Kalbinle konuş.",
+    "Kendini affet."
   ],
   "zihinsel": [
     "Yeni bir kelime öğren.",
@@ -128,6 +149,19 @@ window.MINI_GOREVLER = {
     "Kendinle gurur duyduğun 10 şeyi yaz.",
     "Gelecek ay için hedeflerini belirle.",
     "Bir alışkanlığını gözden geçir.",
-    "Son 30 günde öğrendiklerini yaz."
+    "Son 30 günde öğrendiklerini yaz.",
+    "Bugün seni en çok ne düşündürdü yaz.",
+    "Bir korkunun sana ne öğrettiğini yaz.",
+    "Gelecekteki kendine bir tavsiye ver.",
+    "Vazgeçtiğin bir hayalini yaz.",
+    "Hayatında değiştirmek istediğin tek şeyi yaz.",
+    "Kendini üç kelimeyle tanımla.",
+    "Bir yanlışını ve dersini yaz.",
+    "Bir başarı hikayeni yaz.",
+    "10 yıl sonraki hayatını hayal et.",
+    "Bir fikrini sorgula.",
+    "Seni motive eden şeyi yaz.",
+    "Bir kararını gözden geçir.",
+    "Bir hedefe ilk adımı planla."
   ]
 };
