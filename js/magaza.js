@@ -43,8 +43,9 @@ const Magaza = window.Magaza = (() => {
   let urunler = [];
   let filtre = "hepsi";
 
-  /* "Işık Kartları" ürününe özel premium "Hakkında" içeriği.
-     Mağazada bu ürüne dokununca detay ekranı bu metni gösterir. */
+  /* Özel ürünlere premium "Hakkında" içerikleri.
+     Mağazada bu ürünlere dokununca detay ekranı bu metni gösterir.
+     paragraf tipleri: düz metin | {vurgu} | {liste:[...]} | {yakinda,baslik,metin} */
   const ISIK_HAKKINDA = {
     baslik: "IŞIK KARTLARI",
     alt: "Sezgi · Farkındalık · Dönüşüm",
@@ -59,19 +60,36 @@ const Magaza = window.Magaza = (() => {
       "Bu kartları açarken tek bir şeye ihtiyacın var: Niyet.\nGerisi zaten senin içinde…"
     ]
   };
+  const MUM_HAKKINDA = {
+    baslik: "IŞIK MUMLARI",
+    alt: "Niyet · Huzur · Farkındalık",
+    paragraflar: [
+      "Her mum sadece bir koku değil, bir niyet taşır.",
+      "Işık Mumları; yaşam alanına huzur, dinginlik ve farkındalık katmak için hazırlanmış özel koleksiyonlardır.",
+      "Her mum belirli bir temayı destekler:",
+      { liste: ["Bolluk", "Aşk", "Koruma", "Arınma", "Huzur", "Güven", "Yeni Başlangıçlar"] },
+      "Mumunu yakmadan önce kısa bir niyet belirle. Alevin ışığına birkaç saniye odaklan ve enerjini o niyetle buluştur.",
+      { metin: "Bazen ihtiyacımız olan şey bir cevap değil, kendimize ayırdığımız birkaç dakikalık sessiz bir andır.", vurgu: true },
+      { yakinda: true, baslik: "🛍️ Çok Yakında", metin: "Işık Mumları yakında mağazada yerini alacak. Satış bağlantıları ve yeni koleksiyonlar için güncellemeleri takip etmeyi unutma." }
+    ]
+  };
 
-  // Listeye "Işık Kartları" Hakkında içeriğini bağla; yoksa yerleşik ürünü ekle.
+  // Yerleşik özel ürünler (Supabase'de aynı adda ürün varsa Hakkında ona bağlanır,
+  // yoksa bu yerleşik ürün listeye eklenir → token gerekmeden canlı çalışır).
+  const OZEL_URUNLER = [
+    { kategori: "isik-kartlari", ad: "Işık Kartları", aciklama: "Sezgi, farkındalık ve dönüşüm için ilham ve bilinç kartları.", gorsel: "/kart.jpg", fiyat: "", link: "", _hakkinda: ISIK_HAKKINDA },
+    { kategori: "mumlar", ad: "Işık Mumları", aciklama: "Niyetle hazırlanmış, alanına huzur katan özel mum koleksiyonu.", gorsel: "", fiyat: "", link: "", _hakkinda: MUM_HAKKINDA }
+  ];
+
+  // Listeye özel ürünlerin Hakkında içeriğini bağla; yoksa yerleşik ürünü ekle.
   function ekleHakkinda(liste) {
     const l = Array.isArray(liste) ? liste.slice() : [];
-    let bulundu = false;
-    l.forEach(u => {
-      if (u && typeof u.ad === "string" && u.ad.trim().toLocaleLowerCase("tr") === "ışık kartları") {
-        u._hakkinda = ISIK_HAKKINDA; bulundu = true;
-      }
+    OZEL_URUNLER.forEach(ozel => {
+      const ad = ozel.ad.toLocaleLowerCase("tr");
+      const mevcut = l.find(u => u && typeof u.ad === "string" && u.ad.trim().toLocaleLowerCase("tr") === ad);
+      if (mevcut) mevcut._hakkinda = ozel._hakkinda;
+      else l.unshift(Object.assign({}, ozel));
     });
-    if (!bulundu) {
-      l.unshift({ kategori: "isik-kartlari", ad: "Işık Kartları", aciklama: "Sezgi, farkındalık ve dönüşüm için ilham ve bilinç kartları.", gorsel: "/kart.jpg", fiyat: "", link: "", _hakkinda: ISIK_HAKKINDA });
-    }
     return l;
   }
 
@@ -162,10 +180,13 @@ const Magaza = window.Magaza = (() => {
     if (u._hakkinda) {
       // Premium "Işık Kartları Hakkında" detayı
       const h = u._hakkinda;
-      const paras = h.paragraflar.map(p => (typeof p === "object" && p)
-        ? `<p class="mgd-hk-vurgu">${esc(p.metin)}</p>`
-        : `<p>${esc(p).replace(/\n/g, "<br/>")}</p>`
-      ).join("");
+      const paras = h.paragraflar.map(p => {
+        if (typeof p === "string") return `<p>${esc(p).replace(/\n/g, "<br/>")}</p>`;
+        if (p && p.liste) return `<ul class="mgd-hk-liste">${p.liste.map(x => `<li>✨ ${esc(x)}</li>`).join("")}</ul>`;
+        if (p && p.yakinda) return `<div class="mgd-hk-yakinda"><div class="mgd-hk-yakinda-baslik">${esc(p.baslik)}</div><p>${esc(p.metin)}</p></div>`;
+        if (p && p.vurgu) return `<p class="mgd-hk-vurgu">${esc(p.metin)}</p>`;
+        return "";
+      }).join("");
       d.innerHTML = `
         <button class="mgd-geri" type="button">‹ Geri</button>
         ${gecerliLink(u.gorsel) || (u.gorsel && /^\//.test(u.gorsel)) ? gorselHTML(u, true) : `<div class="mgd-amblem" aria-hidden="true">✦</div>`}
