@@ -92,15 +92,9 @@ const DATA = {
     { baslik: "Üretim",              img: "Görsellerim/ÜRETİM.jpg",                mesaj: "Yaratıcılığın akıyor; üret, paylaş, çoğalt." }
   ],
 
-  /* Rehberin Sesinden — İstikrar (7 gün) seviyesinde açılan özel ödül meditasyonları.
-     ses: "Meditasyon seslerim/" klasöründeki mp3 (sonra eklenecek). Yeni ekleme: bu diziye satır ekle. */
-  rehberMeditasyonlari: [
-    { id: "rm1", ad: "Sabah Meditasyonu",       aciklama: "Güne huzurla başla — rehberin sesiyle.",         ses: "Meditasyon seslerim/sabah-meditasyonu.m4a" },
-    { id: "rm2", ad: "Bırakma & Arınma",        aciklama: "Seni yoran her şeyi nefesinle bırak.",          ses: "Meditasyon seslerim/birakma-ve-arinma.m4a" },
-    { id: "rm3", ad: "Bolluk Bilinci",          aciklama: "Bolluğa açılan içsel kapıları arala.",          ses: "Meditasyon seslerim/bolluk-bilinci.m4a" },
-    { id: "rm4", ad: "Topraklanma & Güven",     aciklama: "Köklen, dengelen ve güvende hisset.",           ses: "Meditasyon seslerim/topraklanma-ve-guven.m4a" },
-    { id: "rm5", ad: "Şükran ve Işık",          aciklama: "Kalbini şükranla doldur, ışığını büyüt.",       ses: "Meditasyon seslerim/sukran-ve-isik.m4a" }
-  ],
+  /* Rehberin Sesinden — kaldırıldı (kullanıcının ses kayıtları silindi).
+     İstikrar (7 gün) ödülü ileride "3 Işık Mumu hediyesi" bölümüne dönüşecek. */
+  rehberMeditasyonlari: [],
 
   /* Günün Kartı hatırlatma bildirimi — rastgele dönüşümlü mesajlar */
   kartBildirimMesajlari: [
