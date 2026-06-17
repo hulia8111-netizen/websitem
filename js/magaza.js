@@ -70,7 +70,7 @@ const Magaza = window.Magaza = (() => {
       }
     });
     if (!bulundu) {
-      l.unshift({ kategori: "isik-kartlari", ad: "Işık Kartları", aciklama: "Sezgi, farkındalık ve dönüşüm için ilham ve bilinç kartları.", gorsel: "", fiyat: "", link: "", _hakkinda: ISIK_HAKKINDA });
+      l.unshift({ kategori: "isik-kartlari", ad: "Işık Kartları", aciklama: "Sezgi, farkındalık ve dönüşüm için ilham ve bilinç kartları.", gorsel: "/kart.jpg", fiyat: "", link: "", _hakkinda: ISIK_HAKKINDA });
     }
     return l;
   }
