@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=114" />
+  <link rel="stylesheet" href="css/style.css?v=115" />
 </head>
 <body>
   <!-- Açılış (splash) ekranı: logo + isim + Word'den rastgele ilham cümlesi -->
@@ -38,8 +38,8 @@
       </div>
     </div>
   </div><!-- /splash -->
-  <script src="js/acilis-cumleler.js?v=114"></script>
-  <script src="js/splash.js?v=114"></script>
+  <script src="js/acilis-cumleler.js?v=115"></script>
+  <script src="js/splash.js?v=115"></script>
 
   <div class="aura" aria-hidden="true">
     <span class="blob blob-1"></span>
@@ -233,6 +233,17 @@
     </div>
   </div>
 
+  <!-- Mağazam overlay (Ritüeller & Araçlar'dan açılır; dış mağazaya yönlendirir) -->
+  <div class="magaza-overlay" id="magaza-overlay" hidden>
+    <div class="mg-yildizlar" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="mg-ic">
+      <button class="gece-kapat" id="magaza-kapat" aria-label="Kapat">✕</button>
+      <h2 class="mg-baslik">Mağazam ✨</h2>
+      <p class="muted small mg-ust-not">Spiritüel yolculuğuna eşlik edecek özenle seçilmiş ürünler. Satın alma, güvenli dış mağazada tamamlanır. 🛍️</p>
+      <div class="mg-grid" id="mg-grid"></div>
+    </div>
+  </div>
+
   <!-- Seviye Ödülü kutlama popup'ı -->
   <div class="odul-popup" id="odul-popup" hidden>
     <div class="odul-ic">
@@ -366,7 +377,11 @@
               <span class="at-ikon">📊</span><span class="at-ad">Haftalık Rapor</span>
               <span class="at-alt">denge analizini gör</span>
             </button>
-            
+            <button class="arac-tile" id="magaza-ac">
+              <span class="at-ikon">🛍️</span><span class="at-ad">Mağazam</span>
+              <span class="at-alt">özel ürünleri keşfet</span>
+            </button>
+
           </div>
         </section>
 
@@ -935,42 +950,43 @@
     </button>
   </nav>
 
-  <script src="js/data.js?v=114"></script>
-  <script src="js/farkindalik-sorulari.js?v=114"></script>
-  <script src="js/mini-gorevler.js?v=114"></script>
-  <script src="js/store.js?v=114"></script>
-  <script src="js/perf.js?v=114"></script>
-  <script src="js/audio.js?v=114"></script>
-  <script src="js/muzik.js?v=114"></script>
-  <script src="js/rehbermed.js?v=114"></script>
-  <script src="js/rehber.js?v=114"></script>
-  <script src="js/ay.js?v=114"></script>
-  <script src="js/app.js?v=114"></script>
-  <script src="js/haftalik-hedefler.js?v=114"></script>
-  <script src="js/haftalikhedef.js?v=114"></script>
-  <script src="js/streak.js?v=114"></script>
-  <script src="js/gorevler.js?v=114"></script>
-  <script src="js/energy.js?v=114"></script>
-  <script src="js/gunluk.js?v=114"></script>
-  <script src="js/bildirim.js?v=114"></script>
-  <script src="js/kartbildirim.js?v=114"></script>
-  <script src="js/evrenmesaji.js?v=114"></script>
-  <script src="js/profil.js?v=114"></script>
-  <script src="js/rituel.js?v=114"></script>
-  <script src="js/test.js?v=114"></script>
-  <script src="js/enerjitipi.js?v=114"></script>
-  <script src="js/cakra.js?v=114"></script>
-  <script src="js/nefes.js?v=114"></script>
-  <script src="js/vision.js?v=114"></script>
-  <script src="js/ciftsaat.js?v=114"></script>
-  <script src="js/takvim.js?v=114"></script>
-  <script src="js/hafta.js?v=114"></script>
+  <script src="js/data.js?v=115"></script>
+  <script src="js/farkindalik-sorulari.js?v=115"></script>
+  <script src="js/mini-gorevler.js?v=115"></script>
+  <script src="js/store.js?v=115"></script>
+  <script src="js/perf.js?v=115"></script>
+  <script src="js/audio.js?v=115"></script>
+  <script src="js/muzik.js?v=115"></script>
+  <script src="js/rehbermed.js?v=115"></script>
+  <script src="js/rehber.js?v=115"></script>
+  <script src="js/ay.js?v=115"></script>
+  <script src="js/app.js?v=115"></script>
+  <script src="js/haftalik-hedefler.js?v=115"></script>
+  <script src="js/haftalikhedef.js?v=115"></script>
+  <script src="js/streak.js?v=115"></script>
+  <script src="js/gorevler.js?v=115"></script>
+  <script src="js/energy.js?v=115"></script>
+  <script src="js/gunluk.js?v=115"></script>
+  <script src="js/bildirim.js?v=115"></script>
+  <script src="js/kartbildirim.js?v=115"></script>
+  <script src="js/evrenmesaji.js?v=115"></script>
+  <script src="js/magaza.js?v=115"></script>
+  <script src="js/profil.js?v=115"></script>
+  <script src="js/rituel.js?v=115"></script>
+  <script src="js/test.js?v=115"></script>
+  <script src="js/enerjitipi.js?v=115"></script>
+  <script src="js/cakra.js?v=115"></script>
+  <script src="js/nefes.js?v=115"></script>
+  <script src="js/vision.js?v=115"></script>
+  <script src="js/ciftsaat.js?v=115"></script>
+  <script src="js/takvim.js?v=115"></script>
+  <script src="js/hafta.js?v=115"></script>
   
-  <script src="js/kozmik.js?v=114"></script>
+  <script src="js/kozmik.js?v=115"></script>
   <!-- Bulut üyelik & senkron (Supabase) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/supabase-config.js?v=114"></script>
-  <script src="js/bulut.js?v=114"></script>
+  <script src="js/supabase-config.js?v=115"></script>
+  <script src="js/bulut.js?v=115"></script>
   <script>
     if ("serviceWorker" in navigator) {
       // SW'yi kaydet ve arka planda güncelle. ZORLA RELOAD YOK: fetch network-first
