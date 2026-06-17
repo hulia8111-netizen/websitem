@@ -50,7 +50,15 @@ window.MINI_GOREVLER = {
     "Yüzünü soğuk suyla yıka.",
     "Bir şeyleri yavaş yap.",
     "Gökyüzünü fotoğrafla.",
-    "Kendini küçük bir ödülle mutlu et."
+    "Kendini küçük bir ödülle mutlu et.",
+    "Bir öğününü yavaş ve bilinçli ye.",
+    "Kullanmadığın 3 eşyayı bağış kutusuna ayır.",
+    "Gün içinde aynaya gülümse.",
+    "Kendine güzel bir masa hazırla.",
+    "Gün içinde 15 dakika hiçbir şey yapma.",
+    "Gün doğumunu izle.",
+    "Kendine küçük bir çiçek satın al.",
+    "Bir gün boyunca gereksiz alışveriş yapma."
   ],
   "ruhsal": [
     "Şükrettiğin 3 şeyi yaz.",
@@ -102,7 +110,13 @@ window.MINI_GOREVLER = {
     "Bir yükünü kağıda yaz.",
     "Bugün neye ihtiyacın olduğunu sor.",
     "Kalbinle konuş.",
-    "Kendini affet."
+    "Kendini affet.",
+    "Eski bir fotoğrafına bakıp kendine sevgi gönder.",
+    "Bir affetme mektubu yaz, göndermeden.",
+    "Evrene teşekkür mektubu yaz.",
+    "İçindeki ışığı tarif et.",
+    "Gelecekteki halinle sohbet ettiğini hayal et.",
+    "Kalbinin merkezine odaklan."
   ],
   "zihinsel": [
     "Yeni bir kelime öğren.",
@@ -162,6 +176,16 @@ window.MINI_GOREVLER = {
     "Bir fikrini sorgula.",
     "Seni motive eden şeyi yaz.",
     "Bir kararını gözden geçir.",
-    "Bir hedefe ilk adımı planla."
+    "Bir hedefe ilk adımı planla.",
+    "Kendine ait 5 yanlış inancı yaz.",
+    "Çocukken olmak istediğin kişiyi yaz.",
+    "Bugün seni tetikleyen bir olayı analiz et.",
+    "Hayatındaki en büyük dönüm noktasını yaz.",
+    "Kendine sorduğun en zor soruyu yaz.",
+    "Hayatında tekrar eden bir döngüyü fark et.",
+    "Geçmişte doğru verdiğin bir kararı yaz.",
+    "Yeni bir yaşam mottosu belirle.",
+    "Bugünkü düşüncelerini gözlemle.",
+    "Hayatında bırakman gereken şeyi yaz."
   ]
 };
