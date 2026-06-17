@@ -2549,3 +2549,24 @@ body.mg-aktif { overflow: hidden; }
 .mgd-satinal.yakinda { color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.06); border: 1px solid rgba(243,217,140,0.22); box-shadow: none; cursor: default; }
 .mgd-not { text-align: center; margin-top: 0.7rem; }
 @media (max-width: 380px) { .mg-grid { grid-template-columns: 1fr 1fr; gap: 0.6rem; } .mg-kart-ad { font-size: 0.88rem; } }
+/* === Magaza: "Işık Kartları Hakkında" premium detay === */
+.mgd-amblem {
+  width: 64px; height: 64px; margin: 0.4rem auto 0.8rem; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-size: 1.7rem; color: #1a1430;
+  background: linear-gradient(120deg, #fff0c2, #f3d98c, #e9c46a);
+  box-shadow: 0 0 26px rgba(243,217,140,0.55);
+}
+.mgd-hk-baslik {
+  text-align: center; margin: 0.2rem 0 0.2rem; letter-spacing: 3px; font-size: 1.5rem;
+  font-family: "Playfair Display", serif; font-weight: 600;
+  background: linear-gradient(120deg, #fff0c2, #f3d98c, #e9c46a);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.mgd-hk-alt { text-align: center; margin: 0 0 0.9rem; font-size: 0.82rem; letter-spacing: 2px; color: rgba(243,217,140,0.85); text-transform: uppercase; }
+.mgd-hk-cizgi { width: 70px; height: 1px; margin: 0 auto 1.1rem; background: linear-gradient(90deg, transparent, rgba(243,217,140,0.7), transparent); }
+.mgd-hk-metin p { margin: 0 0 0.9rem; line-height: 1.7; color: rgba(255,255,255,0.86); font-size: 0.96rem; }
+.mgd-hk-metin p:last-child { margin-bottom: 0; }
+.mgd-hk-vurgu {
+  text-align: center; font-family: "Playfair Display", serif; font-style: italic;
+  font-size: 1.12rem; color: #f3d98c; margin: 1.1rem 0 !important; line-height: 1.5;
+}

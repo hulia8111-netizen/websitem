@@ -43,6 +43,38 @@ const Magaza = window.Magaza = (() => {
   let urunler = [];
   let filtre = "hepsi";
 
+  /* "Işık Kartları" ürününe özel premium "Hakkında" içeriği.
+     Mağazada bu ürüne dokununca detay ekranı bu metni gösterir. */
+  const ISIK_HAKKINDA = {
+    baslik: "IŞIK KARTLARI",
+    alt: "Sezgi · Farkındalık · Dönüşüm",
+    paragraflar: [
+      "Bu kartlar bir oyun değil.\nBir fal değil.\nBir tesadüf hiç değil…",
+      "Elindeki bu deste, bilinçle evren arasındaki bir köprüdür. Her kart, içinde zaten var olan bir gerçeği sana hatırlatmak için karşına çıkar.",
+      "Çünkü senin hayatında değişim; dışarıdan gelen bir mucizeyle değil, içeride verilen bir izinle başlar.",
+      "Işık Kartları; sezgi, cesaret, denge, para, aile, sınırlar, şifa, bırakış, kabul ve yükseliş gibi hayatının tüm katmanlarına dokunan bilinç anahtarlarıdır.",
+      "Bu kartlar sana “Ne olacak?” demek için değil, “Neye hazırsın?” sorusunu sormak için vardır.",
+      "Bu destede seçtiğin hiçbir kart rastgele değildir. Her seçim, o anki enerjinin bir yansımasıdır.",
+      { metin: "Kartı sen seçmezsin, kart seni bulur.", vurgu: true },
+      "Bu kartları açarken tek bir şeye ihtiyacın var: Niyet.\nGerisi zaten senin içinde…"
+    ]
+  };
+
+  // Listeye "Işık Kartları" Hakkında içeriğini bağla; yoksa yerleşik ürünü ekle.
+  function ekleHakkinda(liste) {
+    const l = Array.isArray(liste) ? liste.slice() : [];
+    let bulundu = false;
+    l.forEach(u => {
+      if (u && typeof u.ad === "string" && u.ad.trim().toLocaleLowerCase("tr") === "ışık kartları") {
+        u._hakkinda = ISIK_HAKKINDA; bulundu = true;
+      }
+    });
+    if (!bulundu) {
+      l.unshift({ kategori: "isik-kartlari", ad: "Işık Kartları", aciklama: "Sezgi, farkındalık ve dönüşüm için ilham ve bilinç kartları.", gorsel: "", fiyat: "", link: "", _hakkinda: ISIK_HAKKINDA });
+    }
+    return l;
+  }
+
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   }
@@ -67,11 +99,11 @@ const Magaza = window.Magaza = (() => {
   async function yukle(yenidenCiz) {
     // 1) anında: cache veya varsayılan
     const c = cacheOku();
-    urunler = (c && c.length) ? c : VARSAYILAN.slice();
+    urunler = ekleHakkinda((c && c.length) ? c : VARSAYILAN.slice());
     if (yenidenCiz) ciz();
     // 2) arka planda: Supabase'den tazele
     const taze = await supabasedenGetir();
-    if (taze && taze.length) { urunler = taze; cacheYaz(taze); ciz(); }
+    if (taze && taze.length) { cacheYaz(taze); urunler = ekleHakkinda(taze); ciz(); }
     else if (taze && taze.length === 0 && !(c && c.length)) { /* tablo boş + cache yok → varsayılan kalır */ }
   }
 
@@ -127,15 +159,34 @@ const Magaza = window.Magaza = (() => {
     const aksiyon = gecerliLink(u.link)
       ? `<a class="mgd-satinal" href="${esc(u.link)}" target="_blank" rel="noopener noreferrer">Satın Al ✦</a>`
       : `<span class="mgd-satinal yakinda" aria-disabled="true">Yakında ✨</span>`;
-    d.innerHTML = `
-      <button class="mgd-geri" type="button">‹ Geri</button>
-      ${gorselHTML(u, true)}
-      <div class="mgd-kat">${esc(katIkon(u.kategori))} ${esc((katById(u.kategori) || {}).ad || "")}</div>
-      <h3 class="mgd-ad">${esc(u.ad)}</h3>
-      ${fiyat}
-      <p class="mgd-aciklama">${esc(u.aciklama)}</p>
-      ${aksiyon}
-      <p class="muted small mgd-not">Satın alma, güvenli dış mağazada tamamlanır.</p>`;
+    if (u._hakkinda) {
+      // Premium "Işık Kartları Hakkında" detayı
+      const h = u._hakkinda;
+      const paras = h.paragraflar.map(p => (typeof p === "object" && p)
+        ? `<p class="mgd-hk-vurgu">${esc(p.metin)}</p>`
+        : `<p>${esc(p).replace(/\n/g, "<br/>")}</p>`
+      ).join("");
+      d.innerHTML = `
+        <button class="mgd-geri" type="button">‹ Geri</button>
+        ${gecerliLink(u.gorsel) || (u.gorsel && /^\//.test(u.gorsel)) ? gorselHTML(u, true) : `<div class="mgd-amblem" aria-hidden="true">✦</div>`}
+        <h3 class="mgd-hk-baslik">${esc(h.baslik)}</h3>
+        <p class="mgd-hk-alt">${esc(h.alt)}</p>
+        <div class="mgd-hk-cizgi"></div>
+        <div class="mgd-hk-metin">${paras}</div>
+        ${fiyat}
+        ${aksiyon}
+        <p class="muted small mgd-not">Satın alma, güvenli dış mağazada tamamlanır.</p>`;
+    } else {
+      d.innerHTML = `
+        <button class="mgd-geri" type="button">‹ Geri</button>
+        ${gorselHTML(u, true)}
+        <div class="mgd-kat">${esc(katIkon(u.kategori))} ${esc((katById(u.kategori) || {}).ad || "")}</div>
+        <h3 class="mgd-ad">${esc(u.ad)}</h3>
+        ${fiyat}
+        <p class="mgd-aciklama">${esc(u.aciklama)}</p>
+        ${aksiyon}
+        <p class="muted small mgd-not">Satın alma, güvenli dış mağazada tamamlanır.</p>`;
+    }
     d.querySelector(".mgd-geri").addEventListener("click", detayKapat);
     $("#mg-liste").hidden = true;
     d.hidden = false;
