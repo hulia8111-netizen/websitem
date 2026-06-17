@@ -58,7 +58,12 @@ window.MINI_GOREVLER = {
     "Gün içinde 15 dakika hiçbir şey yapma.",
     "Gün doğumunu izle.",
     "Kendine küçük bir çiçek satın al.",
-    "Bir gün boyunca gereksiz alışveriş yapma."
+    "Bir gün boyunca gereksiz alışveriş yapma.",
+    "Gün boyunca sadece ihtiyacın kadar konuş.",
+    "Gün içinde 30 dakika yalnız kal.",
+    "Evdeki bir objenin yerini değiştir.",
+    "Gün içinde 5 dakika gözlerini dinlendir.",
+    "Bir gün boyunca şikâyet etmemeye çalış."
   ],
   "ruhsal": [
     "Şükrettiğin 3 şeyi yaz.",
@@ -116,7 +121,14 @@ window.MINI_GOREVLER = {
     "Evrene teşekkür mektubu yaz.",
     "İçindeki ışığı tarif et.",
     "Gelecekteki halinle sohbet ettiğini hayal et.",
-    "Kalbinin merkezine odaklan."
+    "Kalbinin merkezine odaklan.",
+    "İçinden geçen ilk sezgiyi not et.",
+    "Bugün neyi bırakmak istediğini yaz.",
+    "Kendine, sana güvendiğini söyle.",
+    "O özelliğin sende de olduğunu kabul et.",
+    "Değişime açık olduğuna dair niyet kur.",
+    "Bolluk hissini hayal et.",
+    "Biten bir döngüyü serbest bırak."
   ],
   "zihinsel": [
     "Yeni bir kelime öğren.",
@@ -186,6 +198,16 @@ window.MINI_GOREVLER = {
     "Geçmişte doğru verdiğin bir kararı yaz.",
     "Yeni bir yaşam mottosu belirle.",
     "Bugünkü düşüncelerini gözlemle.",
-    "Hayatında bırakman gereken şeyi yaz."
+    "Hayatında bırakman gereken şeyi yaz.",
+    "En çok kullandığın 3 bahaneyi yaz.",
+    "Kendini sınırladığın bir alanı fark et.",
+    "Bir korkunun arkasındaki ihtiyacı bul.",
+    "Hayatında neyin fazla olduğunu yaz.",
+    "10 yıl önceki haline tavsiye ver.",
+    "Hayran olduğun bir kişinin özelliğini yaz.",
+    "Bugün farklı ne yaptığını yaz.",
+    "Başarısızlık sandığın bir olayın sana kazandırdığını yaz.",
+    "Hayatında çoğalmasını istediğin şeyi yaz.",
+    "Bugüne kadar aştığın zorlukları listele."
   ]
 };
