@@ -29,10 +29,6 @@ const Magaza = window.Magaza = (() => {
 
   // Supabase boş/erişilemezse gösterilecek yerel örnekler (panelden gerçeklerini ekleyince devre dışı kalır)
   const VARSAYILAN = [
-    { kategori: "isik-kartlari", ad: "Melek & Tarot Kartı Destesi", aciklama: "Günün rehberliği için ilham veren kart destesi.", gorsel: "", fiyat: "", link: "" },
-    { kategori: "isik-kartlari", ad: "Işık Mesajı Kartları", aciklama: "Her çekilişte içsel bir mesaj sunan özel kartlar.", gorsel: "", fiyat: "", link: "" },
-    { kategori: "mumlar", ad: "Şifa Mumu", aciklama: "Meditasyon ve ritüellerine eşlik eden doğal soya mumu.", gorsel: "", fiyat: "", link: "" },
-    { kategori: "mumlar", ad: "Tütsü & Adaçayı Seti", aciklama: "Alanını arındırmak için doğal tütsü ve adaçayı.", gorsel: "", fiyat: "", link: "" },
     { kategori: "mumlar", ad: "Doğal Kristal Seti", aciklama: "Niyet ve denge için özenle seçilmiş şifa taşları.", gorsel: "", fiyat: "", link: "" },
     { kategori: "sesli-icerik", ad: "Rehberli Meditasyon Seti", aciklama: "Derin gevşeme için sesli meditasyon koleksiyonu.", gorsel: "", fiyat: "", link: "" },
     { kategori: "sesli-icerik", ad: "Uyku Hikâyeleri", aciklama: "Huzurlu bir uykuya geçiş için sesli anlatılar.", gorsel: "", fiyat: "", link: "" },
