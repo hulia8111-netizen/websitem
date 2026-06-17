@@ -2581,3 +2581,19 @@ body.mg-aktif { overflow: hidden; }
 .mgd-hk-yakinda-baslik { font-weight: 600; color: #f3d98c; font-size: 1.05rem; margin-bottom: 0.4rem; letter-spacing: .3px; }
 .mgd-hk-yakinda p { margin: 0; font-size: 0.9rem; line-height: 1.6; color: rgba(255,255,255,0.82); }
 @media (max-width: 380px) { .mgd-hk-liste { grid-template-columns: 1fr; } }
+/* === Rehberli Meditasyonlar: liste oku + adim adim okuyucu === */
+.rm-item .rm-ok { margin-left: auto; color: rgba(243,217,140,0.7); font-size: 1.3rem; }
+.rm-detay { animation: rmDetayGir .35s ease; }
+@keyframes rmDetayGir { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.rm-geri { background: none; border: none; color: rgba(243,217,140,0.9); font: inherit; font-size: 0.95rem; cursor: pointer; padding: 0.2rem 0; margin-bottom: 0.4rem; }
+.rm-detay-ikon { text-align: center; font-size: 2.2rem; margin: 0.2rem 0 0.3rem; }
+.rm-detay-ad { text-align: center; margin: 0 0 0.2rem; font-family: "Playfair Display", serif; font-size: 1.35rem;
+  background: linear-gradient(120deg, #fff0c2, #f3d98c, #e9c46a); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.rm-detay-alt { text-align: center; margin: 0 0 0.9rem; font-size: 0.9rem; color: rgba(255,255,255,0.75); font-style: italic; }
+.rm-detay-cizgi { width: 64px; height: 1px; margin: 0 auto 1.1rem; background: linear-gradient(90deg, transparent, rgba(243,217,140,0.7), transparent); }
+.rm-adimlar { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.7rem; }
+.rm-adim { display: flex; gap: 0.7rem; align-items: flex-start; }
+.rm-adim-no { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 0.82rem; font-weight: 600; color: #1a1430; background: linear-gradient(120deg, #fff0c2, #f3d98c, #e9c46a); box-shadow: 0 0 12px rgba(243,217,140,0.4); }
+.rm-adim p { margin: 0; line-height: 1.6; color: rgba(255,255,255,0.88); font-size: 0.96rem; padding-top: 2px; }
+.rm-detay-kapanis { text-align: center; margin: 1.2rem 0 0; font-style: italic; color: rgba(243,217,140,0.85); font-size: 0.92rem; }

@@ -92,9 +92,65 @@ const DATA = {
     { baslik: "Üretim",              img: "Görsellerim/ÜRETİM.jpg",                mesaj: "Yaratıcılığın akıyor; üret, paylaş, çoğalt." }
   ],
 
-  /* Rehberin Sesinden — kaldırıldı (kullanıcının ses kayıtları silindi).
-     İstikrar (7 gün) ödülü ileride "3 Işık Mumu hediyesi" bölümüne dönüşecek. */
-  rehberMeditasyonlari: [],
+  /* Rehberli Meditasyonlar — İstikrar (7 gün) seviyesinde açılan özel ödül.
+     Ses YOK; ekranda adım adım yazılı rehberli meditasyon (oku + nefes al). */
+  rehberMeditasyonlari: [
+    {
+      id: "rm1", ad: "Sabah Meditasyonu", aciklama: "Güne huzurla başla.", ikon: "☀️",
+      adimlar: [
+        "Rahat bir şekilde otur, omuzlarını gevşet ve gözlerini hafifçe kapat.",
+        "Burnundan derin bir nefes al (4 sn)… kısa bir an tut… ağzından yavaşça ver (6 sn).",
+        "Bugün için tek bir niyet belirle: “Bugün kendime nazik olacağım.”",
+        "Elini kalbine koy ve içinden tekrarla: “Yeni bir gün, yeni bir başlangıç.”",
+        "Ayak parmaklarından başına kadar bedeninin uyanışını hisset.",
+        "Gözlerini yavaşça aç. Güne hazırsın. ☀️"
+      ]
+    },
+    {
+      id: "rm2", ad: "Bırakma & Arınma", aciklama: "Seni yoran her şeyi nefesinle bırak.", ikon: "🌿",
+      adimlar: [
+        "Sırtını dik tut, ellerini dizlerine koy ve gözlerini kapat.",
+        "Derin bir nefes al ve içindeki ağırlığı fark et — bir düşünce, bir gerginlik…",
+        "Nefesini verirken o ağırlığın bedeninden akıp gittiğini hayal et.",
+        "İçinden söyle: “Bana ait olmayanı bırakıyorum.”",
+        "Üç kez daha derin nefes al; her verişte biraz daha hafifle.",
+        "Şimdi arınmış, ferah bir alan hisset. Gözlerini aç. 🌿"
+      ]
+    },
+    {
+      id: "rm3", ad: "Bolluk Bilinci", aciklama: "Bolluğa açılan içsel kapıları arala.", ikon: "💛",
+      adimlar: [
+        "Rahatça otur, avuçlarını yukarı bakacak şekilde aç (almaya hazır ol).",
+        "Derin bir nefes al; göğsünün genişlediğini hisset.",
+        "Hayatındaki üç güzelliği hatırla ve onlar için şükret.",
+        "İçinden tekrarla: “Bolluk bana doğal olarak akıyor.”",
+        "İstediğin şeyi sanki çoktan gelmiş gibi hisset ve gülümse.",
+        "Bu bolluk hissiyle gözlerini aç. 💛"
+      ]
+    },
+    {
+      id: "rm4", ad: "Topraklanma & Güven", aciklama: "Köklen, dengelen ve güvende hisset.", ikon: "🌳",
+      adimlar: [
+        "Ayaklarını yere tam bas; topuklarının zemine değdiğini hisset.",
+        "Derin bir nefes al; nefesinle birlikte yere kök saldığını hayal et.",
+        "Bu kökler seni taşıyor; sağlam ve güvende olduğunu bil.",
+        "İçinden söyle: “Buradayım, güvendeyim, dengedeyim.”",
+        "Bedeninin ağırlığını ve sağlamlığını hisset.",
+        "Gözlerini aç; merkezinde ve dengede. 🌳"
+      ]
+    },
+    {
+      id: "rm5", ad: "Şükran ve Işık", aciklama: "Kalbini şükranla doldur, ışığını büyüt.", ikon: "✨",
+      adimlar: [
+        "Elini kalbine koy, gözlerini kapat ve yumuşak bir nefes al.",
+        "Bugün minnettar olduğun bir anı hatırla; o hissi kalbinde büyüt.",
+        "Kalbinde küçük bir ışık hayal et; her nefeste biraz daha parlasın.",
+        "O ışığın tüm bedenini sardığını hisset.",
+        "İçinden söyle: “Şükranla doluyum, ışığım büyüyor.”",
+        "Gözlerini aç; ışığını yanında taşı. ✨"
+      ]
+    }
+  ],
 
   /* Günün Kartı hatırlatma bildirimi — rastgele dönüşümlü mesajlar */
   kartBildirimMesajlari: [
