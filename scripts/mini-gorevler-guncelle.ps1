@@ -1,6 +1,6 @@
 ﻿# ============================================================
 # mini-gorevler-guncelle.ps1
-# Mini görevleri Word dosyasından okuyup js/mini-gorevler.js
+# Günün görevlerini Word dosyasından okuyup js/mini-gorevler.js
 # dosyasını yeniden üretir. Görevler 3 kategoriye ayrılır:
 # Fiziksel / Zihinsel / Ruhsal.
 #
@@ -15,7 +15,7 @@
 
 $ErrorActionPreference = "Stop"
 $kok   = Split-Path -Parent $PSScriptRoot
-$docx  = Join-Path $kok "Mini Görevlerim\Mini Görevlerim.docx"
+$docx  = Join-Path $kok "Günün Görevleri\Günün Görevleri.docx"
 $hedef = Join-Path $kok "js\mini-gorevler.js"
 
 if (-not (Test-Path $docx)) { Write-Error "Word dosyası bulunamadı: $docx"; exit 1 }
@@ -75,7 +75,7 @@ $sb = New-Object System.Text.StringBuilder
 [void]$sb.AppendLine("   mini-gorevler.js — Günün Mini Görevleri (3 kategori)")
 [void]$sb.AppendLine("   ------------------------------------------------------------")
 [void]$sb.AppendLine("   OTOMATIK ÜRETİLDİ — elle düzenlemeyin. Kaynak:")
-[void]$sb.AppendLine("   ""Mini Görevlerim/Mini Görevlerim.docx""")
+[void]$sb.AppendLine("   ""Günün Görevleri/Günün Görevleri.docx""")
 [void]$sb.AppendLine("   Güncellemek için: scripts\mini-gorevler-guncelle.ps1 çalıştır.")
 [void]$sb.AppendLine("   Global: window.MINI_GOREVLER { fiziksel, ruhsal, zihinsel }")
 [void]$sb.AppendLine("   ============================================================ */")
