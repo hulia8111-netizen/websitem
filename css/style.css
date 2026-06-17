@@ -2457,6 +2457,7 @@ body.cs-aktif { overflow: hidden; }
   background: radial-gradient(120% 90% at 50% 0%, rgba(42,29,82,0.97) 0%, rgba(14,11,30,0.98) 70%);
   backdrop-filter: blur(6px);
 }
+.magaza-overlay[hidden] { display: none; }
 .magaza-overlay.gor { opacity: 1; }
 .mg-ic {
   position: relative; width: 100%; max-width: 540px; padding: 1.8rem 1.4rem 2rem;
