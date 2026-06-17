@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 1024px; height: 500px; overflow: hidden; }
+    .fg {
+      position: relative; width: 1024px; height: 500px; overflow: hidden;
+      background: radial-gradient(120% 130% at 22% 28%, #34256b 0%, #1a1138 50%, #0b0a1c 100%);
+      font-family: "Inter", sans-serif; display: flex; align-items: center;
+    }
+    /* yıldızlar */
+    .yild { position: absolute; border-radius: 50%; background: #f3d98c; opacity: .8; }
+    .hale { position: absolute; border-radius: 50%; filter: blur(2px); }
+    .sol { flex: 1; padding: 0 0 0 70px; position: relative; z-index: 2; }
+    .ay { font-size: 52px; line-height: 1; margin-bottom: 14px; filter: drop-shadow(0 0 18px rgba(243,217,140,.6)); }
+    .ad {
+      font-family: "Playfair Display", serif; font-weight: 600; font-size: 76px; line-height: 1.05;
+      background: linear-gradient(120deg, #fff3cf, #f3d98c, #e9c46a);
+      -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: .5px;
+    }
+    .slogan { margin-top: 16px; font-size: 23px; color: #e9e3fb; font-weight: 500; letter-spacing: .2px; }
+    .alt { margin-top: 10px; font-size: 17px; color: #b9b0e0; }
+    .rozetler { margin-top: 26px; display: flex; gap: 10px; flex-wrap: wrap; max-width: 470px; }
+    .rozet {
+      font-size: 14px; color: #f6ecc8; padding: 7px 14px; border-radius: 999px;
+      background: rgba(243,217,140,.10); border: 1px solid rgba(243,217,140,.30); white-space: nowrap;
+    }
+    /* sağ: kart görseli */
+    .sag { width: 360px; height: 100%; position: relative; }
+    .kart {
+      position: absolute; top: 50%; left: 40%; transform: translate(-50%,-50%) rotate(7deg);
+      width: 232px; height: 356px; border-radius: 18px; overflow: hidden;
+      box-shadow: 0 26px 70px rgba(0,0,0,.55), 0 0 50px rgba(179,140,255,.35);
+      border: 1px solid rgba(243,217,140,.35);
+    }
+    .kart img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .glow { position: absolute; top: 50%; left: 42%; transform: translate(-50%,-50%); width: 360px; height: 360px;
+      background: radial-gradient(circle, rgba(243,217,140,.22), rgba(179,140,255,.12) 45%, transparent 70%); }
+  </style>
+</head>
+<body>
+  <div class="fg">
+    <div class="hale" style="width:420px;height:420px;left:-120px;top:-120px;background:radial-gradient(circle,rgba(179,140,255,.30),transparent 70%)"></div>
+    <div class="hale" style="width:360px;height:360px;right:-80px;bottom:-120px;background:radial-gradient(circle,rgba(243,217,140,.16),transparent 70%)"></div>
+    <div class="yild" style="width:5px;height:5px;top:60px;left:40%"></div>
+    <div class="yild" style="width:3px;height:3px;top:120px;left:30%;background:#b38cff"></div>
+    <div class="yild" style="width:4px;height:4px;top:420px;left:18%"></div>
+    <div class="yild" style="width:3px;height:3px;top:90px;left:62%;background:#b38cff"></div>
+    <div class="yild" style="width:4px;height:4px;top:300px;left:54%"></div>
+    <div class="yild" style="width:3px;height:3px;top:200px;left:8%"></div>
+
+    <div class="sol">
+      <div class="ay">🌙</div>
+      <div class="ad">Işığını Bul</div>
+      <div class="slogan">Spiritüel farkındalık ve içsel denge yolculuğun ✨</div>
+      <div class="alt">Kartlar · Meditasyon · Ruh hali · Günlük · Ritüeller</div>
+      <div class="rozetler">
+        <span class="rozet">🃏 Günün Kartı</span>
+        <span class="rozet">🧘 Rehberli Meditasyon</span>
+        <span class="rozet">🌙 Ruh Hali & Enerji</span>
+        <span class="rozet">📔 Kilitli Günlük</span>
+      </div>
+    </div>
+    <div class="sag">
+      <div class="glow"></div>
+      <div class="kart"><img src="/kart.jpg" alt="Işık Kartları" /></div>
+    </div>
+  </div>
+</body>
+</html>
