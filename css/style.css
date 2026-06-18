@@ -2597,3 +2597,38 @@ body.mg-aktif { overflow: hidden; }
   font-size: 0.82rem; font-weight: 600; color: #1a1430; background: linear-gradient(120deg, #fff0c2, #f3d98c, #e9c46a); box-shadow: 0 0 12px rgba(243,217,140,0.4); }
 .rm-adim p { margin: 0; line-height: 1.6; color: rgba(255,255,255,0.88); font-size: 0.96rem; padding-top: 2px; }
 .rm-detay-kapanis { text-align: center; margin: 1.2rem 0 0; font-style: italic; color: rgba(243,217,140,0.85); font-size: 0.92rem; }
+/* === Magaza sade: Satin Al butonu + Cok Yakinda kutusu === */
+.mg-kart.sade { display: flex; flex-direction: column; }
+.mg-satinal {
+  margin-top: 0.7rem; width: 100%; font: inherit; font-size: 0.92rem; font-weight: 600; cursor: pointer;
+  padding: 0.6rem 1rem; border-radius: 12px; border: none; color: #1a1430;
+  background: linear-gradient(120deg, #fff0c2, #f3d98c, #e9c46a);
+  box-shadow: 0 4px 14px rgba(243,217,140,0.28); transition: transform .15s ease, box-shadow .15s ease;
+}
+.mg-satinal:hover { transform: translateY(-1px); box-shadow: 0 7px 20px rgba(243,217,140,0.38); }
+.mg-satinal:active { transform: translateY(0); }
+
+.mg-yakinda {
+  position: fixed; inset: 0; z-index: 100000; display: flex; align-items: center; justify-content: center;
+  padding: 1.4rem; background: rgba(10,8,22,0.66); backdrop-filter: blur(4px);
+  opacity: 0; transition: opacity .25s ease;
+}
+.mg-yakinda[hidden] { display: none; }
+.mg-yakinda.gor { opacity: 1; }
+.mg-yakinda-ic {
+  width: 100%; max-width: 340px; text-align: center; padding: 1.8rem 1.5rem 1.6rem; border-radius: 20px;
+  background: linear-gradient(160deg, rgba(58,42,109,0.96), rgba(22,15,51,0.98));
+  border: 1px solid rgba(243,217,140,0.30); box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  transform: translateY(12px) scale(.97); transition: transform .3s cubic-bezier(.2,.9,.3,1.1);
+}
+.mg-yakinda.gor .mg-yakinda-ic { transform: none; }
+.mg-yakinda-amblem { font-size: 2.2rem; margin-bottom: .4rem; }
+.mg-yakinda-baslik {
+  font-family: "Playfair Display", serif; font-size: 1.4rem; margin-bottom: .5rem;
+  background: linear-gradient(120deg, #fff0c2, #f3d98c, #e9c46a); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.mg-yakinda-metin { font-size: 0.92rem; line-height: 1.6; color: rgba(255,255,255,0.82); margin: 0 0 1.2rem; }
+.mg-yakinda-kapat {
+  font: inherit; font-weight: 600; font-size: 0.92rem; cursor: pointer; padding: 0.55rem 1.8rem; border-radius: 999px; border: none; color: #1a1430;
+  background: linear-gradient(120deg, #fff0c2, #f3d98c, #e9c46a);
+}

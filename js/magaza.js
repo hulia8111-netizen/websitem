@@ -1,241 +1,107 @@
 /* ============================================================
-   magaza.js — "Mağazam ✨" (Supabase yönetimli dış mağaza) 🛍️
+   magaza.js — "Mağazam ✨" (sade ilk sürüm) 🛍️
    ------------------------------------------------------------
-   • Ürünler Supabase'deki "magaza_urunler" tablosundan çekilir
-     (anon key ile herkese açık okuma). Panelden ürün eklenince
-     UYGULAMA GÜNCELLEMESİ GEREKMEZ — anında görünür.
-   • Kategoriler: Işık Kartları / Mumlar & Ritüel / Sesli İçerikler /
-     Etkinlikler & Eğitimler.
-   • Kart → detay sayfası (büyük görsel, açıklama, fiyat) → "Satın Al"
-     güvenli DIŞ mağazada açılır (Shopier/iyzico/site). Play uyumlu.
-   • Hız: önce localStorage önbelleğinden anında çizer, arka planda
-     Supabase'den tazeler. Supabase boş/erişilemezse yerel örneklerle
-     çalışır (asla boş ekran olmaz).
-   • Gelecek hazırlığı: ürünün "tip" alanı ileride "link" yerine
-     uygulama-içi satın almaya ("iap") geçişe izin verecek şekilde okunur.
+   İlk sürümde mağaza SADE: tam 3 ürün kartı gösterilir
+     1) 🃏 Işık Kartları   2) 🕯️ Işık Mumları   3) ✨ Ritüel Araçları
+   Her kartta: görsel · ad · kısa açıklama · "Satın Al" butonu.
+   "Satın Al" → "Çok Yakında" mesajı (ürün linki henüz yok).
+
+   GELECEK HAZIRLIĞI (altyapı hazır):
+   - Bir ürüne `link` eklenince "Satın Al" o güvenli dış sayfaya gider.
+   - Ürün detay metinleri (_hakkinda) kodda saklı; ileride detay
+     sayfası açmak istenirse hazır.
+   Kategori / alt sayfa / ürün listesi YOK (bilinçli sadelik).
    Global: window.Magaza
    ============================================================ */
 
 const Magaza = window.Magaza = (() => {
   const $ = sel => document.querySelector(sel);
-  const CACHE = "magaza-urunler-cache";
 
-  const KATEGORILER = [
-    { id: "isik-kartlari", ikon: "🃏", ad: "Işık Kartları" },
-    { id: "mumlar",        ikon: "🕯️", ad: "Mumlar & Ritüel" },
-    { id: "sesli-icerik",  ikon: "🎧", ad: "Sesli İçerikler" },
-    { id: "etkinlik",      ikon: "🎓", ad: "Etkinlik & Eğitim" }
+  // İlk sürüm ürünleri (tam 3 kart). link boş → "Satın Al" Çok Yakında gösterir.
+  const URUNLER = [
+    { ad: "Işık Kartları",  ikon: "🃏", aciklama: "Sezgi, farkındalık ve dönüşüm için ilham ve bilinç kartları.", gorsel: "/kart.jpg",   link: "" },
+    { ad: "Işık Mumları",   ikon: "🕯️", aciklama: "Niyetle hazırlanmış, yaşam alanına huzur katan özel mum koleksiyonu.", gorsel: "/mumlar.jpg", link: "" },
+    { ad: "Ritüel Araçları", ikon: "✨", aciklama: "Ritüellerine eşlik eden özenle seçilmiş araçlar ve setler.", gorsel: "", link: "" }
   ];
-
-  // Supabase boş/erişilemezse gösterilecek yerel örnekler (panelden gerçeklerini ekleyince devre dışı kalır)
-  const VARSAYILAN = [
-    { kategori: "mumlar", ad: "Doğal Kristal Seti", aciklama: "Niyet ve denge için özenle seçilmiş şifa taşları.", gorsel: "", fiyat: "", link: "" },
-    { kategori: "sesli-icerik", ad: "Rehberli Meditasyon Seti", aciklama: "Derin gevşeme için sesli meditasyon koleksiyonu.", gorsel: "", fiyat: "", link: "" },
-    { kategori: "sesli-icerik", ad: "Uyku Hikâyeleri", aciklama: "Huzurlu bir uykuya geçiş için sesli anlatılar.", gorsel: "", fiyat: "", link: "" },
-    { kategori: "etkinlik", ad: "Online Farkındalık Atölyesi", aciklama: "Canlı katılımlı farkındalık ve nefes atölyesi.", gorsel: "", fiyat: "", link: "" },
-    { kategori: "etkinlik", ad: "Birebir Koçluk Seansı", aciklama: "Kişiye özel spiritüel rehberlik görüşmesi.", gorsel: "", fiyat: "", link: "" }
-  ];
-
-  let urunler = [];
-  let filtre = "hepsi";
-
-  /* Özel ürünlere premium "Hakkında" içerikleri.
-     Mağazada bu ürünlere dokununca detay ekranı bu metni gösterir.
-     paragraf tipleri: düz metin | {vurgu} | {liste:[...]} | {yakinda,baslik,metin} */
-  const ISIK_HAKKINDA = {
-    baslik: "IŞIK KARTLARI",
-    alt: "Sezgi · Farkındalık · Dönüşüm",
-    paragraflar: [
-      "Bu kartlar bir oyun değil.\nBir fal değil.\nBir tesadüf hiç değil…",
-      "Elindeki bu deste, bilinçle evren arasındaki bir köprüdür. Her kart, içinde zaten var olan bir gerçeği sana hatırlatmak için karşına çıkar.",
-      "Çünkü senin hayatında değişim; dışarıdan gelen bir mucizeyle değil, içeride verilen bir izinle başlar.",
-      "Işık Kartları; sezgi, cesaret, denge, para, aile, sınırlar, şifa, bırakış, kabul ve yükseliş gibi hayatının tüm katmanlarına dokunan bilinç anahtarlarıdır.",
-      "Bu kartlar sana “Ne olacak?” demek için değil, “Neye hazırsın?” sorusunu sormak için vardır.",
-      "Bu destede seçtiğin hiçbir kart rastgele değildir. Her seçim, o anki enerjinin bir yansımasıdır.",
-      { metin: "Kartı sen seçmezsin, kart seni bulur.", vurgu: true },
-      "Bu kartları açarken tek bir şeye ihtiyacın var: Niyet.\nGerisi zaten senin içinde…"
-    ]
-  };
-  const MUM_HAKKINDA = {
-    baslik: "IŞIK MUMLARI",
-    alt: "Niyet · Huzur · Farkındalık",
-    paragraflar: [
-      "Her mum sadece bir koku değil, bir niyet taşır.",
-      "Işık Mumları; yaşam alanına huzur, dinginlik ve farkındalık katmak için hazırlanmış özel koleksiyonlardır.",
-      "Her mum belirli bir temayı destekler:",
-      { liste: ["Bolluk", "Aşk", "Koruma", "Arınma", "Huzur", "Güven", "Yeni Başlangıçlar"] },
-      "Mumunu yakmadan önce kısa bir niyet belirle. Alevin ışığına birkaç saniye odaklan ve enerjini o niyetle buluştur.",
-      { metin: "Bazen ihtiyacımız olan şey bir cevap değil, kendimize ayırdığımız birkaç dakikalık sessiz bir andır.", vurgu: true },
-      { yakinda: true, baslik: "🛍️ Çok Yakında", metin: "Işık Mumları yakında mağazada yerini alacak. Satış bağlantıları ve yeni koleksiyonlar için güncellemeleri takip etmeyi unutma." }
-    ]
-  };
-
-  // Yerleşik özel ürünler (Supabase'de aynı adda ürün varsa Hakkında ona bağlanır,
-  // yoksa bu yerleşik ürün listeye eklenir → token gerekmeden canlı çalışır).
-  const OZEL_URUNLER = [
-    { kategori: "isik-kartlari", ad: "Işık Kartları", aciklama: "Sezgi, farkındalık ve dönüşüm için ilham ve bilinç kartları.", gorsel: "/kart.jpg", fiyat: "", link: "", _hakkinda: ISIK_HAKKINDA },
-    { kategori: "mumlar", ad: "Işık Mumları", aciklama: "Niyetle hazırlanmış, alanına huzur katan özel mum koleksiyonu.", gorsel: "/mumlar.jpg", fiyat: "", link: "", _hakkinda: MUM_HAKKINDA }
-  ];
-
-  // Listeye özel ürünlerin Hakkında içeriğini bağla; yoksa yerleşik ürünü ekle.
-  function ekleHakkinda(liste) {
-    const l = Array.isArray(liste) ? liste.slice() : [];
-    OZEL_URUNLER.forEach(ozel => {
-      const ad = ozel.ad.toLocaleLowerCase("tr");
-      const mevcut = l.find(u => u && typeof u.ad === "string" && u.ad.trim().toLocaleLowerCase("tr") === ad);
-      if (mevcut) mevcut._hakkinda = ozel._hakkinda;
-      else l.unshift(Object.assign({}, ozel));
-    });
-    return l;
-  }
 
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   }
   function gecerliLink(l) { return typeof l === "string" && /^https?:\/\//i.test(String(l).trim()); }
-  function katById(id) { return KATEGORILER.find(k => k.id === id); }
-  function katIkon(id) { const k = katById(id); return k ? k.ikon : "✨"; }
 
-  /* ---------- Supabase'den ürünleri çek (herkese açık okuma) ---------- */
-  async function supabasedenGetir() {
-    try {
-      if (typeof SUPABASE_URL === "undefined" || !SUPABASE_URL || typeof SUPABASE_ANON === "undefined" || !SUPABASE_ANON) return null;
-      const url = SUPABASE_URL.replace(/\/$/, "") + "/rest/v1/magaza_urunler?aktif=eq.true&order=sira.asc,id.asc&select=*";
-      const r = await fetch(url, { headers: { apikey: SUPABASE_ANON, Authorization: "Bearer " + SUPABASE_ANON } });
-      if (!r.ok) return null;
-      const veri = await r.json();
-      return Array.isArray(veri) ? veri : null;
-    } catch (e) { return null; }
-  }
-  function cacheOku() { try { return JSON.parse(localStorage.getItem(CACHE) || "null"); } catch (e) { return null; } }
-  function cacheYaz(v) { try { localStorage.setItem(CACHE, JSON.stringify(v)); } catch (e) {} }
-
-  async function yukle(yenidenCiz) {
-    // 1) anında: cache veya varsayılan
-    const c = cacheOku();
-    urunler = ekleHakkinda((c && c.length) ? c : VARSAYILAN.slice());
-    if (yenidenCiz) ciz();
-    // 2) arka planda: Supabase'den tazele
-    const taze = await supabasedenGetir();
-    if (taze && taze.length) { cacheYaz(taze); urunler = ekleHakkinda(taze); ciz(); }
-    else if (taze && taze.length === 0 && !(c && c.length)) { /* tablo boş + cache yok → varsayılan kalır */ }
-  }
-
-  /* ---------- kategori çipleri ---------- */
-  function cizChips() {
-    const kutu = $("#mg-kat-chips"); if (!kutu) return;
-    kutu.innerHTML = "";
-    const ekle = (id, etiket) => {
-      const b = document.createElement("button");
-      b.className = "mg-kat" + (filtre === id ? " aktif" : "");
-      b.type = "button"; b.textContent = etiket;
-      b.addEventListener("click", () => { filtre = id; cizChips(); cizGrid(); });
-      kutu.appendChild(b);
-    };
-    ekle("hepsi", "Tümü");
-    KATEGORILER.forEach(k => {
-      if (urunler.some(u => u.kategori === k.id)) ekle(k.id, k.ikon + " " + k.ad);
-    });
-  }
-
-  /* ---------- ürün grid ---------- */
-  function gorselHTML(u, buyuk) {
-    const sinif = buyuk ? "mgd-gorsel" : "mg-kart-gorsel";
+  function gorselHTML(u) {
     if (gecerliLink(u.gorsel) || (u.gorsel && /^\//.test(u.gorsel))) {
-      return `<div class="${sinif}"><img src="${esc(u.gorsel)}" alt="${esc(u.ad)}" loading="lazy" /></div>`;
+      return `<div class="mg-kart-gorsel"><img src="${esc(u.gorsel)}" alt="${esc(u.ad)}" loading="lazy" /></div>`;
     }
-    return `<div class="${sinif} bos"><span>${esc(katIkon(u.kategori))}</span></div>`;
+    return `<div class="mg-kart-gorsel bos"><span>${esc(u.ikon || "✨")}</span></div>`;
   }
+
   function cizGrid() {
     const grid = $("#mg-grid"); if (!grid) return;
-    const liste = filtre === "hepsi" ? urunler : urunler.filter(u => u.kategori === filtre);
+    const chips = $("#mg-kat-chips"); if (chips) chips.innerHTML = "";   // kategori yok
+    const durum = $("#mg-durum"); if (durum) durum.textContent = "";
     grid.innerHTML = "";
-    if (!liste.length) { $("#mg-durum").textContent = "Bu kategoride henüz ürün yok."; return; }
-    $("#mg-durum").textContent = "";
-    liste.forEach((u, i) => {
-      const kart = document.createElement("button");
-      kart.className = "mg-kart"; kart.type = "button";
+    URUNLER.forEach(u => {
+      const kart = document.createElement("div");
+      kart.className = "mg-kart sade";
       kart.innerHTML = `
-        ${gorselHTML(u, false)}
-        <div class="mg-kart-ad">${esc(u.ad)}</div>
+        ${gorselHTML(u)}
+        <div class="mg-kart-ad">${esc(u.ikon)} ${esc(u.ad)}</div>
         <div class="mg-kart-aciklama">${esc(u.aciklama)}</div>
-        <span class="mg-incele">İncele ✦</span>`;
-      kart.addEventListener("click", () => detayAc(u));
+        <button class="mg-satinal" type="button">Satın Al ✦</button>`;
+      kart.querySelector(".mg-satinal").addEventListener("click", () => satinAl(u));
       grid.appendChild(kart);
     });
   }
 
-  /* ---------- ürün detay ---------- */
-  function detayAc(u) {
-    const d = $("#mg-detay"); if (!d) return;
-    const fiyat = (u.fiyat && String(u.fiyat).trim()) ? `<div class="mgd-fiyat">${esc(u.fiyat)}</div>` : "";
-    // Gelecek hazırlığı: u.tip === "iap" olduğunda burada uygulama-içi satın alma akışı devreye alınabilir.
-    const aksiyon = gecerliLink(u.link)
-      ? `<a class="mgd-satinal" href="${esc(u.link)}" target="_blank" rel="noopener noreferrer">Satın Al ✦</a>`
-      : `<span class="mgd-satinal yakinda" aria-disabled="true">Yakında ✨</span>`;
-    if (u._hakkinda) {
-      // Premium "Işık Kartları Hakkında" detayı
-      const h = u._hakkinda;
-      const paras = h.paragraflar.map(p => {
-        if (typeof p === "string") return `<p>${esc(p).replace(/\n/g, "<br/>")}</p>`;
-        if (p && p.liste) return `<ul class="mgd-hk-liste">${p.liste.map(x => `<li>✨ ${esc(x)}</li>`).join("")}</ul>`;
-        if (p && p.yakinda) return `<div class="mgd-hk-yakinda"><div class="mgd-hk-yakinda-baslik">${esc(p.baslik)}</div><p>${esc(p.metin)}</p></div>`;
-        if (p && p.vurgu) return `<p class="mgd-hk-vurgu">${esc(p.metin)}</p>`;
-        return "";
-      }).join("");
-      d.innerHTML = `
-        <button class="mgd-geri" type="button">‹ Geri</button>
-        ${gecerliLink(u.gorsel) || (u.gorsel && /^\//.test(u.gorsel)) ? gorselHTML(u, true) : `<div class="mgd-amblem" aria-hidden="true">✦</div>`}
-        <h3 class="mgd-hk-baslik">${esc(h.baslik)}</h3>
-        <p class="mgd-hk-alt">${esc(h.alt)}</p>
-        <div class="mgd-hk-cizgi"></div>
-        <div class="mgd-hk-metin">${paras}</div>
-        ${fiyat}
-        ${aksiyon}
-        <p class="muted small mgd-not">Satın alma, güvenli dış mağazada tamamlanır.</p>`;
-    } else {
-      d.innerHTML = `
-        <button class="mgd-geri" type="button">‹ Geri</button>
-        ${gorselHTML(u, true)}
-        <div class="mgd-kat">${esc(katIkon(u.kategori))} ${esc((katById(u.kategori) || {}).ad || "")}</div>
-        <h3 class="mgd-ad">${esc(u.ad)}</h3>
-        ${fiyat}
-        <p class="mgd-aciklama">${esc(u.aciklama)}</p>
-        ${aksiyon}
-        <p class="muted small mgd-not">Satın alma, güvenli dış mağazada tamamlanır.</p>`;
-    }
-    d.querySelector(".mgd-geri").addEventListener("click", detayKapat);
-    $("#mg-liste").hidden = true;
-    d.hidden = false;
-    const ic = $(".mg-ic"); if (ic) ic.scrollTop = 0;
+  // "Satın Al": link varsa güvenli dış sayfa, yoksa "Çok Yakında" mesajı
+  function satinAl(u) {
+    if (gecerliLink(u.link)) { window.open(u.link, "_blank", "noopener,noreferrer"); return; }
+    yakindaGoster();
   }
-  function detayKapat() { $("#mg-detay").hidden = true; $("#mg-liste").hidden = false; }
 
-  function ciz() { cizChips(); cizGrid(); }
+  /* ---------- "Çok Yakında" mesaj kutusu ---------- */
+  function yakindaGoster() {
+    let p = $("#mg-yakinda");
+    if (!p) {
+      p = document.createElement("div");
+      p.id = "mg-yakinda"; p.className = "mg-yakinda"; p.hidden = true;
+      p.innerHTML = `
+        <div class="mg-yakinda-ic">
+          <div class="mg-yakinda-amblem">✨</div>
+          <div class="mg-yakinda-baslik">Çok Yakında</div>
+          <p class="mg-yakinda-metin">Bu ürün yakında satışa açılacaktır.<br>Satış bağlantıları ve duyurular için uygulamayı takip etmeyi unutmayın.</p>
+          <button class="mg-yakinda-kapat" type="button">Tamam</button>
+        </div>`;
+      (document.querySelector(".mg-ic") || document.body).appendChild(p);
+      p.addEventListener("click", e => { if (e.target === p || e.target.classList.contains("mg-yakinda-kapat")) yakindaKapat(); });
+    }
+    p.hidden = false; requestAnimationFrame(() => p.classList.add("gor"));
+  }
+  function yakindaKapat() { const p = $("#mg-yakinda"); if (p) { p.classList.remove("gor"); setTimeout(() => { p.hidden = true; }, 250); } }
 
   /* ---------- overlay aç/kapat ---------- */
   function ac() {
     const ov = $("#magaza-overlay"); if (!ov) return;
-    detayKapat();
-    yukle(true);
+    const detay = $("#mg-detay"); if (detay) detay.hidden = true;     // detay kullanılmıyor
+    const liste = $("#mg-liste"); if (liste) liste.hidden = false;
+    cizGrid();
     document.body.classList.add("mg-aktif");
     ov.hidden = false; ov.classList.remove("gor"); void ov.offsetWidth; ov.classList.add("gor");
   }
   function kapat() {
     const ov = $("#magaza-overlay"); if (!ov) return;
+    yakindaKapat();
     ov.classList.remove("gor");
     setTimeout(() => { ov.hidden = true; document.body.classList.remove("mg-aktif"); }, 350);
   }
 
   function baglan() {
-    const acBtn = $("#magaza-ac");
-    if (acBtn) acBtn.addEventListener("click", ac);
-    const kapatBtn = $("#magaza-kapat");
-    if (kapatBtn) kapatBtn.addEventListener("click", kapat);
-    const ov = $("#magaza-overlay");
-    if (ov) ov.addEventListener("click", e => { if (e.target === ov) kapat(); });
+    const acBtn = $("#magaza-ac"); if (acBtn) acBtn.addEventListener("click", ac);
+    const kapatBtn = $("#magaza-kapat"); if (kapatBtn) kapatBtn.addEventListener("click", kapat);
+    const ov = $("#magaza-overlay"); if (ov) ov.addEventListener("click", e => { if (e.target === ov) kapat(); });
   }
   document.addEventListener("DOMContentLoaded", baglan);
 
-  return { ac, kapat, yenile: () => yukle(true), kategoriler: () => KATEGORILER };
+  return { ac, kapat, urunler: () => URUNLER };
 })();
