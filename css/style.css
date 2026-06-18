@@ -2632,3 +2632,22 @@ body.mg-aktif { overflow: hidden; }
   font: inherit; font-weight: 600; font-size: 0.92rem; cursor: pointer; padding: 0.55rem 1.8rem; border-radius: 999px; border: none; color: #1a1430;
   background: linear-gradient(120deg, #fff0c2, #f3d98c, #e9c46a);
 }
+/* === Magaza: Iletisim bolumu === */
+.mg-iletisim { margin-top: 1.8rem; text-align: center; }
+.mg-il-cizgi { width: 70px; height: 1px; margin: 0 auto 1.2rem; background: linear-gradient(90deg, transparent, rgba(243,217,140,0.7), transparent); }
+.mg-il-baslik {
+  font-family: "Playfair Display", serif; font-size: 1.25rem; margin: 0 0 0.5rem;
+  background: linear-gradient(120deg, #fff0c2, #f3d98c, #e9c46a); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.mg-il-alt { font-size: 0.9rem; line-height: 1.6; color: rgba(255,255,255,0.78); max-width: 360px; margin: 0 auto 1.2rem; }
+.mg-il-butonlar { display: flex; gap: 0.7rem; justify-content: center; flex-wrap: wrap; }
+.mg-il-btn {
+  display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none;
+  font: inherit; font-size: 0.92rem; font-weight: 600; color: #fff;
+  padding: 0.6rem 1.4rem; border-radius: 999px;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(243,217,140,0.28);
+  transition: transform .15s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.mg-il-btn:hover { transform: translateY(-2px); }
+.mg-il-btn.ig:hover { border-color: #e1306c; box-shadow: 0 6px 20px rgba(225,48,108,0.30); }
+.mg-il-btn.wa:hover { border-color: #25d366; box-shadow: 0 6px 20px rgba(37,211,102,0.28); }
