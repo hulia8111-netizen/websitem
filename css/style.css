@@ -2665,3 +2665,14 @@ body.mg-aktif { overflow: hidden; }
 /* === Onboarding: hesapsiz (misafir) devam linki === */
 .ob-misafir-link { display: block; margin: 0.9rem auto 0; color: var(--gold-soft, #f3d98c); opacity: 0.92; font-weight: 600; }
 .ob-misafir-link:hover { opacity: 1; text-decoration: underline; }
+/* === Rehberli meditasyon: nefes animasyonu === */
+.rm-nefes { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin: 0.2rem 0 1.2rem; }
+.rm-nefes-halka {
+  width: 76px; height: 76px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(243,217,140,0.55), rgba(179,140,255,0.28) 58%, transparent 76%);
+  box-shadow: 0 0 26px rgba(243,217,140,0.4);
+  animation: rmNefes 8s ease-in-out infinite;
+}
+.rm-nefes-yazi { font-size: 0.82rem; color: rgba(255,255,255,0.6); letter-spacing: .3px; }
+@keyframes rmNefes { 0%,100% { transform: scale(.78); opacity: .65; } 50% { transform: scale(1.25); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .rm-nefes-halka { animation: none; } }

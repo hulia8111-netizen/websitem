@@ -70,6 +70,10 @@ const RehberMed = window.RehberMed = (() => {
         <h3 class="rm-detay-ad">${esc(m.ad)}</h3>
         <p class="rm-detay-alt">${esc(m.aciklama || "")}</p>
         <div class="rm-detay-cizgi"></div>
+        <div class="rm-nefes" aria-hidden="true">
+          <div class="rm-nefes-halka"></div>
+          <span class="rm-nefes-yazi">Nefesinle eşlik et 🌬️</span>
+        </div>
         <ol class="rm-adimlar">${adimlar}</ol>
         <p class="rm-detay-kapanis">Hazır olduğunda gözlerini aç ve bu huzuru yanında taşı. 🌙</p>
       </div>`;
