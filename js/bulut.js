@@ -283,5 +283,5 @@ const Bulut = window.Bulut = (() => {
   }
   document.addEventListener("DOMContentLoaded", baglan);
 
-  return { kaydet, girisYap, kayitOl, cikis, manuelSenkron, sifreSifirla, oturumVarMi, pushAboneKaydet, pushAboneSil, durum: () => ({ girisli: girisli(), email: oturum && oturum.user ? oturum.user.email : null, sonSenkron, realtime: !!kanal }) };
+  return { kaydet, girisYap, kayitOl, cikis, manuelSenkron, sifreSifirla, oturumVarMi, pushAboneKaydet, pushAboneSil, client: () => sb, kullaniciId, girisli, durum: () => ({ girisli: girisli(), email: oturum && oturum.user ? oturum.user.email : null, sonSenkron, realtime: !!kanal }) };
 })();
