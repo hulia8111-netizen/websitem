@@ -322,6 +322,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const p = document.createElement("p");
     p.textContent = kart.mesaj;
     wrap.append(cerceve, h, p);
+    // Paylaş butonu — kartı şık bir görsel olarak paylaş
+    const pay = document.createElement("button");
+    pay.className = "kart-paylas"; pay.type = "button";
+    pay.innerHTML = "📲 Paylaş";
+    pay.addEventListener("click", () => { if (window.KartPaylas) window.KartPaylas.paylas(kart); });
+    wrap.appendChild(pay);
     hedef.appendChild(wrap);
   }
   function gosterKartlar() {

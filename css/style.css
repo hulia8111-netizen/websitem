@@ -2651,3 +2651,14 @@ body.mg-aktif { overflow: hidden; }
 .mg-il-btn:hover { transform: translateY(-2px); }
 .mg-il-btn.ig:hover { border-color: #e1306c; box-shadow: 0 6px 20px rgba(225,48,108,0.30); }
 .mg-il-btn.wa:hover { border-color: #25d366; box-shadow: 0 6px 20px rgba(37,211,102,0.28); }
+/* === Gunun Karti Paylas butonu === */
+.kart-paylas {
+  display: inline-flex; align-items: center; gap: 0.4rem; margin: 0.8rem auto 0;
+  font: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer;
+  padding: 0.5rem 1.3rem; border-radius: 999px; color: #f3d98c;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(243,217,140,0.30);
+  transition: transform .15s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.kart-paylas:hover { transform: translateY(-2px); border-color: rgba(243,217,140,0.6); box-shadow: 0 6px 18px rgba(243,217,140,0.25); }
+.kart-paylas:active { transform: translateY(0); }
+.kart-icerik { display: flex; flex-direction: column; align-items: center; }
