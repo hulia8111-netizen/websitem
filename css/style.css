@@ -2765,3 +2765,75 @@ body.mg-aktif { overflow: hidden; }
 .tp-g-sira { min-width: 1.4rem; text-align: center; color: #f3d98c; font-weight: 700; }
 .tp-g-ad { flex: 1; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .tp-g-puan { color: rgba(255,255,255,.7); }
+
+/* ============================================================
+   Topluluk Faz 2 — Sosyal (paylaşımlar / yorumlar / moderasyon)
+   ============================================================ */
+.tp-sekmeler-kaydir { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.tp-sekmeler-kaydir::-webkit-scrollbar { display: none; }
+.tp-sekmeler-kaydir .tp-sekme { flex: 0 0 auto; white-space: nowrap; font-size: .8rem; padding: .5rem .7rem; }
+
+/* Composer */
+.ts-composer { background: rgba(255,255,255,.05); border: 1px solid rgba(243,217,140,.18); border-radius: 16px; padding: .9rem; margin-bottom: 1rem; }
+.ts-tipler { display: flex; gap: .4rem; margin-bottom: .6rem; }
+.ts-tip-sec { flex: 1; padding: .45rem .2rem; border-radius: 10px; font-size: .8rem; cursor: pointer; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); color: rgba(255,255,255,.7); }
+.ts-tip-sec.aktif { background: linear-gradient(120deg, rgba(243,217,140,.22), rgba(179,140,255,.18)); border-color: rgba(243,217,140,.45); color: #fff; }
+.ts-metin { width: 100%; box-sizing: border-box; resize: vertical; border-radius: 12px; padding: .7rem; font: inherit; font-size: .9rem; background: rgba(0,0,0,.25); border: 1px solid rgba(255,255,255,.12); color: #fff; }
+.ts-metin::placeholder { color: rgba(255,255,255,.4); }
+.ts-composer-alt { display: flex; align-items: center; justify-content: space-between; gap: .6rem; margin-top: .6rem; }
+.ts-mod-not { font-size: .72rem; color: rgba(255,255,255,.5); }
+.ts-paylas-btn { padding: .5rem 1.2rem; font-size: .88rem; }
+
+/* Filtre */
+.ts-filtre { display: flex; gap: .4rem; margin-bottom: .8rem; }
+.ts-fil { padding: .4rem .8rem; border-radius: 20px; font-size: .8rem; cursor: pointer; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); color: rgba(255,255,255,.7); }
+.ts-fil.aktif { background: rgba(179,140,255,.2); border-color: rgba(179,140,255,.5); color: #fff; }
+
+/* Feed */
+.ts-feed { display: grid; gap: .8rem; }
+.ts-bos { text-align: center; padding: 1.6rem 1rem; color: rgba(255,255,255,.6); font-size: .9rem; }
+.ts-gonderi { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); border-radius: 16px; padding: .9rem 1rem; }
+.ts-g-bas { display: flex; align-items: center; gap: .6rem; margin-bottom: .5rem; }
+.ts-g-avatar { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; color: #14101e; background: linear-gradient(135deg, #f3d98c, #b38cff); flex: 0 0 auto; }
+.ts-g-kim { flex: 1; min-width: 0; }
+.ts-g-ad { font-weight: 700; color: #fff; font-size: .92rem; }
+.ts-g-meta { font-size: .74rem; color: rgba(255,255,255,.55); }
+.ts-g-metin { color: rgba(255,255,255,.92); font-size: .92rem; line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
+.ts-g-tepkiler { display: flex; gap: .4rem; flex-wrap: wrap; margin: .7rem 0 .5rem; }
+.ts-tepki { padding: .35rem .6rem; border-radius: 20px; font-size: .78rem; cursor: pointer; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); color: rgba(255,255,255,.8); }
+.ts-tepki.aktif { background: rgba(243,217,140,.18); border-color: rgba(243,217,140,.5); color: #fff0c2; }
+.ts-tepki b { color: #f3d98c; }
+.ts-g-alt { display: flex; gap: .5rem; flex-wrap: wrap; padding-top: .5rem; border-top: 1px dashed rgba(255,255,255,.08); }
+.ts-mini { padding: .35rem .6rem; border-radius: 10px; font-size: .76rem; cursor: pointer; background: transparent; border: 1px solid rgba(255,255,255,.12); color: rgba(255,255,255,.7); }
+.ts-mini.sil { color: #e88; border-color: rgba(238,136,136,.3); }
+
+/* Yorumlar */
+.ts-yorum-alan { margin-top: .7rem; padding-top: .7rem; border-top: 1px dashed rgba(255,255,255,.1); }
+.ts-yorum-liste { display: grid; gap: .5rem; margin-bottom: .6rem; }
+.ts-yorum { font-size: .85rem; line-height: 1.4; }
+.ts-yorum.beklemede { opacity: .6; }
+.ts-y-ad { font-weight: 700; color: #fff0c2; margin-right: .4rem; }
+.ts-y-metin { color: rgba(255,255,255,.88); }
+.ts-y-meta { display: block; font-size: .7rem; color: rgba(255,255,255,.45); margin-top: .1rem; }
+.ts-y-rapor { background: none; border: none; cursor: pointer; font-size: .75rem; opacity: .6; }
+.ts-yorum-bos { font-size: .82rem; color: rgba(255,255,255,.5); margin-bottom: .5rem; }
+.ts-yorum-yeni { display: flex; gap: .4rem; }
+.ts-y-input { flex: 1; border-radius: 10px; padding: .5rem .7rem; font: inherit; font-size: .85rem; background: rgba(0,0,0,.25); border: 1px solid rgba(255,255,255,.12); color: #fff; }
+.ts-y-gonder { padding: .5rem .9rem; border-radius: 10px; font-size: .8rem; cursor: pointer; background: rgba(179,140,255,.25); border: 1px solid rgba(179,140,255,.4); color: #fff; }
+.ts-y-not { font-size: .68rem; color: rgba(255,255,255,.4); margin-top: .35rem; }
+
+/* Bilgi balonu */
+.ts-balon { position: fixed; left: 50%; bottom: 84px; transform: translate(-50%, 20px); z-index: 100000; max-width: 88%; padding: .7rem 1.1rem; border-radius: 14px; font-size: .85rem; color: #fff; background: rgba(30,22,55,.96); border: 1px solid rgba(243,217,140,.35); box-shadow: 0 10px 30px rgba(0,0,0,.5); opacity: 0; pointer-events: none; transition: all .3s ease; text-align: center; }
+.ts-balon.gor { opacity: 1; transform: translate(-50%, 0); }
+
+/* Moderasyon */
+.ts-mod-not2 { background: rgba(243,217,140,.1); border: 1px solid rgba(243,217,140,.25); border-radius: 12px; padding: .7rem .9rem; font-size: .82rem; color: #fff0c2; margin-bottom: 1rem; }
+.ts-mod-baslik { font-size: .95rem; color: #fff0c2; margin: 1.1rem 0 .6rem; }
+.ts-mod-kart { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); border-radius: 14px; padding: .8rem .9rem; margin-bottom: .7rem; }
+.ts-mod-ust { font-size: .85rem; color: #fff; margin-bottom: .4rem; }
+.ts-mod-metin { font-size: .9rem; color: rgba(255,255,255,.9); line-height: 1.45; white-space: pre-wrap; word-break: break-word; margin-bottom: .6rem; }
+.ts-mod-btnlar { display: flex; gap: .4rem; flex-wrap: wrap; }
+.ts-mod-onay, .ts-mod-red, .ts-mod-sil { padding: .4rem .8rem; border-radius: 10px; font-size: .8rem; cursor: pointer; border: 1px solid; }
+.ts-mod-onay { background: rgba(120,200,140,.2); border-color: rgba(120,200,140,.45); color: #cfeedd; }
+.ts-mod-red { background: rgba(255,180,90,.15); border-color: rgba(255,180,90,.4); color: #f2d3a0; }
+.ts-mod-sil { background: rgba(238,120,120,.15); border-color: rgba(238,120,120,.4); color: #f0bcbc; }

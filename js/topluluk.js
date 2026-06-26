@@ -105,8 +105,9 @@ const Topluluk = window.Topluluk = (() => {
   }
 
   function cizSekmeler() {
-    const sek = [["isik", "🌟 Haftanın Işığı"], ["rozet", "🏅 Rozetlerim"], ["gecmis", "📜 Geçmiş"]];
-    return `<div class="tp-sekmeler">${sek.map(([id, ad]) =>
+    const sek = [["isik", "🌟 Işık"], ["paylasim", "📝 Paylaşımlar"], ["rozet", "🏅 Rozetler"], ["gecmis", "📜 Geçmiş"]];
+    if (window.ToplulukSosyal && ToplulukSosyal.moderatorMuCached && ToplulukSosyal.moderatorMuCached()) sek.push(["moderasyon", "🛡️ Moderasyon"]);
+    return `<div class="tp-sekmeler tp-sekmeler-kaydir">${sek.map(([id, ad]) =>
       `<button class="tp-sekme${aktifSekme === id ? " aktif" : ""}" data-sek="${id}">${esc(ad)}</button>`).join("")}</div>`;
   }
 
@@ -203,12 +204,14 @@ const Topluluk = window.Topluluk = (() => {
 
   function ciz() {
     const kutu = $("topluluk-icerik"); if (!kutu) return;
-    let ic = "";
-    if (aktifSekme === "isik") ic = cizIsik();
-    else if (aktifSekme === "rozet") ic = cizRozet();
-    else ic = cizGecmis();
-    kutu.innerHTML = cizSekmeler() + `<div class="tp-govde">${ic}</div>`;
-    kutu.querySelectorAll(".tp-sekme").forEach(b => b.addEventListener("click", () => { aktifSekme = b.dataset.sek; ciz(); if (aktifSekme !== "isik" && kazananlar === null) verileriYukle(); }));
+    kutu.innerHTML = cizSekmeler() + `<div class="tp-govde" id="tp-govde"></div>`;
+    kutu.querySelectorAll(".tp-sekme").forEach(b => b.addEventListener("click", () => { aktifSekme = b.dataset.sek; ciz(); if ((aktifSekme === "rozet" || aktifSekme === "gecmis") && kazananlar === null) verileriYukle(); }));
+    const govde = $("tp-govde"); if (!govde) return;
+    if (aktifSekme === "isik") govde.innerHTML = cizIsik();
+    else if (aktifSekme === "rozet") govde.innerHTML = cizRozet();
+    else if (aktifSekme === "gecmis") govde.innerHTML = cizGecmis();
+    else if (aktifSekme === "paylasim") { if (window.ToplulukSosyal) ToplulukSosyal.cizPaylasimlar(govde); else govde.innerHTML = `<div class="tp-bilgi">Yükleniyor…</div>`; }
+    else if (aktifSekme === "moderasyon") { if (window.ToplulukSosyal) ToplulukSosyal.cizModerasyon(govde); }
   }
 
   async function verileriYukle() {
@@ -226,6 +229,8 @@ const Topluluk = window.Topluluk = (() => {
     ov.hidden = false;
     aktifSekme = "isik"; ciz();
     verileriYukle();
+    // Sosyal modülü hazırla (moderatör/engel/takip) → bitince sekmeleri tazele (Moderasyon sekmesi belirsin)
+    if (window.ToplulukSosyal && ToplulukSosyal.hazirla) ToplulukSosyal.hazirla().then(() => { if (!$("topluluk-overlay").hidden) ciz(); });
   }
   function kapat() { const ov = $("topluluk-overlay"); if (ov) ov.hidden = true; }
 

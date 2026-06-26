@@ -3,7 +3,7 @@
    SÃ¼rÃ¼m deÄŸiÅŸince CACHE adÄ±nÄ± artÄ±r ki eski dosyalar temizlensin.
    ============================================================ */
 
-const CACHE = "isigini-bul-v133";
+const CACHE = "isigini-bul-v134";
 const KABUK = [
   ".",
   "index.html",
@@ -33,6 +33,7 @@ const KABUK = [
   "js/evrenmesaji.js",
   "js/magaza.js",
   "js/topluluk.js",
+  "js/topluluk-sosyal.js",
   "js/profil.js",
   "js/rituel.js",
   "js/test.js",

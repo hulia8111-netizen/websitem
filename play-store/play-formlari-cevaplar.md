@@ -45,8 +45,9 @@
 - **Hayır** — uygulamada reklam yok.
 
 ### 3.3 İçerik derecelendirmesi (Content rating anketi)
+> ⚠️ **DEĞİŞTİ (Topluluk/UGC eklendi):** Artık kullanıcılar paylaşım+yorum yapıyor. Aşağıdaki 2 cevap **Evet** oldu. Bu yüzden derece muhtemelen **Genç (Teen)** çıkar — bu normaldir, sosyal özellikli uygulamalar böyle derecelenir.
 - E-posta: hulia8111@gmail.com
-- Kategori: **Yardımcı program / Yaşam tarzı / Diğer** (sosyal/oyun değil)
+- Kategori: **Sosyal / İletişim** (Topluluk özelliği olduğu için)
 - Sorulara cevaplar:
   - Şiddet → **Hayır**
   - Cinsel içerik / çıplaklık → **Hayır**
@@ -54,10 +55,18 @@
   - Uyuşturucu, alkol, tütün → **Hayır**
   - Kumar (gerçek/sanal) → **Hayır**
   - Korku / ürkütücü içerik → **Hayır**
-  - Kullanıcılar arası iletişim / sohbet → **Hayır**
+  - **Kullanıcılar arası iletişim / sohbet → Evet** (paylaşım + yorum)
   - Kullanıcı konumu paylaşımı → **Hayır**
-  - Kullanıcı içeriği paylaşımı (herkese açık) → **Hayır**
-- Beklenen sonuç: **Herkes (3+)**
+  - **Kullanıcı içeriği paylaşımı (herkese açık) → Evet** (metin paylaşım + yorum; fotoğraf YOK)
+  - **Kullanıcı tarafından oluşturulan içeriği denetleme/raporlama var mı? → Evet**
+    - Açıklama: *"Tüm paylaşım ve yorumlar yayınlanmadan ÖNCE yönetici tarafından onaylanır (ön moderasyon). Kullanıcılar içerikleri bildirebilir (🚩) ve diğer kullanıcıları engelleyebilir (🚫)."*
+- Beklenen sonuç: **Genç (Teen)** — sosyal özellik nedeniyle (sorun değil)
+
+### 3.3-b Sosyal/UGC ek beyanı (sorulursa)
+- İçerik moderasyonu: **Ön moderasyon** (yönetici onayı olmadan hiçbir paylaşım/yorum görünmez)
+- Raporlama mekanizması: **Var** (her paylaşım/yoruma "🚩 Bildir")
+- Kullanıcı engelleme: **Var** ("🚫 Engelle")
+- Fotoğraf/medya paylaşımı: **Yok** (yalnız metin)
 
 ### 3.4 Hedef kitle ve içerik (Target audience)
 - Hedef yaş grubu: **18 ve üzeri** (yetişkin) seç. **13 altını SEÇME.**
@@ -69,6 +78,7 @@
 - Toplanan veriler:
   - **E-posta adresi** → amaç: Hesap yönetimi / uygulama işlevi
   - **Uygulama içi etkinlik / kullanıcı içeriği** (ruh hali, günlük, görev cevapları, ayarlar) → amaç: Uygulama işlevi, cihazlar arası senkron
+  - **Kullanıcı tarafından oluşturulan içerik** (Topluluk paylaşımları + yorumları) → amaç: Uygulama işlevi (topluluk); kullanıcının seçtiği görünen ad ile diğer kullanıcılara gösterilir. **Üçüncü tarafla paylaşılmaz.**
 - Veriler **aktarım sırasında şifreleniyor mu?** → **Evet** (HTTPS)
 - Kullanıcı **verisinin silinmesini isteyebilir mi?** → **Evet** (e-posta ile: hulia8111@gmail.com)
 - Veriler **üçüncü taraflarla paylaşılıyor mu?** → **Hayır** (Supabase yalnızca altyapı/işleyici; reklam/izleme yok)
