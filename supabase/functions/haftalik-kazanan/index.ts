@@ -34,7 +34,9 @@ async function wordKartlariGetir(): Promise<Array<{ no: number; baslik: string; 
   try {
     const r = await fetch(KART_URL + "?cb=" + Date.now(), { headers: { "cache-control": "no-cache" } });
     const txt = await r.text();
-    const bas = txt.indexOf("[", txt.indexOf("HAFTALIK_KARTLAR"));
+    // "HAFTALIK_KARTLAR =" atamasından başla (yorum satırındaki "HAFTALIK_KARTLAR:" tuzağını atla)
+    const anchor = txt.indexOf("HAFTALIK_KARTLAR =");
+    const bas = txt.indexOf("[", anchor >= 0 ? anchor : txt.indexOf("HAFTALIK_KARTLAR"));
     const son = txt.lastIndexOf("]");
     if (bas < 0 || son < 0) return [];
     return JSON.parse(txt.slice(bas, son + 1));
