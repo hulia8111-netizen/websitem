@@ -375,13 +375,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
   function kartCek() {
-    if (Store.get("card-" + today) === null) Store.set("card-" + today, Math.floor(Math.random() * DATA.kartlar.length));
+    if (Store.get("card-" + today) === null) {
+      Store.set("card-" + today, Math.floor(Math.random() * DATA.kartlar.length));
+      try { if (navigator.vibrate) navigator.vibrate([12, 40, 18]); } catch (e) {}   // kart çekme hafif dokunuş
+    }
     gosterKartlar();
   }
   function ikinciKart() {
     if (!ikinciKartAcik()) return;
-    if (Store.get("card2-" + today) === null)
+    if (Store.get("card2-" + today) === null) {
       Store.set("card2-" + today, Math.floor(Math.random() * DATA.kartlar.length));
+      try { if (navigator.vibrate) navigator.vibrate([12, 40, 18]); } catch (e) {}
+    }
     gosterKartlar();
   }
   gosterKartlar();
