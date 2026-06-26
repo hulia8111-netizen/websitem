@@ -57,16 +57,16 @@
   - Korku / ürkütücü içerik → **Hayır**
   - **Kullanıcılar arası iletişim / sohbet → Evet** (paylaşım + yorum)
   - Kullanıcı konumu paylaşımı → **Hayır**
-  - **Kullanıcı içeriği paylaşımı (herkese açık) → Evet** (metin paylaşım + yorum; fotoğraf YOK)
+  - **Kullanıcı içeriği paylaşımı (herkese açık) → Evet** (metin paylaşım + yorum + isteğe bağlı fotoğraf)
   - **Kullanıcı tarafından oluşturulan içeriği denetleme/raporlama var mı? → Evet**
-    - Açıklama: *"Tüm paylaşım ve yorumlar yayınlanmadan ÖNCE yönetici tarafından onaylanır (ön moderasyon). Kullanıcılar içerikleri bildirebilir (🚩) ve diğer kullanıcıları engelleyebilir (🚫)."*
+    - Açıklama: *"Tüm paylaşımlar (fotoğraf dâhil) ve yorumlar yayınlanmadan ÖNCE yönetici tarafından onaylanır (ön moderasyon). Kullanıcılar içerikleri bildirebilir (🚩) ve diğer kullanıcıları engelleyebilir (🚫)."*
 - Beklenen sonuç: **Genç (Teen)** — sosyal özellik nedeniyle (sorun değil)
 
 ### 3.3-b Sosyal/UGC ek beyanı (sorulursa)
-- İçerik moderasyonu: **Ön moderasyon** (yönetici onayı olmadan hiçbir paylaşım/yorum görünmez)
+- İçerik moderasyonu: **Ön moderasyon** (yönetici onayı olmadan hiçbir paylaşım/yorum/fotoğraf görünmez)
 - Raporlama mekanizması: **Var** (her paylaşım/yoruma "🚩 Bildir")
 - Kullanıcı engelleme: **Var** ("🚫 Engelle")
-- Fotoğraf/medya paylaşımı: **Yok** (yalnız metin)
+- Fotoğraf/medya paylaşımı: **Var** (paylaşıma isteğe bağlı tek fotoğraf; ön moderasyonlu, yayından önce yönetici görür)
 
 ### 3.4 Hedef kitle ve içerik (Target audience)
 - Hedef yaş grubu: **18 ve üzeri** (yetişkin) seç. **13 altını SEÇME.**
@@ -79,6 +79,7 @@
   - **E-posta adresi** → amaç: Hesap yönetimi / uygulama işlevi
   - **Uygulama içi etkinlik / kullanıcı içeriği** (ruh hali, günlük, görev cevapları, ayarlar) → amaç: Uygulama işlevi, cihazlar arası senkron
   - **Kullanıcı tarafından oluşturulan içerik** (Topluluk paylaşımları + yorumları) → amaç: Uygulama işlevi (topluluk); kullanıcının seçtiği görünen ad ile diğer kullanıcılara gösterilir. **Üçüncü tarafla paylaşılmaz.**
+  - **Fotoğraflar** (Topluluk paylaşımına eklenen isteğe bağlı fotoğraf) → amaç: Uygulama işlevi (topluluk); yalnız onaylandıktan sonra diğer kullanıcılara gösterilir. **Üçüncü tarafla paylaşılmaz.**
 - Veriler **aktarım sırasında şifreleniyor mu?** → **Evet** (HTTPS)
 - Kullanıcı **verisinin silinmesini isteyebilir mi?** → **Evet** (e-posta ile: hulia8111@gmail.com)
 - Veriler **üçüncü taraflarla paylaşılıyor mu?** → **Hayır** (Supabase yalnızca altyapı/işleyici; reklam/izleme yok)
