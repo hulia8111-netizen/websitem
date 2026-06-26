@@ -107,9 +107,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const r = await window.Bulut.sifreSifirla(email);
       obBilgi(r.mesaj, !r.ok);
     };
+    // Hesapsız (misafir) devam: yerelde çalışır; istenirse sonradan profilden giriş yapılır
+    const misafirBtn = $("#ob-misafir");
+    if (misafirBtn) misafirBtn.onclick = () => { Store.set("misafir", true); girisKapisiGizle(); };
   }
   function girisKapisiGoster() {
     if (!ob) return;
+    // Misafir (hesapsız) seçildiyse kapıyı asla gösterme — yerelde çalışır
+    if (Store.get("misafir") && (Store.get("profil", {}).isim || "").trim()) { ob.hidden = true; setKarsilama(); return; }
     ob.hidden = false; ob.classList.remove("kapaniyor");
     if (bulutVar && (Store.get("profil", {}).isim || "").trim()) obHesapAdimi((Store.get("profil", {}).isim || "").trim());
     else obIsimAdimi();
