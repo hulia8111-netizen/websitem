@@ -5,17 +5,20 @@
    ilham cümlesi belirir. En altta "🔄 Senkronla" butonu. Kullanıcı
    basınca ~18 sn premium yükleme (yumuşak ilerleme çubuğu + sırayla
    rastgele bilgilendirme mesajları) → başarı animasyonu (2 sn) →
-   fade-out → ana sayfa. Buton basılmadan ekran açık kalır.
+   fade-out → ana sayfa. Kullanıcı basmazsa 9 sn sonra OTOMATİK başlar
+   (splash'te asla takılı kalınmaz).
    Cümleler window.ACILIS_CUMLELERI dizisinden gelir
    (acilis-cumleler.js → Word dosyasından üretilir).
    ============================================================ */
 (function () {
   var MESAJ_GECIKME = 900;   // simge+isim sonrası ilham cümlesinin belirmesi (ms)
   var BUTON_GECIKME = 1600;  // "Senkronla" butonunun belirmesi (ms)
-  var SENK_SURE = 18000;     // senkron yükleme toplam süresi (ms) ≈ 18 sn
+  var OTOMATIK_GECIKME = 9000; // kullanıcı basmazsa otomatik senkron başlar (takılma olmasın)
+  var SENK_SURE = 12000;     // senkron yükleme toplam süresi (ms) ≈ 12 sn
   var BASARI_SURE = 2000;    // başarı animasyonu ekranda kalma süresi (ms) = 2 sn
   var FADEOUT_SURE = 800;    // kapanış solması (ms)
   var GECMIS_ANAHTAR = "kdm_acilis-gecmis";
+  var baslatildi = false;    // senkron bir kez başlasın (buton ya da otomatik)
 
   // Yükleme sırasında sırayla (rastgele sıralı) gösterilen bilgilendirme mesajları
   var SENK_MESAJLARI = [
@@ -70,6 +73,8 @@
   }
 
   function senkronBasla(splash) {
+    if (baslatildi) return;   // buton + otomatik aynı anda tetiklenmesin
+    baslatildi = true;
     var btn = document.getElementById("splash-senk");
     var yuk = document.getElementById("splash-senk-yukleme");
     var bar = document.getElementById("splash-bar-dolu");
@@ -133,7 +138,9 @@
     setTimeout(function () { splash.classList.add("buton-goster"); }, BUTON_GECIKME);
 
     var btn = document.getElementById("splash-senk");
-    if (btn) btn.addEventListener("click", function () { senkronBasla(splash); }, { once: true });
+    if (btn) btn.addEventListener("click", function () { senkronBasla(splash); });
+    // Kullanıcı butona basmazsa otomatik başlat → splash'te asla takılı kalınmaz
+    setTimeout(function () { senkronBasla(splash); }, OTOMATIK_GECIKME);
   }
 
   if (document.readyState === "loading") {
