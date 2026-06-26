@@ -24,7 +24,7 @@
 | Tam açıklama | `play-store/metinler.md` dosyasındaki uzun metin |
 | Uygulama simgesi (512×512) | `play-store/icon-512.png` |
 | Öne çıkan grafik (1024×500) | `play-store/tanitim.png` |
-| Telefon ekran görüntüleri | Sohbetteki 6 görüntü |
+| Telefon ekran görüntüleri | `play-store/ekran/` klasöründeki 6 görüntü (01-acilis … 06-profil, 1236×2469) |
 | İletişim e-postası | hulia8111@gmail.com |
 | Web sitesi | https://isiginibull.net |
 | Gizlilik politikası | https://isiginibull.net/gizlilik/ |
