@@ -11,6 +11,42 @@ const ToplulukSosyal = window.ToplulukSosyal = (() => {
   function uid() { try { return window.Bulut && Bulut.kullaniciId ? Bulut.kullaniciId() : null; } catch (e) { return null; } }
   function benimAd() { const p = Store.get("profil", {}) || {}; return (p.isim || "").trim() || "İsimsiz Işık"; }
 
+  /* ---------- Fotoğraf: seç → küçült → yükle ---------- */
+  function fotoSec() {
+    return new Promise(resolve => {
+      const inp = document.createElement("input"); inp.type = "file"; inp.accept = "image/*";
+      inp.onchange = () => resolve(inp.files && inp.files[0] ? inp.files[0] : null);
+      inp.click();
+    });
+  }
+  function kucult(file, maxBoyut = 1200, kalite = 0.82) {
+    return new Promise((resolve, reject) => {
+      const fr = new FileReader();
+      fr.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+          let w = img.width, h = img.height;
+          if (w > h && w > maxBoyut) { h = Math.round(h * maxBoyut / w); w = maxBoyut; }
+          else if (h > maxBoyut) { w = Math.round(w * maxBoyut / h); h = maxBoyut; }
+          const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
+          cv.getContext("2d").drawImage(img, 0, 0, w, h);
+          cv.toBlob(b => b ? resolve(b) : reject(new Error("blob")), "image/jpeg", kalite);
+        };
+        img.onerror = reject; img.src = fr.result;
+      };
+      fr.onerror = reject; fr.readAsDataURL(file);
+    });
+  }
+  async function fotoYukle(blob) {
+    const c = sb(), id = uid(); if (!c || !id) return null;
+    const yol = id + "/" + Date.now() + ".jpg";
+    try {
+      const { error } = await c.storage.from("topluluk-foto").upload(yol, blob, { contentType: "image/jpeg", upsert: false });
+      if (error) return null;
+      return c.storage.from("topluluk-foto").getPublicUrl(yol).data.publicUrl;
+    } catch (e) { return null; }
+  }
+
   const TIP = { paylasim: { ad: "Düşünce", ikon: "💭" }, sukran: { ad: "Şükran", ikon: "🙏" }, basari: { ad: "Başarı", ikon: "🏆" } };
   const TEPKI = [["tebrikler", "❤️", "Tebrikler"], ["ilham", "🌿", "İlham Oldun"], ["yaninda", "✨", "Yanındayım"]];
 
@@ -77,11 +113,14 @@ const ToplulukSosyal = window.ToplulukSosyal = (() => {
     } catch (e) { _akis = []; return []; }
   }
 
-  async function paylas(tip, metin) {
+  async function paylas(tip, metin, fotoUrl) {
     const c = sb(), id = uid(); if (!c || !id) return { ok: false, mesaj: "Giriş gerekli" };
-    metin = (metin || "").trim(); if (metin.length < 3) return { ok: false, mesaj: "Biraz daha yaz 🌿" };
+    metin = (metin || "").trim();
+    if (!fotoUrl && metin.length < 3) return { ok: false, mesaj: "Biraz daha yaz 🌿" };
     if (metin.length > 1000) metin = metin.slice(0, 1000);
-    try { const { error } = await c.from("topluluk_gonderi").insert({ user_id: id, ad: benimAd(), tip: TIP[tip] ? tip : "paylasim", metin }); return { ok: !error, mesaj: error ? error.message : "" }; }
+    const kayit = { user_id: id, ad: benimAd(), tip: TIP[tip] ? tip : "paylasim", metin };
+    if (fotoUrl) kayit.foto_url = fotoUrl;
+    try { const { error } = await c.from("topluluk_gonderi").insert(kayit); return { ok: !error, mesaj: error ? error.message : "" }; }
     catch (e) { return { ok: false, mesaj: String(e) }; }
   }
   async function yorumlariAl(gonderiId) {
@@ -161,6 +200,7 @@ const ToplulukSosyal = window.ToplulukSosyal = (() => {
         ${takipBtn}
       </header>
       <div class="ts-g-metin">${esc(g.metin).replace(/\n/g, "<br>")}</div>
+      ${g.foto_url ? `<img class="ts-g-foto" src="${esc(g.foto_url)}" loading="lazy" alt="paylaşım fotoğrafı" data-act="foto" data-src="${esc(g.foto_url)}">` : ""}
       <div class="ts-g-tepkiler">${tepkiBtnlar(g)}</div>
       <div class="ts-g-alt">
         <button class="ts-mini" data-act="yorumAc" data-id="${g.id}">💬 Yorumlar${g._yorumSayi ? ` (${g._yorumSayi})` : ""}</button>
@@ -181,6 +221,10 @@ const ToplulukSosyal = window.ToplulukSosyal = (() => {
           ${Object.keys(TIP).map((k, i) => `<button class="ts-tip-sec${i === 0 ? " aktif" : ""}" data-tip="${k}">${TIP[k].ikon} ${esc(TIP[k].ad)}</button>`).join("")}
         </div>
         <textarea class="ts-metin" id="ts-yeni-metin" maxlength="1000" rows="3" placeholder="İlhamını, şükranını ya da bir başarını paylaş… 🌿"></textarea>
+        <div class="ts-foto-satir">
+          <button class="ts-mini" id="ts-foto-btn" type="button">📷 Fotoğraf ekle</button>
+          <div class="ts-foto-onizle" id="ts-foto-onizle" hidden><img id="ts-foto-img" alt="seçilen fotoğraf"><button id="ts-foto-sil" type="button" title="Kaldır">✕</button></div>
+        </div>
         <div class="ts-composer-alt">
           <span class="ts-mod-not">🛡️ Paylaşımın onaylandıktan sonra görünür.</span>
           <button class="btn ts-paylas-btn" id="ts-paylas">Paylaş</button>
@@ -220,17 +264,31 @@ const ToplulukSosyal = window.ToplulukSosyal = (() => {
       <div class="ts-y-not">🛡️ Yorumun onaylandıktan sonra görünür.</div>`;
   }
 
-  let _govde = null, _yeniTip = "paylasim";
+  let _govde = null, _yeniTip = "paylasim", _yeniFoto = null;
   function bindFeed() {
     if (!_govde) return;
     // composer tip seçimi
     _govde.querySelectorAll(".ts-tip-sec").forEach(b => b.addEventListener("click", () => {
       _yeniTip = b.dataset.tip; _govde.querySelectorAll(".ts-tip-sec").forEach(x => x.classList.toggle("aktif", x === b));
     }));
+    // fotoğraf seç/kaldır
+    const fBtn = _govde.querySelector("#ts-foto-btn");
+    if (fBtn) fBtn.addEventListener("click", async () => {
+      const f = await fotoSec(); if (!f) return;
+      try { _yeniFoto = await kucult(f); const onz = _govde.querySelector("#ts-foto-onizle"), im = _govde.querySelector("#ts-foto-img"); im.src = URL.createObjectURL(_yeniFoto); onz.hidden = false; }
+      catch (e) { bilgiBalon("⚠️ Fotoğraf işlenemedi"); }
+    });
+    const fSil = _govde.querySelector("#ts-foto-sil");
+    if (fSil) fSil.addEventListener("click", () => { _yeniFoto = null; const onz = _govde.querySelector("#ts-foto-onizle"); if (onz) onz.hidden = true; });
     const pBtn = _govde.querySelector("#ts-paylas");
     if (pBtn) pBtn.addEventListener("click", async () => {
-      const ta = _govde.querySelector("#ts-yeni-metin"); const r = await paylas(_yeniTip, ta.value);
-      if (r.ok) { ta.value = ""; bilgiBalon("✨ Paylaşımın gönderildi. Onaylandıktan sonra görünecek."); }
+      const ta = _govde.querySelector("#ts-yeni-metin");
+      pBtn.disabled = true; pBtn.textContent = _yeniFoto ? "Yükleniyor…" : "Gönderiliyor…";
+      let fotoUrl = null;
+      if (_yeniFoto) { fotoUrl = await fotoYukle(_yeniFoto); if (!fotoUrl) { bilgiBalon("⚠️ Fotoğraf yüklenemedi"); pBtn.disabled = false; pBtn.textContent = "Paylaş"; return; } }
+      const r = await paylas(_yeniTip, ta.value, fotoUrl);
+      pBtn.disabled = false; pBtn.textContent = "Paylaş";
+      if (r.ok) { ta.value = ""; _yeniFoto = null; const onz = _govde.querySelector("#ts-foto-onizle"); if (onz) onz.hidden = true; bilgiBalon("✨ Paylaşımın gönderildi. Onaylandıktan sonra görünecek."); }
       else bilgiBalon("⚠️ " + (r.mesaj || "Gönderilemedi"));
     });
     _govde.querySelectorAll(".ts-fil").forEach(b => b.addEventListener("click", async () => { _filtre = b.dataset.fil; await yenile(); }));
@@ -246,6 +304,7 @@ const ToplulukSosyal = window.ToplulukSosyal = (() => {
       else if (act === "gonderiSil") { if (confirm("Bu paylaşımı silmek istiyor musun?")) { await modSil("gonderi", Number(id)); await yenile(); } }
       else if (act === "engel") { if (confirm((el.dataset.ad || "Bu kullanıcı") + " engellensin mi? Paylaşımlarını görmezsin.")) { await engelle(id); await yenile(); bilgiBalon("🚫 Engellendi."); } }
       else if (act === "rapor") { await raporAkisi(el.dataset.rtip, Number(id)); }
+      else if (act === "foto") { fotoLightbox(el.dataset.src); }
     }));
   }
   function bindYorum(alan) {
@@ -284,6 +343,7 @@ const ToplulukSosyal = window.ToplulukSosyal = (() => {
     return `<div class="ts-mod-kart" data-mid="${item.id}">
       <div class="ts-mod-ust"><b>${esc(item.ad || "İsimsiz")}</b> <span class="muted">· ${tip === "yorum" ? "yorum" : (tp ? tp.ikon + " " + tp.ad : "paylaşım")} · ${zamanFark(item.olusturma)}${item.rapor_sayisi ? ` · 🚩${item.rapor_sayisi}` : ""}</span></div>
       <div class="ts-mod-metin">${esc(item.metin).replace(/\n/g, "<br>")}</div>
+      ${item.foto_url ? `<img class="ts-mod-foto" src="${esc(item.foto_url)}" loading="lazy" alt="onay bekleyen fotoğraf" data-act="foto" data-src="${esc(item.foto_url)}">` : ""}
       <div class="ts-mod-btnlar">
         <button class="ts-mod-onay" data-mact="onayla" data-mtip="${tip}" data-id="${item.id}">✅ Onayla</button>
         <button class="ts-mod-red" data-mact="reddet" data-mtip="${tip}" data-id="${item.id}">🚫 Reddet</button>
@@ -311,7 +371,30 @@ const ToplulukSosyal = window.ToplulukSosyal = (() => {
       const kart = b.closest(".ts-mod-kart"); if (kart) kart.remove();
       bilgiBalon(act === "onayla" ? "✅ Onaylandı, yayında." : act === "reddet" ? "🚫 Reddedildi." : "🗑️ Silindi.");
     }));
+    govde.querySelectorAll("[data-act='foto']").forEach(b => b.addEventListener("click", () => fotoLightbox(b.dataset.src)));
   }
 
-  return { hazirla, moderatorMuCached, cizPaylasimlar, cizModerasyon };
+  /* ---------- Render: Galeri ---------- */
+  async function cizGaleri(govde) {
+    if (!uid()) { govde.innerHTML = `<div class="tp-bilgi">🔒 Galeriyi görmek için <b>giriş yap</b>.</div>`; return; }
+    govde.innerHTML = `<div class="tp-bilgi">📸 Galeri yükleniyor…</div>`;
+    if (!_hazir) await hazirla();
+    const c = sb(); if (!c) { govde.innerHTML = `<div class="ts-bos">Galeri yüklenemedi.</div>`; return; }
+    try {
+      const { data } = await c.from("topluluk_gonderi").select("id,ad,metin,foto_url,user_id").eq("durum", "onayli").not("foto_url", "is", null).order("olusturma", { ascending: false }).limit(60);
+      const liste = (data || []).filter(g => !_engel.has(g.user_id));
+      if (!liste.length) { govde.innerHTML = `<div class="ts-bos">📸 Henüz fotoğraf paylaşımı yok. İlk kareyi sen paylaş!</div>`; return; }
+      govde.innerHTML = `<div class="ts-galeri">${liste.map(g =>
+        `<button class="ts-gal-it" data-src="${esc(g.foto_url)}" data-cap="${esc((g.ad || "İsimsiz Işık") + (g.metin ? " · " + g.metin : ""))}"><img src="${esc(g.foto_url)}" loading="lazy" alt=""></button>`).join("")}</div>`;
+      govde.querySelectorAll(".ts-gal-it").forEach(b => b.addEventListener("click", () => fotoLightbox(b.dataset.src, b.dataset.cap)));
+    } catch (e) { govde.innerHTML = `<div class="ts-bos">Galeri yüklenemedi.</div>`; }
+  }
+  function fotoLightbox(src, cap) {
+    let lb = document.getElementById("ts-lightbox");
+    if (!lb) { lb = document.createElement("div"); lb.id = "ts-lightbox"; lb.className = "ts-lightbox"; lb.addEventListener("click", () => lb.classList.remove("gor")); document.body.appendChild(lb); }
+    lb.innerHTML = `<img src="${esc(src)}" alt="">${cap ? `<div class="ts-lb-cap">${esc(cap)}</div>` : ""}`;
+    lb.classList.add("gor");
+  }
+
+  return { hazirla, moderatorMuCached, cizPaylasimlar, cizModerasyon, cizGaleri };
 })();

@@ -2837,3 +2837,18 @@ body.mg-aktif { overflow: hidden; }
 .ts-mod-onay { background: rgba(120,200,140,.2); border-color: rgba(120,200,140,.45); color: #cfeedd; }
 .ts-mod-red { background: rgba(255,180,90,.15); border-color: rgba(255,180,90,.4); color: #f2d3a0; }
 .ts-mod-sil { background: rgba(238,120,120,.15); border-color: rgba(238,120,120,.4); color: #f0bcbc; }
+
+/* ---- Topluluk fotoğraf / galeri / lightbox ---- */
+.ts-foto-satir { display: flex; align-items: center; gap: .6rem; margin-top: .6rem; }
+.ts-foto-onizle { position: relative; display: inline-block; }
+.ts-foto-onizle img { height: 56px; width: 56px; object-fit: cover; border-radius: 10px; border: 1px solid rgba(243,217,140,.3); }
+.ts-foto-onizle button { position: absolute; top: -8px; right: -8px; width: 22px; height: 22px; border-radius: 50%; border: none; background: rgba(20,16,30,.95); color: #fff; cursor: pointer; font-size: .8rem; line-height: 1; }
+.ts-g-foto { width: 100%; max-height: 420px; object-fit: cover; border-radius: 12px; margin: .2rem 0 .6rem; cursor: zoom-in; display: block; }
+.ts-mod-foto { max-width: 100%; max-height: 280px; border-radius: 10px; margin-bottom: .6rem; cursor: zoom-in; display: block; }
+.ts-galeri { display: grid; grid-template-columns: repeat(3, 1fr); gap: .4rem; }
+.ts-gal-it { padding: 0; border: none; border-radius: 10px; overflow: hidden; cursor: zoom-in; aspect-ratio: 1; background: rgba(255,255,255,.04); }
+.ts-gal-it img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ts-lightbox { position: fixed; inset: 0; z-index: 100001; display: none; align-items: center; justify-content: center; flex-direction: column; gap: .8rem; padding: 1.5rem; background: rgba(8,6,18,.94); backdrop-filter: blur(4px); cursor: zoom-out; }
+.ts-lightbox.gor { display: flex; }
+.ts-lightbox img { max-width: 100%; max-height: 80vh; border-radius: 12px; box-shadow: 0 14px 50px rgba(0,0,0,.6); }
+.ts-lb-cap { color: rgba(255,255,255,.85); font-size: .88rem; text-align: center; max-width: 540px; }
