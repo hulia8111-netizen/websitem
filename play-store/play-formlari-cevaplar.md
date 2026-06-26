@@ -37,12 +37,9 @@
 ## 3) Uygulama içeriği (App content) — kurulum görevleri
 
 ### 3.1 Uygulama erişimi (App access)
-- Uygulama **giriş (e-posta + şifre) gerektiriyor** → "Tüm işlevler özel erişim olmadan kullanılamaz" seçeneğini seç.
-- **Test hesabı bilgisi** ekle (Google inceleyici giriş yapabilsin diye):
-  - Talimat: *"Uygulama açılınca isim girip aşağıdaki test hesabıyla giriş yapın."*
-  - E-posta: **(test hesabı — yayından önce oluşturacağız)**
-  - Şifre: **(test hesabı şifresi)**
-  > Not: Yayından hemen önce bir test hesabı oluşturup bilgilerini buraya yazacağız.
+- ✅ Artık **MİSAFİR MODU** var → giriş zorunlu değil. Seçenek: **"Tüm işlevler özel erişim olmadan kullanılabilir"** seç.
+- Açıklama notu (istersen ekle): *"Uygulama açılınca isim girin, hesap adımında 'Şimdilik hesapsız devam et' bağlantısına dokunun; tüm özellikler hesapsız kullanılabilir."*
+- **Test hesabına gerek YOK** (misafir modu inceleyici erişimini çözüyor).
 
 ### 3.2 Reklamlar (Ads)
 - **Hayır** — uygulamada reklam yok.
