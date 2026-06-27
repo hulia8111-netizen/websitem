@@ -10,3 +10,6 @@ Thumbs.db
 
 .ffmpeg-tmp/
 supabase/.temp/
+
+# Testçi e-postaları (gizli, gönderilmez)
+mail.txt

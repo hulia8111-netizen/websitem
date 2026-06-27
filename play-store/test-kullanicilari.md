@@ -1,35 +1,19 @@
 # Kapalı Test Kullanıcıları — Işığını Bul
 
-> Kişisel Google Play hesaplarında, üretime (herkese açık yayın) geçmeden önce
-> **en az 12 test kullanıcısıyla 14 gün kapalı test** yapmak zorunlu (Google kuralı).
-> Aşağıya bu kişilerin **Gmail adreslerini** topla. Kilit açılınca Play Console'da
-> "Kapalı test → Test kullanıcıları" bölümüne bu listeyi ekleyeceğiz.
+> Üretime geçmeden önce **en az 12 test kullanıcısıyla 14 gün kapalı test** zorunlu (Google).
+> Kilit açılınca Play Console → "Kapalı test → Test kullanıcıları" bölümüne listeyi ekleyeceğiz.
 
-## Gerekenler
-- ✅ En az **12 kişi** (daha fazlası daha iyi — biri çıkarsa açık kalır)
-- ✅ Her biri **Gmail (Google) hesabı** olmalı
-- ✅ Bu kişiler uygulamayı indirip **14 gün boyunca** hesaplarında kalmalı
-- 👨‍👩‍👧 Eş, dost, akraba, yakın çevre olabilir
+> 🔒 **Gizlilik:** Gerçek e-posta adresleri bu dosyada TUTULMAZ (depo herkese açık).
+> Asıl liste yerel `mail.txt` dosyasında (depoya gönderilmez).
 
-## Testçi Gmail listesi
-1. 
-2. 
-3. 
-4. 
-5. 
-6. 
-7. 
-8. 
-9. 
-10. 
-11. 
-12. 
-(13+ olursa daha güvenli)
+## Kurallar
+- ✅ En az **12 kişi** (yedek için 14-15 daha iyi)
+- ✅ Her biri **Google hesabı** olmalı (genelde Gmail).
+  Hotmail/Outlook/Yandex ancak o adresle Google hesabı açıldıysa çalışır → yoksa
+  katılım linki açılmaz; o kişiden **Gmail** iste.
+- ✅ Kişiler uygulamayı indirip **14 gün** hesaplarında tutmalı, ara sıra açmalı.
 
-## Testçilere ne diyeceksin?
-> "Işığını Bul adlı uygulamamı Google Play'de teste açıyorum. Sana bir test
-> linki göndereceğim; uygulamayı indirip 2 hafta telefonunda tutman yeterli.
-> Ara sıra açıp denersen çok sevinirim. 🌙"
-
-> Not: Kilit açılıp kapalı testi kurunca Google bir **katılım linki** verir;
-> o linki bu 12 kişiye göndereceğiz, onlar tıklayıp indirecek.
+## Testçilere mesaj
+> "Işığını Bul uygulamamı Google Play'de teste açıyorum. Sana bir katılım linki
+> göndereceğim; tıklayıp Play Store'dan indireceksin. 2 hafta telefonunda tutup
+> ara sıra açman yeterli. 🌙 Bana Android telefonundaki **Gmail**'ini yazar mısın?"
