@@ -71,6 +71,8 @@ const KartBildirim = window.KartBildirim = (() => {
   function kontrol(acilis) {
     const a = ayar();
     if (!a.aktif || !izinVar()) return;
+    // Merkezi kural: sessiz mod / gece rahatsız etmeme → gönderme (bildirim.js)
+    if (window.Bildirim && Bildirim.rahatsizEtmeAktif && Bildirim.rahatsizEtmeAktif()) return;
     if (kartCekildi() || gonderildi()) return;
     const su = hhmm();
     // acilis: uygulama açıldı + saat geçmiş → geç kalmış hatırlatma

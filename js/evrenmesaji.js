@@ -110,6 +110,8 @@ const EvrenMesaji = window.EvrenMesaji = (() => {
   async function kontrol(acilis) {
     const a = ayar();
     if (!a.aktif || !izinVar()) return;
+    // Merkezi kural: sessiz mod / gece rahatsız etmeme → gönderme (bildirim.js)
+    if (window.Bildirim && Bildirim.rahatsizEtmeAktif && Bildirim.rahatsizEtmeAktif()) return;
     if (await aboneVar()) return;   // sunucu push devrede → istemci göndermez
     const su = hhmm(), l = bugunLog();
     if (acilis) {
@@ -122,6 +124,17 @@ const EvrenMesaji = window.EvrenMesaji = (() => {
     for (let s = 0; s < a.sayi; s++) {
       if (l.slot.indexOf(s) === -1 && su === a.saatler[s]) { gonder(s); break; }
     }
+  }
+
+  /* Seçilen saat "gece rahatsız etmeme" aralığına düşüyor mu? (yalnız uyarı için;
+     asıl engelleme Bildirim.rahatsizEtmeAktif() ve sunucu tarafında yapılır) */
+  function geceyeDenkMi(hhmmStr) {
+    const b = Store.get("bildirim-ayar", {}) || {};
+    if (b.sessiz) return true;
+    if (b.gece === false) return false;
+    const par = s => { const q = String(s || "").split(":"); return (parseInt(q[0], 10) || 0) * 60 + (parseInt(q[1], 10) || 0); };
+    const d = par(hhmmStr), bas = par(b.geceBas || "22:00"), bit = par(b.geceBit || "08:00");
+    return bas <= bit ? (d >= bas && d < bit) : (d >= bas || d < bit);
   }
 
   /* ---------- UI (Profil) ---------- */
@@ -142,8 +155,15 @@ const EvrenMesaji = window.EvrenMesaji = (() => {
         const row = document.createElement("label"); row.className = "bld-satir";
         const sp = document.createElement("span"); sp.textContent = (s + 1) + ". Bildirim";
         const inp = document.createElement("input"); inp.type = "time"; inp.value = a.saatler[s] || VARSAYILAN.saatler[s];
-        inp.addEventListener("change", () => { const x = ayar(); x.saatler[s] = inp.value || VARSAYILAN.saatler[s]; ayarYaz(x); });
-        row.appendChild(sp); row.appendChild(inp); wrap.appendChild(row);
+        inp.addEventListener("change", () => { const x = ayar(); x.saatler[s] = inp.value || VARSAYILAN.saatler[s]; ayarYaz(x); ciz(); });
+        row.appendChild(sp); row.appendChild(inp);
+        if (geceyeDenkMi(inp.value)) {
+          const uy = document.createElement("small");
+          uy.className = "ev-uyari";
+          uy.textContent = "🌙 Bu saat “gece rahatsız etme” aralığında — bildirim gönderilmez.";
+          row.appendChild(uy);
+        }
+        wrap.appendChild(row);
       }
     }
     durumCiz();

@@ -14,6 +14,24 @@ const MESAJLAR = [
   "🤍 İç sesini dinlemek için güzel bir zaman. Kartın seni bekliyor.",
 ];
 
+// ---- Merkezi "rahatsız etme" kuralı (istemcideki bildirim.js ile birebir aynı) ----
+type BldAyar = { sessiz?: boolean; gece?: boolean; geceBas?: string; geceBit?: string };
+function dk(s: string | undefined, varsayilan: number): number {
+  const p = String(s ?? "").split(":");
+  const h = parseInt(p[0]), m = parseInt(p[1]);
+  if (isNaN(h)) return varsayilan;
+  return h * 60 + (isNaN(m) ? 0 : m);
+}
+// Sessiz mod açık VEYA gece penceresi içindeyse bildirim gönderilmez.
+// Ayar hiç kaydedilmemişse istemci varsayılanı geçerli: gece koruması AÇIK 22:00–08:00.
+function rahatsizEtme(a: unknown, nowMin: number): boolean {
+  const b = (a ?? {}) as BldAyar;
+  if (b.sessiz) return true;
+  if (b.gece === false) return false;
+  const bas = dk(b.geceBas, 22 * 60), bit = dk(b.geceBit, 8 * 60);
+  return bas <= bit ? (nowMin >= bas && nowMin < bit) : (nowMin >= bas || nowMin < bit);
+}
+
 Deno.serve(async () => {
   try {
     const SB_URL = Deno.env.get("SUPABASE_URL");
@@ -30,6 +48,7 @@ Deno.serve(async () => {
     const tr = new Date(Date.now() + 3 * 3600 * 1000);
     const today = tr.toISOString().slice(0, 10);
     const turkeyHour = tr.getUTCHours();
+    const nowMin = turkeyHour * 60 + tr.getUTCMinutes();
 
     const { data: aboneler, error } = await sb.from("push_abone").select("user_id, abone, son_gonderim");
     if (error) return j({ ok: false, hata: error.message }, 500);
@@ -43,6 +62,11 @@ Deno.serve(async () => {
       if (!ayar?.aktif) continue;
       const saatH = parseInt(String(ayar.saat ?? "15:00").split(":")[0]);
       if (saatH !== turkeyHour) continue;
+
+      // Merkezi kural: sessiz mod / gece rahatsız etmeme → bu kullanıcıya gönderme
+      const { data: bldRow } = await sb.from("kullanici_veri").select("deger")
+        .eq("user_id", r.user_id).eq("anahtar", "bildirim-ayar").maybeSingle();
+      if (rahatsizEtme(bldRow?.deger, nowMin)) continue;
       const { data: cardRow } = await sb.from("kullanici_veri").select("anahtar")
         .eq("user_id", r.user_id).eq("anahtar", "card-" + today).maybeSingle();
       if (cardRow) continue;

@@ -14,17 +14,18 @@ const Bildirim = window.Bildirim = (() => {
   const AYAR = "bildirim-ayar";
   const LOG = "bildirim-log";
 
+  /* "Günün Kartı" bilerek YOK: ayrı KartBildirim modülü (kartbildirim.js)
+     yönetiyor. İkisi birden olursa aynı gün çift kart hatırlatması gider. */
   const KATEGORILER = [
     { id: "olumlama",   ad: "Günlük Olumlama" },
     { id: "ruhHali",    ad: "Ruh Hali Hatırlatması" },
     { id: "meditasyon", ad: "Meditasyon Zamanı" },
-    { id: "sukran",     ad: "Şükran Hatırlatması" },
-    { id: "kart",       ad: "Günün Kartı" }
+    { id: "sukran",     ad: "Şükran Hatırlatması" }
   ];
   const VARSAYILAN = {
     aktif: false, saat: "09:00", sessiz: false,
     gece: true, geceBas: "22:00", geceBit: "08:00", haftalik: true,
-    kategori: { olumlama: true, ruhHali: true, meditasyon: true, sukran: true, kart: true }
+    kategori: { olumlama: true, ruhHali: true, meditasyon: true, sukran: true }
   };
 
   const destekVar = "Notification" in window;
@@ -67,6 +68,13 @@ const Bildirim = window.Bildirim = (() => {
   function gonderilebilir() {
     const ayar = ayarAl();
     return ayar.aktif && !ayar.sessiz && !geceDndAktif(ayar);
+  }
+  /* MERKEZİ KURAL — sessiz mod veya gece rahatsız etmeme açıksa hiçbir modül
+     bildirim göndermez. EvrenMesaji ve KartBildirim de bunu sorar.
+     (Bu modülün kendi "aktif" ayarına bakmaz; o yalnızca bu modülü kapatır.) */
+  function rahatsizEtmeAktif() {
+    const ayar = ayarAl();
+    return !!ayar.sessiz || geceDndAktif(ayar);
   }
   function toast(metin) {
     if (!toastEl) {
@@ -217,5 +225,5 @@ const Bildirim = window.Bildirim = (() => {
   }
 
   document.addEventListener("DOMContentLoaded", baglan);
-  return { tetikle, gunlukMesaj, mesaj, geceDndAktif };
+  return { tetikle, gunlukMesaj, mesaj, geceDndAktif, rahatsizEtmeAktif };
 })();

@@ -37,6 +37,24 @@ async function havuzGetir(): Promise<string[]> {
   return out;
 }
 
+// ---- Merkezi "rahatsız etme" kuralı (istemcideki bildirim.js ile birebir aynı) ----
+type BldAyar = { sessiz?: boolean; gece?: boolean; geceBas?: string; geceBit?: string };
+function dk(s: string | undefined, varsayilan: number): number {
+  const p = String(s ?? "").split(":");
+  const h = parseInt(p[0]), m = parseInt(p[1]);
+  if (isNaN(h)) return varsayilan;
+  return h * 60 + (isNaN(m) ? 0 : m);
+}
+// Sessiz mod açık VEYA gece penceresi içindeyse bildirim gönderilmez.
+// Ayar hiç kaydedilmemişse istemci varsayılanı geçerli: gece koruması AÇIK 22:00–08:00.
+function rahatsizEtme(a: unknown, nowMin: number): boolean {
+  const b = (a ?? {}) as BldAyar;
+  if (b.sessiz) return true;
+  if (b.gece === false) return false;
+  const bas = dk(b.geceBas, 22 * 60), bit = dk(b.geceBit, 8 * 60);
+  return bas <= bit ? (nowMin >= bas && nowMin < bit) : (nowMin >= bas || nowMin < bit);
+}
+
 function sozSec(g: Gon, n: number): number {
   const maxG = n - 1;   // tüm havuz dönmeden tekrar yok
   let aday: number[] = [];
@@ -79,6 +97,12 @@ Deno.serve(async () => {
         .eq("user_id", r.user_id).eq("anahtar", "evren-ayar").maybeSingle();
       const ayar = ayarRow?.deger as { aktif?: boolean; sayi?: number; saatler?: string[] } | undefined;
       if (!ayar?.aktif) continue;
+
+      // Merkezi kural: sessiz mod / gece rahatsız etmeme → bu kullanıcıya gönderme
+      const { data: bldRow } = await sb.from("kullanici_veri").select("deger")
+        .eq("user_id", r.user_id).eq("anahtar", "bildirim-ayar").maybeSingle();
+      if (rahatsizEtme(bldRow?.deger, nowMin)) continue;
+
       bakilan++;
       const sayi = Math.min(3, Math.max(1, Number(ayar.sayi) || 1));
       const saatler = Array.isArray(ayar.saatler) ? ayar.saatler : ["10:00", "15:00", "20:00"];
