@@ -15,7 +15,7 @@ window.OverlayGeri = (() => {
   const IDLER = [
     "hafta-overlay", "takvim-overlay", "vision-overlay", "nefes-overlay",
     "test-overlay", "urun-popup", "cs-popup", "ciftsaat-overlay",
-    "magaza-overlay", "topluluk-overlay", "odul-popup"
+    "magaza-overlay", "topluluk-overlay", "odul-popup", "rapor-overlay"
   ];
 
   const acik = [];                     // açık overlay id'leri (açılma sırasıyla)

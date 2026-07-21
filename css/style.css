@@ -2322,6 +2322,124 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
 .kurtarma-goster { display: flex; align-items: center; justify-content: center; gap: 0.4rem; margin: 0.7rem 0; font-size: 0.85rem; color: var(--metin-faint); cursor: pointer; }
 .kurtarma-kart .btn { width: 100%; margin-top: 0.4rem; }
 .kurtarma-bilgi { min-height: 1.2em; margin: 0.7rem 0 0; font-size: 0.9rem; }
+
+/* ============================================================
+   Aylık Gelişim Raporu 📊
+   ============================================================ */
+.rapor-overlay {
+  position: fixed; inset: 0; z-index: 99985;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: max(1rem, env(safe-area-inset-top)) 0.8rem 2rem;
+  overflow-y: auto; -webkit-overflow-scrolling: touch;
+  background: rgba(8, 6, 20, 0.9); backdrop-filter: blur(9px); -webkit-backdrop-filter: blur(9px);
+}
+.rapor-kart {
+  position: relative; width: 100%; max-width: 440px; margin: auto;
+  background: linear-gradient(165deg, var(--bg-2), var(--bg-1) 65%);
+  border: 1px solid var(--card-border); border-radius: 24px;
+  padding: 1.5rem 1.2rem 1.3rem; box-shadow: 0 26px 80px rgba(0, 0, 0, 0.6);
+  opacity: 0; transform: translateY(16px) scale(0.985); transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.rapor-kart.gor { opacity: 1; transform: none; }
+.rapor-kart .gece-kapat { top: 12px; right: 12px; }
+
+.rp-baslik { text-align: center; margin-bottom: 1.1rem; }
+.rp-mini { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-soft); opacity: 0.85; }
+.rp-ay-nav { display: flex; align-items: center; justify-content: center; gap: 0.6rem; margin-top: 0.25rem; }
+.rp-ay-nav h2 { font-family: var(--font-baslik); margin: 0; min-width: 9rem; color: var(--metin); }
+.rp-ok {
+  width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--card-border);
+  background: var(--card-bg); color: var(--metin); font-size: 1.3rem; line-height: 1; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: background 0.15s, opacity 0.15s;
+}
+.rp-ok:hover { background: rgba(255, 255, 255, 0.14); }
+.rp-ok:disabled { opacity: 0.28; cursor: default; }
+
+/* Çemberler */
+.rp-ring { position: relative; display: flex; flex-direction: column; align-items: center; }
+.rp-ring svg { width: 84px; height: 84px; transform: rotate(-90deg); }
+.rp-ring.buyuk svg { width: 128px; height: 128px; }
+.rp-ring-bg { fill: none; stroke: rgba(255, 255, 255, 0.09); }
+.rp-ring-on { fill: none; stroke-linecap: round; transition: stroke-dashoffset 1.15s cubic-bezier(0.22, 1, 0.36, 1); filter: drop-shadow(0 0 5px currentColor); }
+.rp-ring-ic { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; line-height: 1.15; }
+.rp-ring-ic b { display: block; font-size: 1.15rem; color: var(--metin); font-weight: 700; }
+.rp-ring.buyuk .rp-ring-ic b { font-size: 2rem; color: var(--gold-soft); }
+.rp-ring-ic span { font-size: 0.68rem; color: var(--metin-faint); }
+
+.rp-hero { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin-bottom: 1.2rem; }
+.rp-hero-alt { margin: 0; font-size: 0.86rem; color: var(--metin-soft); text-align: center; }
+.rp-ringler { display: flex; justify-content: space-around; gap: 0.4rem; margin-bottom: 1.3rem; }
+
+/* İstatistik kutucukları */
+.rp-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin-bottom: 1.3rem; }
+.rp-tile { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 15px; padding: 0.75rem 0.4rem; text-align: center; }
+.rp-tile-emoji { font-size: 1.25rem; }
+.rp-tile b { display: block; font-size: 1.3rem; color: var(--metin); margin: 0.15rem 0 0.05rem; }
+.rp-tile-et { font-size: 0.7rem; color: var(--metin-faint); }
+
+/* Ruh hali */
+.rp-mood { background: var(--card-bg-soft); border: 1px solid var(--card-border); border-radius: 18px; padding: 1rem; margin-bottom: 1.3rem; }
+.rp-mood-ust { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.8rem; }
+.rp-mood-emoji { font-size: 1.8rem; }
+.rp-mood-ust b { color: var(--metin); }
+.rp-mood-ust p { margin: 0.1rem 0 0; }
+.rp-mood-row { display: flex; align-items: center; gap: 0.5rem; margin: 0.35rem 0; }
+.rp-mood-ad { flex: 0 0 5.6rem; font-size: 0.78rem; color: var(--metin-soft); }
+.rp-mood-bar { flex: 1; height: 7px; background: rgba(255, 255, 255, 0.08); border-radius: 99px; overflow: hidden; }
+.rp-mood-bar i { display: block; height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, var(--accent), var(--gold-soft)); transition: width 0.9s ease 0.25s; }
+.rp-mood-yuz { flex: 0 0 2.2rem; text-align: right; font-size: 0.74rem; color: var(--metin-faint); }
+
+/* Değerlendirme */
+.rp-degerlendirme { margin-bottom: 0.6rem; }
+.rp-deg-metin { font-size: 0.92rem; line-height: 1.6; color: var(--metin-soft); background: var(--card-bg-soft); border-left: 3px solid var(--gold-soft); border-radius: 10px; padding: 0.8rem 0.9rem; margin: 0 0 0.9rem; }
+.rp-vurgular { display: flex; flex-direction: column; gap: 0.6rem; }
+.rp-vurgu { border-radius: 15px; padding: 0.8rem 0.9rem; border: 1px solid var(--card-border); background: var(--card-bg); }
+.rp-vurgu span { display: block; font-size: 0.74rem; letter-spacing: 0.03em; margin-bottom: 0.25rem; font-weight: 600; }
+.rp-vurgu p { margin: 0; font-size: 0.9rem; color: var(--metin); line-height: 1.45; }
+.rp-vurgu.guclu { border-color: rgba(233, 196, 106, 0.35); background: rgba(233, 196, 106, 0.07); }
+.rp-vurgu.guclu span { color: var(--gold-soft); }
+.rp-vurgu.gelis { border-color: rgba(127, 227, 176, 0.3); background: rgba(127, 227, 176, 0.06); }
+.rp-vurgu.gelis span { color: #7fe3b0; }
+.rp-vurgu.oneri { border-color: rgba(179, 140, 255, 0.35); background: rgba(179, 140, 255, 0.07); }
+.rp-vurgu.oneri span { color: var(--accent); }
+.rp-dip { text-align: center; margin: 1rem 0 0; }
+
+/* Profil'deki giriş kartı */
+.rapor-giris-ust { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.9rem; }
+.rapor-giris-emoji { font-size: 2rem; }
+.rapor-giris-kart h2 { margin: 0 0 0.15rem; }
+.rapor-giris-kart .btn { width: 100%; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rapor-kart, .rp-ring-on, .rp-mood-bar i { transition: none; }
+}
+
+/* ---- Yönetici Duyuruları 📢 ---- */
+.td-yeni { background: var(--card-bg-soft); border: 1px solid rgba(233, 196, 106, 0.28); border-radius: 16px; padding: 0.9rem; margin-bottom: 1rem; }
+.td-yeni-bas { color: var(--gold-soft); font-weight: 600; margin-bottom: 0.6rem; }
+.td-inp { width: 100%; margin-bottom: 0.55rem; padding: 0.65rem 0.8rem; border-radius: 11px; border: 1px solid var(--card-border); background: var(--card-bg); color: var(--metin); font-size: 0.92rem; font-family: inherit; resize: vertical; }
+.td-bildir { display: flex; align-items: center; gap: 0.45rem; margin: 0.2rem 0 0.7rem; font-size: 0.86rem; color: var(--metin-soft); cursor: pointer; }
+.td-yeni .btn { width: 100%; }
+.td-durum { min-height: 1.1em; margin: 0.55rem 0 0; font-size: 0.85rem; text-align: center; }
+
+.td-liste { display: flex; flex-direction: column; gap: 0.7rem; }
+.td-kart { background: linear-gradient(160deg, rgba(233, 196, 106, 0.09), var(--card-bg)); border: 1px solid rgba(233, 196, 106, 0.24); border-radius: 15px; padding: 0.9rem 1rem; }
+.td-kart.pasif { opacity: 0.5; }
+.td-ust { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; }
+.td-ikon { font-size: 1.1rem; }
+.td-baslik { color: var(--metin); flex: 1; font-size: 0.98rem; }
+.td-zaman { font-size: 0.72rem; color: var(--metin-faint); white-space: nowrap; }
+.td-metin { margin: 0; color: var(--metin-soft); font-size: 0.9rem; line-height: 1.55; }
+.td-mod { display: flex; gap: 0.5rem; margin-top: 0.7rem; }
+.td-mini { background: var(--card-bg); border: 1px solid var(--card-border); color: var(--metin-soft); border-radius: 9px; padding: 0.35rem 0.7rem; font-size: 0.8rem; cursor: pointer; }
+.td-mini:hover { background: rgba(255, 255, 255, 0.1); }
+.td-mini.td-sil:hover { color: var(--uyari); border-color: var(--uyari); }
+
+/* Işık sekmesi üstü mini duyuru şeridi (isteğe bağlı gösterim) */
+.tp-duyuru-serit { display: flex; align-items: center; gap: 0.6rem; background: linear-gradient(90deg, rgba(233, 196, 106, 0.14), rgba(179, 140, 255, 0.1)); border: 1px solid rgba(233, 196, 106, 0.3); border-radius: 13px; padding: 0.7rem 0.85rem; margin-bottom: 0.9rem; }
+.tp-duyuru-serit .tp-ds-ikon { font-size: 1.2rem; }
+.tp-duyuru-serit b { color: var(--gold-soft); font-size: 0.9rem; }
+.tp-duyuru-serit p { margin: 0.1rem 0 0; font-size: 0.82rem; color: var(--metin-soft); }
 /* ============================================================
    Şükran Defteri — sade, huzurlu, kağıt hissi (bugüne özel 3 alan)
    ============================================================ */
