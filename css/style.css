@@ -2326,6 +2326,7 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
 /* ============================================================
    Aylık Gelişim Raporu 📊
    ============================================================ */
+.rapor-overlay[hidden] { display: none !important; }   /* gizliyken ekranı kaplamasın */
 .rapor-overlay {
   position: fixed; inset: 0; z-index: 99985;
   display: flex; align-items: flex-start; justify-content: center;
