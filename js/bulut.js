@@ -40,7 +40,7 @@ const Bulut = window.Bulut = (() => {
     });
     sb.auth.onAuthStateChange((event, session) => {
       oturum = session || null;
-      if (event === "PASSWORD_RECOVERY") kurtarmaModu = true;
+      if (event === "PASSWORD_RECOVERY") { kurtarmaModu = true; if (window.girisKapisiGizle) window.girisKapisiGizle(); kurtarmaEkraniGoster(); }
       if (event === "SIGNED_OUT") { realtimeDur(); if (window.girisKapisiGoster) window.girisKapisiGoster(); }
       if (event === "SIGNED_IN" && oturum) realtimeBaslat();
       durumCiz();
@@ -107,6 +107,41 @@ const Bulut = window.Bulut = (() => {
     if (error) return { ok: false, mesaj: cevir(error.message) };
     kurtarmaModu = false; durumCiz();
     return { ok: true, mesaj: "Şifren güncellendi ✨" };
+  }
+
+  /* Şifre kurtarma TAM EKRAN penceresi — e-postadaki linkle gelince,
+     hangi sekmede olursa olsun kullanıcının önüne "Yeni Şifre Oluştur" çıkar. */
+  function kurtarmaEkraniGoster() {
+    if (document.getElementById("kurtarma-overlay")) return;
+    const ov = document.createElement("div");
+    ov.id = "kurtarma-overlay"; ov.className = "kurtarma-overlay";
+    ov.innerHTML = `
+      <div class="kurtarma-kart">
+        <div class="kurtarma-ikon">🔑</div>
+        <h2>Yeni Şifre Oluştur</h2>
+        <p class="muted small">Hesabın için yeni bir şifre belirle (en az 6 karakter).</p>
+        <input type="password" id="kurtarma-sifre" placeholder="Yeni şifre" autocomplete="new-password"/>
+        <label class="kurtarma-goster"><input type="checkbox" id="kurtarma-goster-chk"/> <span>Şifreyi göster</span></label>
+        <button class="btn" id="kurtarma-kaydet">Şifreyi Oluştur ✨</button>
+        <p id="kurtarma-bilgi" class="kurtarma-bilgi"></p>
+      </div>`;
+    document.body.appendChild(ov);
+    const inp = ov.querySelector("#kurtarma-sifre");
+    const btn = ov.querySelector("#kurtarma-kaydet");
+    const bil = ov.querySelector("#kurtarma-bilgi");
+    const chk = ov.querySelector("#kurtarma-goster-chk");
+    chk.addEventListener("change", () => { inp.type = chk.checked ? "text" : "password"; });
+    setTimeout(() => { try { inp.focus(); } catch (e) {} }, 120);
+    async function kaydet() {
+      const s = inp.value || "";
+      if (s.length < 6) { bil.textContent = "Şifre en az 6 karakter olmalı."; bil.style.color = "var(--uyari)"; return; }
+      btn.disabled = true; bil.textContent = "Kaydediliyor…"; bil.style.color = "var(--metin-faint)";
+      const r = await yeniSifre(s);
+      btn.disabled = false; bil.textContent = r.mesaj; bil.style.color = r.ok ? "var(--basari)" : "var(--uyari)";
+      if (r.ok) setTimeout(() => { ov.remove(); try { history.replaceState(null, "", location.pathname); } catch (e) {} }, 1500);
+    }
+    btn.addEventListener("click", kaydet);
+    inp.addEventListener("keydown", e => { if (e.key === "Enter") kaydet(); });
   }
 
   /* ---------- REALTIME (anlık senkron) ---------- */

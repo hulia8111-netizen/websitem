@@ -2301,6 +2301,27 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
 .ev-saatler { display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 0.7rem; }
 .ev-saatler .bld-satir { margin: 0; }
 .ev-uyari { flex-basis: 100%; color: var(--altin); opacity: 0.85; font-size: 0.78rem; line-height: 1.35; }
+
+/* ---- Şifre kurtarma tam-ekran penceresi (e-posta linkiyle gelince) ---- */
+.kurtarma-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  display: flex; align-items: center; justify-content: center; padding: 1.2rem;
+  background: rgba(10, 8, 24, 0.9); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+.kurtarma-kart {
+  background: var(--bg-1); border: 1px solid var(--card-border); border-radius: 20px;
+  padding: 1.8rem 1.5rem; max-width: 360px; width: 100%; text-align: center;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+}
+.kurtarma-ikon { font-size: 2.4rem; }
+.kurtarma-kart h2 { font-family: var(--font-baslik); color: var(--gold-soft); margin: 0.4rem 0 0.3rem; }
+.kurtarma-kart input[type="password"], .kurtarma-kart input[type="text"] {
+  width: 100%; margin-top: 0.9rem; padding: 0.8rem 1rem; border-radius: 12px;
+  border: 1px solid var(--card-border); background: var(--card-bg); color: var(--metin); font-size: 1rem;
+}
+.kurtarma-goster { display: flex; align-items: center; justify-content: center; gap: 0.4rem; margin: 0.7rem 0; font-size: 0.85rem; color: var(--metin-faint); cursor: pointer; }
+.kurtarma-kart .btn { width: 100%; margin-top: 0.4rem; }
+.kurtarma-bilgi { min-height: 1.2em; margin: 0.7rem 0 0; font-size: 0.9rem; }
 /* ============================================================
    Şükran Defteri — sade, huzurlu, kağıt hissi (bugüne özel 3 alan)
    ============================================================ */
