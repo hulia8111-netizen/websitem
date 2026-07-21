@@ -30,10 +30,20 @@ const Bulut = window.Bulut = (() => {
   function init() {
     if (!yapilandirilmis()) { durumCiz(); return; }
     if (!window.supabase || !window.supabase.createClient) { console.warn("supabase-js yüklenmedi"); durumCiz(); return; }
+    // Şifre kurtarma linkiyle mi gelindi? (createClient hash'i TÜKETMEDEN önce yakala —
+    // onAuthStateChange olayı yarış nedeniyle kaçabilir, bu güvence)
+    const kurtarmaUrl = /type=recovery/i.test(String(location.hash)) || /type=recovery/i.test(String(location.search));
     sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } });
     hazir = true;
     sb.auth.getSession().then(({ data }) => {
       oturum = data.session || null;
+      if (kurtarmaUrl || kurtarmaModu) {
+        kurtarmaModu = true;
+        if (window.girisKapisiGizle) window.girisKapisiGizle();
+        kurtarmaEkraniGoster();
+        durumCiz();
+        return;
+      }
       durumCiz();
       if (oturum) { if (window.girisKapisiGizle) window.girisKapisiGizle(); acilisSenkron(); realtimeBaslat(); }
       else if (window.girisKapisiGoster) window.girisKapisiGoster();
