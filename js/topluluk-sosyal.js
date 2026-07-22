@@ -207,7 +207,8 @@ const ToplulukSosyal = window.ToplulukSosyal = (() => {
         ${g._benim
         ? `<button class="ts-mini sil" data-act="gonderiSil" data-id="${g.id}">🗑️ Sil</button>`
         : `<button class="ts-mini" data-act="rapor" data-id="${g.id}" data-rtip="gonderi">🚩 Bildir</button>
-           <button class="ts-mini" data-act="engel" data-id="${g.user_id}" data-ad="${esc(g.ad || "")}">🚫 Engelle</button>`}
+           <button class="ts-mini" data-act="engel" data-id="${g.user_id}" data-ad="${esc(g.ad || "")}">🚫 Engelle</button>
+           ${_moderator ? `<button class="ts-mini sil" data-act="gonderiSil" data-id="${g.id}" title="Moderatör olarak sil">🛡️🗑️ Sil</button>` : ""}`}
       </div>
       <div class="ts-yorum-alan" id="ts-yorum-${g.id}" hidden></div>
     </article>`;
