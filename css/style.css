@@ -52,6 +52,8 @@
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
+/* WebView'de her zaman koyu taban — arka plan hiç beyaz görünmesin */
+html { background: var(--bg-0); }
 
 body {
   font-family: var(--font-govde);
@@ -60,10 +62,12 @@ body {
   line-height: 1.6;
   letter-spacing: 0.1px;
   padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
-  background:
+  background-color: var(--bg-0);
+  background-image:
     radial-gradient(1200px 800px at 50% -10%, #2a1d52 0%, transparent 60%),
     linear-gradient(165deg, var(--bg-0) 0%, var(--bg-1) 55%, var(--bg-2) 100%);
-  background-attachment: fixed;
+  /* background-attachment: fixed kaldırıldı — Android WebView'de arka planı
+     düzgün kaplamayıp beyaz gösterebiliyordu. */
   -webkit-font-smoothing: antialiased;
 }
 
@@ -109,10 +113,10 @@ body {
 
 /* Kozmik mod aktifken genel atmosfer */
 body.kozmik {
-  background:
+  background-color: #080615;
+  background-image:
     radial-gradient(1200px 800px at 50% -10%, #34216b 0%, transparent 60%),
     linear-gradient(165deg, #080615 0%, #120b2e 55%, #1c123f 100%);
-  background-attachment: fixed;
 }
 body.kozmik .aura { opacity: 0.45; }
 body.kozmik .card { box-shadow: var(--shadow), 0 0 30px rgba(124, 58, 237, 0.2); border-color: rgba(179, 140, 255, 0.32); }
