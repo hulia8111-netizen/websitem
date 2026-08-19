@@ -504,9 +504,9 @@ code { background: rgba(255,255,255,0.08); padding: 1px 5px; border-radius: 6px;
 
 /* Kozmik popup */
 .cs-popup {
-  position: fixed; inset: 0; z-index: 150;
+  position: fixed; inset: 0; z-index: 99990;   /* cs-overlay (99980) ÜSTÜNDE — arkada kalmasın */
   display: flex; align-items: center; justify-content: center; padding: 1.5rem;
-  background: rgba(8, 6, 20, 0.72); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  background: rgba(8, 6, 20, 0.92);   /* backdrop-filter kaldırıldı (mobil takılma) → opaklık artırıldı */
   opacity: 0; transition: opacity 0.35s;
 }
 .cs-popup.gor { opacity: 1; }
