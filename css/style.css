@@ -52,6 +52,10 @@
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
+/* Yatay kaydırmayı tamamen kapat — SADECE yukarı/aşağı gezinilsin.
+   overflow-x: clip scroll konteyneri OLUŞTURMAZ → dikey kaydırma bozulmaz.
+   hidden yedeği eski WebView'ler için (clip desteklemeyenler). */
+html, body { overflow-x: hidden; overflow-x: clip; max-width: 100%; }
 /* WebView'de her zaman koyu taban — arka plan hiç beyaz görünmesin */
 html { background: var(--bg-0); }
 
@@ -273,7 +277,7 @@ input[type="time"]::-webkit-calendar-picker-indicator { filter: invert(1) sepia(
 .grid {
   padding: var(--sp-3) var(--sp-4) var(--sp-5);
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
   gap: var(--sp-4);
   align-items: start;
 }
@@ -282,6 +286,9 @@ input[type="time"]::-webkit-calendar-picker-indicator { filter: invert(1) sepia(
 /* ---------- Kart ---------- */
 .card {
   position: relative;
+  /* min-width:0 → grid item'in varsayilan min-content tabani kalksin;
+     boylece ic serit (mood-serit vb.) kartI sisirmez, sayfa yatay taSmaz. */
+  min-width: 0;
   background: var(--card-bg);
   border-radius: var(--radius);
   padding: var(--sp-4);
