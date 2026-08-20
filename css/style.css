@@ -1039,9 +1039,22 @@ code { background: rgba(255,255,255,0.08); padding: 1px 5px; border-radius: 6px;
 .gk-analiz .ga-analiz { font-size: 0.98rem; margin: 0.2rem 0 0; }
 
 /* ---------- Profil ---------- */
-.profil-ust { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; }
+/* Profil üst — temiz grid: avatar solda, [isim & seviye YAN YANA] sağda,
+   Düzenle metnin altında. Böylece bilgi alanı tam genişlik alır, yazılar
+   kelime kelime alt alta kırılmaz. */
+.profil-ust {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    "avatar bilgi"
+    "avatar duzenle";
+  align-items: start;
+  column-gap: var(--sp-3);
+  row-gap: var(--sp-2);
+}
 /* Avatar + seviye çerçevesi */
 .profil-avatar-sar {
+  grid-area: avatar; align-self: start;
   position: relative; flex-shrink: 0;
   width: 84px; height: 84px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
@@ -1118,10 +1131,22 @@ code { background: rgba(255,255,255,0.08); padding: 1px 5px; border-radius: 6px;
   background: linear-gradient(120deg, transparent, rgba(255,255,255,0.6), transparent);
   transform: skewX(-20deg); animation: shine 4.5s ease-in-out infinite;
 }
-.profil-bilgi { flex: 1; min-width: 0; }
-.profil-bilgi h2 { margin: 0; font-family: var(--font-baslik); color: var(--metin); font-size: 1.4rem; }
-.profil-bilgi p { margin: 0.2rem 0 0; }
-.profil-duzenle { flex-shrink: 0; }
+/* İsim + seviye rozeti aynı satırda (yan yana); test satırı ve üyelik tarihi
+   kendi tam-genişlik satırlarında. */
+.profil-bilgi {
+  grid-area: bilgi; min-width: 0;
+  display: flex; flex-wrap: wrap; align-items: baseline;
+  column-gap: 0.55rem; row-gap: 0.3rem;
+}
+.profil-bilgi h2 {
+  margin: 0; font-family: var(--font-baslik); color: var(--metin);
+  font-size: 1.3rem; flex: 0 1 auto; min-width: 0;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
+}
+.profil-bilgi .profil-seviye { flex: 0 0 auto; margin: 0; }   /* isimle yan yana */
+.profil-bilgi .profil-test { flex: 1 0 100%; margin: 0.15rem 0 0; }  /* kendi satırı */
+.profil-bilgi p { flex: 1 0 100%; margin: 0.15rem 0 0; }             /* üyelik tarihi tam satır */
+.profil-duzenle { grid-area: duzenle; justify-self: start; align-self: start; }
 .profil-form { margin-top: var(--sp-3); }
 .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: var(--sp-2); margin-top: var(--sp-4); }
 .stat { background: var(--card-bg-soft); border: 1px solid rgba(179,140,255,0.12); border-radius: var(--radius-sm); padding: var(--sp-3); text-align: center; }
