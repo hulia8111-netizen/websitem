@@ -39,7 +39,7 @@ const DokunmaIpucu = window.DokunmaIpucu = (() => {
      DOKUNUNCA veya maxGosterim'e ulaşınca true olur — tek bir kaçırılan
      oynatma ipucunu sonsuza dek kapatmaz (sonraki açılışta yine denenir). */
   const oturumdaGosterilen = new Set();  // aynı oturumda tekrar oynatmayı önler
-  function tumKayit() { return (window.Store && Store.get(GORULEN_ANAHTAR, {})) || {}; }
+  function tumKayit() { return (typeof Store !== "undefined" && Store.get(GORULEN_ANAHTAR, {})) || {}; }
   function kaydiAl(id) {
     const v = tumKayit()[id];
     if (v && typeof v === "object") return { n: v.n || 0, ok: !!v.ok };
@@ -47,14 +47,14 @@ const DokunmaIpucu = window.DokunmaIpucu = (() => {
     return { n: 0, ok: false };
   }
   function kaydiYaz(id, k) {
-    if (!id || !window.Store) return;
+    if (!id || typeof Store === "undefined") return;
     const t = tumKayit(); t[id] = { n: k.n, ok: k.ok }; Store.set(GORULEN_ANAHTAR, t);
   }
   function gorulduMu(id) { return !!(id && kaydiAl(id).ok); }
   function tiklandiYaz(id) { if (id) kaydiYaz(id, { n: kaydiAl(id).n, ok: true }); }  // dokununca bitti
   function gosterimSay(id, maxG) { if (!id) return; const k = kaydiAl(id); k.n++; if (k.n >= maxG) k.ok = true; kaydiYaz(id, k); }
   function sifirla(id) {
-    if (!window.Store) return;
+    if (typeof Store === "undefined") return;
     const t = tumKayit();
     if (id) delete t[id]; else { for (const k in t) delete t[k]; }
     Store.set(GORULEN_ANAHTAR, t);
