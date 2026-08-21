@@ -32,6 +32,12 @@ const Magaza = window.Magaza = (() => {
       aciklama: "Doğal taşlar ve ritüellerine eşlik edecek özel parçalar.",
       urunler: [
         {
+          ad: "Yaprak Form Akik Kolye", ikon: "🍃",
+          aciklama: "Yaprak formunda, doğal Akik taşından zarif kolye. Akik; ruhsal ve bedensel dengeyi destekleyen, stresi azaltan, özgüveni artıran ve negatif enerjiden koruyan bir taş olarak bilinir. Doğallığı boynunda taşı (zinciri çeliktir). 🍃",
+          gorsel: "/urunler/akik-yaprak-kolye.jpg", fiyat: "304,99 TL",
+          link: "https://www.shopier.com/dreamyhandmade/50075441"
+        },
+        {
           ad: "Ametist Tel Sarım Kolye", ikon: "💜",
           aciklama: "El işçiliğiyle tel sarım yapılmış, gümüş kaplama doğal Ametist kolye. Stresi yatıştırır, zihni sakinleştirir; ruhsal dengeyi ve sezgiyi güçlendirir. Doğanın enerjisini yanında taşı. 💜",
           gorsel: "/urunler/ametist-kolye.jpg", fiyat: "304,99 TL",
