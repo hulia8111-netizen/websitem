@@ -2806,6 +2806,11 @@ body.mg-aktif { overflow: hidden; }
 }
 .mg-satinal:hover { transform: translateY(-1px); box-shadow: 0 7px 20px rgba(243,217,140,0.38); }
 .mg-satinal:active { transform: translateY(0); }
+/* Fiyat + "Çok Yakında" (link yok) buton hali */
+.mg-kart-fiyat { margin: 0.45rem 0.7rem 0; font-weight: 700; color: #f3d98c; font-size: 1rem; }
+.mg-kart.sade .mg-satinal { margin: 0.7rem 0.7rem 0.75rem; width: auto; }
+.mg-satinal.yakinda { color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.06); border: 1px solid rgba(243,217,140,0.22); box-shadow: none; cursor: default; }
+.mg-satinal.yakinda:hover { transform: none; box-shadow: none; }
 
 .mg-yakinda {
   position: fixed; inset: 0; z-index: 100000; display: flex; align-items: center; justify-content: center;

@@ -17,11 +17,19 @@
 const Magaza = window.Magaza = (() => {
   const $ = sel => document.querySelector(sel);
 
-  // İlk sürüm ürünleri (tam 3 kart). link boş → "Satın Al" Çok Yakında gösterir.
+  // Ürünler. link doluysa "Satın Al" o dış sayfaya (Shopier) gider; boşsa
+  // buton "Çok Yakında" olur. fiyat doluysa kartta fiyat gösterilir.
   const URUNLER = [
-    { ad: "Işık Kartları",  ikon: "🃏", aciklama: "Sezgi, farkındalık ve dönüşüm için ilham ve bilinç kartları.", gorsel: "/kart.jpg",   link: "" },
-    { ad: "Işık Mumları",   ikon: "🕯️", aciklama: "Niyetle hazırlanmış, yaşam alanına huzur katan özel mum koleksiyonu.", gorsel: "/mumlar.jpg", link: "" },
-    { ad: "Ritüel Araçları", ikon: "✨", aciklama: "Ritüellerine eşlik eden özenle seçilmiş araçlar ve setler.", gorsel: "", link: "" }
+    {
+      ad: "Akik (Agat) Taşı",
+      ikon: "💎",
+      aciklama: "Her biri benzersiz, doğal ağaç-kesiti dokulu akik taşı. Topraklar, dengeler; iç huzuru ve güven duygusunu güçlendirir, yaşam alanına sakin bir enerji katar. 🌿",
+      gorsel: "/urunler/akik-tasi.jpg",
+      fiyat: "304,99 TL",
+      link: "https://www.shopier.com/dreamyhandmade/50076643?utm_id=97757_v0_s00_e0_tv0"
+    },
+    { ad: "Işık Kartları",  ikon: "🃏", aciklama: "Sezgi, farkındalık ve dönüşüm için ilham ve bilinç kartları.", gorsel: "/kart.jpg",   fiyat: "", link: "" },
+    { ad: "Işık Mumları",   ikon: "🕯️", aciklama: "Niyetle hazırlanmış, yaşam alanına huzur katan özel mum koleksiyonu.", gorsel: "/mumlar.jpg", fiyat: "", link: "" }
   ];
 
   function esc(s) {
@@ -44,11 +52,15 @@ const Magaza = window.Magaza = (() => {
     URUNLER.forEach(u => {
       const kart = document.createElement("div");
       kart.className = "mg-kart sade";
+      const satista = gecerliLink(u.link);
+      const adBasi = (gecerliLink(u.gorsel) || (u.gorsel && /^\//.test(u.gorsel))) ? "" : esc(u.ikon) + " ";
+      const fiyatHTML = u.fiyat ? `<div class="mg-kart-fiyat">${esc(u.fiyat)}</div>` : "";
       kart.innerHTML = `
         ${gorselHTML(u)}
-        <div class="mg-kart-ad">${esc(u.ikon)} ${esc(u.ad)}</div>
+        <div class="mg-kart-ad">${adBasi}${esc(u.ad)}</div>
         <div class="mg-kart-aciklama">${esc(u.aciklama)}</div>
-        <button class="mg-satinal" type="button">Satın Al ✦</button>`;
+        ${fiyatHTML}
+        <button class="mg-satinal${satista ? "" : " yakinda"}" type="button">${satista ? "Satın Al ✦" : "Çok Yakında"}</button>`;
       kart.querySelector(".mg-satinal").addEventListener("click", () => satinAl(u));
       grid.appendChild(kart);
     });
