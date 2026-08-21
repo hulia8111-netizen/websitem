@@ -1,22 +1,68 @@
 /* ============================================================
    Işığını Bul — Mobil uygulama (Expo SDK 54)
    isiginibull.net sitesini tam ekran bir WebView içinde çalıştırır.
-   Tüm özellikler (giriş, senkron, günlük, kartlar…) web tarafından gelir.
+   + NATIVE PUSH: expo-notifications ile Expo push token alınır, WebView'e
+     köprülenir (site push_token'a yazar). Bildirime tıklanınca ilgili
+     ekrana yönlendirir. Uygulama kapalıyken de push çalışır (FCM).
    ============================================================ */
 import React, { useRef, useState, useEffect } from "react";
 import { View, ActivityIndicator, StyleSheet, BackHandler, Platform, StatusBar } from "react-native";
 import { WebView } from "react-native-webview";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
+import * as Notifications from "expo-notifications";
+import * as Device from "expo-device";
+import Constants from "expo-constants";
 
 const SITE = "https://isiginibull.net";
 const BG = "#0c0a1c";
+
+// Bildirim geldiğinde (uygulama açıkken) sistemde göster
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowBanner: true,
+    shouldShowList: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
+
+// Expo push token al (izin + Android kanalı)
+async function pushTokenAl() {
+  try {
+    if (Platform.OS === "android") {
+      await Notifications.setNotificationChannelAsync("default", {
+        name: "Işığını Bul",
+        importance: Notifications.AndroidImportance.DEFAULT,
+        lightColor: "#f3d98c",
+      });
+    }
+    if (!Device.isDevice) return null;
+    const mevcut = await Notifications.getPermissionsAsync();
+    let izin = mevcut.status;
+    if (izin !== "granted") {
+      const istek = await Notifications.requestPermissionsAsync();
+      izin = istek.status;
+    }
+    if (izin !== "granted") return null;
+    const projectId =
+      Constants?.expoConfig?.extra?.eas?.projectId ||
+      Constants?.easConfig?.projectId;
+    const t = await Notifications.getExpoPushTokenAsync(projectId ? { projectId } : undefined);
+    return t?.data || null;
+  } catch (e) {
+    return null;
+  }
+}
 
 export default function App() {
   const webRef = useRef(null);
   const [yukleniyor, setYukleniyor] = useState(true);
   const [geriGidebilir, setGeriGidebilir] = useState(false);
+  const [token, setToken] = useState(null);
+  const [sayfaHazir, setSayfaHazir] = useState(false);
+  const bekleyenYol = useRef(null);
 
-  // Android donanım geri tuşu → sitede geri git (varsa)
+  // Android donanım geri tuşu → sitede geri git
   useEffect(() => {
     const geri = () => {
       if (geriGidebilir && webRef.current) { webRef.current.goBack(); return true; }
@@ -26,6 +72,34 @@ export default function App() {
     return () => sub.remove();
   }, [geriGidebilir]);
 
+  // Push token al
+  useEffect(() => { pushTokenAl().then(setToken); }, []);
+
+  // Bildirime tıklanınca hangi ekrana gidileceğini sakla → sayfaya köprüle
+  useEffect(() => {
+    const sub = Notifications.addNotificationResponseReceivedListener((yanit) => {
+      const yol = yanit?.notification?.request?.content?.data?.yol || null;
+      if (!yol) return;
+      if (sayfaHazir && webRef.current) yolGonder(yol);
+      else bekleyenYol.current = yol;
+    });
+    return () => sub.remove();
+  }, [sayfaHazir]);
+
+  function yolGonder(yol) {
+    const js = `window.__ISIGINI_PUSH_YOL=${JSON.stringify(yol)};window.dispatchEvent(new Event('isigini-push-yol'));true;`;
+    try { webRef.current.injectJavaScript(js); } catch (e) {}
+  }
+
+  // Token + sayfa hazır olunca token'ı siteye köprüle (site push_token'a yazar)
+  useEffect(() => {
+    if (token && sayfaHazir && webRef.current) {
+      const js = `window.__ISIGINI_PUSH=${JSON.stringify({ token, platform: Platform.OS })};window.dispatchEvent(new Event('isigini-push-token'));true;`;
+      try { webRef.current.injectJavaScript(js); } catch (e) {}
+      if (bekleyenYol.current) { yolGonder(bekleyenYol.current); bekleyenYol.current = null; }
+    }
+  }, [token, sayfaHazir]);
+
   return (
     <View style={styles.root}>
       <ExpoStatusBar style="light" backgroundColor={BG} />
@@ -33,7 +107,7 @@ export default function App() {
         ref={webRef}
         source={{ uri: SITE }}
         style={styles.web}
-        onLoadEnd={() => setYukleniyor(false)}
+        onLoadEnd={() => { setYukleniyor(false); setSayfaHazir(true); }}
         onNavigationStateChange={(s) => setGeriGidebilir(s.canGoBack)}
         javaScriptEnabled
         domStorageEnabled
