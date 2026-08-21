@@ -32,6 +32,12 @@ const Magaza = window.Magaza = (() => {
       aciklama: "Doğal taşlar ve ritüellerine eşlik edecek özel parçalar.",
       urunler: [
         {
+          ad: "Dendritli Opal", ikon: "🌿",
+          aciklama: "Nadir ve değerli Dendritli Opal — beyaz opal zemin üzerinde ağaç dallarını andıran doğal desenler; her biri tek. Büyüme, bereket ve doğayla bağ taşı olarak bilinir; sabrı, kök salmayı ve içsel dinginliği destekler. Doğanın el yazısını avucunda taşı. 🌿",
+          gorsel: "/urunler/dendritli-opal.jpg", fiyat: "304,99 TL",
+          link: "https://www.shopier.com/dreamyhandmade/50076805"
+        },
+        {
           ad: "Aventurin Kalp Kolye", ikon: "💚",
           aciklama: "Kalp formunda, doğal yeşil Aventurin taşından kolye. Aventurin; şans, bolluk ve neşe taşı olarak bilinir — kalbi korur, stresi azaltır, yeni fırsatlara açar. Şansını kalbinde taşı. Çelik zincirli. 💚",
           gorsel: "/urunler/aventurin-kalp-kolye.jpg", fiyat: "304,99 TL",
