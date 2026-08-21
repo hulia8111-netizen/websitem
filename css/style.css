@@ -3084,3 +3084,68 @@ body.mg-aktif { overflow: hidden; }
 .ts-lightbox.gor { display: flex; }
 .ts-lightbox img { max-width: 100%; max-height: 80vh; border-radius: 12px; box-shadow: 0 14px 50px rgba(0,0,0,.6); }
 .ts-lb-cap { color: rgba(255,255,255,.85); font-size: .88rem; text-align: center; max-width: 540px; }
+
+/* ============================================================
+   Dokunma İpucu 👆 — zarif parmak-ucu "buraya dokun" yönlendirmesi
+   (window.DokunmaIpucu). pointer-events YOK → butonu engellemez.
+   ============================================================ */
+.dip-katman {
+  position: fixed; top: 0; left: 0;
+  z-index: 100050; pointer-events: none;
+  opacity: 0; transition: opacity .3s ease;
+  will-change: transform;
+}
+.dip-katman.gor { opacity: 1; }
+
+/* Hedef merkezinde ışıltı halkası (origin'de ortalı) */
+.dip-halka {
+  position: absolute; top: 0; left: 0;
+  width: 56px; height: 56px; margin: -28px 0 0 -28px;
+  border-radius: 50%;
+  border: 2px solid rgba(243, 217, 140, .9);
+  box-shadow: 0 0 18px rgba(243, 217, 140, .55), inset 0 0 10px rgba(243, 217, 140, .3);
+  opacity: 0;
+}
+.dip-katman.gor .dip-halka {
+  animation-name: dipHalka; animation-duration: 1.7s;
+  animation-timing-function: ease-out;
+  animation-iteration-count: var(--dip-tekrar, 3);
+}
+
+/* El / parmak — dokunma noktası origin'e hizalı (krem el + altın his) */
+.dip-el {
+  position: absolute; top: 0; left: 0; margin: -4px 0 0 -20px;
+  transform: translate(14px, 20px);
+  filter: drop-shadow(0 5px 9px rgba(0, 0, 0, .5));
+}
+.dip-svg { display: block; fill: #fdf3d6; }
+.dip-katman.gor .dip-el {
+  animation-name: dipTap; animation-duration: 1.7s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: var(--dip-tekrar, 3);
+}
+
+@keyframes dipTap {
+  0%, 100% { transform: translate(14px, 20px) scale(1); }
+  28%      { transform: translate(3px, 6px)  scale(.94); }
+  42%      { transform: translate(0, 0)      scale(.86); }  /* dokunuş */
+  56%      { transform: translate(3px, 6px)  scale(.94); }
+}
+@keyframes dipHalka {
+  0%, 28% { transform: scale(.3);  opacity: 0; }
+  44%     { transform: scale(.62); opacity: .95; }
+  100%    { transform: scale(1.5); opacity: 0; }
+}
+@keyframes dipNabiz {
+  0%, 100% { transform: scale(.85); opacity: .25; }
+  50%      { transform: scale(1.1); opacity: .8; }
+}
+
+/* Erişilebilirlik: hareketi azalt → yol animasyonu yok, sade nabız */
+@media (prefers-reduced-motion: reduce) {
+  .dip-katman.gor .dip-el { animation: none; transform: translate(10px, 14px); }
+  .dip-katman.gor .dip-halka {
+    animation: dipNabiz 2s ease-in-out infinite;
+    opacity: 1;
+  }
+}
