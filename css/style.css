@@ -2476,6 +2476,22 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
 .td-rsvp:hover { color: var(--metin); border-color: var(--accent-2); }
 .td-rsvp.secili { color: #fff; background: linear-gradient(135deg, var(--accent), var(--accent-2)); border-color: transparent; box-shadow: var(--glow-mor); }
 .td-rsvp-sayim { margin-top: 0.5rem; font-size: 0.8rem; color: var(--gold-soft); }
+
+/* Günün İlham Cümlesi ekranı */
+.ilham-overlay { position: fixed; inset: 0; z-index: 99970; display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+  background: radial-gradient(120% 90% at 50% 20%, #2a1d52 0%, #1a1233 55%, #0e0922 100%); opacity: 0; transition: opacity .35s ease; overflow: hidden; }
+.ilham-overlay.gor { opacity: 1; }
+.ilham-ic { position: relative; max-width: 480px; width: 100%; text-align: center; padding: 2rem 1.4rem; }
+.ilham-ay { font-size: 2.6rem; }
+.ilham-tarih { color: var(--metin-soft); font-size: 0.92rem; margin: 0.4rem 0 1rem; text-transform: capitalize; }
+.ilham-amblem { font-size: 1.8rem; color: var(--gold); margin-bottom: 0.6rem; filter: drop-shadow(0 0 10px rgba(233,196,106,0.5)); }
+.ilham-soz { font-family: var(--font-baslik), Georgia, serif; font-size: 1.5rem; line-height: 1.5; color: #fdf3d6; margin: 0 0 1.2rem; }
+.ilham-alt { color: var(--metin-faint); }
+.ilham-yildizlar span { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #fff; opacity: .5; animation: yildizParla 3s ease-in-out infinite; }
+.ilham-yildizlar span:nth-child(1){ top:14%; left:18%; } .ilham-yildizlar span:nth-child(2){ top:26%; left:80%; animation-delay:.6s; }
+.ilham-yildizlar span:nth-child(3){ top:72%; left:24%; animation-delay:1.1s; } .ilham-yildizlar span:nth-child(4){ top:64%; left:76%; animation-delay:.3s; }
+.ilham-yildizlar span:nth-child(5){ top:84%; left:52%; animation-delay:1.4s; }
+@media (prefers-reduced-motion: reduce){ .ilham-yildizlar span { animation: none; } .ilham-overlay { transition: none; } }
 .td-mini { background: var(--card-bg); border: 1px solid var(--card-border); color: var(--metin-soft); border-radius: 9px; padding: 0.35rem 0.7rem; font-size: 0.8rem; cursor: pointer; }
 .td-mini:hover { background: rgba(255, 255, 255, 0.1); }
 .td-mini.td-sil:hover { color: var(--uyari); border-color: var(--uyari); }
