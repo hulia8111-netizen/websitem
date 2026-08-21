@@ -184,32 +184,47 @@ const DokunmaIpucu = window.DokunmaIpucu = (() => {
      Adım 2 (Kartlar açılınca): "Kartını Çek" butonu → "Günün kartını çek".
      Her adım bir kez; dokununca kaybolur, kaçırılırsa sonraki açılışta tekrar. */
 
-  // Bir hedef ekranda müsait olana kadar nazikçe yoklayıp gösterir.
-  function yoklaVeGoster(secici, opts, bitti) {
-    if (gorulduMu(opts.id)) { bitti && bitti(false); return; }
-    let deneme = 0;
-    const y = setInterval(() => {
-      deneme++;
-      if (gorulduMu(opts.id) || oturumdaGosterilen.has(opts.id) || deneme > 45) { clearInterval(y); bitti && bitti(false); return; }
-      if (goster(secici, opts)) { clearInterval(y); bitti && bitti(true); }
-    }, 800);
+  /* ---------- Yeni kullanıcı TURU: en değerli 5 aksiyon ----------
+     Sırayla tanıtır; her adım bir kez. Kullanıcı dokununca veya birkaç
+     saniye sonra bir sonrakine geçer. Ekran müsait değilse (overlay /
+     onboarding) ya da ana ekranda değilsek bekler. Hedef ekran dışındaysa
+     görünür alana kaydırır. Kaçırılan adım sonraki açılışta (en çok 3 kez)
+     tekrar denenir; hepsi görülünce bir daha çıkmaz. */
+  const TUR = [
+    { id: "tur-kart2",     sel: '.nav-btn[data-view="kartlar"]', metin: "Günün kartını buradan çek 🔮" },
+    { id: "tur-mini2",     sel: "#gorevler",    metin: "Günün mini görevleri — küçük adımların ✅" },
+    { id: "tur-hafta2",    sel: "#hh-kart",     metin: "Haftalık görevin burada 🎯" },
+    { id: "tur-topluluk2", sel: "#topluluk-ac", metin: "Toplulukta paylaş, ilham al 🌸" },
+    { id: "tur-magaza2",   sel: "#magaza-ac",   metin: "Doğal taşlara göz at 🛍️" }
+  ];
+
+  function anaEkranMi() {
+    const h = document.getElementById("view-home");
+    return h ? h.classList.contains("active") : true;
   }
 
-  function adim2KartCek() {
-    yoklaVeGoster('#kart-cek', {
-      id: "ilk-kartcek2", tekrar: 3,
-      metin: "Günün kartını çekmek için dokun ✨"
-    });
-  }
-  function ilkKullanimBaslat() {
-    yoklaVeGoster('.nav-btn[data-view="kartlar"]', {
-      id: "ilk-kartlar2", tekrar: 3,
-      metin: "Başlamak için buraya dokun 👆",
-      onTikla: () => setTimeout(adim2KartCek, 500)   // Kartlar açılınca 2. adım
-    });
+  function turBaslat() {
+    let bos = 0;
+    const y = setInterval(() => {
+      if (kutu && kutu.classList.contains("gor")) { bos = 0; return; }      // ipucu görünüyor → bekle
+      if (ustKatmanAcikMi() || !anaEkranMi()) { bos = 0; return; }          // overlay/onboarding/başka ekran → bekle
+      const adim = TUR.find(a => !gorulduMu(a.id) && !oturumdaGosterilen.has(a.id));
+      if (!adim) { clearInterval(y); return; }                              // hepsi bitti
+      const el = document.querySelector(adim.sel);
+      if (!el || !el.isConnected) { if (++bos > 12) clearInterval(y); return; }
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight || 0;
+      if (r.height > 6 && (r.top < 56 || r.bottom > vh - 16)) {             // ekran dışı → görünür alana kaydır
+        try { el.scrollIntoView({ block: "center", behavior: "smooth" }); } catch (e) { try { el.scrollIntoView(); } catch (e2) {} }
+        bos = 0; return;
+      }
+      const oldu = goster(adim.sel, { id: adim.id, metin: adim.metin, tekrar: 2, maxGosterim: 3 });
+      bos = oldu ? 0 : bos + 1;
+      if (bos > 12) clearInterval(y);
+    }, 1200);
   }
   document.addEventListener("DOMContentLoaded", () => {
-    setTimeout(ilkKullanimBaslat, 2500);
+    setTimeout(turBaslat, 2500);
   });
 
   return { goster, gizle, gorulduMu, sifirla };
