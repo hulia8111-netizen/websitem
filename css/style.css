@@ -2812,6 +2812,30 @@ body.mg-aktif { overflow: hidden; }
 .mg-satinal.yakinda { color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.06); border: 1px solid rgba(243,217,140,0.22); box-shadow: none; cursor: default; }
 .mg-satinal.yakinda:hover { transform: none; box-shadow: none; }
 
+/* === Mağazam: 1. katman — 3 bölüm kartı (Ziyaret Et) === */
+.mg-grid-kat { grid-template-columns: 1fr; gap: 0.7rem; }
+.mg-kat-kart {
+  display: flex; align-items: center; gap: 0.9rem; text-align: left; cursor: pointer;
+  width: 100%; padding: 0.7rem; border-radius: 16px; color: inherit; font: inherit;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(243,217,140,0.15);
+  transition: border-color .2s ease, transform .2s ease;
+}
+.mg-kat-kart:hover { border-color: rgba(243,217,140,0.42); transform: translateY(-2px); }
+.mg-kat-gorsel { width: 70px; height: 70px; flex-shrink: 0; border-radius: 12px; overflow: hidden; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; }
+.mg-kat-gorsel img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mg-kat-gorsel.bos { font-size: 2rem; background: linear-gradient(150deg, rgba(124,92,255,0.32), rgba(243,217,140,0.16)); }
+.mg-kat-ic { flex: 1; min-width: 0; }
+.mg-kat-ad { font-weight: 700; color: #fff; font-size: 1rem; }
+.mg-kat-aciklama { font-size: 0.8rem; color: rgba(255,255,255,0.68); line-height: 1.35; margin-top: 0.2rem; }
+.mg-kat-ziyaret { display: inline-block; margin-top: 0.45rem; font-size: 0.82rem; font-weight: 600; color: #f3d98c; }
+
+/* Geri butonu + boş bölüm durumu */
+.mg-geri { background: none; border: none; color: rgba(255,255,255,0.82); font: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer; padding: 0.3rem 0; margin-bottom: 0.5rem; }
+.mg-geri:hover { color: #f3d98c; }
+.mg-grid-bos { grid-template-columns: 1fr; }
+.mg-bos-durum { text-align: center; padding: 2.4rem 1rem; color: rgba(255,255,255,0.7); }
+.mg-bos-amblem { font-size: 2.8rem; margin-bottom: 0.6rem; }
+
 .mg-yakinda {
   position: fixed; inset: 0; z-index: 100000; display: flex; align-items: center; justify-content: center;
   padding: 1.4rem; background: rgba(10,8,22,0.66); backdrop-filter: blur(4px);

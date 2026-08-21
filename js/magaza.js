@@ -1,70 +1,134 @@
 /* ============================================================
-   magaza.js — "Mağazam ✨" (sade ilk sürüm) 🛍️
+   magaza.js — "Mağazam ✨" 🛍️ (2 katmanlı: 3 bölüm → ürünler)
    ------------------------------------------------------------
-   İlk sürümde mağaza SADE: tam 3 ürün kartı gösterilir
-     1) 🃏 Işık Kartları   2) 🕯️ Işık Mumları   3) ✨ Ritüel Araçları
-   Her kartta: görsel · ad · kısa açıklama · "Satın Al" butonu.
-   "Satın Al" → "Çok Yakında" mesajı (ürün linki henüz yok).
-
-   GELECEK HAZIRLIĞI (altyapı hazır):
-   - Bir ürüne `link` eklenince "Satın Al" o güvenli dış sayfaya gider.
-   - Ürün detay metinleri (_hakkinda) kodda saklı; ileride detay
-     sayfası açmak istenirse hazır.
-   Kategori / alt sayfa / ürün listesi YOK (bilinçli sadelik).
+   1. KATMAN (Mağazam açılışı): tam 3 BÖLÜM kartı gösterilir
+       1) 🃏 Işık Kartları   2) 🕯️ Işık Mumları   3) ✨ Ritüel & Araçlar
+     Her bölüm kartında "Ziyaret Et →" yazar. Dışarıdan ürünler görünmez.
+   2. KATMAN (bir bölüme tıklayınca): o bölümün ürünleri kart kart gösterilir
+     — foto + ad + spiritüel açıklama + fiyat + "Satın Al ✦".
+     "Satın Al" → o ürüne ait Shopier linkine gider. Üstte "← Geri" ile
+     bölümlere dönülür. Ürünü olmayan bölüm "çok yakında" durumu gösterir.
    Global: window.Magaza
    ============================================================ */
 
 const Magaza = window.Magaza = (() => {
   const $ = sel => document.querySelector(sel);
 
-  // Ürünler. link doluysa "Satın Al" o dış sayfaya (Shopier) gider; boşsa
-  // buton "Çok Yakında" olur. fiyat doluysa kartta fiyat gösterilir.
-  const URUNLER = [
+  // 3 bölüm (kategori). Her bölümün kendi ürün listesi. Ritüel & Araçlar
+  // içinde doğal taşlar; diğer ikisi şimdilik boş ("çok yakında").
+  const KATEGORILER = [
     {
-      ad: "Ametist Tel Sarım Kolye",
-      ikon: "💜",
-      aciklama: "El işçiliğiyle tel sarım yapılmış, gümüş kaplama doğal Ametist kolye. Stresi yatıştırır, zihni sakinleştirir; ruhsal dengeyi ve sezgiyi güçlendirir. Doğanın enerjisini yanında taşı. 💜",
-      gorsel: "/urunler/ametist-kolye.jpg",
-      fiyat: "304,99 TL",
-      link: "https://www.shopier.com/dreamyhandmade/50073853"
+      id: "isik-kartlari", ad: "Işık Kartları", ikon: "🃏", gorsel: "/kart.jpg",
+      aciklama: "Sezgi, farkındalık ve dönüşüm için ilham ve bilinç kartları.",
+      urunler: []
     },
     {
-      ad: "Akik (Agat) Taşı",
-      ikon: "💎",
-      aciklama: "Her biri benzersiz, doğal ağaç-kesiti dokulu akik taşı. Topraklar, dengeler; iç huzuru ve güven duygusunu güçlendirir, yaşam alanına sakin bir enerji katar. 🌿",
-      gorsel: "/urunler/akik-tasi.jpg",
-      fiyat: "304,99 TL",
-      link: "https://www.shopier.com/dreamyhandmade/50076643?utm_id=97757_v0_s00_e0_tv0"
+      id: "isik-mumlari", ad: "Işık Mumları", ikon: "🕯️", gorsel: "/mumlar.jpg",
+      aciklama: "Niyetle hazırlanmış, yaşam alanına huzur katan özel mum koleksiyonu.",
+      urunler: []
     },
-    { ad: "Işık Kartları",  ikon: "🃏", aciklama: "Sezgi, farkındalık ve dönüşüm için ilham ve bilinç kartları.", gorsel: "/kart.jpg",   fiyat: "", link: "" },
-    { ad: "Işık Mumları",   ikon: "🕯️", aciklama: "Niyetle hazırlanmış, yaşam alanına huzur katan özel mum koleksiyonu.", gorsel: "/mumlar.jpg", fiyat: "", link: "" }
+    {
+      id: "rituel-araclar", ad: "Ritüel & Araçlar", ikon: "✨", gorsel: "",
+      aciklama: "Doğal taşlar ve ritüellerine eşlik edecek özel parçalar.",
+      urunler: [
+        {
+          ad: "Ametist Tel Sarım Kolye", ikon: "💜",
+          aciklama: "El işçiliğiyle tel sarım yapılmış, gümüş kaplama doğal Ametist kolye. Stresi yatıştırır, zihni sakinleştirir; ruhsal dengeyi ve sezgiyi güçlendirir. Doğanın enerjisini yanında taşı. 💜",
+          gorsel: "/urunler/ametist-kolye.jpg", fiyat: "304,99 TL",
+          link: "https://www.shopier.com/dreamyhandmade/50073853"
+        },
+        {
+          ad: "Kalp Form Sodalit Kolye", ikon: "💙",
+          aciklama: "Kalp formunda, doğal Sodalit taşından el yapımı kolye. Zihinsel netlik ve sakinlik taşı; mantıklı düşünmeyi ve odaklanmayı destekler, iletişimi güçlendirir, kaygıyı hafifletir. Kalbinin üzerinde huzur. 💙",
+          gorsel: "/urunler/sodalit-kalp-kolye.jpg", fiyat: "304,99 TL",
+          link: "https://www.shopier.com/dreamyhandmade/50075370"
+        },
+        {
+          ad: "Akik (Agat) Taşı", ikon: "💎",
+          aciklama: "Her biri benzersiz, doğal ağaç-kesiti dokulu akik taşı. Topraklar, dengeler; iç huzuru ve güven duygusunu güçlendirir, yaşam alanına sakin bir enerji katar. 🌿",
+          gorsel: "/urunler/akik-tasi.jpg", fiyat: "304,99 TL",
+          link: "https://www.shopier.com/dreamyhandmade/50076643?utm_id=97757_v0_s00_e0_tv0"
+        }
+      ]
+    }
   ];
+
+  let aktifKat = null;   // null → bölümler görünür; kategori → ürünleri görünür
 
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   }
   function gecerliLink(l) { return typeof l === "string" && /^https?:\/\//i.test(String(l).trim()); }
+  function gorselli(g) { return gecerliLink(g) || (g && /^\//.test(g)); }
 
-  function gorselHTML(u) {
-    if (gecerliLink(u.gorsel) || (u.gorsel && /^\//.test(u.gorsel))) {
-      return `<div class="mg-kart-gorsel"><img src="${esc(u.gorsel)}" alt="${esc(u.ad)}" loading="lazy" /></div>`;
+  function gorselHTML(u, klas) {
+    if (gorselli(u.gorsel)) {
+      return `<div class="${klas}"><img src="${esc(u.gorsel)}" alt="${esc(u.ad)}" loading="lazy" /></div>`;
     }
-    return `<div class="mg-kart-gorsel bos"><span>${esc(u.ikon || "✨")}</span></div>`;
+    return `<div class="${klas} bos"><span>${esc(u.ikon || "✨")}</span></div>`;
   }
 
-  function cizGrid() {
+  /* ---------- üst not + geri butonu ---------- */
+  function ustNot(metin) { const n = $(".mg-ust-not"); if (n) n.textContent = metin; }
+  function geriButon() {
+    let g = $("#mg-geri");
+    if (!g) {
+      g = document.createElement("button");
+      g.id = "mg-geri"; g.type = "button"; g.className = "mg-geri";
+      g.textContent = "← Bölümlere Dön";
+      g.addEventListener("click", () => { aktifKat = null; cizKategoriler(); });
+      const liste = $("#mg-liste"); const grid = $("#mg-grid");
+      if (liste && grid) liste.insertBefore(g, grid);
+    }
+    return g;
+  }
+  function geriGoster(goster) { const g = geriButon(); g.style.display = goster ? "block" : "none"; }
+
+  /* ---------- 1. KATMAN: 3 bölüm ---------- */
+  function cizKategoriler() {
     const grid = $("#mg-grid"); if (!grid) return;
-    const chips = $("#mg-kat-chips"); if (chips) chips.innerHTML = "";   // kategori yok
-    const durum = $("#mg-durum"); if (durum) durum.textContent = "";
+    aktifKat = null;
+    geriGoster(false);
+    ustNot("Spiritüel yolculuğuna eşlik edecek 3 özel bölüm. 🛍️");
+    grid.className = "mg-grid mg-grid-kat";
     grid.innerHTML = "";
-    URUNLER.forEach(u => {
+    KATEGORILER.forEach(k => {
+      const kart = document.createElement("button");
+      kart.type = "button";
+      kart.className = "mg-kat-kart";
+      const adet = k.urunler.length;
+      kart.innerHTML = `
+        ${gorselHTML(k, "mg-kat-gorsel")}
+        <div class="mg-kat-ic">
+          <div class="mg-kat-ad">${esc(k.ikon)} ${esc(k.ad)}</div>
+          <div class="mg-kat-aciklama">${esc(k.aciklama)}</div>
+          <span class="mg-kat-ziyaret">Ziyaret Et →</span>
+        </div>`;
+      kart.addEventListener("click", () => { aktifKat = k; cizUrunler(k); });
+      grid.appendChild(kart);
+    });
+  }
+
+  /* ---------- 2. KATMAN: bir bölümün ürünleri ---------- */
+  function cizUrunler(k) {
+    const grid = $("#mg-grid"); if (!grid) return;
+    geriGoster(true);
+    ustNot(k.ikon + " " + k.ad);
+    grid.innerHTML = "";
+    if (!k.urunler.length) {
+      grid.className = "mg-grid mg-grid-bos";
+      grid.innerHTML = `<div class="mg-bos-durum"><div class="mg-bos-amblem">${esc(k.ikon)}</div><p>Bu bölüm çok yakında ürünlerle dolacak ✨</p></div>`;
+      return;
+    }
+    grid.className = "mg-grid";
+    k.urunler.forEach(u => {
       const kart = document.createElement("div");
       kart.className = "mg-kart sade";
       const satista = gecerliLink(u.link);
-      const adBasi = (gecerliLink(u.gorsel) || (u.gorsel && /^\//.test(u.gorsel))) ? "" : esc(u.ikon) + " ";
+      const adBasi = gorselli(u.gorsel) ? "" : esc(u.ikon) + " ";
       const fiyatHTML = u.fiyat ? `<div class="mg-kart-fiyat">${esc(u.fiyat)}</div>` : "";
       kart.innerHTML = `
-        ${gorselHTML(u)}
+        ${gorselHTML(u, "mg-kart-gorsel")}
         <div class="mg-kart-ad">${adBasi}${esc(u.ad)}</div>
         <div class="mg-kart-aciklama">${esc(u.aciklama)}</div>
         ${fiyatHTML}
@@ -74,7 +138,7 @@ const Magaza = window.Magaza = (() => {
     });
   }
 
-  // "Satın Al": link varsa güvenli dış sayfa, yoksa "Çok Yakında" mesajı
+  // "Satın Al": link varsa güvenli dış sayfa (Shopier), yoksa "Çok Yakında"
   function satinAl(u) {
     if (gecerliLink(u.link)) { window.open(u.link, "_blank", "noopener,noreferrer"); return; }
     yakindaGoster();
@@ -103,9 +167,9 @@ const Magaza = window.Magaza = (() => {
   /* ---------- overlay aç/kapat ---------- */
   function ac() {
     const ov = $("#magaza-overlay"); if (!ov) return;
-    const detay = $("#mg-detay"); if (detay) detay.hidden = true;     // detay kullanılmıyor
+    const detay = $("#mg-detay"); if (detay) detay.hidden = true;
     const liste = $("#mg-liste"); if (liste) liste.hidden = false;
-    cizGrid();
+    cizKategoriler();                        // her açılışta bölümlerden başla
     document.body.classList.add("mg-aktif");
     ov.hidden = false; ov.classList.remove("gor"); void ov.offsetWidth; ov.classList.add("gor");
   }
@@ -123,5 +187,5 @@ const Magaza = window.Magaza = (() => {
   }
   document.addEventListener("DOMContentLoaded", baglan);
 
-  return { ac, kapat, urunler: () => URUNLER };
+  return { ac, kapat, kategoriler: () => KATEGORILER };
 })();
