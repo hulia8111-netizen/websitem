@@ -2821,7 +2821,7 @@ body.mg-aktif { overflow: hidden; }
   transition: border-color .2s ease, transform .2s ease;
 }
 .mg-kat-kart:hover { border-color: rgba(243,217,140,0.42); transform: translateY(-2px); }
-.mg-kat-gorsel { width: 70px; height: 70px; flex-shrink: 0; border-radius: 12px; overflow: hidden; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; }
+.mg-kat-gorsel { width: 88px; height: 88px; flex-shrink: 0; border-radius: 14px; overflow: hidden; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; }
 .mg-kat-gorsel img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .mg-kat-gorsel.bos { font-size: 2rem; background: linear-gradient(150deg, rgba(124,92,255,0.32), rgba(243,217,140,0.16)); }
 .mg-kat-ic { flex: 1; min-width: 0; }

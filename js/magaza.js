@@ -28,7 +28,7 @@ const Magaza = window.Magaza = (() => {
       urunler: []
     },
     {
-      id: "rituel-araclar", ad: "Ritüel & Araçlar", ikon: "✨", gorsel: "",
+      id: "rituel-araclar", ad: "Ritüel & Araçlar", ikon: "✨", gorsel: "/urunler/rituel-araclar-kapak.png",
       aciklama: "Doğal taşlar ve ritüellerine eşlik edecek özel parçalar.",
       urunler: [
         {
