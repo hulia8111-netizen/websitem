@@ -21,6 +21,14 @@ const Magaza = window.Magaza = (() => {
   // buton "Çok Yakında" olur. fiyat doluysa kartta fiyat gösterilir.
   const URUNLER = [
     {
+      ad: "Ametist Tel Sarım Kolye",
+      ikon: "💜",
+      aciklama: "El işçiliğiyle tel sarım yapılmış, gümüş kaplama doğal Ametist kolye. Stresi yatıştırır, zihni sakinleştirir; ruhsal dengeyi ve sezgiyi güçlendirir. Doğanın enerjisini yanında taşı. 💜",
+      gorsel: "/urunler/ametist-kolye.jpg",
+      fiyat: "304,99 TL",
+      link: "https://www.shopier.com/dreamyhandmade/50073853"
+    },
+    {
       ad: "Akik (Agat) Taşı",
       ikon: "💎",
       aciklama: "Her biri benzersiz, doğal ağaç-kesiti dokulu akik taşı. Topraklar, dengeler; iç huzuru ve güven duygusunu güçlendirir, yaşam alanına sakin bir enerji katar. 🌿",
