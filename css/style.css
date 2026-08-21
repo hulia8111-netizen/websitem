@@ -3153,6 +3153,32 @@ body.mg-aktif { overflow: hidden; }
   56%      { transform: translate(3px, -6px)  scale(.94); }
 }
 
+/* Yazılı yönlendirme balonu — hedefin üstünde, belirgin */
+.dip-balon {
+  position: absolute; left: 50%; top: 0;
+  transform: translate(-50%, -104px);
+  width: max-content; max-width: min(78vw, 260px);
+  padding: 0.6rem 0.95rem; border-radius: 15px;
+  background: linear-gradient(140deg, rgba(52,38,102,0.98), rgba(26,18,52,0.98));
+  border: 1px solid rgba(243,217,140,0.55);
+  color: #fdf3d6; font-family: var(--font-govde, "Inter", system-ui, sans-serif);
+  font-size: 0.92rem; font-weight: 600; line-height: 1.35; text-align: center;
+  box-shadow: 0 12px 34px rgba(0,0,0,0.5), 0 0 22px rgba(243,217,140,0.28);
+  white-space: normal; pointer-events: none;
+}
+.dip-balon::after {   /* aşağı bakan küçük ok */
+  content: ""; position: absolute; left: 50%; bottom: -6px;
+  width: 12px; height: 12px; transform: translateX(-50%) rotate(45deg);
+  background: rgba(26,18,52,0.98);
+  border-right: 1px solid rgba(243,217,140,0.55);
+  border-bottom: 1px solid rgba(243,217,140,0.55);
+}
+.dip-katman.gor .dip-balon { animation: dipBalon 2s ease-in-out infinite; }
+@keyframes dipBalon {
+  0%, 100% { transform: translate(-50%, -104px); }
+  50%      { transform: translate(-50%, -112px); }
+}
+
 /* Erişilebilirlik: hareketi azalt → yol animasyonu yok, sade nabız */
 @media (prefers-reduced-motion: reduce) {
   .dip-katman.gor .dip-el { animation: none; transform: translate(10px, 14px); }

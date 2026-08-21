@@ -94,6 +94,7 @@ const DokunmaIpucu = window.DokunmaIpucu = (() => {
     kutu.className = "dip-katman";
     kutu.setAttribute("aria-hidden", "true");
     kutu.innerHTML =
+      '<span class="dip-balon" hidden></span>' +
       '<span class="dip-halka"></span>' +
       '<span class="dip-el">' +
         '<svg class="dip-svg" viewBox="0 0 24 24" width="46" height="46" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
@@ -138,6 +139,12 @@ const DokunmaIpucu = window.DokunmaIpucu = (() => {
     aktifId = id;
     kutuYap();
     kutu.style.setProperty("--dip-tekrar", String(tekrar));
+    // Yazılı balon (yönlendirme): metin verildiyse göster
+    const balon = kutu.querySelector(".dip-balon");
+    if (balon) {
+      if (opts.metin) { balon.textContent = opts.metin; balon.hidden = false; kutu.classList.add("dip-balonlu"); }
+      else { balon.hidden = true; kutu.classList.remove("dip-balonlu"); }
+    }
     konumla();
     requestAnimationFrame(() => { if (kutu) kutu.classList.add("gor"); });
     if (tekSefer && id) { oturumdaGosterilen.add(id); gosterimSay(id, maxG); }
@@ -149,8 +156,9 @@ const DokunmaIpucu = window.DokunmaIpucu = (() => {
     window.addEventListener("resize", izle);
     temizleyiciler.push(() => { cancelAnimationFrame(raf); window.removeEventListener("scroll", izle, true); window.removeEventListener("resize", izle); });
 
-    // hedefe dokununca: kalıcı olarak bitir + kapat
-    const hedefeDokun = () => { tiklandiYaz(id); gizle(); };
+    // hedefe dokununca: kalıcı olarak bitir + kapat + (varsa) sonraki adımı tetikle
+    const onTikla = opts.onTikla;
+    const hedefeDokun = () => { tiklandiYaz(id); gizle(); if (typeof onTikla === "function") { try { onTikla(); } catch (e) {} } };
     el.addEventListener("pointerdown", hedefeDokun, { once: true, passive: true });
     temizleyiciler.push(() => el.removeEventListener("pointerdown", hedefeDokun));
 
@@ -170,22 +178,35 @@ const DokunmaIpucu = window.DokunmaIpucu = (() => {
     if (kutu) kutu.classList.remove("gor");
   }
 
-  /* ---------- İLK KULLANIM ipucu (izole örnek): Kartlar sekmesi ----------
-     Yeni kullanıcıyı "Kartlar" sekmesine (günün kartını çekmeye) yönlendirir.
-     Splash/onboarding kapanana kadar NAZİKÇE bekler (yoklama), ekran müsait
-     olunca bir kez oynatır. Kullanıcı dokununca bir daha çıkmaz; kaçırırsa
-     sonraki açılışlarda (en çok birkaç kez) yine belirir. */
-  function ilkKullanimBaslat() {
-    if (gorulduMu("ilk-kartlar")) return;
+  /* ---------- İLK KULLANIM yönlendirmesi (2 adım) ----------
+     Yeni kullanıcıya YAZILI, belirgin rehber. Sen anlatmak zorunda kalmazsın.
+     Adım 1: alttaki "Kartlar" sekmesi → "Başlamak için buraya dokun".
+     Adım 2 (Kartlar açılınca): "Kartını Çek" butonu → "Günün kartını çek".
+     Her adım bir kez; dokununca kaybolur, kaçırılırsa sonraki açılışta tekrar. */
+
+  // Bir hedef ekranda müsait olana kadar nazikçe yoklayıp gösterir.
+  function yoklaVeGoster(secici, opts, bitti) {
+    if (gorulduMu(opts.id)) { bitti && bitti(false); return; }
     let deneme = 0;
-    const yoklayici = setInterval(() => {
+    const y = setInterval(() => {
       deneme++;
-      if (gorulduMu("ilk-kartlar") || oturumdaGosterilen.has("ilk-kartlar") || deneme > 45) {
-        clearInterval(yoklayici); return;                 // bitti / bu oturumda oynadı / süre doldu (~36sn)
-      }
-      const oldu = goster('.nav-btn[data-view="kartlar"]', { id: "ilk-kartlar", tekrar: 3 });
-      if (oldu) clearInterval(yoklayici);                 // ekran müsaitti, oynadı
+      if (gorulduMu(opts.id) || oturumdaGosterilen.has(opts.id) || deneme > 45) { clearInterval(y); bitti && bitti(false); return; }
+      if (goster(secici, opts)) { clearInterval(y); bitti && bitti(true); }
     }, 800);
+  }
+
+  function adim2KartCek() {
+    yoklaVeGoster('#kart-cek', {
+      id: "ilk-kartcek", tekrar: 3,
+      metin: "Günün kartını çekmek için dokun ✨"
+    });
+  }
+  function ilkKullanimBaslat() {
+    yoklaVeGoster('.nav-btn[data-view="kartlar"]', {
+      id: "ilk-kartlar", tekrar: 3,
+      metin: "Başlamak için buraya dokun 👆",
+      onTikla: () => setTimeout(adim2KartCek, 500)   // Kartlar açılınca 2. adım
+    });
   }
   document.addEventListener("DOMContentLoaded", () => {
     setTimeout(ilkKullanimBaslat, 2500);
