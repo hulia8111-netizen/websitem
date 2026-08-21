@@ -33,18 +33,32 @@ const DokunmaIpucu = window.DokunmaIpucu = (() => {
   const azHareket = () =>
     !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
 
-  /* ---------- görülme kaydı (localStorage) ---------- */
-  function gorulenAl() { return (window.Store && Store.get(GORULEN_ANAHTAR, {})) || {}; }
-  function gorulduMu(id) { return !!(id && gorulenAl()[id]); }
-  function gorulduYaz(id) {
-    if (!id || !window.Store) return;
-    const g = gorulenAl(); g[id] = true; Store.set(GORULEN_ANAHTAR, g);
+  /* ---------- görülme kaydı (localStorage) ----------
+     Kayıt: { id: { n: gösterim sayısı, ok: kalıcı-bitti } }
+     "ok" true → bir daha gösterilmez. ok yalnızca kullanıcı hedefe
+     DOKUNUNCA veya maxGosterim'e ulaşınca true olur — tek bir kaçırılan
+     oynatma ipucunu sonsuza dek kapatmaz (sonraki açılışta yine denenir). */
+  const oturumdaGosterilen = new Set();  // aynı oturumda tekrar oynatmayı önler
+  function tumKayit() { return (window.Store && Store.get(GORULEN_ANAHTAR, {})) || {}; }
+  function kaydiAl(id) {
+    const v = tumKayit()[id];
+    if (v && typeof v === "object") return { n: v.n || 0, ok: !!v.ok };
+    if (v === true) return { n: 99, ok: true };   // eski format uyumu
+    return { n: 0, ok: false };
   }
+  function kaydiYaz(id, k) {
+    if (!id || !window.Store) return;
+    const t = tumKayit(); t[id] = { n: k.n, ok: k.ok }; Store.set(GORULEN_ANAHTAR, t);
+  }
+  function gorulduMu(id) { return !!(id && kaydiAl(id).ok); }
+  function tiklandiYaz(id) { if (id) kaydiYaz(id, { n: kaydiAl(id).n, ok: true }); }  // dokununca bitti
+  function gosterimSay(id, maxG) { if (!id) return; const k = kaydiAl(id); k.n++; if (k.n >= maxG) k.ok = true; kaydiYaz(id, k); }
   function sifirla(id) {
     if (!window.Store) return;
-    const g = gorulenAl();
-    if (id) delete g[id]; else { for (const k in g) delete g[k]; }
-    Store.set(GORULEN_ANAHTAR, g);
+    const t = tumKayit();
+    if (id) delete t[id]; else { for (const k in t) delete t[k]; }
+    Store.set(GORULEN_ANAHTAR, t);
+    oturumdaGosterilen.delete(id);
   }
 
   /* ---------- yardımcılar ---------- */
@@ -104,8 +118,12 @@ const DokunmaIpucu = window.DokunmaIpucu = (() => {
     const id = opts.id || null;
     const tekSefer = opts.tekSefer !== false;   // varsayılan: bir kez
     const tekrar = Math.max(1, opts.tekrar || 3);
+    const maxG = Math.max(1, opts.maxGosterim || 4);  // kaç açılış boyunca gösterilebilir
 
-    if (tekSefer && gorulduMu(id)) return false;
+    if (tekSefer && id) {
+      if (gorulduMu(id)) return false;                // kalıcı bitti
+      if (oturumdaGosterilen.has(id)) return false;   // bu oturumda zaten oynadı
+    }
 
     const el = elemBul(hedef);
     if (!ekrandaGorunur(el)) return false;
@@ -119,6 +137,7 @@ const DokunmaIpucu = window.DokunmaIpucu = (() => {
     kutu.style.setProperty("--dip-tekrar", String(tekrar));
     konumla();
     requestAnimationFrame(() => { if (kutu) kutu.classList.add("gor"); });
+    if (tekSefer && id) { oturumdaGosterilen.add(id); gosterimSay(id, maxG); }
 
     // konumu takip et (scroll / resize)
     let raf = 0;
@@ -127,14 +146,14 @@ const DokunmaIpucu = window.DokunmaIpucu = (() => {
     window.addEventListener("resize", izle);
     temizleyiciler.push(() => { cancelAnimationFrame(raf); window.removeEventListener("scroll", izle, true); window.removeEventListener("resize", izle); });
 
-    // hedefe dokununca kapat + görüldü işaretle
-    const hedefeDokun = () => { gorulduYaz(id); gizle(); };
+    // hedefe dokununca: kalıcı olarak bitir + kapat
+    const hedefeDokun = () => { tiklandiYaz(id); gizle(); };
     el.addEventListener("pointerdown", hedefeDokun, { once: true, passive: true });
     temizleyiciler.push(() => el.removeEventListener("pointerdown", hedefeDokun));
 
-    // animasyon(lar) bitince görüldü say + kapat
+    // süre dolunca yalnızca kapat (kalıcı işaretleme YOK; kaçırılırsa sonraki açılışta yine denenir)
     const oynatmaSuresi = azHareket() ? 4200 : Math.min(MAX_SURE, TUR_SURE * tekrar + 500);
-    zamanlayicilar.push(setTimeout(() => { gorulduYaz(id); gizle(); }, oynatmaSuresi));
+    zamanlayicilar.push(setTimeout(gizle, oynatmaSuresi));
     zamanlayicilar.push(setTimeout(gizle, MAX_SURE)); // güvenlik
 
     return true;
@@ -150,17 +169,23 @@ const DokunmaIpucu = window.DokunmaIpucu = (() => {
 
   /* ---------- İLK KULLANIM ipucu (izole örnek): Kartlar sekmesi ----------
      Yeni kullanıcıyı "Kartlar" sekmesine (günün kartını çekmeye) yönlendirir.
-     Alt menüde her zaman görünür. Bir kez gösterilir; engelliyse
-     (splash/onboarding) birkaç kez nazikçe tekrar dener. */
-  function ilkKullanimDene(kalanDeneme) {
+     Splash/onboarding kapanana kadar NAZİKÇE bekler (yoklama), ekran müsait
+     olunca bir kez oynatır. Kullanıcı dokununca bir daha çıkmaz; kaçırırsa
+     sonraki açılışlarda (en çok birkaç kez) yine belirir. */
+  function ilkKullanimBaslat() {
     if (gorulduMu("ilk-kartlar")) return;
-    const oldu = goster('.nav-btn[data-view="kartlar"]', { id: "ilk-kartlar", tekrar: 3 });
-    if (!oldu && kalanDeneme > 0) {
-      zamanlayicilar.push(setTimeout(() => ilkKullanimDene(kalanDeneme - 1), 2500));
-    }
+    let deneme = 0;
+    const yoklayici = setInterval(() => {
+      deneme++;
+      if (gorulduMu("ilk-kartlar") || oturumdaGosterilen.has("ilk-kartlar") || deneme > 45) {
+        clearInterval(yoklayici); return;                 // bitti / bu oturumda oynadı / süre doldu (~36sn)
+      }
+      const oldu = goster('.nav-btn[data-view="kartlar"]', { id: "ilk-kartlar", tekrar: 3 });
+      if (oldu) clearInterval(yoklayici);                 // ekran müsaitti, oynadı
+    }, 800);
   }
   document.addEventListener("DOMContentLoaded", () => {
-    setTimeout(() => ilkKullanimDene(3), 3200); // splash sonrası
+    setTimeout(ilkKullanimBaslat, 2500);
   });
 
   return { goster, gizle, gorulduMu, sifirla };
