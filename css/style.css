@@ -2811,6 +2811,10 @@ body.mg-aktif { overflow: hidden; }
 .mg-kart.sade .mg-satinal { margin: 0.7rem 0.7rem 0.75rem; width: auto; }
 .mg-satinal.yakinda { color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.06); border: 1px solid rgba(243,217,140,0.22); box-shadow: none; cursor: default; }
 .mg-satinal.yakinda:hover { transform: none; box-shadow: none; }
+/* Stok bitti → "Sipariş Oluştur" (sipariş üzerine el yapımı) */
+.mg-satinal.siparis { color: #f3d98c; background: transparent; border: 1px solid rgba(243,217,140,0.55); box-shadow: none; }
+.mg-satinal.siparis:hover { background: rgba(243,217,140,0.12); box-shadow: 0 4px 14px rgba(243,217,140,0.18); }
+.mg-siparis-not { margin: 0.4rem 0.7rem 0; font-size: 0.72rem; color: var(--gold-soft, #f3d98c); opacity: 0.9; }
 
 /* === Mağazam: 1. katman — 3 bölüm kartı (Ziyaret Et) === */
 .mg-grid-kat { grid-template-columns: 1fr; gap: 0.7rem; }

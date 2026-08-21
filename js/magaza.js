@@ -142,15 +142,21 @@ const Magaza = window.Magaza = (() => {
     k.urunler.forEach(u => {
       const kart = document.createElement("div");
       kart.className = "mg-kart sade";
-      const satista = gecerliLink(u.link);
+      const satista = gecerliLink(u.link) || gecerliLink(u.siparisLink);
+      const tukendi = u.stok === false;              // stok bitti → sipariş üzerine
       const adBasi = gorselli(u.gorsel) ? "" : esc(u.ikon) + " ";
       const fiyatHTML = u.fiyat ? `<div class="mg-kart-fiyat">${esc(u.fiyat)}</div>` : "";
+      let btnCls = "mg-satinal", btnTxt = "Satın Al ✦";
+      if (!satista) { btnCls += " yakinda"; btnTxt = "Çok Yakında"; }
+      else if (tukendi) { btnCls += " siparis"; btnTxt = "Sipariş Oluştur ✦"; }
+      const siparisNot = (satista && tukendi) ? `<div class="mg-siparis-not">🕊️ El yapımı · senin için özel hazırlanır</div>` : "";
       kart.innerHTML = `
         ${gorselHTML(u, "mg-kart-gorsel")}
         <div class="mg-kart-ad">${adBasi}${esc(u.ad)}</div>
         <div class="mg-kart-aciklama">${esc(u.aciklama)}</div>
         ${fiyatHTML}
-        <button class="mg-satinal${satista ? "" : " yakinda"}" type="button">${satista ? "Satın Al ✦" : "Çok Yakında"}</button>`;
+        ${siparisNot}
+        <button class="${btnCls}" type="button">${btnTxt}</button>`;
       kart.querySelector(".mg-satinal").addEventListener("click", () => satinAl(u));
       grid.appendChild(kart);
     });
@@ -158,7 +164,9 @@ const Magaza = window.Magaza = (() => {
 
   // "Satın Al": link varsa güvenli dış sayfa (Shopier), yoksa "Çok Yakında"
   function satinAl(u) {
-    if (gecerliLink(u.link)) { window.open(u.link, "_blank", "noopener,noreferrer"); return; }
+    // Stok bitmişse sipariş hedefi (siparisLink) varsa oraya, yoksa normal link
+    const hedef = (u.stok === false && gecerliLink(u.siparisLink)) ? u.siparisLink : u.link;
+    if (gecerliLink(hedef)) { window.open(hedef, "_blank", "noopener,noreferrer"); return; }
     yakindaGoster();
   }
 
