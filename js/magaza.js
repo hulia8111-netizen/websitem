@@ -142,14 +142,14 @@ const Magaza = window.Magaza = (() => {
     k.urunler.forEach(u => {
       const kart = document.createElement("div");
       kart.className = "mg-kart sade";
-      const satista = gecerliLink(u.link) || gecerliLink(u.siparisLink);
-      const tukendi = u.stok === false;              // stok bitti → sipariş üzerine
+      const satista = gecerliLink(u.link);
+      const tukendi = u.stok === false;              // stok bitti → sipariş üzerine (WhatsApp)
       const adBasi = gorselli(u.gorsel) ? "" : esc(u.ikon) + " ";
       const fiyatHTML = u.fiyat ? `<div class="mg-kart-fiyat">${esc(u.fiyat)}</div>` : "";
       let btnCls = "mg-satinal", btnTxt = "Satın Al ✦";
-      if (!satista) { btnCls += " yakinda"; btnTxt = "Çok Yakında"; }
-      else if (tukendi) { btnCls += " siparis"; btnTxt = "Sipariş Oluştur ✦"; }
-      const siparisNot = (satista && tukendi) ? `<div class="mg-siparis-not">🕊️ El yapımı · senin için özel hazırlanır</div>` : "";
+      if (tukendi) { btnCls += " siparis"; btnTxt = "Sipariş Oluştur ✦"; }   // her zaman sipariş verilebilir
+      else if (!satista) { btnCls += " yakinda"; btnTxt = "Çok Yakında"; }
+      const siparisNot = tukendi ? `<div class="mg-siparis-not">🕊️ El yapımı · senin için özel hazırlanır</div>` : "";
       kart.innerHTML = `
         ${gorselHTML(u, "mg-kart-gorsel")}
         <div class="mg-kart-ad">${adBasi}${esc(u.ad)}</div>
@@ -163,10 +163,15 @@ const Magaza = window.Magaza = (() => {
   }
 
   // "Satın Al": link varsa güvenli dış sayfa (Shopier), yoksa "Çok Yakında"
+  // Stok bitince "Sipariş Oluştur" → WhatsApp'ta ürün adı yazılı özel sipariş mesajı
+  const WA_SIPARIS = "905345276192";
+  function siparisWA(u) {
+    const mesaj = `Merhaba, "${u.ad}" için özel sipariş vermek istiyorum ✨`;
+    return `https://wa.me/${WA_SIPARIS}?text=${encodeURIComponent(mesaj)}`;
+  }
   function satinAl(u) {
-    // Stok bitmişse sipariş hedefi (siparisLink) varsa oraya, yoksa normal link
-    const hedef = (u.stok === false && gecerliLink(u.siparisLink)) ? u.siparisLink : u.link;
-    if (gecerliLink(hedef)) { window.open(hedef, "_blank", "noopener,noreferrer"); return; }
+    if (u.stok === false) { window.open(siparisWA(u), "_blank", "noopener,noreferrer"); return; }
+    if (gecerliLink(u.link)) { window.open(u.link, "_blank", "noopener,noreferrer"); return; }
     yakindaGoster();
   }
 
