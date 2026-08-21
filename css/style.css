@@ -3141,9 +3141,22 @@ body.mg-aktif { overflow: hidden; }
   50%      { transform: scale(1.1); opacity: .8; }
 }
 
+/* Alt kenardaki hedefler için: parmak ÜSTTEN gelir (ekran dışına taşmaz).
+   El dikey yansıtılır (fingertip aşağı bakar), origin'in üstüne konur. */
+.dip-katman.dip-ust .dip-el { margin: -44px 0 0 -20px; transform: translate(14px, -20px); }
+.dip-katman.dip-ust .dip-svg { transform: scaleY(-1); }
+.dip-katman.dip-ust.gor .dip-el { animation-name: dipTapUst; }
+@keyframes dipTapUst {
+  0%, 100% { transform: translate(14px, -20px) scale(1); }
+  28%      { transform: translate(3px, -6px)  scale(.94); }
+  42%      { transform: translate(0, 0)       scale(.86); }  /* dokunuş */
+  56%      { transform: translate(3px, -6px)  scale(.94); }
+}
+
 /* Erişilebilirlik: hareketi azalt → yol animasyonu yok, sade nabız */
 @media (prefers-reduced-motion: reduce) {
   .dip-katman.gor .dip-el { animation: none; transform: translate(10px, 14px); }
+  .dip-katman.dip-ust.gor .dip-el { animation: none; transform: translate(10px, -14px); }
   .dip-katman.gor .dip-halka {
     animation: dipNabiz 2s ease-in-out infinite;
     opacity: 1;

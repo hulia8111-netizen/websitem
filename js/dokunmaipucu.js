@@ -110,6 +110,9 @@ const DokunmaIpucu = window.DokunmaIpucu = (() => {
     const cx = r.left + r.width / 2;
     const cy = r.top + r.height / 2;
     kutu.style.transform = "translate(" + Math.round(cx) + "px," + Math.round(cy) + "px)";
+    // Hedef ekranın alt kenarındaysa parmak ÜSTTEN gelsin (aşağı taşıp kırpılmasın)
+    const vh = window.innerHeight || document.documentElement.clientHeight || 0;
+    kutu.classList.toggle("dip-ust", cy > vh - 130);
   }
 
   /* ---------- göster ---------- */
