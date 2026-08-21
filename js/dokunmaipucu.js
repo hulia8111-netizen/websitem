@@ -214,7 +214,14 @@ const DokunmaIpucu = window.DokunmaIpucu = (() => {
       if (!el || !el.isConnected) { if (++bos > 12) clearInterval(y); return; }
       const r = el.getBoundingClientRect();
       const vh = window.innerHeight || 0;
-      if (r.height > 6 && (r.top < 56 || r.bottom > vh - 16)) {             // ekran dışı → görünür alana kaydır
+      const cy = r.top + r.height / 2;
+      // el veya bir atası fixed mi? (alt menü gibi sabitler kaydırılmaz)
+      let sabitMi = false;
+      for (let n = el; n && n !== document.body; n = n.parentElement) {
+        if (getComputedStyle(n).position === "fixed") { sabitMi = true; break; }
+      }
+      // Sabit değil VE merkezi ekran dışındaysa görünür alana kaydır, sonraki turda göster
+      if (!sabitMi && r.height > 6 && (cy < 72 || cy > vh - 32)) {
         try { el.scrollIntoView({ block: "center", behavior: "smooth" }); } catch (e) { try { el.scrollIntoView(); } catch (e2) {} }
         bos = 0; return;
       }
