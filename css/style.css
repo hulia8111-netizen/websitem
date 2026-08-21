@@ -2468,6 +2468,14 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
 .td-zaman { font-size: 0.72rem; color: var(--metin-faint); white-space: nowrap; }
 .td-metin { margin: 0; color: var(--metin-soft); font-size: 0.9rem; line-height: 1.55; }
 .td-mod { display: flex; gap: 0.5rem; margin-top: 0.7rem; }
+/* Yeni duyuru rozeti + etkinlik + RSVP */
+.td-kart.etkinlik { border-color: rgba(179,140,255,0.4); background: linear-gradient(160deg, rgba(179,140,255,0.1), var(--card-bg)); }
+.td-yeni-rozet { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: #1a1430; background: linear-gradient(120deg,#fff0c2,#f3d98c); padding: 0.1rem 0.45rem; border-radius: 999px; margin-left: 0.4rem; }
+.td-rsvp-bar { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.7rem; }
+.td-rsvp { flex: 1 1 auto; min-width: 96px; font: inherit; font-size: 0.82rem; font-weight: 600; cursor: pointer; padding: 0.5rem 0.6rem; border-radius: 12px; color: var(--metin-soft); background: rgba(255,255,255,0.05); border: 1px solid rgba(179,140,255,0.22); transition: all .15s ease; }
+.td-rsvp:hover { color: var(--metin); border-color: var(--accent-2); }
+.td-rsvp.secili { color: #fff; background: linear-gradient(135deg, var(--accent), var(--accent-2)); border-color: transparent; box-shadow: var(--glow-mor); }
+.td-rsvp-sayim { margin-top: 0.5rem; font-size: 0.8rem; color: var(--gold-soft); }
 .td-mini { background: var(--card-bg); border: 1px solid var(--card-border); color: var(--metin-soft); border-radius: 9px; padding: 0.35rem 0.7rem; font-size: 0.8rem; cursor: pointer; }
 .td-mini:hover { background: rgba(255, 255, 255, 0.1); }
 .td-mini.td-sil:hover { color: var(--uyari); border-color: var(--uyari); }
