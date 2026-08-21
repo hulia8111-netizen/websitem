@@ -197,13 +197,13 @@ const DokunmaIpucu = window.DokunmaIpucu = (() => {
 
   function adim2KartCek() {
     yoklaVeGoster('#kart-cek', {
-      id: "ilk-kartcek", tekrar: 3,
+      id: "ilk-kartcek2", tekrar: 3,
       metin: "Günün kartını çekmek için dokun ✨"
     });
   }
   function ilkKullanimBaslat() {
     yoklaVeGoster('.nav-btn[data-view="kartlar"]', {
-      id: "ilk-kartlar", tekrar: 3,
+      id: "ilk-kartlar2", tekrar: 3,
       metin: "Başlamak için buraya dokun 👆",
       onTikla: () => setTimeout(adim2KartCek, 500)   // Kartlar açılınca 2. adım
     });
