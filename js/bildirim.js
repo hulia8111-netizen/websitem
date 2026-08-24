@@ -174,7 +174,7 @@ const Bildirim = window.Bildirim = (() => {
   }
 
   function ciz() {
-    if (!$("#bildirim")) return;
+    if (!$("#bld-aktif")) return;   // Bildirim Ayarları 2.0'da eski UI kaldırıldı; modül yalnızca arka planda (tetikle) çalışır
     const ayar = ayarAl();
     izinCiz();
 
@@ -203,7 +203,11 @@ const Bildirim = window.Bildirim = (() => {
   }
 
   function baglan() {
-    if (!$("#bildirim")) return;
+    // Zamanlayıcı + açılış akıllı kontrolü (UI olmasa da takvim vb. için çalışır)
+    setInterval(tick, 20000);
+    setTimeout(akilli, 3500);
+
+    if (!$("#bld-aktif")) return;   // eski ayar UI'si yok → sadece arka plan motoru
     ciz();
 
     $("#bld-aktif").addEventListener("change", e => {
@@ -218,10 +222,6 @@ const Bildirim = window.Bildirim = (() => {
     $("#bld-gece-bit").addEventListener("change", e => { const a = ayarAl(); a.geceBit = e.target.value || "08:00"; ayarYaz(a); });
     $("#bld-haftalik").addEventListener("change", e => { const a = ayarAl(); a.haftalik = e.target.checked; ayarYaz(a); });
     $("#bld-dene").addEventListener("click", () => tetikle(gunlukMesaj() || mesaj("olumlama"), true));
-
-    // Zamanlayıcı + açılış akıllı kontrolü
-    setInterval(tick, 20000);
-    setTimeout(akilli, 3500);
   }
 
   document.addEventListener("DOMContentLoaded", baglan);
