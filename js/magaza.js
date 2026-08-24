@@ -71,7 +71,8 @@ const Magaza = window.Magaza = (() => {
     }
   ];
 
-  let aktifKat = null;   // null → bölümler görünür; kategori → ürünleri görünür
+  let aktifKat = null;   // null → bölümler görünür; kategori → içerik görünür
+  let altKat = null;     // Ritüel & Araçlar içinde: null → gruplar, "ritueller"|"taslar" → ürünler
 
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -93,20 +94,19 @@ const Magaza = window.Magaza = (() => {
     if (!g) {
       g = document.createElement("button");
       g.id = "mg-geri"; g.type = "button"; g.className = "mg-geri";
-      g.textContent = "← Bölümlere Dön";
-      g.addEventListener("click", () => { aktifKat = null; cizKategoriler(); });
       const liste = $("#mg-liste"); const grid = $("#mg-grid");
       if (liste && grid) liste.insertBefore(g, grid);
     }
     return g;
   }
-  function geriGoster(goster) { const g = geriButon(); g.style.display = goster ? "block" : "none"; }
+  function geriGizle() { const g = geriButon(); g.style.display = "none"; }
+  function geriAyar(metin, fn) { const g = geriButon(); g.textContent = metin; g.onclick = fn; g.style.display = "block"; }
 
   /* ---------- 1. KATMAN: 3 bölüm ---------- */
   function cizKategoriler() {
     const grid = $("#mg-grid"); if (!grid) return;
-    aktifKat = null;
-    geriGoster(false);
+    aktifKat = null; altKat = null;
+    geriGizle();
     ustNot("Spiritüel yolculuğuna eşlik edecek 3 özel bölüm. 🛍️");
     grid.className = "mg-grid mg-grid-kat";
     grid.innerHTML = "";
@@ -127,10 +127,72 @@ const Magaza = window.Magaza = (() => {
     });
   }
 
-  /* ---------- 2. KATMAN: bir bölümün ürünleri ---------- */
+  /* ---------- 2. KATMAN: bir bölüm ---------- */
   function cizUrunler(k) {
+    // Ritüel & Araçlar → önce iki grup (Ritüeller / Taşlar); diğerleri → düz ürünler
+    if (k.id === "rituel-araclar") { altKat = null; cizAltGruplar(k); return; }
+    cizUrunlerDuz(k);
+  }
+
+  /* ---------- 2b. KATMAN: Ritüel & Araçlar iki grubu ---------- */
+  function cizAltGruplar(k) {
     const grid = $("#mg-grid"); if (!grid) return;
-    geriGoster(true);
+    geriAyar("← Bölümlere Dön", () => { aktifKat = null; altKat = null; cizKategoriler(); });
+    ustNot(k.ikon + " " + k.ad);
+    grid.className = "mg-grid mg-grid-kat";
+    grid.innerHTML = "";
+    const gruplar = [
+      { id: "ritueller", ad: "Spiritüel Ritüeller", ikon: "🌙", aciklama: "Aylık dolunay ve yeni ay ritüel rehberleri — dijital, kalıcı erişim." },
+      { id: "taslar", ad: "Doğal Taşlar", ikon: "💎", aciklama: "El yapımı doğal taş kolyeler ve özel parçalar." }
+    ];
+    gruplar.forEach(gr => {
+      const kart = document.createElement("button");
+      kart.type = "button"; kart.className = "mg-kat-kart mg-alt-kart";
+      kart.innerHTML = `
+        <div class="mg-kat-gorsel bos"><span>${gr.ikon}</span></div>
+        <div class="mg-kat-ic">
+          <div class="mg-kat-ad">${esc(gr.ad)}</div>
+          <div class="mg-kat-aciklama">${esc(gr.aciklama)}</div>
+          <span class="mg-kat-ziyaret">Görüntüle →</span>
+        </div>`;
+      kart.addEventListener("click", () => { altKat = gr.id; gr.id === "ritueller" ? cizRituelUrunler(k) : cizTasUrunler(k); });
+      grid.appendChild(kart);
+    });
+  }
+
+  /* ---------- 3. KATMAN: Spiritüel Ritüeller (dijital) ---------- */
+  function cizRituelUrunler(k) {
+    const grid = $("#mg-grid"); if (!grid) return;
+    geriAyar("← Ritüel & Araçlar", () => { altKat = null; cizAltGruplar(k); });
+    ustNot("🌙 Spiritüel Ritüeller");
+    grid.className = "mg-grid";
+    grid.innerHTML = "";
+    if (window.Kutuphane && Kutuphane.magazaKartlari) Kutuphane.magazaKartlari(grid);
+    if (!grid.children.length) {
+      grid.className = "mg-grid mg-grid-bos";
+      grid.innerHTML = `<div class="mg-bos-durum"><div class="mg-bos-amblem">🌙</div><p>Ritüel rehberleri çok yakında ✨</p></div>`;
+    }
+  }
+
+  /* ---------- 3. KATMAN: Doğal Taşlar ---------- */
+  function cizTasUrunler(k) {
+    const grid = $("#mg-grid"); if (!grid) return;
+    geriAyar("← Ritüel & Araçlar", () => { altKat = null; cizAltGruplar(k); });
+    ustNot("💎 Doğal Taşlar");
+    grid.innerHTML = "";
+    if (!k.urunler.length) {
+      grid.className = "mg-grid mg-grid-bos";
+      grid.innerHTML = `<div class="mg-bos-durum"><div class="mg-bos-amblem">💎</div><p>Taşlar çok yakında ✨</p></div>`;
+      return;
+    }
+    grid.className = "mg-grid";
+    k.urunler.forEach(u => tasKartCiz(grid, u));
+  }
+
+  /* ---------- düz ürün listesi (Işık Kartları/Mumları) ---------- */
+  function cizUrunlerDuz(k) {
+    const grid = $("#mg-grid"); if (!grid) return;
+    geriAyar("← Bölümlere Dön", () => { aktifKat = null; altKat = null; cizKategoriler(); });
     ustNot(k.ikon + " " + k.ad);
     grid.innerHTML = "";
     if (!k.urunler.length) {
@@ -139,31 +201,30 @@ const Magaza = window.Magaza = (() => {
       return;
     }
     grid.className = "mg-grid";
-    // Ritüel & Araçlar'da dijital ürün(ler) her zaman en üstte, taşların üzerinde
-    if (k.id === "rituel-araclar" && window.Kutuphane && Kutuphane.magazaKartlari) {
-      Kutuphane.magazaKartlari(grid);
-    }
-    k.urunler.forEach(u => {
-      const kart = document.createElement("div");
-      kart.className = "mg-kart sade";
-      const satista = gecerliLink(u.link);
-      const tukendi = u.stok === false;              // stok bitti → sipariş üzerine (WhatsApp)
-      const adBasi = gorselli(u.gorsel) ? "" : esc(u.ikon) + " ";
-      const fiyatHTML = u.fiyat ? `<div class="mg-kart-fiyat">${esc(u.fiyat)}</div>` : "";
-      let btnCls = "mg-satinal", btnTxt = "Satın Al ✦";
-      if (tukendi) { btnCls += " siparis"; btnTxt = "Sipariş Oluştur ✦"; }   // her zaman sipariş verilebilir
-      else if (!satista) { btnCls += " yakinda"; btnTxt = "Çok Yakında"; }
-      const siparisNot = tukendi ? `<div class="mg-siparis-not">🕊️ El yapımı · senin için özel hazırlanır</div>` : "";
-      kart.innerHTML = `
-        ${gorselHTML(u, "mg-kart-gorsel")}
-        <div class="mg-kart-ad">${adBasi}${esc(u.ad)}</div>
-        <div class="mg-kart-aciklama">${esc(u.aciklama)}</div>
-        ${fiyatHTML}
-        ${siparisNot}
-        <button class="${btnCls}" type="button">${btnTxt}</button>`;
-      kart.querySelector(".mg-satinal").addEventListener("click", () => satinAl(u));
-      grid.appendChild(kart);
-    });
+    k.urunler.forEach(u => tasKartCiz(grid, u));
+  }
+
+  /* ---------- tek ürün (taş/genel) kartı ---------- */
+  function tasKartCiz(grid, u) {
+    const kart = document.createElement("div");
+    kart.className = "mg-kart sade";
+    const satista = gecerliLink(u.link);
+    const tukendi = u.stok === false;              // stok bitti → sipariş üzerine (WhatsApp)
+    const adBasi = gorselli(u.gorsel) ? "" : esc(u.ikon) + " ";
+    const fiyatHTML = u.fiyat ? `<div class="mg-kart-fiyat">${esc(u.fiyat)}</div>` : "";
+    let btnCls = "mg-satinal", btnTxt = "Satın Al ✦";
+    if (tukendi) { btnCls += " siparis"; btnTxt = "Sipariş Oluştur ✦"; }   // her zaman sipariş verilebilir
+    else if (!satista) { btnCls += " yakinda"; btnTxt = "Çok Yakında"; }
+    const siparisNot = tukendi ? `<div class="mg-siparis-not">🕊️ El yapımı · senin için özel hazırlanır</div>` : "";
+    kart.innerHTML = `
+      ${gorselHTML(u, "mg-kart-gorsel")}
+      <div class="mg-kart-ad">${adBasi}${esc(u.ad)}</div>
+      <div class="mg-kart-aciklama">${esc(u.aciklama)}</div>
+      ${fiyatHTML}
+      ${siparisNot}
+      <button class="${btnCls}" type="button">${btnTxt}</button>`;
+    kart.querySelector(".mg-satinal").addEventListener("click", () => satinAl(u));
+    grid.appendChild(kart);
   }
 
   // "Satın Al": link varsa güvenli dış sayfa (Shopier), yoksa "Çok Yakında"
@@ -200,15 +261,23 @@ const Magaza = window.Magaza = (() => {
   function yakindaKapat() { const p = $("#mg-yakinda"); if (p) { p.classList.remove("gor"); setTimeout(() => { p.hidden = true; }, 250); } }
 
   /* ---------- overlay aç/kapat ---------- */
-  function ac(katId) {
+  function ac(katId, altKatId) {
     const ov = $("#magaza-overlay"); if (!ov) return;
     const detay = $("#mg-detay"); if (detay) detay.hidden = true;
     const liste = $("#mg-liste"); if (liste) liste.hidden = false;
     if (window.Kutuphane && Kutuphane.yenile) Kutuphane.yenile();   // dijital ürün yetkilerini tazele
     cizKategoriler();                        // her açılışta bölümlerden başla
-    // İstenirse doğrudan bir bölümü aç (ör. takvimden "rituel-araclar")
+    // İstenirse doğrudan bir bölüme/gruba in (ör. takvimden "rituel-araclar","ritueller")
     const hedef = typeof katId === "string" ? KATEGORILER.find(k => k.id === katId) : null;
-    if (hedef) { aktifKat = hedef; cizUrunler(hedef); }
+    if (hedef) {
+      aktifKat = hedef;
+      if (hedef.id === "rituel-araclar" && (altKatId === "ritueller" || altKatId === "taslar")) {
+        altKat = altKatId;
+        altKatId === "ritueller" ? cizRituelUrunler(hedef) : cizTasUrunler(hedef);
+      } else {
+        cizUrunler(hedef);
+      }
+    }
     document.body.classList.add("mg-aktif");
     ov.hidden = false; ov.classList.remove("gor"); void ov.offsetWidth; ov.classList.add("gor");
   }

@@ -124,7 +124,7 @@ const Takvim = window.Takvim = (() => {
     el.classList.remove("tk-fade"); void el.offsetWidth; el.classList.add("tk-fade");
     el.querySelectorAll("[data-sil]").forEach(b => b.addEventListener("click", () => { ozelSil(b.dataset.sil); cizGrid(); cizDetay(d); }));
     const mc = $("tk-magaza-cta");
-    if (mc) mc.addEventListener("click", () => { kapat(); setTimeout(() => { if (window.Magaza && Magaza.ac) Magaza.ac("rituel-araclar"); }, 320); });
+    if (mc) mc.addEventListener("click", () => { kapat(); setTimeout(() => { if (window.Magaza && Magaza.ac) Magaza.ac("rituel-araclar", "ritueller"); }, 320); });
     const enLink = $("tk-enerji-link");
     if (enLink) enLink.addEventListener("click", () => { kapat(); if (window.gotoView) window.gotoView("home"); const en = document.getElementById("enerji"); if (en) setTimeout(() => en.scrollIntoView({ behavior: "smooth", block: "center" }), 450); });
     const di = $("tk-ekle-tarih"); if (di) di.value = k;
