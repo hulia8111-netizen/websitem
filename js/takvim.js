@@ -109,11 +109,16 @@ const Takvim = window.Takvim = (() => {
     } else {
       html += `<p class="muted small tk-bos-mesaj">Bu gün için özel bir enerji işareti yok. Aşağıdan kendi ritüel gününü ekleyebilirsin ✨</p>`;
     }
-    // Dolunay günü → mağazadaki ritüel rehberine nazik yönlendirme 🌕
-    if (evs.some(e => e.tip === "dolunay")) {
+    // Dolunay / Yeni Ay günü → mağazadaki ritüel rehberine nazik yönlendirme 🌕🌑
+    const dolunayVar = evs.some(e => e.tip === "dolunay");
+    const yeniayVar = evs.some(e => e.tip === "yeniay");
+    if (dolunayVar || yeniayVar) {
+      const cAy = dolunayVar ? "🌕" : "🌑";
+      const cBas = dolunayVar ? "Dolunay Bırakma Ritüeli" : "Yeni Ay Ritüeli";
+      const cAlt = dolunayVar ? "Bu dolunay için rehberi edin →" : "Bu yeni ay için rehberi edin →";
       html += `<button class="tk-magaza-cta" id="tk-magaza-cta">
-        <span class="tk-cta-ay">🌕</span>
-        <span class="tk-cta-metin"><b>Dolunay Bırakma Ritüeli</b><small>Bu dolunay için rehberi edin →</small></span></button>`;
+        <span class="tk-cta-ay">${cAy}</span>
+        <span class="tk-cta-metin"><b>${cBas}</b><small>${cAlt}</small></span></button>`;
     }
     el.innerHTML = html;
     el.classList.remove("tk-fade"); void el.offsetWidth; el.classList.add("tk-fade");
