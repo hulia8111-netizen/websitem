@@ -19,8 +19,10 @@
 const Kutuphane = window.Kutuphane = (() => {
   const $ = s => document.querySelector(s);
 
-  /* ---------- KATALOG (dijital ürünler; en yeni en üstte) ---------- */
-  const KATALOG = [
+  /* ---------- KATALOG (dijital ürünler; en yeni en üstte) ----------
+     Not: Asıl katalog Supabase `dijital_urun` tablosundan yüklenir
+     (katalogYukle). Aşağıdaki dizi yalnızca bulut gelmezse yedektir. */
+  let KATALOG = [
     {
       kod: "ritueller-2026-08",
       baslik: "Ağustos 2026 · Spiritüel Ritüeller",
@@ -68,6 +70,30 @@ const Kutuphane = window.Kutuphane = (() => {
     yuklendi = true;
     kutuphaneCiz();
     return sahip;
+  }
+
+  /* ---------- katalogu buluttan yükle (dijital_urun) ---------- */
+  function satirToUrun(r) {
+    return {
+      kod: r.kod, baslik: r.baslik, ozet: r.ozet || "", aciklama: r.aciklama || "",
+      icerik: Array.isArray(r.icerik) ? r.icerik : (r.icerik ? [r.icerik] : []),
+      fiyat: r.fiyat || "", tarih: r.tarih || "",
+      dosyalar: [{ tip: "pdf", ad: "Ritüel Rehberi (PDF)", yol: r.dosya_ad || "rehber.pdf" }]
+    };
+  }
+  async function katalogYukle() {
+    const c = sb();
+    if (!c) return;
+    try {
+      const { data, error } = await c.from("dijital_urun").select("*").eq("aktif", true).order("sira", { ascending: false });
+      if (error || !data) return;                 // hata → yedek katalog kalır
+      if (data.length) KATALOG = data.map(satirToUrun);
+    } catch (e) { /* sessiz → yedek */ }
+    // yeniden çiz
+    kutuphaneCiz();
+    yoneticiCiz();
+    // mağaza açıksa ve ürünler görünüyorsa tazele
+    if (window.Magaza && Magaza.yenidenCiz) Magaza.yenidenCiz();
   }
 
   /* ---------- dosya indir (özel depo, RLS yetkilendirir) ---------- */
@@ -277,12 +303,19 @@ const Kutuphane = window.Kutuphane = (() => {
 
   /* ---------- YÖNETİCİ: erişim verme paneli ---------- */
   function yoneticiCiz() {
-    const bolum = $("#eris-yonetici"); if (!bolum) return;
-    if (!moderatorMu()) { bolum.hidden = true; return; }
-    bolum.hidden = false;
+    const mod = moderatorMu();
+    const bolum = $("#eris-yonetici");
+    const ekle = $("#urun-ekle-yonetici");
+    if (bolum) bolum.hidden = !mod;
+    if (ekle) ekle.hidden = !mod;
+    if (!mod) return;
+    // Erişim-ver ürün listesini güncel katalogdan kur
     const sec = $("#ey-urun");
-    if (sec && !sec.children.length) {
+    if (sec) {
+      const secili = sec.value;
+      sec.innerHTML = "";
       KATALOG.forEach(u => { const o = document.createElement("option"); o.value = u.kod; o.textContent = u.baslik; sec.appendChild(o); });
+      if (secili) sec.value = secili;
     }
   }
   async function erisVer() {
@@ -303,17 +336,48 @@ const Kutuphane = window.Kutuphane = (() => {
     }
   }
 
+  /* ---------- YÖNETİCİ: yeni dijital ürün ekle ---------- */
+  async function urunEkle() {
+    const bil = $("#ue-bilgi");
+    const val = id => (($("#" + id) && $("#" + id).value) || "").trim();
+    const kod = val("ue-kod"), baslik = val("ue-baslik");
+    if (!kod || !baslik) { bil.textContent = "Ürün kodu ve başlık gerekli."; bil.style.color = "var(--uyari,#c9a24a)"; return; }
+    if (!/^[a-z0-9-]+$/.test(kod)) { bil.textContent = "Ürün kodu yalnız küçük harf, rakam ve tire içermeli (ör: ritueller-2026-09)."; bil.style.color = "var(--uyari,#c9a24a)"; return; }
+    const icerik = val("ue-icerik").split("\n").map(s => s.trim()).filter(Boolean);
+    const satir = {
+      kod, baslik, ozet: val("ue-ozet"), aciklama: val("ue-aciklama"),
+      icerik: icerik.length ? icerik : null, fiyat: val("ue-fiyat"),
+      tarih: val("ue-tarih"), sira: Date.now() % 1000000000, aktif: true
+    };
+    bil.textContent = "Ekleniyor…"; bil.style.color = "var(--muted)";
+    try {
+      const c = sb();
+      const { error } = await c.from("dijital_urun").upsert(satir, { onConflict: "kod" });
+      if (error) throw error;
+      await katalogYukle();
+      bil.innerHTML = `✅ Eklendi! <b>Son adım:</b> PDF'i depoda <b>ritueller</b> → <b>${esc(kod)}</b> klasörüne <b>rehber.pdf</b> olarak yükle.`;
+      bil.style.color = "var(--basari,#4caf7d)";
+      ["ue-kod", "ue-baslik", "ue-ozet", "ue-aciklama", "ue-icerik", "ue-fiyat", "ue-tarih"].forEach(id => { if ($("#" + id)) $("#" + id).value = ""; });
+    } catch (e) {
+      bil.textContent = "Hata: " + ((e && e.message) || "eklenemedi"); bil.style.color = "var(--hata,#e06a6a)";
+    }
+  }
+
   /* ---------- bağlan ---------- */
   function baglan() {
     kutuphaneCiz();
     yoneticiCiz();
     const eyBtn = $("#ey-ver"); if (eyBtn) eyBtn.addEventListener("click", erisVer);
+    const ueBtn = $("#ue-ekle"); if (ueBtn) ueBtn.addEventListener("click", urunEkle);
+    // Katalogu buluttan yükle (herkese açık; oturumsuz da çalışır)
+    katalogYukle();
+    setTimeout(katalogYukle, 2500);
     // Oturum hazır olunca / değişince yetkileri çek
     yenile();
     setTimeout(yenile, 2500);   // Bulut geç hazır olabilir
     // Moderatör durumu (ToplulukSosyal) geç yüklenebilir → paneli birkaç kez dene
     [2500, 5000, 9000].forEach(ms => setTimeout(yoneticiCiz, ms));
-    window.addEventListener("isigini-oturum-degisti", () => { yenile(); setTimeout(yoneticiCiz, 1500); setTimeout(yoneticiCiz, 4000); });
+    window.addEventListener("isigini-oturum-degisti", () => { yenile(); katalogYukle(); setTimeout(yoneticiCiz, 1500); setTimeout(yoneticiCiz, 4000); });
   }
   document.addEventListener("DOMContentLoaded", baglan);
 
