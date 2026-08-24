@@ -13,3 +13,4 @@ supabase/.temp/
 
 # Testçi e-postaları (gizli, gönderilmez)
 mail.txt
+.ig-tmp/

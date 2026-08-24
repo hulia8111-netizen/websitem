@@ -1,0 +1,103 @@
+/* ============================================================
+   kutuphane.css — Dijital Ürün Kütüphanesi 📚
+   ============================================================ */
+
+/* --- Profil: Kütüphanem bölümü --- */
+.card-kutuphane .ktp-bolum-ust { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.ktp-bolum-emoji { font-size: 1.7rem; filter: drop-shadow(0 2px 6px rgba(233,196,106,.4)); }
+.card-kutuphane h2 { margin: 0; }
+.kutuphane-liste { display: flex; flex-direction: column; gap: 10px; }
+.ktp-bos { text-align: center; padding: 10px 6px; line-height: 1.6; }
+.ktp-sahip-kart { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 16px;
+  background: linear-gradient(135deg, rgba(233,196,106,.10), rgba(33,23,67,.55)); border: 1px solid rgba(233,196,106,.28); }
+.ktp-sk-ay { font-size: 1.5rem; flex: 0 0 auto; }
+.ktp-sk-ic { flex: 1; min-width: 0; }
+.ktp-sk-baslik { font-weight: 600; color: var(--metin); font-size: .96rem; }
+.ktp-sk-ozet { margin-top: 2px; }
+.ktp-sk-ac { flex: 0 0 auto; border: none; cursor: pointer; padding: 8px 18px; border-radius: 999px; font-weight: 600;
+  color: #1a1230; background: linear-gradient(135deg, var(--gold-soft), var(--gold)); box-shadow: 0 4px 14px rgba(233,196,106,.35); }
+.ktp-sk-ac:active { transform: scale(.96); }
+
+/* --- Mağaza: sabit premium dijital kart --- */
+.mg-kart.ktp-kart { grid-column: 1 / -1; padding: 0; overflow: hidden; border: 1px solid rgba(233,196,106,.4);
+  background: linear-gradient(180deg, rgba(30,22,58,.7), rgba(18,13,38,.85));
+  box-shadow: 0 10px 30px rgba(0,0,0,.35), 0 0 0 1px rgba(233,196,106,.06) inset; position: relative; }
+.mg-kart.ktp-kart::before { content: "\2726 EN ÖZEL"; position: absolute; top: 12px; right: -30px; transform: rotate(45deg);
+  background: linear-gradient(135deg, var(--gold-soft), var(--gold)); color: #1a1230; font-size: .58rem; font-weight: 800;
+  letter-spacing: .12em; padding: 4px 34px; z-index: 3; box-shadow: 0 2px 8px rgba(0,0,0,.3); }
+.ktp-kart-kapak { position: relative; padding: 26px 18px 20px; text-align: center;
+  background: radial-gradient(120% 90% at 50% 0%, #3a2a63 0%, #241a44 45%, #0e0b1e 100%); overflow: hidden; }
+.ktp-kart-kapak::after { content: ""; position: absolute; inset: 0;
+  background-image: radial-gradient(1.5px 1.5px at 20% 30%, #fff 50%, transparent), radial-gradient(1.5px 1.5px at 75% 20%, #fff 50%, transparent), radial-gradient(1px 1px at 60% 60%, #fff 50%, transparent), radial-gradient(1px 1px at 35% 75%, #fff 50%, transparent);
+  opacity: .5; }
+.ktp-kapak-ay { width: 54px; height: 54px; border-radius: 50%; margin: 0 auto 12px; position: relative; z-index: 1;
+  background: radial-gradient(circle at 62% 38%, #fbf3d6 0%, #efd9a0 45%, #d9b45f 100%);
+  box-shadow: 0 0 26px 5px rgba(233,200,120,.4), inset -8px -5px 14px rgba(90,60,20,.4); }
+.ktp-kapak-marka { position: relative; z-index: 1; font-family: "Playfair Display", Georgia, serif; letter-spacing: .35em;
+  font-size: .7rem; text-transform: uppercase; color: var(--gold-soft); margin-bottom: 8px; }
+.ktp-kapak-baslik { position: relative; z-index: 1; font-family: "Playfair Display", Georgia, serif; font-size: 1.22rem;
+  font-weight: 600; color: #fbf4de; line-height: 1.25; }
+.ktp-kapak-rozet { position: relative; z-index: 1; display: inline-block; margin-top: 12px; font-size: .68rem; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--gold-soft); border: 1px solid rgba(233,196,106,.4); border-radius: 999px; padding: 4px 12px; }
+.ktp-kart-govde { padding: 16px 16px 18px; }
+.ktp-kart-ozet { font-weight: 600; color: var(--gold-soft); font-size: .82rem; letter-spacing: .02em; margin-bottom: 8px; }
+.ktp-kart-aciklama { color: var(--metin-soft); font-size: .86rem; line-height: 1.55; margin-bottom: 12px; }
+.ktp-kart-icerik { list-style: none; margin: 0 0 14px; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.ktp-kart-icerik li { position: relative; padding-left: 22px; font-size: .84rem; color: var(--metin); line-height: 1.4; }
+.ktp-kart-icerik li::before { content: "\2713"; position: absolute; left: 0; color: var(--gold); font-weight: 700; }
+.ktp-kart-fiyat { font-family: "Playfair Display", Georgia, serif; font-size: 1.5rem; color: var(--gold-soft); text-align: center; margin-bottom: 12px; }
+.ktp-kart-sahip { text-align: center; color: var(--basari); font-weight: 600; font-size: .86rem; margin-bottom: 12px; }
+.ktp-btn { width: 100%; border: none; cursor: pointer; padding: 13px; border-radius: 14px; font-weight: 700; font-size: .96rem;
+  color: #1a1230; background: linear-gradient(135deg, var(--gold-soft), var(--gold)); box-shadow: 0 6px 18px rgba(233,196,106,.35); }
+.ktp-btn:active { transform: scale(.98); }
+.ktp-btn.sahip { background: linear-gradient(135deg, #8fe6bd, var(--basari)); color: #0c2a1e; }
+.ktp-btn.giris, .ktp-btn.web { background: rgba(233,196,106,.14); color: var(--gold-soft); border: 1px solid rgba(233,196,106,.4); box-shadow: none; }
+
+/* --- PDF görüntüleyici overlay --- */
+.ktp-izleyici { position: fixed; inset: 0; z-index: 100060; background: rgba(8,6,20,.96); backdrop-filter: blur(4px);
+  display: flex; flex-direction: column; opacity: 0; transition: opacity .25s; }
+.ktp-izleyici.gor { opacity: 1; }
+.ktp-iz-ust { display: flex; align-items: center; gap: 10px; padding: calc(10px + env(safe-area-inset-top,0px)) 14px 10px;
+  border-bottom: 1px solid rgba(233,196,106,.2); background: rgba(18,13,38,.9); }
+.ktp-iz-baslik { flex: 1; min-width: 0; text-align: center; color: var(--gold-soft); font-weight: 600; font-size: .9rem;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ktp-iz-geri, .ktp-iz-indir { border: 1px solid rgba(233,196,106,.4); background: rgba(233,196,106,.12); color: var(--gold-soft);
+  cursor: pointer; padding: 8px 14px; border-radius: 999px; font-weight: 600; font-size: .84rem; flex: 0 0 auto; }
+.ktp-iz-indir { color: #1a1230; background: linear-gradient(135deg, var(--gold-soft), var(--gold)); border: none; }
+.ktp-iz-govde { flex: 1; min-height: 0; position: relative; }
+.ktp-iz-govde iframe { width: 100%; height: 100%; border: 0; background: #fff; }
+.ktp-iz-yukleme, .ktp-iz-hata { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; color: var(--metin-soft); text-align: center; padding: 24px; line-height: 1.6; }
+
+/* --- Satın alma / web bilgi penceresi --- */
+.ktp-modal { position: fixed; inset: 0; z-index: 100055; background: rgba(8,6,20,.82); backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; transition: opacity .2s; overflow-y: auto; }
+.ktp-modal.gor { opacity: 1; }
+.ktp-modal-ic { position: relative; width: 100%; max-width: 400px; border-radius: 22px; padding: 28px 22px 24px; text-align: center;
+  background: linear-gradient(180deg, #241a44, #140d29); border: 1px solid rgba(233,196,106,.35);
+  box-shadow: 0 20px 60px rgba(0,0,0,.55); margin: auto; }
+.ktp-modal-kapat { position: absolute; top: 12px; right: 14px; border: none; background: transparent; color: var(--metin-faint);
+  font-size: 1.2rem; cursor: pointer; }
+.ktp-sa-amblem { font-size: 2.4rem; margin-bottom: 6px; }
+.ktp-sa-baslik { font-family: "Playfair Display", Georgia, serif; color: #fbf4de; font-size: 1.2rem; margin-bottom: 4px; }
+.ktp-sa-fiyat { font-family: "Playfair Display", Georgia, serif; color: var(--gold-soft); font-size: 1.6rem; margin-bottom: 12px; }
+.ktp-sa-not { color: var(--metin-soft); font-size: .88rem; line-height: 1.55; margin-bottom: 16px; }
+.ktp-sa-adimlar { text-align: left; display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.ktp-sa-adim { display: flex; gap: 10px; align-items: flex-start; color: var(--metin); font-size: .88rem; line-height: 1.45; }
+.ktp-sa-adim span { flex: 0 0 22px; height: 22px; border-radius: 50%; background: rgba(233,196,106,.18); color: var(--gold-soft);
+  display: flex; align-items: center; justify-content: center; font-size: .78rem; font-weight: 700; }
+.ktp-iban { background: rgba(233,196,106,.1); border: 1px dashed rgba(233,196,106,.5); border-radius: 12px; padding: 12px; text-align: center; }
+.ktp-iban-ad { color: var(--metin-soft); font-size: .8rem; margin-bottom: 4px; }
+.ktp-iban-no { color: var(--gold-soft); font-weight: 700; letter-spacing: .04em; font-size: .96rem; word-break: break-all; }
+.ktp-sa-wa { display: block; text-decoration: none; margin-bottom: 10px; padding: 13px; border-radius: 14px; font-weight: 700;
+  color: #0c2a1e; background: linear-gradient(135deg, #8fe6bd, #4bcf8f); box-shadow: 0 6px 18px rgba(79,207,143,.3); }
+.ktp-sa-wa:active { transform: scale(.98); }
+.ktp-sa-mini { line-height: 1.5; }
+.ktp-web-adres { font-family: "Playfair Display", Georgia, serif; color: var(--gold-soft); font-size: 1.3rem; letter-spacing: .05em;
+  padding: 14px; border: 1px solid rgba(233,196,106,.4); border-radius: 14px; margin-bottom: 14px; }
+
+/* --- Yönetici erişim paneli --- */
+.ey-form { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+.ey-form input, .ey-form select { padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(233,196,106,.3);
+  background: rgba(12,10,28,.6); color: var(--metin); font-size: .92rem; }
+#ey-bilgi { margin-top: 10px; line-height: 1.5; }

@@ -139,6 +139,10 @@ const Magaza = window.Magaza = (() => {
       return;
     }
     grid.className = "mg-grid";
+    // Ritüel & Araçlar'da dijital ürün(ler) her zaman en üstte, taşların üzerinde
+    if (k.id === "rituel-araclar" && window.Kutuphane && Kutuphane.magazaKartlari) {
+      Kutuphane.magazaKartlari(grid);
+    }
     k.urunler.forEach(u => {
       const kart = document.createElement("div");
       kart.className = "mg-kart sade";
@@ -200,6 +204,7 @@ const Magaza = window.Magaza = (() => {
     const ov = $("#magaza-overlay"); if (!ov) return;
     const detay = $("#mg-detay"); if (detay) detay.hidden = true;
     const liste = $("#mg-liste"); if (liste) liste.hidden = false;
+    if (window.Kutuphane && Kutuphane.yenile) Kutuphane.yenile();   // dijital ürün yetkilerini tazele
     cizKategoriler();                        // her açılışta bölümlerden başla
     document.body.classList.add("mg-aktif");
     ov.hidden = false; ov.classList.remove("gor"); void ov.offsetWidth; ov.classList.add("gor");

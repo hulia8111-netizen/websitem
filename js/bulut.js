@@ -54,6 +54,7 @@ const Bulut = window.Bulut = (() => {
       if (event === "SIGNED_OUT") { realtimeDur(); if (window.girisKapisiGoster) window.girisKapisiGoster(); }
       if (event === "SIGNED_IN" && oturum) realtimeBaslat();
       durumCiz();
+      try { window.dispatchEvent(new Event("isigini-oturum-degisti")); } catch (e) {}
     });
     window.addEventListener("focus", () => { if (girisli() && !indiriliyor) indir().then(d => { if (d) softTazele(); }); });
     window.addEventListener("online", () => { durumCiz(); it(); if (girisli() && !indiriliyor) indir().then(d => { if (d) softTazele(); }); });
