@@ -36,8 +36,8 @@ const Kutuphane = window.Kutuphane = (() => {
   /* ---------- ödeme bilgisi (web satın alma penceresi) ----------
      IBAN ve ad kullanıcı tarafından doldurulacak. */
   const ODEME = {
-    iban: "TR__ ____ ____ ____ ____ ____ __",   // ← gerçek IBAN buraya
-    ad: "Ad Soyad",                              // ← hesap sahibi adı
+    iban: "TR77 0015 7000 0000 0203 2018 98",
+    ad: "Hülya Işıkoğlu",
     wa: "905345276192"                            // WhatsApp (dekont + e-posta için)
   };
 
@@ -311,7 +311,9 @@ const Kutuphane = window.Kutuphane = (() => {
     // Oturum hazır olunca / değişince yetkileri çek
     yenile();
     setTimeout(yenile, 2500);   // Bulut geç hazır olabilir
-    window.addEventListener("isigini-oturum-degisti", () => { yenile(); yoneticiCiz(); });
+    // Moderatör durumu (ToplulukSosyal) geç yüklenebilir → paneli birkaç kez dene
+    [2500, 5000, 9000].forEach(ms => setTimeout(yoneticiCiz, ms));
+    window.addEventListener("isigini-oturum-degisti", () => { yenile(); setTimeout(yoneticiCiz, 1500); setTimeout(yoneticiCiz, 4000); });
   }
   document.addEventListener("DOMContentLoaded", baglan);
 
