@@ -43,6 +43,10 @@ const ToplulukDuyuru = window.ToplulukDuyuru = (() => {
     try {
       const { error } = await c.from("topluluk_duyuru").insert({ baslik: baslik.trim(), metin: metin.trim(), bildir: !!bildir, etkinlik: !!etkinlik });
       if (error) return { ok: false, mesaj: error.message };
+      // Bildirim işaretliyse native push fonksiyonunu doğrudan çağır (webhook gerekmez)
+      if (bildir) {
+        try { await c.functions.invoke("duyuru-push", { body: { baslik: baslik.trim(), metin: metin.trim() } }); } catch (e) {}
+      }
       return { ok: true };
     } catch (e) { return { ok: false, mesaj: String(e) }; }
   }
