@@ -200,12 +200,15 @@ const Magaza = window.Magaza = (() => {
   function yakindaKapat() { const p = $("#mg-yakinda"); if (p) { p.classList.remove("gor"); setTimeout(() => { p.hidden = true; }, 250); } }
 
   /* ---------- overlay aç/kapat ---------- */
-  function ac() {
+  function ac(katId) {
     const ov = $("#magaza-overlay"); if (!ov) return;
     const detay = $("#mg-detay"); if (detay) detay.hidden = true;
     const liste = $("#mg-liste"); if (liste) liste.hidden = false;
     if (window.Kutuphane && Kutuphane.yenile) Kutuphane.yenile();   // dijital ürün yetkilerini tazele
     cizKategoriler();                        // her açılışta bölümlerden başla
+    // İstenirse doğrudan bir bölümü aç (ör. takvimden "rituel-araclar")
+    const hedef = typeof katId === "string" ? KATEGORILER.find(k => k.id === katId) : null;
+    if (hedef) { aktifKat = hedef; cizUrunler(hedef); }
     document.body.classList.add("mg-aktif");
     ov.hidden = false; ov.classList.remove("gor"); void ov.offsetWidth; ov.classList.add("gor");
   }

@@ -96,6 +96,18 @@
 .ktp-web-adres { font-family: "Playfair Display", Georgia, serif; color: var(--gold-soft); font-size: 1.3rem; letter-spacing: .05em;
   padding: 14px; border: 1px solid rgba(233,196,106,.4); border-radius: 14px; margin-bottom: 14px; }
 
+/* --- Takvim → dolunay mağaza yönlendirme --- */
+.tk-magaza-cta { display: flex; align-items: center; gap: 14px; width: 100%; margin-top: 14px; cursor: pointer;
+  padding: 14px 16px; border-radius: 16px; text-align: left;
+  border: 1px solid rgba(233,196,106,.45);
+  background: linear-gradient(135deg, rgba(233,196,106,.14), rgba(58,42,99,.5));
+  box-shadow: 0 6px 18px rgba(0,0,0,.25); }
+.tk-magaza-cta:active { transform: scale(.98); }
+.tk-cta-ay { font-size: 1.7rem; flex: 0 0 auto; filter: drop-shadow(0 0 8px rgba(233,196,106,.5)); }
+.tk-cta-metin { display: flex; flex-direction: column; }
+.tk-cta-metin b { color: var(--gold-soft); font-size: .96rem; }
+.tk-cta-metin small { color: var(--metin-soft); font-size: .8rem; margin-top: 2px; }
+
 /* --- Yönetici erişim paneli --- */
 .ey-form { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
 .ey-form input, .ey-form select, .ey-form textarea { padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(233,196,106,.3);

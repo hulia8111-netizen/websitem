@@ -109,9 +109,17 @@ const Takvim = window.Takvim = (() => {
     } else {
       html += `<p class="muted small tk-bos-mesaj">Bu gün için özel bir enerji işareti yok. Aşağıdan kendi ritüel gününü ekleyebilirsin ✨</p>`;
     }
+    // Dolunay günü → mağazadaki ritüel rehberine nazik yönlendirme 🌕
+    if (evs.some(e => e.tip === "dolunay")) {
+      html += `<button class="tk-magaza-cta" id="tk-magaza-cta">
+        <span class="tk-cta-ay">🌕</span>
+        <span class="tk-cta-metin"><b>Dolunay Bırakma Ritüeli</b><small>Bu dolunay için rehberi edin →</small></span></button>`;
+    }
     el.innerHTML = html;
     el.classList.remove("tk-fade"); void el.offsetWidth; el.classList.add("tk-fade");
     el.querySelectorAll("[data-sil]").forEach(b => b.addEventListener("click", () => { ozelSil(b.dataset.sil); cizGrid(); cizDetay(d); }));
+    const mc = $("tk-magaza-cta");
+    if (mc) mc.addEventListener("click", () => { kapat(); setTimeout(() => { if (window.Magaza && Magaza.ac) Magaza.ac("rituel-araclar"); }, 320); });
     const enLink = $("tk-enerji-link");
     if (enLink) enLink.addEventListener("click", () => { kapat(); if (window.gotoView) window.gotoView("home"); const en = document.getElementById("enerji"); if (en) setTimeout(() => en.scrollIntoView({ behavior: "smooth", block: "center" }), 450); });
     const di = $("tk-ekle-tarih"); if (di) di.value = k;
