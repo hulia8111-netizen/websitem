@@ -96,6 +96,25 @@
 .ktp-web-adres { font-family: "Playfair Display", Georgia, serif; color: var(--gold-soft); font-size: 1.3rem; letter-spacing: .05em;
   padding: 14px; border: 1px solid rgba(233,196,106,.4); border-radius: 14px; margin-bottom: 14px; }
 
+/* --- Işık Mumları ürün yönetimi --- */
+.mu-onizle { margin-top: 6px; }
+.mu-onizle img { max-width: 140px; border-radius: 12px; border: 1px solid rgba(233,196,106,.35); display: block; }
+.mu-foto-kaldir { margin-top: 8px; background: rgba(224,106,106,.14); color: #ff9d9d; border: 1px solid rgba(224,106,106,.4);
+  border-radius: 999px; padding: 6px 14px; cursor: pointer; font-size: .82rem; }
+.mu-btnlar { display: flex; gap: 10px; margin-top: 4px; }
+.mu-liste { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.mu-satir { display: flex; align-items: center; gap: 12px; padding: 8px 10px; border-radius: 12px;
+  background: rgba(12,10,28,.5); border: 1px solid rgba(233,196,106,.2); }
+.mu-satir-foto { flex: 0 0 44px; width: 44px; height: 44px; border-radius: 10px; overflow: hidden; display: flex;
+  align-items: center; justify-content: center; font-size: 1.4rem; background: rgba(233,196,106,.1); }
+.mu-satir-foto img { width: 100%; height: 100%; object-fit: cover; }
+.mu-satir-ic { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.mu-satir-ic b { color: var(--metin); font-size: .92rem; }
+.mu-duzenle { flex: 0 0 auto; border: 1px solid rgba(233,196,106,.4); background: rgba(233,196,106,.12); color: var(--gold-soft);
+  border-radius: 999px; padding: 6px 14px; cursor: pointer; font-size: .8rem; }
+.mu-sil { flex: 0 0 auto; border: none; background: rgba(224,106,106,.16); color: #ff9d9d; width: 30px; height: 30px;
+  border-radius: 50%; cursor: pointer; font-size: .9rem; }
+
 /* --- Takvim → dolunay mağaza yönlendirme --- */
 .tk-magaza-cta { display: flex; align-items: center; gap: 14px; width: 100%; margin-top: 14px; cursor: pointer;
   padding: 14px 16px; border-radius: 16px; text-align: left;

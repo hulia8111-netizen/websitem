@@ -194,14 +194,18 @@ const Magaza = window.Magaza = (() => {
     const grid = $("#mg-grid"); if (!grid) return;
     geriAyar("← Bölümlere Dön", () => { aktifKat = null; altKat = null; cizKategoriler(); });
     ustNot(k.ikon + " " + k.ad);
+    grid.className = "mg-grid";
     grid.innerHTML = "";
-    if (!k.urunler.length) {
-      grid.className = "mg-grid mg-grid-bos";
-      grid.innerHTML = `<div class="mg-bos-durum"><div class="mg-bos-amblem">${esc(k.ikon)}</div><p>Bu bölüm çok yakında ürünlerle dolacak ✨</p></div>`;
+    // Işık Mumları → self-servis DB ürünleri (boşsa sipariş kartı gösterir)
+    if (k.id === "isik-mumlari" && window.MagazaUrun && MagazaUrun.magazaKartlari) {
+      MagazaUrun.magazaKartlari(grid, k.id);
       return;
     }
-    grid.className = "mg-grid";
-    k.urunler.forEach(u => tasKartCiz(grid, u));
+    // Koddaki sabit ürünler (varsa)
+    if (k.urunler.length) { k.urunler.forEach(u => tasKartCiz(grid, u)); return; }
+    // Boş bölüm
+    grid.className = "mg-grid mg-grid-bos";
+    grid.innerHTML = `<div class="mg-bos-durum"><div class="mg-bos-amblem">${esc(k.ikon)}</div><p>Bu bölüm çok yakında ürünlerle dolacak ✨</p></div>`;
   }
 
   /* ---------- tek ürün (taş/genel) kartı ---------- */
