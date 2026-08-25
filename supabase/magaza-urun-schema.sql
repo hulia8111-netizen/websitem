@@ -14,7 +14,8 @@ create table if not exists public.magaza_urun (
   aciklama   text,
   fiyat      text,                       -- opsiyonel (sonra eklenebilir)
   gorsel     text,                       -- public foto URL (opsiyonel)
-  wa_no      text,                       -- sipariş WhatsApp numarası
+  link       text,                       -- Işık Kartları için "Satın Al" linki (Shopier vb.)
+  wa_no      text,                       -- sipariş WhatsApp numarası (Işık Mumları)
   sira       int  default 0,             -- büyük olan üstte
   aktif      boolean default true,
   olusturma  timestamptz default now()

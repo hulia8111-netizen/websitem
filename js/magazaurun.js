@@ -9,8 +9,12 @@
 const MagazaUrun = window.MagazaUrun = (() => {
   const $ = s => document.querySelector(s);
   const BUCKET = "urun-foto";
-  const AKTIF_BOLUM = "isik-mumlari";                 // panelin yönettiği bölüm
-  const WA_VARSAYILAN = { "isik-mumlari": "905300421259" };
+  let aktifBolum = "isik-mumlari";                     // panelin yönettiği bölüm (seçiciyle değişir)
+  const BOLUMLER = [
+    { id: "isik-mumlari", ad: "Işık Mumları", ikon: "🕯️", siparis: "whatsapp", waAnahtar: "wa_mum", waVarsayilan: "905300421259" },
+    { id: "isik-kartlari", ad: "Işık Kartları", ikon: "🃏", siparis: "link" }
+  ];
+  function bolumBilgi(id) { return BOLUMLER.find(b => b.id === (id || aktifBolum)) || BOLUMLER[0]; }
 
   let cache = {};   // { bolum: [urun...] }
   let duzenId = null;
@@ -41,10 +45,9 @@ const MagazaUrun = window.MagazaUrun = (() => {
 
   function waNo(u, bolum) {
     if (u && u.wa_no) return u.wa_no;
-    // Bölüme göre ayardan (Işık Mumları → wa_mum)
-    const anahtar = (bolum || AKTIF_BOLUM) === "isik-mumlari" ? "wa_mum" : null;
-    if (anahtar && window.SiteAyar) { const v = SiteAyar.get(anahtar, null); if (v) return v; }
-    return WA_VARSAYILAN[bolum || AKTIF_BOLUM] || "905300421259";
+    const b = bolumBilgi(bolum);
+    if (window.SiteAyar) { const v = SiteAyar.get(b.waAnahtar, null); if (v) return v; }
+    return b.waVarsayilan;
   }
   function siparisWA(u, bolum) {
     const mesaj = `Merhaba, "${u.ad}" için sipariş vermek / bilgi almak istiyorum ✨`;
@@ -53,20 +56,33 @@ const MagazaUrun = window.MagazaUrun = (() => {
 
   /* ---------- MAĞAZA kartları ---------- */
   function urunKart(u, bolum) {
+    const b = bolumBilgi(bolum);
     const kart = document.createElement("div");
     kart.className = "mg-kart sade";
     const gorselHTML = gorselli(u.gorsel)
       ? `<div class="mg-kart-gorsel"><img src="${esc(u.gorsel)}" alt="${esc(u.ad)}" loading="lazy" /></div>`
-      : `<div class="mg-kart-gorsel bos"><span>🕯️</span></div>`;
+      : `<div class="mg-kart-gorsel bos"><span>${b.ikon}</span></div>`;
     const fiyatHTML = u.fiyat ? `<div class="mg-kart-fiyat">${esc(u.fiyat)}</div>` : "";
+    let notHTML = "", btnCls = "mg-satinal", btnTxt = "Satın Al ✦", tikla;
+    const linkVar = u.link && /^https?:\/\//i.test(u.link);
+    if (b.siparis === "link") {
+      // Işık Kartları → Satın Al = dış link (Shopier vb.)
+      if (linkVar) { tikla = () => window.open(u.link, "_blank", "noopener,noreferrer"); }
+      else { btnCls += " yakinda"; btnTxt = "Çok Yakında"; tikla = () => {}; }
+    } else {
+      // Işık Mumları → Sipariş Oluştur = WhatsApp
+      notHTML = `<div class="mg-siparis-not">🕊️ Siparişle özel hazırlanır</div>`;
+      btnCls += " siparis"; btnTxt = "Sipariş Oluştur ✦";
+      tikla = () => window.open(siparisWA(u, bolum), "_blank", "noopener,noreferrer");
+    }
     kart.innerHTML = `
       ${gorselHTML}
       <div class="mg-kart-ad">${esc(u.ad)}</div>
       ${u.aciklama ? `<div class="mg-kart-aciklama">${esc(u.aciklama)}</div>` : ""}
       ${fiyatHTML}
-      <div class="mg-siparis-not">🕊️ Siparişle özel hazırlanır</div>
-      <button class="mg-satinal siparis" type="button">Sipariş Oluştur ✦</button>`;
-    kart.querySelector(".mg-satinal").addEventListener("click", () => window.open(siparisWA(u, bolum), "_blank", "noopener,noreferrer"));
+      ${notHTML}
+      <button class="${btnCls}" type="button">${btnTxt}</button>`;
+    kart.querySelector("button").addEventListener("click", tikla);
     return kart;
   }
 
@@ -77,15 +93,23 @@ const MagazaUrun = window.MagazaUrun = (() => {
     if (urunler.length) {
       urunler.forEach(u => grid.appendChild(urunKart(u, bolum)));
     } else {
-      // Bölüm boş ama KAPALI değil → sipariş/iletişim kartı
+      // Bölüm boş — tipe göre uygun kart
+      const b = bolumBilgi(bolum);
       const kart = document.createElement("div");
       kart.className = "mg-kart sade mu-bos-kart";
-      kart.innerHTML = `
-        <div class="mg-kart-gorsel bos"><span>🕯️</span></div>
-        <div class="mg-kart-ad">Işık Mumları</div>
-        <div class="mg-kart-aciklama">Niyetle hazırlanan özel mumlar çok yakında. Şimdiden sipariş ve bilgi için bize yazabilirsin.</div>
-        <button class="mg-satinal siparis" type="button">Sipariş / Bilgi Al ✦</button>`;
-      kart.querySelector(".mg-satinal").addEventListener("click", () => window.open(siparisWA({ ad: "Işık Mumları" }, bolum), "_blank", "noopener,noreferrer"));
+      if (b.siparis === "link") {
+        kart.innerHTML = `
+          <div class="mg-kart-gorsel bos"><span>${b.ikon}</span></div>
+          <div class="mg-kart-ad">${esc(b.ad)}</div>
+          <div class="mg-kart-aciklama">Çok yakında burada özel kartlar olacak ✨</div>`;
+      } else {
+        kart.innerHTML = `
+          <div class="mg-kart-gorsel bos"><span>${b.ikon}</span></div>
+          <div class="mg-kart-ad">${esc(b.ad)}</div>
+          <div class="mg-kart-aciklama">Özel parçalar çok yakında. Şimdiden sipariş ve bilgi için bize yazabilirsin.</div>
+          <button class="mg-satinal siparis" type="button">Sipariş / Bilgi Al ✦</button>`;
+        kart.querySelector(".mg-satinal").addEventListener("click", () => window.open(siparisWA({ ad: b.ad }, bolum), "_blank", "noopener,noreferrer"));
+      }
       grid.appendChild(kart);
     }
   }
@@ -95,7 +119,7 @@ const MagazaUrun = window.MagazaUrun = (() => {
     const c = sb();
     if (!c) throw new Error("Bağlantı yok");
     const temiz = (file.name || "foto.jpg").replace(/[^a-zA-Z0-9.]/g, "_");
-    const yol = AKTIF_BOLUM + "/" + Date.now() + "_" + temiz;
+    const yol = aktifBolum + "/" + Date.now() + "_" + temiz;
     const { error } = await c.storage.from(BUCKET).upload(yol, file, { upsert: false, contentType: file.type || "image/jpeg" });
     if (error) throw error;
     return c.storage.from(BUCKET).getPublicUrl(yol).data.publicUrl;
@@ -103,7 +127,7 @@ const MagazaUrun = window.MagazaUrun = (() => {
 
   function formTemizle() {
     duzenId = null; seciliFotoUrl = "";
-    ["mu-ad", "mu-aciklama", "mu-fiyat"].forEach(id => { if ($("#" + id)) $("#" + id).value = ""; });
+    ["mu-ad", "mu-aciklama", "mu-fiyat", "mu-link"].forEach(id => { if ($("#" + id)) $("#" + id).value = ""; });
     const f = $("#mu-foto"); if (f) f.value = "";
     fotoOnizle();
     const btn = $("#mu-ekle"); if (btn) btn.textContent = "Ürünü Ekle";
@@ -127,11 +151,12 @@ const MagazaUrun = window.MagazaUrun = (() => {
     const ad = ($("#mu-ad").value || "").trim();
     if (!ad) { bil.textContent = "Ürün adı gerekli."; bil.style.color = "var(--uyari,#c9a24a)"; return; }
     const satir = {
-      bolum: AKTIF_BOLUM, ad,
+      bolum: aktifBolum, ad,
       aciklama: ($("#mu-aciklama").value || "").trim() || null,
       fiyat: ($("#mu-fiyat").value || "").trim() || null,
       gorsel: seciliFotoUrl || null,
-      wa_no: WA_VARSAYILAN[AKTIF_BOLUM],
+      link: (($("#mu-link") || {}).value || "").trim() || null,   // Işık Kartları: Satın Al linki
+      wa_no: null,                       // boş → bölümün ayardaki WhatsApp'ı kullanılır
       aktif: true
     };
     if (duzenId) satir.id = duzenId; else satir.sira = Date.now() % 1000000000;
@@ -140,7 +165,7 @@ const MagazaUrun = window.MagazaUrun = (() => {
       const c = sb();
       const { error } = await c.from("magaza_urun").upsert(satir);
       if (error) throw error;
-      cache[AKTIF_BOLUM] = null; await yukle(AKTIF_BOLUM);
+      cache[aktifBolum] = null; await yukle(aktifBolum);
       bil.textContent = duzenId ? "✅ Güncellendi" : "✅ Eklendi"; bil.style.color = "var(--basari,#4caf7d)";
       formTemizle(); listeCiz();
     } catch (e) { bil.textContent = "Hata: " + ((e && e.message) || ""); bil.style.color = "var(--hata,#e06a6a)"; }
@@ -148,12 +173,13 @@ const MagazaUrun = window.MagazaUrun = (() => {
 
   async function sil(id) {
     const c = sb(); if (!c) return;
-    try { await c.from("magaza_urun").delete().eq("id", id); cache[AKTIF_BOLUM] = null; await yukle(AKTIF_BOLUM); listeCiz(); }
+    try { await c.from("magaza_urun").delete().eq("id", id); cache[aktifBolum] = null; await yukle(aktifBolum); listeCiz(); }
     catch (e) {}
   }
   function duzenle(u) {
     duzenId = u.id; seciliFotoUrl = u.gorsel || "";
     $("#mu-ad").value = u.ad || ""; $("#mu-aciklama").value = u.aciklama || ""; $("#mu-fiyat").value = u.fiyat || "";
+    const lk = $("#mu-link"); if (lk) lk.value = u.link || "";
     fotoOnizle();
     const btn = $("#mu-ekle"); if (btn) btn.textContent = "Değişikliği Kaydet";
     const ipt = $("#mu-iptal"); if (ipt) ipt.style.display = "inline-block";
@@ -162,7 +188,7 @@ const MagazaUrun = window.MagazaUrun = (() => {
 
   function listeCiz() {
     const liste = $("#mu-liste"); if (!liste) return;
-    const urunler = cache[AKTIF_BOLUM] || [];
+    const urunler = cache[aktifBolum] || [];
     if (!urunler.length) { liste.innerHTML = `<p class="muted small">Henüz mum yok. Yukarıdan ekle → mağazada anında görünür.</p>`; return; }
     liste.innerHTML = "";
     urunler.forEach(u => {
@@ -183,7 +209,7 @@ const MagazaUrun = window.MagazaUrun = (() => {
     const bolum = $("#urun-yonetici"); if (!bolum) return;
     if (!moderatorMu()) { bolum.hidden = true; return; }
     bolum.hidden = false;
-    await yukle(AKTIF_BOLUM);
+    await yukle(aktifBolum);
     listeCiz();
   }
 
@@ -191,6 +217,7 @@ const MagazaUrun = window.MagazaUrun = (() => {
     const ekle = $("#mu-ekle"); if (ekle) ekle.addEventListener("click", kaydet);
     const foto = $("#mu-foto"); if (foto) foto.addEventListener("change", fotoSecildi);
     const iptal = $("#mu-iptal"); if (iptal) iptal.addEventListener("click", formTemizle);
+    const sec = $("#mu-bolum"); if (sec) sec.addEventListener("change", e => { aktifBolum = e.target.value; formTemizle(); yoneticiCiz(); });
     yoneticiCiz();
     [2500, 5000, 9000].forEach(ms => setTimeout(yoneticiCiz, ms));
     window.addEventListener("isigini-oturum-degisti", () => setTimeout(yoneticiCiz, 1500));

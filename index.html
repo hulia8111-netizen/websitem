@@ -13,8 +13,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=182" />
-  <link rel="stylesheet" href="css/kutuphane.css?v=182" />
+  <link rel="stylesheet" href="css/style.css?v=183" />
+  <link rel="stylesheet" href="css/kutuphane.css?v=183" />
 </head>
 <body>
   <!-- Açılış (splash) ekranı: logo + isim + Word'den rastgele ilham cümlesi -->
@@ -39,8 +39,8 @@
       </div>
     </div>
   </div><!-- /splash -->
-  <script src="js/acilis-cumleler.js?v=182"></script>
-  <script src="js/splash.js?v=182"></script>
+  <script src="js/acilis-cumleler.js?v=183"></script>
+  <script src="js/splash.js?v=183"></script>
 
   <div class="aura" aria-hidden="true">
     <span class="blob blob-1"></span>
@@ -923,6 +923,14 @@
           <p class="muted small" id="oa-bilgi"></p>
         </section>
 
+        <section class="card card-wide" id="tas-link-yonetici" data-pgrup="ayarlar" hidden>
+          <h2>Doğal Taşlar — Link Düzenle 💎</h2>
+          <p class="muted small">Her taşın "Satın Al" bağlantısını (Shopier) buradan değiştir. Boş bırakırsan varsayılan link kullanılır.</p>
+          <div class="ey-form" id="tas-link-liste"></div>
+          <button class="btn" id="tl-kaydet" style="margin-top:10px">Linkleri Kaydet</button>
+          <p class="muted small" id="tl-bilgi"></p>
+        </section>
+
         <section class="card card-wide" id="eris-yonetici" data-pgrup="ayarlar" hidden>
           <h2>Dijital Ürün · Erişim Ver 🗝️</h2>
           <p class="muted small">Havalesi onaylanan kullanıcıya, uygulama e-postasıyla erişim tanımla.</p>
@@ -964,15 +972,22 @@
         </section>
 
         <section class="card card-wide" id="urun-yonetici" data-pgrup="ayarlar" hidden>
-          <h2>Işık Mumları — Ürün Yönetimi 🕯️</h2>
-          <p class="muted small">Mum ekle, fotoğraf ve fiyat ekle/çıkar. Sipariş butonu WhatsApp'a (arkadaşına) gider. Fiyat/foto sonra da eklenebilir.</p>
+          <h2>Ürün Yönetimi 🕯️🃏</h2>
+          <p class="muted small">Işık Mumları ve Işık Kartları — ürün, fotoğraf ve fiyat ekle/çıkar. Sipariş butonu WhatsApp'a gider. (Fiyat/foto sonra da eklenebilir.)</p>
           <div class="ey-form">
+            <label class="ue-label">Bölüm</label>
+            <select id="mu-bolum">
+              <option value="isik-mumlari">🕯️ Işık Mumları</option>
+              <option value="isik-kartlari">🃏 Işık Kartları</option>
+            </select>
             <label class="ue-label">Ürün adı</label>
             <input type="text" id="mu-ad" placeholder="Örn: Lavanta Niyet Mumu" />
             <label class="ue-label">Açıklama <span class="muted">(opsiyonel)</span></label>
             <textarea id="mu-aciklama" rows="2" placeholder="Kısa, sıcak bir açıklama…"></textarea>
             <label class="ue-label">Fiyat <span class="muted">(opsiyonel — sonra ekleyebilirsin)</span></label>
             <input type="text" id="mu-fiyat" placeholder="Örn: 120 TL" />
+            <label class="ue-label">Satış linki <span class="muted">(Işık Kartları için — Shopier vb.)</span></label>
+            <input type="text" id="mu-link" placeholder="https://www.shopier.com/..." spellcheck="false" />
             <label class="ue-label">Fotoğraf <span class="muted">(opsiyonel)</span></label>
             <input type="file" id="mu-foto" accept="image/*" />
             <div class="mu-onizle" id="mu-onizle" style="display:none"></div>
@@ -1052,54 +1067,54 @@
     </button>
   </nav>
 
-  <script src="js/data.js?v=182"></script>
-  <script src="js/farkindalik-sorulari.js?v=182"></script>
-  <script src="js/mini-gorevler.js?v=182"></script>
-  <script src="js/store.js?v=182"></script>
-  <script src="js/perf.js?v=182"></script>
-  <script src="js/audio.js?v=182"></script>
-  <script src="js/muzik.js?v=182"></script>
-  <script src="js/rehbermed.js?v=182"></script>
-  <script src="js/rehber.js?v=182"></script>
-  <script src="js/ay.js?v=182"></script>
-  <script src="js/app.js?v=182"></script>
-  <script src="js/kartpaylas.js?v=182"></script>
-  <script src="js/haftalik-hedefler.js?v=182"></script>
-  <script src="js/haftalikhedef.js?v=182"></script>
-  <script src="js/streak.js?v=182"></script>
-  <script src="js/gorevler.js?v=182"></script>
-  <script src="js/energy.js?v=182"></script>
-  <script src="js/gunluk.js?v=182"></script>
-  <script src="js/overlay-geri.js?v=182"></script>
-  <script src="js/dokunmaipucu.js?v=182"></script>
-  <script src="js/pushtoken.js?v=182"></script>
-  <script src="js/gunlukilham.js?v=182"></script>
-  <script src="js/rapor.js?v=182"></script>
-  <script src="js/bildirim.js?v=182"></script>
-  <script src="js/bildirimayar.js?v=182"></script>
-  <script src="js/magaza.js?v=182"></script>
-  <script src="js/profil.js?v=182"></script>
-  <script src="js/rituel.js?v=182"></script>
-  <script src="js/test.js?v=182"></script>
-  <script src="js/enerjitipi.js?v=182"></script>
-  <script src="js/cakra.js?v=182"></script>
-  <script src="js/nefes.js?v=182"></script>
-  <script src="js/vision.js?v=182"></script>
-  <script src="js/ciftsaat.js?v=182"></script>
-  <script src="js/takvim.js?v=182"></script>
-  <script src="js/hafta.js?v=182"></script>
+  <script src="js/data.js?v=183"></script>
+  <script src="js/farkindalik-sorulari.js?v=183"></script>
+  <script src="js/mini-gorevler.js?v=183"></script>
+  <script src="js/store.js?v=183"></script>
+  <script src="js/perf.js?v=183"></script>
+  <script src="js/audio.js?v=183"></script>
+  <script src="js/muzik.js?v=183"></script>
+  <script src="js/rehbermed.js?v=183"></script>
+  <script src="js/rehber.js?v=183"></script>
+  <script src="js/ay.js?v=183"></script>
+  <script src="js/app.js?v=183"></script>
+  <script src="js/kartpaylas.js?v=183"></script>
+  <script src="js/haftalik-hedefler.js?v=183"></script>
+  <script src="js/haftalikhedef.js?v=183"></script>
+  <script src="js/streak.js?v=183"></script>
+  <script src="js/gorevler.js?v=183"></script>
+  <script src="js/energy.js?v=183"></script>
+  <script src="js/gunluk.js?v=183"></script>
+  <script src="js/overlay-geri.js?v=183"></script>
+  <script src="js/dokunmaipucu.js?v=183"></script>
+  <script src="js/pushtoken.js?v=183"></script>
+  <script src="js/gunlukilham.js?v=183"></script>
+  <script src="js/rapor.js?v=183"></script>
+  <script src="js/bildirim.js?v=183"></script>
+  <script src="js/bildirimayar.js?v=183"></script>
+  <script src="js/magaza.js?v=183"></script>
+  <script src="js/profil.js?v=183"></script>
+  <script src="js/rituel.js?v=183"></script>
+  <script src="js/test.js?v=183"></script>
+  <script src="js/enerjitipi.js?v=183"></script>
+  <script src="js/cakra.js?v=183"></script>
+  <script src="js/nefes.js?v=183"></script>
+  <script src="js/vision.js?v=183"></script>
+  <script src="js/ciftsaat.js?v=183"></script>
+  <script src="js/takvim.js?v=183"></script>
+  <script src="js/hafta.js?v=183"></script>
   
-  <script src="js/kozmik.js?v=182"></script>
+  <script src="js/kozmik.js?v=183"></script>
   <!-- Bulut üyelik & senkron (Supabase) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/supabase-config.js?v=182"></script>
-  <script src="js/bulut.js?v=182"></script>
-  <script src="js/topluluk.js?v=182"></script>
-  <script src="js/topluluk-sosyal.js?v=182"></script>
-  <script src="js/topluluk-duyuru.js?v=182"></script>
-  <script src="js/siteayar.js?v=182"></script>
-  <script src="js/kutuphane.js?v=182"></script>
-  <script src="js/magazaurun.js?v=182"></script>
+  <script src="js/supabase-config.js?v=183"></script>
+  <script src="js/bulut.js?v=183"></script>
+  <script src="js/topluluk.js?v=183"></script>
+  <script src="js/topluluk-sosyal.js?v=183"></script>
+  <script src="js/topluluk-duyuru.js?v=183"></script>
+  <script src="js/siteayar.js?v=183"></script>
+  <script src="js/kutuphane.js?v=183"></script>
+  <script src="js/magazaurun.js?v=183"></script>
   <script>
     if ("serviceWorker" in navigator) {
       // SW'yi kaydet ve arka planda güncelle. ZORLA RELOAD YOK: fetch network-first

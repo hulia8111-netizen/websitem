@@ -32,37 +32,37 @@ const Magaza = window.Magaza = (() => {
       aciklama: "Doğal taşlar ve ritüellerine eşlik edecek özel parçalar.",
       urunler: [
         {
-          ad: "Dendiritli Opal", ikon: "🌿",
+          id: "tas-dendritli-opal", ad: "Dendiritli Opal", ikon: "🌿",
           aciklama: "Nadir ve değerli Dendiritli Opal — beyaz opal zemin üzerinde ağaç dallarını andıran doğal desenler; her biri tek. Büyüme, bereket ve doğayla bağ taşı olarak bilinir; sabrı, kök salmayı ve içsel dinginliği destekler. Doğanın el yazısını avucunda taşı. 🌿",
           gorsel: "/urunler/dendritli-opal.jpg", fiyat: "304,99 TL",
           link: "https://www.shopier.com/dreamyhandmade/50076805"
         },
         {
-          ad: "Aventurin Kalp Kolye", ikon: "💚",
+          id: "tas-aventurin", ad: "Aventurin Kalp Kolye", ikon: "💚",
           aciklama: "Kalp formunda, doğal yeşil Aventurin taşından kolye. Aventurin; şans, bolluk ve neşe taşı olarak bilinir — kalbi korur, stresi azaltır, yeni fırsatlara açar. Şansını kalbinde taşı. Çelik zincirli. 💚",
           gorsel: "/urunler/aventurin-kalp-kolye.jpg", fiyat: "304,99 TL",
           link: "https://www.shopier.com/dreamyhandmade/50075720"
         },
         {
-          ad: "Yaprak Form Akik Kolye", ikon: "🍃",
+          id: "tas-akik-yaprak", ad: "Yaprak Form Akik Kolye", ikon: "🍃",
           aciklama: "Yaprak formunda, doğal Akik taşından zarif kolye. Akik; ruhsal ve bedensel dengeyi destekleyen, stresi azaltan, özgüveni artıran ve negatif enerjiden koruyan bir taş olarak bilinir. Doğallığı boynunda taşı. Çelik zincirli. 🍃",
           gorsel: "/urunler/akik-yaprak-kolye.jpg", fiyat: "304,99 TL",
           link: "https://www.shopier.com/dreamyhandmade/50075441"
         },
         {
-          ad: "Ametist Tel Sarım Kolye", ikon: "💜",
+          id: "tas-ametist", ad: "Ametist Tel Sarım Kolye", ikon: "💜",
           aciklama: "El işçiliğiyle tel sarım yapılmış, gümüş kaplama doğal Ametist kolye. Stresi yatıştırır, zihni sakinleştirir; ruhsal dengeyi ve sezgiyi güçlendirir. Doğanın enerjisini yanında taşı. Çelik zincirli. 💜",
           gorsel: "/urunler/ametist-kolye.jpg", fiyat: "304,99 TL",
           link: "https://www.shopier.com/dreamyhandmade/50073853"
         },
         {
-          ad: "Kalp Form Sodalit Kolye", ikon: "💙",
+          id: "tas-sodalit", ad: "Kalp Form Sodalit Kolye", ikon: "💙",
           aciklama: "Kalp formunda, doğal Sodalit taşından el yapımı kolye. Zihinsel netlik ve sakinlik taşı; mantıklı düşünmeyi ve odaklanmayı destekler, iletişimi güçlendirir, kaygıyı hafifletir. Kalbinin üzerinde huzur. Çelik zincirli. 💙",
           gorsel: "/urunler/sodalit-kalp-kolye.jpg", fiyat: "304,99 TL",
           link: "https://www.shopier.com/dreamyhandmade/50075370"
         },
         {
-          ad: "Akik (Agat) Taşı", ikon: "💎",
+          id: "tas-akik", ad: "Akik (Agat) Taşı", ikon: "💎",
           aciklama: "Her biri benzersiz, doğal ağaç-kesiti dokulu akik taşı. Topraklar, dengeler; iç huzuru ve güven duygusunu güçlendirir, yaşam alanına sakin bir enerji katar. 🌿",
           gorsel: "/urunler/akik-tasi.jpg", fiyat: "304,99 TL",
           link: "https://www.shopier.com/dreamyhandmade/50076643?utm_id=97757_v0_s00_e0_tv0"
@@ -196,8 +196,8 @@ const Magaza = window.Magaza = (() => {
     ustNot(k.ikon + " " + k.ad);
     grid.className = "mg-grid";
     grid.innerHTML = "";
-    // Işık Mumları → self-servis DB ürünleri (boşsa sipariş kartı gösterir)
-    if (k.id === "isik-mumlari" && window.MagazaUrun && MagazaUrun.magazaKartlari) {
+    // Işık Mumları / Işık Kartları → self-servis DB ürünleri (boşsa sipariş kartı)
+    if ((k.id === "isik-mumlari" || k.id === "isik-kartlari") && window.MagazaUrun && MagazaUrun.magazaKartlari) {
       MagazaUrun.magazaKartlari(grid, k.id);
       return;
     }
@@ -209,7 +209,10 @@ const Magaza = window.Magaza = (() => {
   }
 
   /* ---------- tek ürün (taş/genel) kartı ---------- */
-  function tasKartCiz(grid, u) {
+  function tasKartCiz(grid, u0) {
+    // Taş linki yöneticinin ayarladığı değerle (varsa) değiştirilir
+    const efektifLink = (u0.id && window.SiteAyar && SiteAyar.get) ? SiteAyar.get("tas_link_" + u0.id, u0.link) : u0.link;
+    const u = Object.assign({}, u0, { link: efektifLink });
     const kart = document.createElement("div");
     kart.className = "mg-kart sade";
     const satista = gecerliLink(u.link);
