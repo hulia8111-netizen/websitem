@@ -14,7 +14,10 @@ const ToplulukDuyuru = window.ToplulukDuyuru = (() => {
   function sb() { try { return window.Bulut && Bulut.client ? Bulut.client() : null; } catch (e) { return null; } }
   function uid() { try { return window.Bulut && Bulut.kullaniciId ? Bulut.kullaniciId() : null; } catch (e) { return null; } }
   function girisli() { return !!uid(); }
-  function moderatorMu() { return !!(window.ToplulukSosyal && ToplulukSosyal.moderatorMuCached && ToplulukSosyal.moderatorMuCached()); }
+  function moderatorMu() {
+    try { const em = (window.Bulut && Bulut.durum ? (Bulut.durum().email || "") : "").toLowerCase(); if (em === "hulia8111@gmail.com") return true; } catch (e) {}
+    return !!(window.ToplulukSosyal && ToplulukSosyal.moderatorMuCached && ToplulukSosyal.moderatorMuCached());
+  }
   // Okundu için kimlik: girişliyse user_id, misafirse cihaz kimliği
   function kimId() { return uid() || ("c:" + (window.PushToken && PushToken.cihazId ? PushToken.cihazId() : "anon")); }
 

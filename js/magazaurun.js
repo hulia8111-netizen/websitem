@@ -17,7 +17,14 @@ const MagazaUrun = window.MagazaUrun = (() => {
   let seciliFotoUrl = "";
 
   function sb() { try { return window.Bulut && Bulut.client ? Bulut.client() : null; } catch (e) { return null; } }
-  function moderatorMu() { try { return !!(window.ToplulukSosyal && ToplulukSosyal.moderatorMuCached && ToplulukSosyal.moderatorMuCached()); } catch (e) { return false; } }
+  const YONETICI_EPOSTA = ["hulia8111@gmail.com"];
+  function moderatorMu() {
+    try {
+      const em = (window.Bulut && Bulut.durum ? (Bulut.durum().email || "") : "").toLowerCase();
+      if (em && YONETICI_EPOSTA.indexOf(em) !== -1) return true;
+    } catch (e) {}
+    try { return !!(window.ToplulukSosyal && ToplulukSosyal.moderatorMuCached && ToplulukSosyal.moderatorMuCached()); } catch (e) { return false; }
+  }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
   function gorselli(g) { return typeof g === "string" && /^https?:\/\//i.test(g); }
 

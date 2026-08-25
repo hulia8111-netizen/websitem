@@ -52,7 +52,14 @@ const Kutuphane = window.Kutuphane = (() => {
   function uid() { try { return window.Bulut && Bulut.kullaniciId ? Bulut.kullaniciId() : null; } catch (e) { return null; } }
   function girisli() { return !!uid(); }
   function benimEmail() { try { return (Bulut.durum && Bulut.durum().email) || ""; } catch (e) { return ""; } }
-  function moderatorMu() { try { return !!(window.ToplulukSosyal && ToplulukSosyal.moderatorMuCached && ToplulukSosyal.moderatorMuCached()); } catch (e) { return false; } }
+  const YONETICI_EPOSTA = ["hulia8111@gmail.com"];   // tam yetkili yönetici(ler)
+  function moderatorMu() {
+    try {
+      const em = (window.Bulut && Bulut.durum ? (Bulut.durum().email || "") : "").toLowerCase();
+      if (em && YONETICI_EPOSTA.indexOf(em) !== -1) return true;
+    } catch (e) {}
+    try { return !!(window.ToplulukSosyal && ToplulukSosyal.moderatorMuCached && ToplulukSosyal.moderatorMuCached()); } catch (e) { return false; }
+  }
   function nativeMi() { return window.__ISIGINI_NATIVE === true || /\bwv\b/i.test(navigator.userAgent || ""); }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
   function urunBul(kod) { return KATALOG.find(u => u.kod === kod) || null; }
