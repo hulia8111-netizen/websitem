@@ -99,6 +99,7 @@ const Kutuphane = window.Kutuphane = (() => {
     // yeniden çiz
     kutuphaneCiz();
     yoneticiCiz();
+    listeDijital();
     // mağaza açıksa ve ürünler görünüyorsa tazele
     if (window.Magaza && Magaza.yenidenCiz) Magaza.yenidenCiz();
   }
@@ -190,8 +191,12 @@ const Kutuphane = window.Kutuphane = (() => {
       document.body.appendChild(p);
       p.addEventListener("click", e => { if (e.target === p || e.target.classList.contains("ktp-modal-kapat")) { p.classList.remove("gor"); setTimeout(() => p.hidden = true, 220); } });
     }
+    const A = k => (window.SiteAyar ? SiteAyar.get(k, null) : null);
+    const iban = A("iban") || ODEME.iban;
+    const ibanAd = A("iban_ad") || ODEME.ad;
+    const waNo = A("wa_dijital") || ODEME.wa;
     const waMesaj = encodeURIComponent(`Merhaba, "${urun.baslik}" (${urun.fiyat}) satın almak istiyorum. Havaleyi yaptım ✨ Uygulama e-postam: `);
-    const waLink = `https://wa.me/${ODEME.wa}?text=${waMesaj}`;
+    const waLink = `https://wa.me/${waNo}?text=${waMesaj}`;
     p.innerHTML = `
       <div class="ktp-modal-ic">
         <button class="ktp-modal-kapat" aria-label="Kapat">✕</button>
@@ -202,8 +207,8 @@ const Kutuphane = window.Kutuphane = (() => {
         <div class="ktp-sa-adimlar">
           <div class="ktp-sa-adim"><span>1</span> Aşağıdaki IBAN'a <strong>${esc(urun.fiyat)}</strong> havale/EFT yap.</div>
           <div class="ktp-iban">
-            <div class="ktp-iban-ad">${esc(ODEME.ad)}</div>
-            <div class="ktp-iban-no">${esc(ODEME.iban)}</div>
+            <div class="ktp-iban-ad">${esc(ibanAd)}</div>
+            <div class="ktp-iban-no">${esc(iban)}</div>
           </div>
           <div class="ktp-sa-adim"><span>2</span> Dekontu + <strong>uygulama e-postanı</strong> WhatsApp'tan bize gönder.</div>
           <div class="ktp-sa-adim"><span>3</span> Erişimin açılır; içerik <strong>Kütüphanem 📚</strong> bölümüne düşer.</div>
@@ -362,12 +367,50 @@ const Kutuphane = window.Kutuphane = (() => {
       const { error } = await c.from("dijital_urun").upsert(satir, { onConflict: "kod" });
       if (error) throw error;
       await katalogYukle();
-      bil.innerHTML = `✅ Eklendi! <b>Son adım:</b> PDF'i depoda <b>ritueller</b> → <b>${esc(kod)}</b> klasörüne <b>rehber.pdf</b> olarak yükle.`;
+      bil.innerHTML = `✅ Kaydedildi! <b>Not:</b> yeni üründe PDF/dosyayı depoda <b>ritueller → ${esc(kod)}</b> klasörüne yükle.`;
       bil.style.color = "var(--basari,#4caf7d)";
-      ["ue-kod", "ue-baslik", "ue-ozet", "ue-aciklama", "ue-icerik", "ue-fiyat", "ue-tarih"].forEach(id => { if ($("#" + id)) $("#" + id).value = ""; });
+      formTemizleDijital();
     } catch (e) {
       bil.textContent = "Hata: " + ((e && e.message) || "eklenemedi"); bil.style.color = "var(--hata,#e06a6a)";
     }
+  }
+
+  /* ---------- dijital ürün düzenle / sil / liste ---------- */
+  function formTemizleDijital() {
+    ["ue-kod", "ue-baslik", "ue-ozet", "ue-aciklama", "ue-icerik", "ue-fiyat", "ue-tarih"].forEach(id => { if ($("#" + id)) $("#" + id).value = ""; });
+    const b = $("#ue-ekle"); if (b) b.textContent = "Ürünü Ekle";
+    const ip = $("#ue-iptal"); if (ip) ip.style.display = "none";
+    const kod = $("#ue-kod"); if (kod) kod.readOnly = false;
+  }
+  function dijitalDuzenle(u) {
+    const v = (id, val) => { if ($("#" + id)) $("#" + id).value = val || ""; };
+    v("ue-kod", u.kod); v("ue-baslik", u.baslik); v("ue-ozet", u.ozet); v("ue-aciklama", u.aciklama);
+    v("ue-icerik", (u.icerik || []).join("\n")); v("ue-fiyat", u.fiyat); v("ue-tarih", u.tarih);
+    const kod = $("#ue-kod"); if (kod) kod.readOnly = true;                 // düzenlemede kod değişmesin
+    const b = $("#ue-ekle"); if (b) b.textContent = "Değişikliği Kaydet";
+    const ip = $("#ue-iptal"); if (ip) ip.style.display = "inline-block";
+    const sec = $("#urun-ekle-yonetici"); if (sec) sec.scrollIntoView({ block: "start" });
+  }
+  async function dijitalSil(kod, ad) {
+    if (!confirm(`"${ad || kod}" ürünü silinsin mi?`)) return;
+    const c = sb(); if (!c) return;
+    try { await c.from("dijital_urun").delete().eq("kod", kod); await katalogYukle(); } catch (e) {}
+  }
+  function listeDijital() {
+    const liste = $("#ue-liste"); if (!liste) return;
+    if (!KATALOG.length) { liste.innerHTML = `<p class="muted small">Henüz ürün yok.</p>`; return; }
+    liste.innerHTML = "";
+    KATALOG.forEach(u => {
+      const s = document.createElement("div");
+      s.className = "mu-satir";
+      s.innerHTML = `<div class="mu-satir-foto">🌙</div>
+        <div class="mu-satir-ic"><b>${esc(u.baslik)}</b><span class="muted small">${esc(u.fiyat || "fiyat yok")} · ${esc(u.kod)}</span></div>
+        <button class="mu-duzenle" type="button">Düzenle</button>
+        <button class="mu-sil" type="button" aria-label="Sil">✕</button>`;
+      s.querySelector(".mu-duzenle").addEventListener("click", () => dijitalDuzenle(u));
+      s.querySelector(".mu-sil").addEventListener("click", () => dijitalSil(u.kod, u.baslik));
+      liste.appendChild(s);
+    });
   }
 
   /* ---------- bağlan ---------- */
@@ -376,6 +419,7 @@ const Kutuphane = window.Kutuphane = (() => {
     yoneticiCiz();
     const eyBtn = $("#ey-ver"); if (eyBtn) eyBtn.addEventListener("click", erisVer);
     const ueBtn = $("#ue-ekle"); if (ueBtn) ueBtn.addEventListener("click", urunEkle);
+    const ueIptal = $("#ue-iptal"); if (ueIptal) ueIptal.addEventListener("click", formTemizleDijital);
     // Katalogu buluttan yükle (herkese açık; oturumsuz da çalışır)
     katalogYukle();
     setTimeout(katalogYukle, 2500);

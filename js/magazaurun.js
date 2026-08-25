@@ -39,7 +39,13 @@ const MagazaUrun = window.MagazaUrun = (() => {
     return cache[bolum];
   }
 
-  function waNo(u, bolum) { return (u && u.wa_no) || WA_VARSAYILAN[bolum || AKTIF_BOLUM] || "905300421259"; }
+  function waNo(u, bolum) {
+    if (u && u.wa_no) return u.wa_no;
+    // Bölüme göre ayardan (Işık Mumları → wa_mum)
+    const anahtar = (bolum || AKTIF_BOLUM) === "isik-mumlari" ? "wa_mum" : null;
+    if (anahtar && window.SiteAyar) { const v = SiteAyar.get(anahtar, null); if (v) return v; }
+    return WA_VARSAYILAN[bolum || AKTIF_BOLUM] || "905300421259";
+  }
   function siparisWA(u, bolum) {
     const mesaj = `Merhaba, "${u.ad}" için sipariş vermek / bilgi almak istiyorum ✨`;
     return `https://wa.me/${waNo(u, bolum)}?text=${encodeURIComponent(mesaj)}`;
