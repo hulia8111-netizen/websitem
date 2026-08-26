@@ -13,8 +13,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=187" />
-  <link rel="stylesheet" href="css/kutuphane.css?v=187" />
+  <link rel="stylesheet" href="css/style.css?v=188" />
+  <link rel="stylesheet" href="css/kutuphane.css?v=188" />
 </head>
 <body>
   <!-- Açılış (splash) ekranı: logo + isim + Word'den rastgele ilham cümlesi -->
@@ -39,8 +39,8 @@
       </div>
     </div>
   </div><!-- /splash -->
-  <script src="js/acilis-cumleler.js?v=187"></script>
-  <script src="js/splash.js?v=187"></script>
+  <script src="js/acilis-cumleler.js?v=188"></script>
+  <script src="js/splash.js?v=188"></script>
 
   <div class="aura" aria-hidden="true">
     <span class="blob blob-1"></span>
@@ -461,52 +461,7 @@
           </div>
         </section>
 
-        <section class="card" id="ruhhali">
-          <h2>Bugünkü Ruh Halin</h2>
-          <div class="mood-butonlar" id="mood-butonlar"></div>
-          <div class="satir-arasi">
-            <button class="btn" id="mood-kaydet">Kaydet</button>
-            <span class="kayit-bilgi" id="mood-bilgi"></span>
-          </div>
-          <p class="muted small mood-baslik">Son 7 Gün</p>
-          <div class="mood-serit" id="mood-serit"></div>
-          <div class="mood-istatistik" id="mood-istatistik" hidden></div>
-        </section>
-
-        <section class="card card-wide card-rituel" id="rituel">
-          <div class="rituel-bar">
-            <h2>Günün Ritüeli 🔮</h2>
-            <div class="rituel-xp" id="rituel-xp"></div>
-          </div>
-          <div class="rituel-kart" id="rituel-kart">
-            <div class="rk-ikon" id="rk-ikon">🌬️</div>
-            <div class="rk-kategori" id="rk-kategori">…</div>
-            <div class="rk-zorluk hafif" id="rk-zorluk"></div>
-            <p class="rk-metin" id="rk-metin">…</p>
-            <div class="rituel-parcacik" id="rituel-parcacik" aria-hidden="true"></div>
-          </div>
-          <div class="rituel-aksiyon">
-            <button class="btn" id="rituel-tamam">Tamamla ✦</button>
-            <button class="btn ghost sm" id="rituel-yenile">Yenile ↻</button>
-            <button class="rituel-fav" id="rituel-fav" aria-label="Favori ritüel">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.35-7-9a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 4.65-7 9-7 9z"/></svg>
-            </button>
-          </div>
-          <div class="rituel-rozet-serit e-rozet-serit" id="rituel-rozet"></div>
-          <details class="gecmis">
-            <summary>Geçmiş &amp; Favoriler</summary>
-            <div id="rituel-fav-liste"></div>
-            <div id="rituel-gecmis-liste"></div>
-          </details>
-        </section>
-
-        <section class="card" id="soru">
-          <h2>Farkındalık Sorusu</h2>
-          <p id="soru-metin" class="soru-metin">…</p>
-          <textarea id="soru-cevap" rows="3" placeholder="Cevabını buraya yaz…"></textarea>
-          <button class="btn" id="soru-kaydet">Kaydet</button>
-          <span class="kayit-bilgi" id="soru-bilgi"></span>
-        </section>
+        
 
       </div>
     </div>
@@ -599,6 +554,54 @@
         <div class="bb-ic"><div class="bb-metin"></div><div class="bb-bar"><span class="bb-bar-dolu"></span></div></div>
       </div>
       <div class="grid">
+
+        <section class="card" id="ruhhali">
+          <h2>Bugünkü Ruh Halin</h2>
+          <div class="mood-butonlar" id="mood-butonlar"></div>
+          <div class="satir-arasi">
+            <button class="btn" id="mood-kaydet">Kaydet</button>
+            <span class="kayit-bilgi" id="mood-bilgi"></span>
+          </div>
+          <p class="muted small mood-baslik">Son 7 Gün</p>
+          <div class="mood-serit" id="mood-serit"></div>
+          <div class="mood-istatistik" id="mood-istatistik" hidden></div>
+        </section>
+
+        <section class="card card-wide card-rituel" id="rituel">
+          <div class="rituel-bar">
+            <h2>Günün Ritüeli 🔮</h2>
+            <div class="rituel-xp" id="rituel-xp"></div>
+          </div>
+          <div class="rituel-kart" id="rituel-kart">
+            <div class="rk-ikon" id="rk-ikon">🌬️</div>
+            <div class="rk-kategori" id="rk-kategori">…</div>
+            <div class="rk-zorluk hafif" id="rk-zorluk"></div>
+            <p class="rk-metin" id="rk-metin">…</p>
+            <div class="rituel-parcacik" id="rituel-parcacik" aria-hidden="true"></div>
+          </div>
+          <div class="rituel-aksiyon">
+            <button class="btn" id="rituel-tamam">Tamamla ✦</button>
+            <button class="btn ghost sm" id="rituel-yenile">Yenile ↻</button>
+            <button class="rituel-fav" id="rituel-fav" aria-label="Favori ritüel">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.35-7-9a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 4.65-7 9-7 9z"/></svg>
+            </button>
+          </div>
+          <div class="rituel-rozet-serit e-rozet-serit" id="rituel-rozet"></div>
+          <details class="gecmis">
+            <summary>Geçmiş &amp; Favoriler</summary>
+            <div id="rituel-fav-liste"></div>
+            <div id="rituel-gecmis-liste"></div>
+          </details>
+        </section>
+
+        <section class="card" id="soru">
+          <h2>Farkındalık Sorusu</h2>
+          <p id="soru-metin" class="soru-metin">…</p>
+          <textarea id="soru-cevap" rows="3" placeholder="Cevabını buraya yaz…"></textarea>
+          <button class="btn" id="soru-kaydet">Kaydet</button>
+          <span class="kayit-bilgi" id="soru-bilgi"></span>
+        </section>
+
 
         <section class="card card-wide defter-kart" id="gunluk">
           <!-- KAPAK · deri kaplı, metal kilitli -->
@@ -1076,53 +1079,53 @@
     </button>
   </nav>
 
-  <script src="js/data.js?v=187"></script>
-  <script src="js/farkindalik-sorulari.js?v=187"></script>
-  <script src="js/mini-gorevler.js?v=187"></script>
-  <script src="js/store.js?v=187"></script>
-  <script src="js/perf.js?v=187"></script>
-  <script src="js/audio.js?v=187"></script>
-  <script src="js/muzik.js?v=187"></script>
-  <script src="js/rehbermed.js?v=187"></script>
-  <script src="js/rehber.js?v=187"></script>
-  <script src="js/ay.js?v=187"></script>
-  <script src="js/app.js?v=187"></script>
-  <script src="js/kartpaylas.js?v=187"></script>
-  <script src="js/haftalik-hedefler.js?v=187"></script>
-  <script src="js/haftalikhedef.js?v=187"></script>
-  <script src="js/streak.js?v=187"></script>
-  <script src="js/gorevler.js?v=187"></script>
-  <script src="js/energy.js?v=187"></script>
-  <script src="js/gunluk.js?v=187"></script>
-  <script src="js/overlay-geri.js?v=187"></script>
-  <script src="js/pushtoken.js?v=187"></script>
-  <script src="js/gunlukilham.js?v=187"></script>
-  <script src="js/rapor.js?v=187"></script>
-  <script src="js/bildirim.js?v=187"></script>
-  <script src="js/bildirimayar.js?v=187"></script>
-  <script src="js/magaza.js?v=187"></script>
-  <script src="js/profil.js?v=187"></script>
-  <script src="js/rituel.js?v=187"></script>
-  <script src="js/test.js?v=187"></script>
-  <script src="js/enerjitipi.js?v=187"></script>
-  <script src="js/cakra.js?v=187"></script>
-  <script src="js/nefes.js?v=187"></script>
-  <script src="js/vision.js?v=187"></script>
-  <script src="js/ciftsaat.js?v=187"></script>
-  <script src="js/takvim.js?v=187"></script>
-  <script src="js/hafta.js?v=187"></script>
+  <script src="js/data.js?v=188"></script>
+  <script src="js/farkindalik-sorulari.js?v=188"></script>
+  <script src="js/mini-gorevler.js?v=188"></script>
+  <script src="js/store.js?v=188"></script>
+  <script src="js/perf.js?v=188"></script>
+  <script src="js/audio.js?v=188"></script>
+  <script src="js/muzik.js?v=188"></script>
+  <script src="js/rehbermed.js?v=188"></script>
+  <script src="js/rehber.js?v=188"></script>
+  <script src="js/ay.js?v=188"></script>
+  <script src="js/app.js?v=188"></script>
+  <script src="js/kartpaylas.js?v=188"></script>
+  <script src="js/haftalik-hedefler.js?v=188"></script>
+  <script src="js/haftalikhedef.js?v=188"></script>
+  <script src="js/streak.js?v=188"></script>
+  <script src="js/gorevler.js?v=188"></script>
+  <script src="js/energy.js?v=188"></script>
+  <script src="js/gunluk.js?v=188"></script>
+  <script src="js/overlay-geri.js?v=188"></script>
+  <script src="js/pushtoken.js?v=188"></script>
+  <script src="js/gunlukilham.js?v=188"></script>
+  <script src="js/rapor.js?v=188"></script>
+  <script src="js/bildirim.js?v=188"></script>
+  <script src="js/bildirimayar.js?v=188"></script>
+  <script src="js/magaza.js?v=188"></script>
+  <script src="js/profil.js?v=188"></script>
+  <script src="js/rituel.js?v=188"></script>
+  <script src="js/test.js?v=188"></script>
+  <script src="js/enerjitipi.js?v=188"></script>
+  <script src="js/cakra.js?v=188"></script>
+  <script src="js/nefes.js?v=188"></script>
+  <script src="js/vision.js?v=188"></script>
+  <script src="js/ciftsaat.js?v=188"></script>
+  <script src="js/takvim.js?v=188"></script>
+  <script src="js/hafta.js?v=188"></script>
   
-  <script src="js/kozmik.js?v=187"></script>
+  <script src="js/kozmik.js?v=188"></script>
   <!-- Bulut üyelik & senkron (Supabase) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/supabase-config.js?v=187"></script>
-  <script src="js/bulut.js?v=187"></script>
-  <script src="js/topluluk.js?v=187"></script>
-  <script src="js/topluluk-sosyal.js?v=187"></script>
-  <script src="js/topluluk-duyuru.js?v=187"></script>
-  <script src="js/siteayar.js?v=187"></script>
-  <script src="js/kutuphane.js?v=187"></script>
-  <script src="js/magazaurun.js?v=187"></script>
+  <script src="js/supabase-config.js?v=188"></script>
+  <script src="js/bulut.js?v=188"></script>
+  <script src="js/topluluk.js?v=188"></script>
+  <script src="js/topluluk-sosyal.js?v=188"></script>
+  <script src="js/topluluk-duyuru.js?v=188"></script>
+  <script src="js/siteayar.js?v=188"></script>
+  <script src="js/kutuphane.js?v=188"></script>
+  <script src="js/magazaurun.js?v=188"></script>
   <script>
     if ("serviceWorker" in navigator) {
       // SW'yi kaydet ve arka planda güncelle. ZORLA RELOAD YOK: fetch network-first
