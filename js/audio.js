@@ -141,7 +141,19 @@ const SesMotoru = window.SesMotoru = (() => {
   function gecen() { return ctx ? Math.max(0, ctx.currentTime - baslangic) : 0; }
   function caliyor() { return !!aktif; }
 
-  return { cal, durdur, setVolume, gecen, caliyor };
+  /* Nefesle senkron: aktif sesi al'da yükselt, ver'de sönümle (çemberle birlikte gelip gider) */
+  function nefesModulasyon(hedef, sure) {
+    if (!aktif || !ctx || !aktif.gain) return;
+    try {
+      const t = ctx.currentTime;
+      const g = aktif.gain.gain;
+      g.cancelScheduledValues(t);
+      g.setValueAtTime(Math.max(0.001, g.value), t);
+      g.linearRampToValueAtTime(Math.max(0.02, hedef), t + Math.max(0.15, sure));
+    } catch (e) {}
+  }
+
+  return { cal, durdur, setVolume, gecen, caliyor, nefesModulasyon };
 })();
 
 /* Geriye dönük uyum: tek frekans çalan eski API */

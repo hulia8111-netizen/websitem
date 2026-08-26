@@ -49,6 +49,11 @@ const Nefes = window.Nefes = (() => {
       fazBitis = Date.now() + f.sure * 1000;     // bu fazın bitiş anı (saniye sayımı için)
       kure.style.transitionDuration = f.sure + "s";
       kure.className = "nefes-kure " + f.sinif;
+      // Ses çemberle senkron: al'da yükselir, tut'ta sabit, ver'de sönümlenir
+      if (sesAcik && window.SesMotoru && SesMotoru.nefesModulasyon) {
+        const hedefG = f.sinif === "genis" ? 0.62 : (f.sinif === "dar" ? 0.10 : 0.42);
+        SesMotoru.nefesModulasyon(hedefG, f.sure);
+      }
       if (titresimAcik && navigator.vibrate) navigator.vibrate(f.sinif === "genis" ? 180 : f.sinif === "dar" ? [60, 60, 60] : 40);
       sayacGuncelle();                            // sayıyı hemen güncelle
       if (fi === fazlar.length - 1) dongu++;
@@ -112,7 +117,10 @@ const Nefes = window.Nefes = (() => {
     const ses = $("nefes-ses-toggle"), tit = $("nefes-titresim-toggle");
     sesAcik = Store.get("nefes-ses", true); titresimAcik = Store.get("nefes-titresim", true);
     ses.checked = sesAcik; tit.checked = titresimAcik;
-    ses.onchange = () => { sesAcik = ses.checked; Store.set("nefes-ses", sesAcik); };
+    ses.onchange = () => {
+      sesAcik = ses.checked; Store.set("nefes-ses", sesAcik);
+      if (calisiyor && window.SesMotoru) { if (sesAcik) SesMotoru.cal({ tip: "pad", alt: "derin" }); else SesMotoru.durdur(); }
+    };
     tit.onchange = () => { titresimAcik = tit.checked; Store.set("nefes-titresim", titresimAcik); };
   }
   function cizGecmis() {
