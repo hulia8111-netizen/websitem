@@ -56,6 +56,10 @@ html, body { margin: 0; padding: 0; }
    overflow-x: clip scroll konteyneri OLUŞTURMAZ → dikey kaydırma bozulmaz.
    hidden yedeği eski WebView'ler için (clip desteklemeyenler). */
 html, body { overflow-x: hidden; overflow-x: clip; max-width: 100%; }
+/* Sadece yukarı-aşağı: parmakla yatay kaydırma ve pinch-zoom kapalı (butonlar/tıklama etkilenmez) */
+html { touch-action: pan-y; }
+/* Yatay kayması gereken şeritler yine parmakla kaysın */
+.mood-serit, .vb-galeri, .tp-sekmeler-kaydir { touch-action: pan-x; }
 /* WebView'de her zaman koyu taban — arka plan hiç beyaz görünmesin */
 html { background: var(--bg-0); }
 
