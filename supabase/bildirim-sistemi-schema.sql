@@ -49,7 +49,7 @@ drop policy if exists "duyuru_okundu_insert" on public.duyuru_okundu;
 create policy "duyuru_okundu_insert" on public.duyuru_okundu for insert with check (true);
 drop policy if exists "duyuru_okundu_select" on public.duyuru_okundu;
 create policy "duyuru_okundu_select" on public.duyuru_okundu for select
-  using (public.is_moderator() or kim = coalesce(auth.uid()::text, kim));
+  using (public.is_moderator() or (auth.uid() is not null and kim = auth.uid()::text) or kim like 'c:%');
 
 -- ---- 3) Topluluk duyurusu → ETKİNLİK + RSVP (katılım) ----
 alter table public.topluluk_duyuru add column if not exists etkinlik boolean not null default false;
@@ -70,7 +70,7 @@ drop policy if exists "katilim_update_self" on public.duyuru_katilim;
 create policy "katilim_update_self" on public.duyuru_katilim for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
 -- Okuma: herkes (sayımlar için) — kişi bazında değil toplu kullanılır; moderatör kırılımı görür.
 drop policy if exists "katilim_select" on public.duyuru_katilim;
-create policy "katilim_select" on public.duyuru_katilim for select using (true);
+create policy "katilim_select" on public.duyuru_katilim for select using (public.is_moderator() or auth.uid() = user_id);
 
 -- Yöneticiye kırılım: her duyuru için durum sayıları
 create or replace view public.duyuru_katilim_ozet as
