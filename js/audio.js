@@ -137,7 +137,8 @@ const SesMotoru = window.SesMotoru = (() => {
     return true;
   }
 
-  function setVolume(v) { if (!master) ac(); master.gain.value = v; try { localStorage.setItem("kdm_muzik-vol-raw", String(v)); } catch (e) {} }
+  function setVolume(v, kalici) { if (!master) ac(); master.gain.value = v; if (kalici !== false) { try { localStorage.setItem("kdm_muzik-vol-raw", String(v)); } catch (e) {} } }
+  function anaSes() { return master ? master.gain.value : parseFloat(localStorage.getItem("kdm_muzik-vol-raw") || "0.6"); }
   function gecen() { return ctx ? Math.max(0, ctx.currentTime - baslangic) : 0; }
   function caliyor() { return !!aktif; }
 
@@ -153,7 +154,7 @@ const SesMotoru = window.SesMotoru = (() => {
     } catch (e) {}
   }
 
-  return { cal, durdur, setVolume, gecen, caliyor, nefesModulasyon };
+  return { cal, durdur, setVolume, anaSes, gecen, caliyor, nefesModulasyon };
 })();
 
 /* Geriye dönük uyum: tek frekans çalan eski API */

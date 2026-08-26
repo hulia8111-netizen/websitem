@@ -16,6 +16,18 @@ const Nefes = window.Nefes = (() => {
   let seciliSure = 180;  // saniye
   let sesAcik = true, titresimAcik = true;
   let calisiyor = false, fazTimer = null, sayacTimer = null, seansBitis = 0, dongu = 0, fazBitis = 0;
+  let oncekiAnaSes = null;   // nefes seansında ana ses geçici yükseltilir, çıkışta geri alınır
+
+  function nefesSesiBaslat() {
+    if (!sesAcik || !window.SesMotoru) return;
+    try { oncekiAnaSes = SesMotoru.anaSes(); if (oncekiAnaSes < 0.8) SesMotoru.setVolume(0.85, false); } catch (e) {}
+    SesMotoru.cal({ tip: "pad", alt: "derin" });
+  }
+  function nefesSesiDurdur() {
+    if (!window.SesMotoru) return;
+    SesMotoru.durdur();
+    if (oncekiAnaSes != null) { try { SesMotoru.setVolume(oncekiAnaSes, false); } catch (e) {} oncekiAnaSes = null; }
+  }
 
   function seanslar() { return Store.get("nefes-seanslar", []); }
   function seansKaydet(turAd, dk) {
@@ -37,7 +49,7 @@ const Nefes = window.Nefes = (() => {
     seansBitis = Date.now() + seciliSure * 1000;
     $("nefes-tur-ad").textContent = seciliTur.ad;
     const kure = $("nefes-kure"); kure.style.background = `radial-gradient(circle at 38% 32%, ${seciliTur.renk[0]}, ${seciliTur.renk[1]})`;
-    if (sesAcik) SesMotoru.cal({ tip: "pad", alt: "derin" });
+    nefesSesiBaslat();
     const fazlar = fazlarOf(seciliTur);
     let fi = 0;
     const faz = $("nefes-faz");
@@ -51,7 +63,7 @@ const Nefes = window.Nefes = (() => {
       kure.className = "nefes-kure " + f.sinif;
       // Ses çemberle senkron: al'da yükselir, tut'ta sabit, ver'de sönümlenir
       if (sesAcik && window.SesMotoru && SesMotoru.nefesModulasyon) {
-        const hedefG = f.sinif === "genis" ? 0.62 : (f.sinif === "dar" ? 0.10 : 0.42);
+        const hedefG = f.sinif === "genis" ? 1.5 : (f.sinif === "dar" ? 0.35 : 1.05);
         SesMotoru.nefesModulasyon(hedefG, f.sure);
       }
       if (titresimAcik && navigator.vibrate) navigator.vibrate(f.sinif === "genis" ? 180 : f.sinif === "dar" ? [60, 60, 60] : 40);
@@ -76,7 +88,7 @@ const Nefes = window.Nefes = (() => {
     calisiyor = false;
     if (fazTimer) clearTimeout(fazTimer);
     if (sayacTimer) clearInterval(sayacTimer);
-    SesMotoru.durdur();
+    nefesSesiDurdur();
     if (navigator.vibrate) navigator.vibrate(0);
     if (tamam) seansKaydet(seciliTur.ad, Math.round(seciliSure / 60));
     $("nefes-seans").hidden = true;
@@ -119,7 +131,7 @@ const Nefes = window.Nefes = (() => {
     ses.checked = sesAcik; tit.checked = titresimAcik;
     ses.onchange = () => {
       sesAcik = ses.checked; Store.set("nefes-ses", sesAcik);
-      if (calisiyor && window.SesMotoru) { if (sesAcik) SesMotoru.cal({ tip: "pad", alt: "derin" }); else SesMotoru.durdur(); }
+      if (calisiyor) { if (sesAcik) nefesSesiBaslat(); else nefesSesiDurdur(); }
     };
     tit.onchange = () => { titresimAcik = tit.checked; Store.set("nefes-titresim", titresimAcik); };
   }
@@ -159,7 +171,7 @@ const Nefes = window.Nefes = (() => {
     if (calisiyor) bitir(false);
     const ov = $("nefes-overlay");
     ov.classList.remove("gor");
-    SesMotoru.durdur();
+    nefesSesiDurdur();
     setTimeout(() => { ov.hidden = true; document.body.classList.remove("nefes-mod"); }, 400);
   }
 
