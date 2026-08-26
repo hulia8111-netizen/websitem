@@ -96,6 +96,17 @@
 .ktp-web-adres { font-family: "Playfair Display", Georgia, serif; color: var(--gold-soft); font-size: 1.3rem; letter-spacing: .05em;
   padding: 14px; border: 1px solid rgba(233,196,106,.4); border-radius: 14px; margin-bottom: 14px; }
 
+/* --- Günün İlhamı: paylaş --- */
+.ilham-paylas { margin-top: 22px; text-align: center; }
+.ilham-paylas-baslik { display: block; font-size: .74rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold-soft); margin-bottom: 12px; opacity: .85; }
+.ilham-paylas-btnlar { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.ilham-pay { display: inline-flex; align-items: center; gap: 7px; cursor: pointer; padding: 9px 16px; border-radius: 999px;
+  font-size: .84rem; font-weight: 600; color: var(--cream, #f4ecd8); border: 1px solid rgba(233,196,106,.35); background: rgba(255,255,255,.06); }
+.ilham-pay:active { transform: scale(.96); }
+.ilham-pay.wa { border-color: rgba(37,211,102,.55); }
+.ilham-pay.ig { border-color: rgba(225,48,108,.55); }
+.ilham-pay.fb { border-color: rgba(24,119,242,.55); }
+
 /* --- Günün Kartı: Derin Anlam (seviye ödülü) --- */
 .kart-derin-teaser { text-align: center; padding: 12px 10px; opacity: .9; }
 .kart-derin-teaser .kd-ikon { font-size: 1.8rem; }

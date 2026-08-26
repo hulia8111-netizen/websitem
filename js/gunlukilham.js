@@ -37,11 +37,41 @@ const GunlukIlham = window.GunlukIlham = (() => {
         '<div class="ilham-amblem">✨</div>' +
         '<blockquote class="ilham-soz" id="ilham-soz"></blockquote>' +
         '<p class="ilham-alt muted small">Günün ilham cümlesi · her gün yeni</p>' +
+        '<div class="ilham-paylas">' +
+          '<span class="ilham-paylas-baslik">Paylaş</span>' +
+          '<div class="ilham-paylas-btnlar">' +
+            '<button class="ilham-pay wa" id="ilham-pay-wa" type="button" aria-label="WhatsApp\'ta paylaş">💬<span>WhatsApp</span></button>' +
+            '<button class="ilham-pay ig" id="ilham-pay-ig" type="button" aria-label="Instagram\'da paylaş">📸<span>Instagram</span></button>' +
+            '<button class="ilham-pay fb" id="ilham-pay-fb" type="button" aria-label="Facebook\'ta paylaş">👍<span>Facebook</span></button>' +
+          '</div>' +
+        '</div>' +
       '</div>';
     document.body.appendChild(ov);
     ov.querySelector(".ilham-kapat").addEventListener("click", kapat);
     ov.addEventListener("click", e => { if (e.target === ov) kapat(); });
+    ov.querySelector("#ilham-pay-wa").addEventListener("click", waPaylas);
+    ov.querySelector("#ilham-pay-fb").addEventListener("click", fbPaylas);
+    ov.querySelector("#ilham-pay-ig").addEventListener("click", igPaylas);
     return ov;
+  }
+
+  /* ---------- paylaşım ---------- */
+  const APP_URL = "https://isiginibull.net";
+  function paylasMetni() { return "“" + bugununSozu() + "”\n\n— Işığını Bul ✨"; }
+  function waPaylas() {
+    window.open("https://wa.me/?text=" + encodeURIComponent(paylasMetni() + "\n" + APP_URL), "_blank", "noopener,noreferrer");
+  }
+  function fbPaylas() {
+    window.open("https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(APP_URL) + "&quote=" + encodeURIComponent(paylasMetni()), "_blank", "noopener,noreferrer");
+  }
+  async function igPaylas() {
+    const metin = paylasMetni() + "\n" + APP_URL;
+    // Instagram metni doğrudan URL ile almaz → önce yerel paylaşım penceresi (Instagram burada çıkar)
+    if (navigator.share) { try { await navigator.share({ text: metin }); return; } catch (e) { if (e && e.name === "AbortError") return; } }
+    // Değilse: panoya kopyala + Instagram'ı aç
+    try { await navigator.clipboard.writeText(metin); } catch (e) {}
+    try { alert("İlham cümlesi kopyalandı ✨ Instagram'ı açıp gönderine yapıştırabilirsin."); } catch (e) {}
+    window.open("https://www.instagram.com/", "_blank", "noopener,noreferrer");
   }
 
   function ac() {
