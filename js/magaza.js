@@ -296,7 +296,8 @@ const Magaza = window.Magaza = (() => {
   }
 
   function baglan() {
-    const acBtn = $("#magaza-ac"); if (acBtn) acBtn.addEventListener("click", ac);
+    const acBtn = $("#magaza-ac"); if (acBtn) acBtn.addEventListener("click", () => ac());
+    const ikBtn = $("#ik-tanitim-ac"); if (ikBtn) ikBtn.addEventListener("click", () => ac("isik-kartlari"));
     const kapatBtn = $("#magaza-kapat"); if (kapatBtn) kapatBtn.addEventListener("click", kapat);
     const ov = $("#magaza-overlay"); if (ov) ov.addEventListener("click", e => { if (e.target === ov) kapat(); });
   }

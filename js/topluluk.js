@@ -20,7 +20,7 @@ const Topluluk = window.Topluluk = (() => {
     sukran: { ad: "Şükran defteri", ikon: "🙏" }, haftalik: { ad: "Haftalık görev", ikon: "🌟" }
   };
 
-  let aktifSekme = "isik";   // isik | rozet | gecmis
+  let aktifSekme = "paylasim";   // varsayılan: Paylaşımlar (sonra Duyurular, Işık, Galeri, Rozet, Geçmiş)
   let liderlik = null, kazananlar = null, yukleniyor = false;
 
   /* ---------- Hafta hesabı (Pazartesi başlangıç → Pazar 23:59 bitiş) ---------- */
@@ -105,7 +105,7 @@ const Topluluk = window.Topluluk = (() => {
   }
 
   function cizSekmeler() {
-    const sek = [["isik", "🌟 Işık"], ["duyuru", "📢 Duyurular"], ["paylasim", "📝 Paylaşımlar"], ["galeri", "📸 Galeri"], ["rozet", "🏅 Rozetler"], ["gecmis", "📜 Geçmiş"]];
+    const sek = [["paylasim", "📝 Paylaşımlar"], ["duyuru", "📢 Duyurular"], ["isik", "🌟 Işık"], ["galeri", "📸 Galeri"], ["rozet", "🏅 Rozetler"], ["gecmis", "📜 Geçmiş"]];
     if (window.ToplulukSosyal && ToplulukSosyal.moderatorMuCached && ToplulukSosyal.moderatorMuCached()) sek.push(["moderasyon", "🛡️ Moderasyon"]);
     return `<div class="tp-sekmeler tp-sekmeler-kaydir">${sek.map(([id, ad]) =>
       `<button class="tp-sekme${aktifSekme === id ? " aktif" : ""}" data-sek="${id}">${esc(ad)}</button>`).join("")}</div>`;
@@ -229,7 +229,7 @@ const Topluluk = window.Topluluk = (() => {
   function ac() {
     const ov = $("topluluk-overlay"); if (!ov) return;
     ov.hidden = false;
-    aktifSekme = "isik"; ciz();
+    aktifSekme = "paylasim"; ciz();
     verileriYukle();
     // Sosyal modülü hazırla (moderatör/engel/takip) → bitince sekmeleri tazele (Moderasyon sekmesi belirsin)
     if (window.ToplulukSosyal && ToplulukSosyal.hazirla) ToplulukSosyal.hazirla().then(() => { if (!$("topluluk-overlay").hidden) ciz(); });
