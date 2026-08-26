@@ -397,5 +397,5 @@ const ToplulukSosyal = window.ToplulukSosyal = (() => {
     lb.classList.add("gor");
   }
 
-  return { hazirla, moderatorMuCached, cizPaylasimlar, cizModerasyon, cizGaleri };
+  return { hazirla, moderatorMuCached, cizPaylasimlar, cizModerasyon, cizGaleri, paylas, fotoYukle };
 })();

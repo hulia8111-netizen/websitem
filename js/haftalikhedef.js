@@ -116,6 +116,38 @@ const HaftalikHedef = window.HaftalikHedef = (() => {
     ciz(); arsivCiz(); istatCiz();
     if (window.Hafta && Hafta.ciz) Hafta.ciz();
     kutla(h);
+    // Otomatik topluluk paylaşımı (onay kutusu işaretliyse) → topluluğu canlı tutar
+    toplulukaPaylas(h, a.foto);
+  }
+
+  /* ---- deneyim fotoğrafını otomatik toplulukta paylaş ---- */
+  function dataUrlToBlob(dataUrl) {
+    try {
+      const [head, b64] = String(dataUrl).split(",");
+      const mime = (head.match(/:(.*?);/) || [])[1] || "image/jpeg";
+      const bin = atob(b64); const arr = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+      return new Blob([arr], { type: mime });
+    } catch (e) { return null; }
+  }
+  async function toplulukaPaylas(h, fotoDataUrl) {
+    const onay = $("hh-paylas-onay");
+    if (onay && !onay.checked) return;                        // kullanıcı paylaşmak istemedi
+    const not = () => $("hh-tamam-not");
+    const girisli = !!(window.Bulut && Bulut.girisli && Bulut.girisli());
+    if (!girisli) { const n = not(); if (n) n.textContent = "Deneyimin arşivine eklendi 🌟 Toplulukta da paylaşmak istersen Profil → Hesap'tan giriş yap."; return; }
+    if (!(window.ToplulukSosyal && ToplulukSosyal.paylas && ToplulukSosyal.fotoYukle)) return;
+    { const n = not(); if (n) n.textContent = "🌐 Deneyimin toplulukta paylaşılıyor…"; }
+    try {
+      const blob = fotoDataUrl ? dataUrlToBlob(fotoDataUrl) : null;
+      const url = blob ? await ToplulukSosyal.fotoYukle(blob) : null;
+      const metin = `🌟 Bu haftaki deneyimim: ${h.emoji || ""} ${h.ad}`;
+      const r = await ToplulukSosyal.paylas("basari", metin, url);
+      const n = not();
+      if (n) n.textContent = (r && r.ok)
+        ? "✅ Deneyimin toplulukta paylaşıldı — onaydan sonra Haftanın Işığı'nda herkes görecek 🌟"
+        : ("Deneyimin arşivine eklendi 🌟 (Toplulukta paylaşılamadı" + ((r && r.mesaj) ? ": " + r.mesaj : "") + ")");
+    } catch (e) { const n = not(); if (n) n.textContent = "Deneyimin arşivine eklendi 🌟"; }
   }
 
   /* ---- kutlama ---- */

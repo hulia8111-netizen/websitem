@@ -96,6 +96,12 @@
 .ktp-web-adres { font-family: "Playfair Display", Georgia, serif; color: var(--gold-soft); font-size: 1.3rem; letter-spacing: .05em;
   padding: 14px; border: 1px solid rgba(233,196,106,.4); border-radius: 14px; margin-bottom: 14px; }
 
+/* --- Haftalık deneyim: toplulukta paylaş onayı --- */
+.hh-paylas-onay { display: flex; align-items: flex-start; gap: 8px; margin: 4px 0 10px; font-size: .86rem;
+  color: var(--metin-soft); cursor: pointer; line-height: 1.4; }
+.hh-paylas-onay input { margin-top: 3px; flex: 0 0 auto; width: 18px; height: 18px; accent-color: var(--gold); }
+.hh-paylas-onay b { color: var(--gold-soft); }
+
 /* --- Günün Kartı altı: Işık Kartları satın alma tanıtımı --- */
 .ik-tanitim { position: relative; overflow: hidden; text-align: center;
   border: 1px solid rgba(233,196,106,.45);
