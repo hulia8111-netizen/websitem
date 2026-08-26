@@ -159,6 +159,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   navBtns.forEach(b => b.addEventListener("click", () => gotoView(b.dataset.view)));
   window.gotoView = gotoView;  // rehber.js için
+  // "Günün Kartı" artık alt menüde değil; ana sayfadaki araç kartından açılır
+  const kartTile = document.getElementById("kartlar-tile");
+  if (kartTile) kartTile.addEventListener("click", () => gotoView("kartlar"));
 
   /* ====================================================
      SEVİYE BİLGİSİ — bölümler KİLİTLİ DEĞİL (her zaman açık).
