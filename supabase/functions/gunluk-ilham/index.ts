@@ -61,6 +61,16 @@ Deno.serve(async () => {
   const havuz = await havuzGetir();
   if (!havuz.length) return new Response("havuz bos", { status: 200 });
 
+  // Yöneticinin panelden eklediği cümleleri havuza kat (uygulamayla birebir aynı sıra)
+  try {
+    const { data: db } = await sb.from("ilham_cumle").select("metin, sira").eq("aktif", true).order("sira", { ascending: true });
+    const set = new Set(havuz);
+    for (const r of (db || []) as Array<{ metin?: unknown }>) {
+      const m = String(r.metin || "").trim();
+      if (m && !set.has(m)) { havuz.push(m); set.add(m); }
+    }
+  } catch (_e) { /* sessiz → yalnız temel havuz */ }
+
   const gun = trGun(new Date());
   const soz = havuz[gunIndeksi(gun) % havuz.length];
 
