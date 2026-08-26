@@ -13,8 +13,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=185" />
-  <link rel="stylesheet" href="css/kutuphane.css?v=185" />
+  <link rel="stylesheet" href="css/style.css?v=186" />
+  <link rel="stylesheet" href="css/kutuphane.css?v=186" />
 </head>
 <body>
   <!-- Açılış (splash) ekranı: logo + isim + Word'den rastgele ilham cümlesi -->
@@ -39,8 +39,8 @@
       </div>
     </div>
   </div><!-- /splash -->
-  <script src="js/acilis-cumleler.js?v=185"></script>
-  <script src="js/splash.js?v=185"></script>
+  <script src="js/acilis-cumleler.js?v=186"></script>
+  <script src="js/splash.js?v=186"></script>
 
   <div class="aura" aria-hidden="true">
     <span class="blob blob-1"></span>
@@ -354,33 +354,20 @@
     <div class="view active" id="view-home">
       <div class="grid">
 
-        <!-- İstikrar serisi (streak) widget'ı -->
-        <section class="card card-streak card-wide" id="streak-widget">
-          <div class="streak-ust">
-            <div class="streak-alev">
-              <svg class="alev-svg" viewBox="0 0 24 24" aria-hidden="true">
-                <defs>
-                  <linearGradient id="alevG" x1="0" y1="1" x2="0" y2="0">
-                    <stop offset="0%" stop-color="#ff6a2a"/>
-                    <stop offset="55%" stop-color="#ffac3e"/>
-                    <stop offset="100%" stop-color="#f3d98c"/>
-                  </linearGradient>
-                </defs>
-                <path fill="url(#alevG)" d="M12 2c2.6 3.6 5 5.4 5 9.2A5 5 0 0 1 7 11.4c0-1.6.6-2.7 1.7-3.9.2 1.4.9 2.2 2 2.5C10.6 7.6 10 5.2 12 2z"/>
-              </svg>
-            </div>
-            <div class="streak-bilgi">
-              <div class="streak-baslik">
-                <span class="streak-sayi" id="streak-sayi"></span>
-                <span id="streak-baslik-metin">…</span>
-              </div>
-              <div class="streak-mesaj" id="streak-mesaj"></div>
-              <div class="streak-bonus" id="streak-bonus" hidden></div>
-            </div>
+        <!-- ÖNE ÇIKAN: Topluluk + Mağaza (en önemliler) -->
+        <section class="card card-wide onemli-ust" id="onemli-ust">
+          <div class="onemli-grid">
+            <button class="onemli-kart" id="topluluk-ac">
+              <span class="ok-ikon">🌟</span>
+              <span class="ok-ad">Topluluk</span>
+              <span class="ok-alt">Haftanın Işığı · paylaşımlar</span>
+            </button>
+            <button class="onemli-kart" id="magaza-ac">
+              <span class="ok-ikon">🛍️</span>
+              <span class="ok-ad">Mağazam</span>
+              <span class="ok-alt">ritüeller · taşlar · mumlar</span>
+            </button>
           </div>
-          <div class="streak-bar"><span id="streak-bar-dolu"></span></div>
-          <div class="streak-seviye-bilgi" id="streak-seviye-bilgi"></div>
-          <div class="streak-tier-serit" id="streak-tier-serit"></div>
         </section>
 
         <!-- Ritüeller & Araçlar (hızlı eylemler) -->
@@ -411,15 +398,6 @@
               <span class="at-ikon">📊</span><span class="at-ad">Haftalık Rapor</span>
               <span class="at-alt">denge analizini gör</span>
             </button>
-            <button class="arac-tile" id="magaza-ac">
-              <span class="at-ikon">🛍️</span><span class="at-ad">Mağazam</span>
-              <span class="at-alt">özel ürünleri keşfet</span>
-            </button>
-            <button class="arac-tile" id="topluluk-ac">
-              <span class="at-ikon">🌟</span><span class="at-ad">Topluluk</span>
-              <span class="at-alt">Haftanın Işığı</span>
-            </button>
-
           </div>
         </section>
 
@@ -771,6 +749,35 @@
           <div class="profil-ozet" id="profil-ozet"></div>
         </section>
 
+        <!-- İstikrar serisi (streak) — artık yalnız profilde -->
+        <section class="card card-streak card-wide" id="streak-widget">
+          <div class="streak-ust">
+            <div class="streak-alev">
+              <svg class="alev-svg" viewBox="0 0 24 24" aria-hidden="true">
+                <defs>
+                  <linearGradient id="alevG" x1="0" y1="1" x2="0" y2="0">
+                    <stop offset="0%" stop-color="#ff6a2a"/>
+                    <stop offset="55%" stop-color="#ffac3e"/>
+                    <stop offset="100%" stop-color="#f3d98c"/>
+                  </linearGradient>
+                </defs>
+                <path fill="url(#alevG)" d="M12 2c2.6 3.6 5 5.4 5 9.2A5 5 0 0 1 7 11.4c0-1.6.6-2.7 1.7-3.9.2 1.4.9 2.2 2 2.5C10.6 7.6 10 5.2 12 2z"/>
+              </svg>
+            </div>
+            <div class="streak-bilgi">
+              <div class="streak-baslik">
+                <span class="streak-sayi" id="streak-sayi"></span>
+                <span id="streak-baslik-metin">…</span>
+              </div>
+              <div class="streak-mesaj" id="streak-mesaj"></div>
+              <div class="streak-bonus" id="streak-bonus" hidden></div>
+            </div>
+          </div>
+          <div class="streak-bar"><span id="streak-bar-dolu"></span></div>
+          <div class="streak-seviye-bilgi" id="streak-seviye-bilgi"></div>
+          <div class="streak-tier-serit" id="streak-tier-serit"></div>
+        </section>
+
         <section class="card card-wide rapor-giris-kart">
           <div class="rapor-giris-ust">
             <span class="rapor-giris-emoji">📊</span>
@@ -1067,53 +1074,53 @@
     </button>
   </nav>
 
-  <script src="js/data.js?v=185"></script>
-  <script src="js/farkindalik-sorulari.js?v=185"></script>
-  <script src="js/mini-gorevler.js?v=185"></script>
-  <script src="js/store.js?v=185"></script>
-  <script src="js/perf.js?v=185"></script>
-  <script src="js/audio.js?v=185"></script>
-  <script src="js/muzik.js?v=185"></script>
-  <script src="js/rehbermed.js?v=185"></script>
-  <script src="js/rehber.js?v=185"></script>
-  <script src="js/ay.js?v=185"></script>
-  <script src="js/app.js?v=185"></script>
-  <script src="js/kartpaylas.js?v=185"></script>
-  <script src="js/haftalik-hedefler.js?v=185"></script>
-  <script src="js/haftalikhedef.js?v=185"></script>
-  <script src="js/streak.js?v=185"></script>
-  <script src="js/gorevler.js?v=185"></script>
-  <script src="js/energy.js?v=185"></script>
-  <script src="js/gunluk.js?v=185"></script>
-  <script src="js/overlay-geri.js?v=185"></script>
-  <script src="js/pushtoken.js?v=185"></script>
-  <script src="js/gunlukilham.js?v=185"></script>
-  <script src="js/rapor.js?v=185"></script>
-  <script src="js/bildirim.js?v=185"></script>
-  <script src="js/bildirimayar.js?v=185"></script>
-  <script src="js/magaza.js?v=185"></script>
-  <script src="js/profil.js?v=185"></script>
-  <script src="js/rituel.js?v=185"></script>
-  <script src="js/test.js?v=185"></script>
-  <script src="js/enerjitipi.js?v=185"></script>
-  <script src="js/cakra.js?v=185"></script>
-  <script src="js/nefes.js?v=185"></script>
-  <script src="js/vision.js?v=185"></script>
-  <script src="js/ciftsaat.js?v=185"></script>
-  <script src="js/takvim.js?v=185"></script>
-  <script src="js/hafta.js?v=185"></script>
+  <script src="js/data.js?v=186"></script>
+  <script src="js/farkindalik-sorulari.js?v=186"></script>
+  <script src="js/mini-gorevler.js?v=186"></script>
+  <script src="js/store.js?v=186"></script>
+  <script src="js/perf.js?v=186"></script>
+  <script src="js/audio.js?v=186"></script>
+  <script src="js/muzik.js?v=186"></script>
+  <script src="js/rehbermed.js?v=186"></script>
+  <script src="js/rehber.js?v=186"></script>
+  <script src="js/ay.js?v=186"></script>
+  <script src="js/app.js?v=186"></script>
+  <script src="js/kartpaylas.js?v=186"></script>
+  <script src="js/haftalik-hedefler.js?v=186"></script>
+  <script src="js/haftalikhedef.js?v=186"></script>
+  <script src="js/streak.js?v=186"></script>
+  <script src="js/gorevler.js?v=186"></script>
+  <script src="js/energy.js?v=186"></script>
+  <script src="js/gunluk.js?v=186"></script>
+  <script src="js/overlay-geri.js?v=186"></script>
+  <script src="js/pushtoken.js?v=186"></script>
+  <script src="js/gunlukilham.js?v=186"></script>
+  <script src="js/rapor.js?v=186"></script>
+  <script src="js/bildirim.js?v=186"></script>
+  <script src="js/bildirimayar.js?v=186"></script>
+  <script src="js/magaza.js?v=186"></script>
+  <script src="js/profil.js?v=186"></script>
+  <script src="js/rituel.js?v=186"></script>
+  <script src="js/test.js?v=186"></script>
+  <script src="js/enerjitipi.js?v=186"></script>
+  <script src="js/cakra.js?v=186"></script>
+  <script src="js/nefes.js?v=186"></script>
+  <script src="js/vision.js?v=186"></script>
+  <script src="js/ciftsaat.js?v=186"></script>
+  <script src="js/takvim.js?v=186"></script>
+  <script src="js/hafta.js?v=186"></script>
   
-  <script src="js/kozmik.js?v=185"></script>
+  <script src="js/kozmik.js?v=186"></script>
   <!-- Bulut üyelik & senkron (Supabase) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/supabase-config.js?v=185"></script>
-  <script src="js/bulut.js?v=185"></script>
-  <script src="js/topluluk.js?v=185"></script>
-  <script src="js/topluluk-sosyal.js?v=185"></script>
-  <script src="js/topluluk-duyuru.js?v=185"></script>
-  <script src="js/siteayar.js?v=185"></script>
-  <script src="js/kutuphane.js?v=185"></script>
-  <script src="js/magazaurun.js?v=185"></script>
+  <script src="js/supabase-config.js?v=186"></script>
+  <script src="js/bulut.js?v=186"></script>
+  <script src="js/topluluk.js?v=186"></script>
+  <script src="js/topluluk-sosyal.js?v=186"></script>
+  <script src="js/topluluk-duyuru.js?v=186"></script>
+  <script src="js/siteayar.js?v=186"></script>
+  <script src="js/kutuphane.js?v=186"></script>
+  <script src="js/magazaurun.js?v=186"></script>
   <script>
     if ("serviceWorker" in navigator) {
       // SW'yi kaydet ve arka planda güncelle. ZORLA RELOAD YOK: fetch network-first

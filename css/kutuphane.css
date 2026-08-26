@@ -96,6 +96,19 @@
 .ktp-web-adres { font-family: "Playfair Display", Georgia, serif; color: var(--gold-soft); font-size: 1.3rem; letter-spacing: .05em;
   padding: 14px; border: 1px solid rgba(233,196,106,.4); border-radius: 14px; margin-bottom: 14px; }
 
+/* --- Ana sayfa: öne çıkan Topluluk + Mağaza --- */
+.onemli-ust { padding: 14px; }
+.onemli-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.onemli-kart { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;
+  padding: 24px 14px; border-radius: 18px; cursor: pointer; min-width: 0;
+  border: 1px solid rgba(233,196,106,.42);
+  background: linear-gradient(160deg, rgba(233,196,106,.17), rgba(58,42,99,.55));
+  box-shadow: 0 8px 22px rgba(0,0,0,.3); color: var(--metin); }
+.onemli-kart:active { transform: scale(.97); }
+.onemli-kart .ok-ikon { font-size: 2.3rem; filter: drop-shadow(0 2px 8px rgba(233,196,106,.45)); }
+.onemli-kart .ok-ad { font-family: "Playfair Display", Georgia, serif; font-size: 1.18rem; font-weight: 600; color: var(--gold-soft); }
+.onemli-kart .ok-alt { font-size: .74rem; color: var(--metin-soft); line-height: 1.35; }
+
 /* --- Işık Mumları ürün yönetimi --- */
 .mu-onizle { margin-top: 6px; }
 .mu-onizle img { max-width: 140px; border-radius: 12px; border: 1px solid rgba(233,196,106,.35); display: block; }
