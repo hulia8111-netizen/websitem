@@ -309,11 +309,18 @@ document.addEventListener("DOMContentLoaded", () => {
      ==================================================== */
   const kartAlani = $("#kart-alani");
   const kartCekBtn = $("#kart-cek");
-  const kart2Alani = $("#kart2-alani");
-  const kart2CekBtn = $("#kart2-cek");
-  // İkinci kart, Başlangıç (3 gün) seviyesine ulaşınca ÖDÜL olarak açılır
-  const IKINCI_KART_GUN = (DATA.streakSeviyeleri && DATA.streakSeviyeleri[0] && DATA.streakSeviyeleri[0].gun) || 3;
-  function ikinciKartAcik() { return toplamGun() >= IKINCI_KART_GUN; }
+  // Kartın DERİN ANLAMI, Başlangıç (3 gün) seviyesine ulaşınca açılır (2. kart yerine)
+  const DERIN_GUN = (DATA.streakSeviyeleri && DATA.streakSeviyeleri[0] && DATA.streakSeviyeleri[0].gun) || 3;
+  function derinAcik() { return toplamGun() >= DERIN_GUN; }
+  const DERIN_SORULAR = [
+    "Bu kart bugün sana neyi hatırlatıyor?",
+    "Bu mesajı hayatının hangi alanına taşımak istersin?",
+    "Bu enerjiyle bugün atabileceğin en küçük adım ne?",
+    "Bu kartın sana söylediği en cesur şey ne?",
+    "Bu mesaja direncin mi var, kucaklıyor musun — neden?",
+    "Bu kart bir dostun olsaydı sana ne fısıldardı?",
+    "Bugün bu niyeti nasıl yaşayabilirsin?"
+  ];
 
   function kartEkle(hedef, kart) {
     const wrap = document.createElement("div");
@@ -340,47 +347,46 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   function gosterKartlar() {
     const idx1 = Store.get("card-" + today);
-    const idx2 = Store.get("card2-" + today);
-
-    // 1. kart (her zaman, günde 1)
+    // Günün kartı (her zaman, günde 1)
     kartAlani.innerHTML = "";
     if (idx1 !== null && DATA.kartlar[idx1]) kartEkle(kartAlani, DATA.kartlar[idx1]);
     else kartAlani.innerHTML = `<div class="kart-placeholder">Kartını çekmek için butona dokun</div>`;
     kartCekBtn.hidden = idx1 !== null;
-
-    // 2. kart (ödül — Başlangıç seviyesinde açılır)
-    kart2Alani.innerHTML = "";
-    if (!ikinciKartAcik()) {
-      // KİLİTLİ DEĞİL ama henüz seviye gelmedi → teaser (kilit ikonu YOK)
-      const kalan = Math.max(1, IKINCI_KART_GUN - toplamGun());
-      kart2Alani.innerHTML = `
-        <div class="kart2-teaser">
-          <div class="k2-ikon">⚡</div>
-          <div class="k2-ad">Enerji Dönümü</div>
-          <p class="k2-mesaj">Başlangıç seviyesine ulaşınca açılacak</p>
-          <p class="k2-kalan">🌱 Başlangıç seviyesine <b>${kalan} gün</b> kaldı</p>
+    // Derin Anlam (seviye ödülü)
+    derinAnlamCiz(idx1);
+  }
+  function derinAnlamCiz(idx1) {
+    const alan = $("#kart-derin"); if (!alan) return;
+    if (!derinAcik()) {
+      const kalan = Math.max(1, DERIN_GUN - toplamGun());
+      alan.innerHTML = `<div class="altin-divider ince"></div>
+        <div class="kart-derin-teaser">
+          <div class="kd-ikon">🌙</div>
+          <div class="kd-ad">Kartının Derin Anlamı</div>
+          <p class="kd-mesaj">Başlangıç seviyesine ulaşınca günün kartının derin açılımı burada belirir</p>
+          <p class="kd-kalan">🌱 Başlangıç seviyesine <b>${kalan} gün</b> kaldı</p>
         </div>`;
-      kart2CekBtn.hidden = true;
-    } else if (idx2 !== null && DATA.kartlar[idx2]) {
-      // bugünün ödül kartı çekilmiş
-      kartEkle(kart2Alani, DATA.kartlar[idx2]);
-      kart2CekBtn.hidden = true;
-    } else {
-      // açık ama bugün henüz çekilmemiş
-      if (!Store.get("card2-acildi")) {
-        // ilk kez açıldı → kutlama
-        kart2Alani.innerHTML = `
-          <div class="kart2-acildi">
-            <div class="k2-tik">✅</div>
-            <div class="k2-ad">İkinci Kart Açıldı</div>
-            <p class="k2-mesaj">Başlangıç seviyesini geçtin — ödül kartın hazır ✨</p>
-          </div>`;
-        Store.set("card2-acildi", true);
-      } else {
-        kart2Alani.innerHTML = `<div class="kart-placeholder">⚡ Enerji Dönümü kartını çekmek için butona dokun</div>`;
-      }
-      kart2CekBtn.hidden = false;
+      return;
     }
+    if (idx1 === null || !DATA.kartlar[idx1]) {
+      alan.innerHTML = `<div class="altin-divider ince"></div>
+        <div class="kart-derin-teaser">
+          <div class="kd-ikon">🌙</div>
+          <div class="kd-ad">Kartının Derin Anlamı</div>
+          <p class="kd-mesaj">Önce günün kartını çek — derin açılımı hemen altında belirsin ✨</p>
+        </div>`;
+      return;
+    }
+    const kart = DATA.kartlar[idx1];
+    const di = (typeof dayIndex === "function") ? dayIndex() : 0;
+    const soru = DERIN_SORULAR[(di + idx1) % DERIN_SORULAR.length];
+    alan.innerHTML = `<div class="altin-divider ince"></div>
+      <div class="kart-derin-ic">
+        <div class="kd-baslik">🌙 ${kart.baslik} · Derin Anlam</div>
+        <p class="kd-metin">${kart.mesaj}</p>
+        <p class="kd-alt">Bu kart yüzeydeki mesajın ötesinde, bugünün enerjisiyle sana özel bir davet taşıyor. Bir an dur ve içine dön.</p>
+        <div class="kd-soru">✨ Kendine sor: ${soru}</div>
+      </div>`;
   }
   function kartCek() {
     if (Store.get("card-" + today) === null) {
@@ -389,18 +395,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     gosterKartlar();
   }
-  function ikinciKart() {
-    if (!ikinciKartAcik()) return;
-    if (Store.get("card2-" + today) === null) {
-      Store.set("card2-" + today, Math.floor(Math.random() * DATA.kartlar.length));
-      try { if (navigator.vibrate) navigator.vibrate([12, 40, 18]); } catch (e) {}
-    }
-    gosterKartlar();
-  }
   gosterKartlar();
   window.kartlariTazele = gosterKartlar;   // seviye değişince dışarıdan tazelemek için
   kartCekBtn.addEventListener("click", kartCek);
-  kart2CekBtn.addEventListener("click", ikinciKart);
 
   /* 5. GÜNÜN RİTÜELİ — js/rituel.js modülünde yönetilir (task-<gün> entegrasyonu orada). */
 

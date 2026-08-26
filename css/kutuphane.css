@@ -96,6 +96,19 @@
 .ktp-web-adres { font-family: "Playfair Display", Georgia, serif; color: var(--gold-soft); font-size: 1.3rem; letter-spacing: .05em;
   padding: 14px; border: 1px solid rgba(233,196,106,.4); border-radius: 14px; margin-bottom: 14px; }
 
+/* --- Günün Kartı: Derin Anlam (seviye ödülü) --- */
+.kart-derin-teaser { text-align: center; padding: 12px 10px; opacity: .9; }
+.kart-derin-teaser .kd-ikon { font-size: 1.8rem; }
+.kart-derin-teaser .kd-ad { font-family: "Playfair Display", Georgia, serif; color: var(--gold-soft); font-size: 1.05rem; margin: 4px 0; }
+.kart-derin-teaser .kd-mesaj { color: var(--metin-soft); font-size: .86rem; line-height: 1.5; }
+.kart-derin-teaser .kd-kalan { margin-top: 8px; font-size: .82rem; color: var(--metin-soft); }
+.kart-derin-ic { padding: 6px 4px 4px; text-align: center; }
+.kart-derin-ic .kd-baslik { font-family: "Playfair Display", Georgia, serif; color: var(--gold-soft); font-size: 1.12rem; margin-bottom: 8px; }
+.kart-derin-ic .kd-metin { color: var(--metin); font-size: .96rem; line-height: 1.55; margin-bottom: 8px; }
+.kart-derin-ic .kd-alt { color: var(--metin-soft); font-size: .88rem; line-height: 1.55; margin-bottom: 12px; }
+.kart-derin-ic .kd-soru { background: rgba(233,196,106,.1); border: 1px solid rgba(233,196,106,.32); border-radius: 12px;
+  padding: 12px 14px; color: var(--gold-soft); font-size: .92rem; line-height: 1.4; }
+
 /* --- Haftalık deneyim: toplulukta paylaş onayı --- */
 .hh-paylas-onay { display: flex; align-items: flex-start; gap: 8px; margin: 4px 0 10px; font-size: .86rem;
   color: var(--metin-soft); cursor: pointer; line-height: 1.4; }
