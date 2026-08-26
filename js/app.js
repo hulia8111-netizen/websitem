@@ -384,7 +384,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="kart-derin-ic">
         <div class="kd-baslik">🌙 ${kart.baslik} · Derin Anlam</div>
         <p class="kd-metin">${kart.mesaj}</p>
-        <p class="kd-alt">Bu kart yüzeydeki mesajın ötesinde, bugünün enerjisiyle sana özel bir davet taşıyor. Bir an dur ve içine dön.</p>
+        <p class="kd-alt">${kart.derin || "Bu kart yüzeydeki mesajın ötesinde, bugünün enerjisiyle sana özel bir davet taşıyor. Bir an dur ve içine dön."}</p>
         <div class="kd-soru">✨ Kendine sor: ${soru}</div>
       </div>`;
   }
