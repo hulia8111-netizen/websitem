@@ -35,7 +35,7 @@ const Magaza = window.Magaza = (() => {
           id: "tas-delphinula-ametist", ad: "Delphinula Ametist Kolye", ikon: "🐚",
           aciklama: "Eşsiz Delphinula (Angaria Delphinus) deniz kabuğu ucu, doğal Ametist taş kırıklarıyla buluştu. Ametist; stresi yatıştırır, sezgiyi ve ruhsal dengeyi güçlendirir; sedefli kabuk ise denizin dinginliğini taşır. Her biri doğal taş olduğundan kendine özgüdür — el yapımı, sevgiyle hazırlandı. 🐚",
           gorsel: "/urunler/delphinula-ametist-kolye.jpg",
-          gorseller: ["/urunler/delphinula-ametist-kolye.jpg", "/urunler/delphinula-ametist-boyunda.jpg"],
+          gorseller: ["/urunler/delphinula-ametist-boyunda.jpg", "/urunler/delphinula-ametist-kolye.jpg"],
           fiyat: "904,99 TL",
           link: "https://www.shopier.com/dreamyhandmade/50249821"
         },
