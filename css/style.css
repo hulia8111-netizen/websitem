@@ -2747,6 +2747,8 @@ body.mg-aktif { overflow: hidden; }
 .mg-kart:hover { border-color: rgba(243,217,140,0.42); transform: translateY(-3px); }
 .mg-kart-gorsel, .mgd-gorsel { width: 100%; aspect-ratio: 16/10; overflow: hidden; background: rgba(0,0,0,0.2); }
 .mg-kart-gorsel img, .mgd-gorsel img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mg-kart-gorsel.coklu { aspect-ratio: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+.mg-kart-gorsel.coklu img { height: auto; aspect-ratio: 3/4; }
 .mg-kart-gorsel.bos, .mgd-gorsel.bos {
   display: flex; align-items: center; justify-content: center; font-size: 2.4rem;
   background: linear-gradient(150deg, rgba(124,92,255,0.28), rgba(243,217,140,0.14));

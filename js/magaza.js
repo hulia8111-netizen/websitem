@@ -34,7 +34,9 @@ const Magaza = window.Magaza = (() => {
         {
           id: "tas-delphinula-ametist", ad: "Delphinula Ametist Kolye", ikon: "🐚",
           aciklama: "Eşsiz Delphinula (Angaria Delphinus) deniz kabuğu ucu, doğal Ametist taş kırıklarıyla buluştu. Ametist; stresi yatıştırır, sezgiyi ve ruhsal dengeyi güçlendirir; sedefli kabuk ise denizin dinginliğini taşır. Her biri doğal taş olduğundan kendine özgüdür — el yapımı, sevgiyle hazırlandı. 🐚",
-          gorsel: "/urunler/delphinula-ametist-kolye.jpg", fiyat: "904,99 TL",
+          gorsel: "/urunler/delphinula-ametist-kolye.jpg",
+          gorseller: ["/urunler/delphinula-ametist-kolye.jpg", "/urunler/delphinula-ametist-boyunda.jpg"],
+          fiyat: "904,99 TL",
           link: "https://www.shopier.com/dreamyhandmade/50249821"
         },
         {
@@ -87,8 +89,11 @@ const Magaza = window.Magaza = (() => {
   function gorselli(g) { return gecerliLink(g) || (g && /^\//.test(g)); }
 
   function gorselHTML(u, klas) {
-    if (gorselli(u.gorsel)) {
-      return `<div class="${klas}"><img src="${esc(u.gorsel)}" alt="${esc(u.ad)}" loading="lazy" /></div>`;
+    const liste = Array.isArray(u.gorseller) ? u.gorseller.filter(gorselli) : (gorselli(u.gorsel) ? [u.gorsel] : []);
+    if (liste.length) {
+      const cok = liste.length > 1 ? " coklu" : "";
+      const imgs = liste.map(g => `<img src="${esc(g)}" alt="${esc(u.ad)}" loading="lazy" />`).join("");
+      return `<div class="${klas}${cok}">${imgs}</div>`;
     }
     return `<div class="${klas} bos"><span>${esc(u.ikon || "✨")}</span></div>`;
   }
