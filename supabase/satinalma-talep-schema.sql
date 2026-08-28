@@ -17,7 +17,7 @@ create table if not exists public.satinalma_talep (
   fiyat       text,
   kaynak      text default 'web',                -- web | native | manuel
   durum       text not null default 'talep',     -- talep | tamam | iptal
-  not         text,                              -- yönetici notu (isteğe bağlı)
+  yonetici_not text,                             -- yönetici notu (isteğe bağlı)
   created_at  timestamptz not null default now(),
   onay_at     timestamptz
 );
