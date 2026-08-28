@@ -216,6 +216,12 @@ const Kutuphane = window.Kutuphane = (() => {
         <a class="ktp-sa-wa" href="${waLink}" target="_blank" rel="noopener noreferrer">💬 WhatsApp'tan Bilgi Gönder</a>
         <p class="ktp-sa-mini muted small">Ödeme ve erişim güvenli şekilde elle onaylanır. Sorun olursa bize yazman yeterli.</p>
       </div>`;
+    const waBtn = p.querySelector(".ktp-sa-wa");
+    if (waBtn) waBtn.addEventListener("click", () => {
+      talepGonder(urun);
+      const not = p.querySelector(".ktp-sa-mini");
+      if (not) { not.textContent = "✅ Talebin bize ulaştı — ödemen görülünce erişimin otomatik açılacak ✨"; not.style.color = "var(--basari,#4caf7d)"; }
+    });
     p.hidden = false; requestAnimationFrame(() => p.classList.add("gor"));
   }
 
@@ -318,9 +324,12 @@ const Kutuphane = window.Kutuphane = (() => {
     const mod = moderatorMu();
     const bolum = $("#eris-yonetici");
     const ekle = $("#urun-ekle-yonetici");
+    const talep = $("#talep-yonetici");
     if (bolum) bolum.hidden = !mod;
     if (ekle) ekle.hidden = !mod;
+    if (talep) talep.hidden = !mod;
     if (!mod) return;
+    talepleriYukle();
     // Erişim-ver ürün listesini güncel katalogdan kur
     const sec = $("#ey-urun");
     if (sec) {
@@ -330,22 +339,108 @@ const Kutuphane = window.Kutuphane = (() => {
       if (secili) sec.value = secili;
     }
   }
+  // Erişim ver çekirdeği: e-posta + ürün kodu → eris-ver Edge Function. { ok, mesaj }
+  async function erisVerCekirdek(email, kod, kaynak) {
+    const urun = urunBul(kod);
+    try {
+      const c = sb();
+      const { data, error } = await c.functions.invoke("eris-ver", { body: { email, urun_kod: kod, baslik: urun && urun.baslik, fiyat: urun && urun.fiyat, kaynak: kaynak || "manuel" } });
+      if (error) throw error;
+      return data && data.ok ? { ok: true, mesaj: data.mesaj } : { ok: false, mesaj: (data && data.mesaj) || "Olmadı" };
+    } catch (e) { return { ok: false, mesaj: (e && e.message) || "bağlantı" }; }
+  }
   async function erisVer() {
     const email = ($("#ey-email").value || "").trim();
     const kod = $("#ey-urun").value;
     const bil = $("#ey-bilgi");
     if (!email || !kod) { bil.textContent = "E-posta ve ürün seç."; bil.style.color = "var(--uyari,#c9a24a)"; return; }
-    const urun = urunBul(kod);
     bil.textContent = "Gönderiliyor…"; bil.style.color = "var(--muted)";
+    const r = await erisVerCekirdek(email, kod, "manuel");
+    if (r.ok) { bil.textContent = "✅ " + r.mesaj; bil.style.color = "var(--basari,#4caf7d)"; $("#ey-email").value = ""; }
+    else { bil.textContent = "⚠️ " + r.mesaj; bil.style.color = "var(--uyari,#c9a24a)"; }
+  }
+
+  /* ---------- SATIN ALMA TALEBİ (kullanıcı "ödedim" der) ---------- */
+  // Satın alma penceresindeki WhatsApp butonuna basınca çağrılır:
+  // talebi kaydeder (yönetici paneline düşer) + yöneticiye push atar.
+  async function talepGonder(urun) {
+    const c = sb(); if (!c || !uid()) return;
+    const kayit = {
+      user_id: uid(), email: benimEmail(), urun_kod: urun.kod,
+      urun_baslik: urun.baslik, fiyat: urun.fiyat,
+      kaynak: nativeMi() ? "native" : "web", durum: "talep"
+    };
+    try { await c.from("satinalma_talep").insert(kayit); } catch (e) { /* sessiz */ }
+    // yöneticiye anlık bildirim (fonksiyon yoksa sessizce geçilir)
+    try { c.functions.invoke("satis-bildir", { body: { email: kayit.email, urun_baslik: urun.baslik, fiyat: urun.fiyat } }); } catch (e) {}
+  }
+
+  /* ---------- YÖNETİCİ: talep listesi + tek tıkla onay ---------- */
+  let talepler = [];
+  async function talepleriYukle() {
+    if (!moderatorMu()) return;
+    const c = sb(); if (!c) return;
     try {
-      const c = sb();
-      const { data, error } = await c.functions.invoke("eris-ver", { body: { email, urun_kod: kod, baslik: urun && urun.baslik, fiyat: urun && urun.fiyat, kaynak: "manuel" } });
-      if (error) throw error;
-      if (data && data.ok) { bil.textContent = "✅ " + data.mesaj; bil.style.color = "var(--basari,#4caf7d)"; $("#ey-email").value = ""; }
-      else { bil.textContent = "⚠️ " + ((data && data.mesaj) || "Olmadı"); bil.style.color = "var(--uyari,#c9a24a)"; }
-    } catch (e) {
-      bil.textContent = "Hata: " + ((e && e.message) || "bağlantı"); bil.style.color = "var(--hata,#e06a6a)";
+      const { data } = await c.from("satinalma_talep").select("*").order("created_at", { ascending: false }).limit(100);
+      talepler = data || [];
+    } catch (e) { talepler = []; }
+    talepCiz();
+  }
+  function talepRozetGuncelle() {
+    const bekleyen = talepler.filter(t => t.durum === "talep").length;
+    const r = $("#talep-rozet"); if (r) { r.textContent = bekleyen; r.hidden = bekleyen === 0; }
+  }
+  function talepCiz() {
+    const liste = $("#talep-liste"); if (!liste) return;
+    talepRozetGuncelle();
+    if (!talepler.length) { liste.innerHTML = `<p class="muted small">Henüz talep yok. Biri "ödedim" dediğinde burada görünür. 🌙</p>`; return; }
+    liste.innerHTML = "";
+    talepler.forEach(t => {
+      const bekliyor = t.durum === "talep";
+      const tarih = (t.created_at || "").slice(0, 16).replace("T", " ");
+      const s = document.createElement("div");
+      s.className = "talep-satir" + (bekliyor ? " bekliyor" : " " + t.durum);
+      const durumEt = t.durum === "tamam" ? `<span class="talep-durum tamam">✓ Erişim verildi</span>`
+        : t.durum === "iptal" ? `<span class="talep-durum iptal">İptal</span>`
+        : `<span class="talep-durum bekliyor">⏳ Bekliyor</span>`;
+      s.innerHTML = `
+        <div class="talep-ic">
+          <div class="talep-urun">${esc(t.urun_baslik || t.urun_kod)} ${t.fiyat ? `<span class="muted small">· ${esc(t.fiyat)}</span>` : ""}</div>
+          <div class="talep-mail muted small">${esc(t.email || "e-posta yok")} · ${esc(tarih)}</div>
+          ${durumEt}
+        </div>
+        <div class="talep-btnlar">
+          ${bekliyor ? `<button class="btn talep-onay" type="button">✓ Erişim Ver</button>
+                        <button class="btn ghost talep-iptal" type="button">İptal</button>` : ""}
+        </div>`;
+      if (bekliyor) {
+        s.querySelector(".talep-onay").addEventListener("click", () => talepOnayla(t, s));
+        s.querySelector(".talep-iptal").addEventListener("click", () => talepDurum(t, "iptal"));
+      }
+      liste.appendChild(s);
+    });
+  }
+  async function talepOnayla(t, satir) {
+    const bil = $("#talep-bilgi");
+    if (!t.email) { if (bil) { bil.textContent = "Bu talepte e-posta yok, elle ver."; bil.style.color = "var(--uyari,#c9a24a)"; } return; }
+    const btn = satir && satir.querySelector(".talep-onay"); if (btn) { btn.disabled = true; btn.textContent = "Veriliyor…"; }
+    if (bil) { bil.textContent = "Erişim veriliyor…"; bil.style.color = "var(--muted)"; }
+    const r = await erisVerCekirdek(t.email, t.urun_kod, "talep");
+    if (r.ok) {
+      await talepDurum(t, "tamam");
+      if (bil) { bil.textContent = "✅ " + t.email + " → erişim verildi"; bil.style.color = "var(--basari,#4caf7d)"; }
+    } else {
+      if (btn) { btn.disabled = false; btn.textContent = "✓ Erişim Ver"; }
+      if (bil) { bil.textContent = "⚠️ " + r.mesaj; bil.style.color = "var(--uyari,#c9a24a)"; }
     }
+  }
+  async function talepDurum(t, durum) {
+    const c = sb(); if (!c) return;
+    try {
+      await c.from("satinalma_talep").update({ durum, onay_at: durum === "tamam" ? new Date().toISOString() : null }).eq("id", t.id);
+      t.durum = durum;
+      talepCiz();
+    } catch (e) {}
   }
 
   /* ---------- YÖNETİCİ: yeni dijital ürün ekle ---------- */
@@ -432,5 +527,5 @@ const Kutuphane = window.Kutuphane = (() => {
   }
   document.addEventListener("DOMContentLoaded", baglan);
 
-  return { yenile, sahipMi, ac, magazaKartlari, kutuphaneCiz, yoneticiCiz, katalog: () => KATALOG };
+  return { yenile, sahipMi, ac, magazaKartlari, kutuphaneCiz, yoneticiCiz, talepleriYukle, katalog: () => KATALOG };
 })();

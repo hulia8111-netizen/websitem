@@ -196,6 +196,27 @@
 .tk-cta-metin b { color: var(--gold-soft); font-size: .96rem; }
 .tk-cta-metin small { color: var(--metin-soft); font-size: .8rem; margin-top: 2px; }
 
+/* --- Satın alma talepleri paneli --- */
+.talep-rozet { display: inline-block; min-width: 22px; padding: 1px 8px; margin-left: 6px; vertical-align: middle;
+  background: #e0574a; color: #fff; border-radius: 999px; font-size: .82rem; font-weight: 700; text-align: center;
+  box-shadow: 0 0 10px rgba(224,87,74,.5); }
+.talep-liste { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.talep-satir { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px;
+  background: rgba(12,10,28,.5); border: 1px solid rgba(233,196,106,.18); }
+.talep-satir.bekliyor { border-color: rgba(233,196,106,.5); background: linear-gradient(135deg, rgba(233,196,106,.1), rgba(12,10,28,.5)); }
+.talep-satir.tamam { opacity: .7; }
+.talep-satir.iptal { opacity: .55; }
+.talep-ic { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.talep-urun { color: var(--metin); font-size: .92rem; font-weight: 600; }
+.talep-mail { word-break: break-all; }
+.talep-durum { align-self: flex-start; font-size: .74rem; padding: 2px 9px; border-radius: 999px; margin-top: 2px; }
+.talep-durum.bekliyor { background: rgba(233,196,106,.16); color: var(--gold-soft); }
+.talep-durum.tamam { background: rgba(76,175,125,.16); color: #7fdcae; }
+.talep-durum.iptal { background: rgba(224,106,106,.14); color: #ff9d9d; }
+.talep-btnlar { flex: 0 0 auto; display: flex; flex-direction: column; gap: 6px; }
+.talep-onay { padding: 8px 14px; font-size: .82rem; white-space: nowrap; }
+.talep-iptal { padding: 6px 14px; font-size: .78rem; }
+
 /* --- Yönetici erişim paneli --- */
 .ey-form { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
 .ey-form input, .ey-form select, .ey-form textarea { padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(233,196,106,.3);
