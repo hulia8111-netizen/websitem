@@ -12,6 +12,7 @@ import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
 import Constants from "expo-constants";
+import * as StoreReview from "expo-store-review";
 
 const SITE = "https://isiginibull.net";
 const BG = "#0c0a1c";
@@ -91,6 +92,17 @@ export default function App() {
     try { webRef.current.injectJavaScript(js); } catch (e) {}
   }
 
+  // Web'den gelen mesaj (ör. puan penceresi isteği)
+  async function mesajGeldi(e) {
+    let veri = {};
+    try { veri = JSON.parse((e && e.nativeEvent && e.nativeEvent.data) || "{}"); } catch (_e) { return; }
+    if (veri && veri.type === "puan-iste") {
+      try {
+        if (await StoreReview.isAvailableAsync()) await StoreReview.requestReview();
+      } catch (_e) { /* sessiz */ }
+    }
+  }
+
   // Token + sayfa hazır olunca token'ı siteye köprüle (site push_token'a yazar)
   useEffect(() => {
     if (token && sayfaHazir && webRef.current) {
@@ -109,6 +121,8 @@ export default function App() {
         style={styles.web}
         onLoadEnd={() => { setYukleniyor(false); setSayfaHazir(true); }}
         onNavigationStateChange={(s) => setGeriGidebilir(s.canGoBack)}
+        onMessage={mesajGeldi}
+        injectedJavaScriptBeforeContentLoaded={"window.__ISIGINI_NATIVE=true;true;"}
         javaScriptEnabled
         domStorageEnabled
         thirdPartyCookiesEnabled
