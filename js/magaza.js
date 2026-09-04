@@ -32,11 +32,11 @@ const Magaza = window.Magaza = (() => {
       aciklama: "Doğal taşlar ve ritüellerine eşlik edecek özel parçalar.",
       urunler: [
         {
-          id: "tas-delphinula-ametist", ad: "Delphinula Ametist Kolye", ikon: "🐚",
-          aciklama: "Eşsiz Delphinula (Angaria Delphinus) deniz kabuğu ucu, doğal Ametist taş kırıklarıyla buluştu. Ametist; stresi yatıştırır, sezgiyi ve ruhsal dengeyi güçlendirir; sedefli kabuk ise denizin dinginliğini taşır. Her biri doğal taş olduğundan kendine özgüdür — el yapımı, sevgiyle hazırlandı. 🐚",
-          gorsel: "/urunler/delphinula-ametist-kolye.jpg",
-          gorseller: ["/urunler/delphinula-ametist-boyunda.jpg", "/urunler/delphinula-ametist-kolye.jpg"],
-          fiyat: "904,99 TL",
+          id: "tas-delphinula-sedef", ad: "Delphinula Sedef Kolye", ikon: "🐚",
+          aciklama: "Eşsiz Delphinula (Angaria Delphinus) deniz kabuğu ucu, doğal sedef taş kırıklarıyla buluştu. Sedefin ışıltısı denizin dinginliğini taşır; her kolye doğal taş olduğundan kendine özgüdür — el yapımı, sevgiyle hazırlandı, özel kutusunda gönderilir. 🐚",
+          gorsel: "/urunler/delphinula-sedef-kolye.jpg",
+          gorseller: ["/urunler/delphinula-sedef-boyunda.jpg", "/urunler/delphinula-sedef-kolye.jpg"],
+          fiyat: "1.204,99 TL",
           link: "https://www.shopier.com/dreamyhandmade/50249821"
         },
         {
