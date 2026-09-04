@@ -3,7 +3,7 @@
    SÃ¼rÃ¼m deÄŸiÅŸince CACHE adÄ±nÄ± artÄ±r ki eski dosyalar temizlensin.
    ============================================================ */
 
-const CACHE = "isigini-bul-v210";
+const CACHE = "isigini-bul-v211";
 const KABUK = [
   ".",
   "index.html",
@@ -80,19 +80,42 @@ self.addEventListener("fetch", e => {
   if (istek.method !== "GET") return;
   const ayniKaynak = istek.url.startsWith(self.location.origin);
 
-  // NETWORK-FIRST (zaman asimi YOK): ag ne kadar surerse sursun beklenir,
-  // dosyalar her zaman taze gelir. Ag TAMAMEN yoksa (offline) fetch reddedilir
-  // -> onbellekten sunulur. (Yavas agda stil dosyalarini kesmemek icin timeout kaldirildi.)
-  const ag = ayniKaynak ? fetch(istek.url, { cache: "no-store" }) : fetch(istek);
-  e.respondWith(
-    ag.then(yanit => {
-      if (yanit.ok && ayniKaynak) {
-        const kopya = yanit.clone();
-        caches.open(CACHE).then(c => c.put(istek, kopya));
-      }
-      return yanit;
-    }).catch(() => caches.match(istek))
-  );
+  // Farkli kaynak (Supabase vb.) -> dogrudan ag, hata olursa (varsa) onbellek.
+  if (!ayniKaynak) {
+    e.respondWith(fetch(istek).catch(() => caches.match(istek)));
+    return;
+  }
+
+  // STALE-WHILE-REVALIDATE (ayni kaynak = uygulama kabugu):
+  //  • Onbellekte VARSA -> ANINDA sun (takilma YOK, offline calisir) + arkada
+  //    sessizce agdan guncelle (bir sonraki acilista taze gelir).
+  //  • Onbellekte YOKSA (ilk yukleme / yeni surum dosyasi) -> agi bekle, sonra
+  //    onbellege al. (Zaman asimi yok -> stil/dosya kesilmez.)
+  //  • Ag da yoksa + navigasyon ise -> index.html kabugu ile ac.
+  e.respondWith((async () => {
+    const cache = await caches.open(CACHE);
+    const onbellek = await cache.match(istek);
+    const versiyonlu = istek.url.indexOf("?v=") !== -1;   // ?v=NNN -> icerigi degismez (immutable)
+
+    // Surumlu dosya onbellekte VARSA: aninda sun, agi hic rahatsiz etme (hizli + veri tasarrufu).
+    if (onbellek && versiyonlu) return onbellek;
+
+    // Surumsuz (index.html vb.): stale-while-revalidate.
+    const agGuncelle = fetch(istek.url, { cache: "no-store" })
+      .then(yanit => { if (yanit && yanit.ok) return cache.put(istek, yanit.clone()).then(() => yanit); return yanit; })
+      .catch(() => null);
+    if (onbellek) {
+      e.waitUntil(agGuncelle);   // arkada guncelle, SW olmesin
+      return onbellek;           // aninda onbellekten (takilma yok)
+    }
+    const ag = await agGuncelle;
+    if (ag) return ag;
+    if (istek.mode === "navigate") {
+      const kabuk = await cache.match("index.html") || await cache.match("./") || await cache.match(".");
+      if (kabuk) return kabuk;
+    }
+    return Response.error();
+  })());
 });
 
 /* Bildirime tÄ±klayÄ±nca uygulamayÄ± aÃ§/odakla ve GÃ¼nÃ¼n KartÄ± ekranÄ±na git */
