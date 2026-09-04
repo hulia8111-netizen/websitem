@@ -3,7 +3,7 @@
    SÃ¼rÃ¼m deÄŸiÅŸince CACHE adÄ±nÄ± artÄ±r ki eski dosyalar temizlensin.
    ============================================================ */
 
-const CACHE = "isigini-bul-v207";
+const CACHE = "isigini-bul-v208";
 const KABUK = [
   ".",
   "index.html",
@@ -80,19 +80,35 @@ self.addEventListener("fetch", e => {
   if (istek.method !== "GET") return;
   const ayniKaynak = istek.url.startsWith(self.location.origin);
 
-  // Network-first + tarayÄ±cÄ± Ã¶nbelleÄŸini ATLA (no-store): aynÄ± kaynaktaki
-  // dosyalar her zaman GitHub'dan taze gelir â†’ kod deÄŸiÅŸiklikleri anÄ±nda gÃ¶rÃ¼nÃ¼r,
-  // eski sÃ¼rÃ¼m Ã¶nbellekte takÄ±lÄ± kalmaz. Offline'da SW cache'ten sunulur.
-  const ag = ayniKaynak ? fetch(istek.url, { cache: "no-store" }) : fetch(istek);
-  e.respondWith(
-    ag.then(yanit => {
-      if (yanit.ok && ayniKaynak) {
-        const kopya = yanit.clone();
-        caches.open(CACHE).then(c => c.put(istek, kopya));
-      }
+  // Farkli kaynak (Supabase vb.) -> dogrudan ag, hata olursa (varsa) onbellek.
+  if (!ayniKaynak) {
+    e.respondWith(fetch(istek).catch(() => caches.match(istek)));
+    return;
+  }
+
+  // Ayni kaynak (uygulama kabugu): NETWORK-FIRST + zaman asimi.
+  // Online'da her zaman taze gelir (kod degisiklikleri aninda gorunur).
+  // Ag yoksa VEYA 4 sn'de yanit vermezse -> onbellekten sun (OFFLINE calisir,
+  // yavas agda takilmaz). Navigasyon (sayfa) istegi offline'da index.html'e duser.
+  e.respondWith((async () => {
+    const cache = await caches.open(CACHE);
+    try {
+      const yanit = await Promise.race([
+        fetch(istek.url, { cache: "no-store" }),
+        new Promise((_, red) => setTimeout(() => red(new Error("timeout")), 4000))
+      ]);
+      if (yanit && yanit.ok) cache.put(istek, yanit.clone());
       return yanit;
-    }).catch(() => caches.match(istek))
-  );
+    } catch (_e) {
+      const onbellek = await cache.match(istek) || await caches.match(istek);
+      if (onbellek) return onbellek;
+      if (istek.mode === "navigate") {
+        const kabuk = await cache.match("index.html") || await cache.match("./") || await cache.match(".");
+        if (kabuk) return kabuk;
+      }
+      throw _e;
+    }
+  })());
 });
 
 /* Bildirime tÄ±klayÄ±nca uygulamayÄ± aÃ§/odakla ve GÃ¼nÃ¼n KartÄ± ekranÄ±na git */
