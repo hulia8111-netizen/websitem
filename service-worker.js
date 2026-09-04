@@ -3,7 +3,7 @@
    SÃ¼rÃ¼m deÄŸiÅŸince CACHE adÄ±nÄ± artÄ±r ki eski dosyalar temizlensin.
    ============================================================ */
 
-const CACHE = "isigini-bul-v209";
+const CACHE = "isigini-bul-v210";
 const KABUK = [
   ".",
   "index.html",
@@ -80,35 +80,19 @@ self.addEventListener("fetch", e => {
   if (istek.method !== "GET") return;
   const ayniKaynak = istek.url.startsWith(self.location.origin);
 
-  // Farkli kaynak (Supabase vb.) -> dogrudan ag, hata olursa (varsa) onbellek.
-  if (!ayniKaynak) {
-    e.respondWith(fetch(istek).catch(() => caches.match(istek)));
-    return;
-  }
-
-  // Ayni kaynak (uygulama kabugu): NETWORK-FIRST + zaman asimi.
-  // Online'da her zaman taze gelir (kod degisiklikleri aninda gorunur).
-  // Ag yoksa VEYA 4 sn'de yanit vermezse -> onbellekten sun (OFFLINE calisir,
-  // yavas agda takilmaz). Navigasyon (sayfa) istegi offline'da index.html'e duser.
-  e.respondWith((async () => {
-    const cache = await caches.open(CACHE);
-    try {
-      const yanit = await Promise.race([
-        fetch(istek.url, { cache: "no-store" }),
-        new Promise((_, red) => setTimeout(() => red(new Error("timeout")), 4000))
-      ]);
-      if (yanit && yanit.ok) cache.put(istek, yanit.clone());
-      return yanit;
-    } catch (_e) {
-      const onbellek = await cache.match(istek) || await caches.match(istek);
-      if (onbellek) return onbellek;
-      if (istek.mode === "navigate") {
-        const kabuk = await cache.match("index.html") || await cache.match("./") || await cache.match(".");
-        if (kabuk) return kabuk;
+  // NETWORK-FIRST (zaman asimi YOK): ag ne kadar surerse sursun beklenir,
+  // dosyalar her zaman taze gelir. Ag TAMAMEN yoksa (offline) fetch reddedilir
+  // -> onbellekten sunulur. (Yavas agda stil dosyalarini kesmemek icin timeout kaldirildi.)
+  const ag = ayniKaynak ? fetch(istek.url, { cache: "no-store" }) : fetch(istek);
+  e.respondWith(
+    ag.then(yanit => {
+      if (yanit.ok && ayniKaynak) {
+        const kopya = yanit.clone();
+        caches.open(CACHE).then(c => c.put(istek, kopya));
       }
-      throw _e;
-    }
-  })());
+      return yanit;
+    }).catch(() => caches.match(istek))
+  );
 });
 
 /* Bildirime tÄ±klayÄ±nca uygulamayÄ± aÃ§/odakla ve GÃ¼nÃ¼n KartÄ± ekranÄ±na git */
