@@ -235,6 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!seciliMood) { flash("#mood-bilgi", "Önce bir ruh hali seç"); return; }
     Store.set("mood-" + today, seciliMood);   // gün başına tek kayıt; tekrar = güncelle
     flash("#mood-bilgi", "Kaydedildi ✓");
+    if (window.Keyif) Keyif.basari($("#mood-kaydet"));
     cizRozetler();
     if (window.tazeleDurum) window.tazeleDurum();   // tüm bağımlı bölümleri tek noktadan tazele
   });
@@ -407,13 +408,15 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>`;
   }
   function kartCek() {
-    if (Store.get("card-" + today) === null) {
+    const yeniCekim = Store.get("card-" + today) === null;
+    let nadir = false;
+    if (yeniCekim) {
       Store.set("card-" + today, Math.floor(Math.random() * DATA.kartlar.length));
-      const nadir = Math.random() < 0.14;                                            // ~%14 nadir sürpriz
+      nadir = Math.random() < 0.14;                                                  // ~%14 nadir sürpriz
       Store.set("card-ozel-" + today, nadir);
-      try { if (navigator.vibrate) navigator.vibrate(nadir ? [10, 30, 10, 30, 60] : [12, 40, 18]); } catch (e) {}
     }
     gosterKartlar();
+    if (yeniCekim && window.Keyif) { nadir ? Keyif.kutlama(kartAlani) : Keyif.basari(kartAlani); }
   }
   gosterKartlar();
   window.kartlariTazele = gosterKartlar;   // seviye değişince dışarıdan tazelemek için

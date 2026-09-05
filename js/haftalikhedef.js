@@ -116,6 +116,7 @@ const HaftalikHedef = window.HaftalikHedef = (() => {
     ciz(); arsivCiz(); istatCiz();
     if (window.Hafta && Hafta.ciz) Hafta.ciz();
     kutla(h);
+    if (window.Keyif) Keyif.kutlama();
     // İyi an → native uygulamada nazikçe puan iste (yalnız Play sürümü)
     try { if (window.Puanla) Puanla.isteGecikmeli("haftalik-hedef", 2200); } catch (e) {}
     // Otomatik topluluk paylaşımı (onay kutusu işaretliyse) → topluluğu canlı tutar

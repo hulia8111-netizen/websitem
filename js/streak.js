@@ -103,6 +103,7 @@ const Streak = window.Streak = (() => {
       });
     }
     pop.hidden = false; pop.classList.remove("gor"); void pop.offsetWidth; pop.classList.add("gor");
+    if (window.Keyif) Keyif.kutlama();
   }
   function odulKapat() { const p = $("odul-popup"); if (!p) return; p.classList.remove("gor"); setTimeout(() => { p.hidden = true; }, 350); }
 

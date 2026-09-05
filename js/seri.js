@@ -106,6 +106,7 @@ window.Seri = (() => {
       [...yk.children].forEach(s => { s.style.left = (Math.random() * 100).toFixed(1) + "%"; s.style.top = (Math.random() * 100).toFixed(1) + "%"; s.style.animationDelay = (Math.random() * 0.7).toFixed(2) + "s"; });
     }
     pop.hidden = false; pop.classList.remove("gor"); void pop.offsetWidth; pop.classList.add("gor");
+    if (window.Keyif) Keyif.kutlama();
   }
 
   /* ---------- çiz ---------- */
