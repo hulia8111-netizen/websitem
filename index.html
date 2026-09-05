@@ -13,8 +13,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=211" />
-  <link rel="stylesheet" href="css/kutuphane.css?v=211" />
+  <link rel="stylesheet" href="css/style.css?v=212" />
+  <link rel="stylesheet" href="css/kutuphane.css?v=212" />
+  <link rel="stylesheet" href="css/bahce.css?v=212" />
 </head>
 <body>
   <!-- Açılış (splash) ekranı: logo + isim + Word'den rastgele ilham cümlesi -->
@@ -39,8 +40,8 @@
       </div>
     </div>
   </div><!-- /splash -->
-  <script src="js/acilis-cumleler.js?v=211"></script>
-  <script src="js/splash.js?v=211"></script>
+  <script src="js/acilis-cumleler.js?v=212"></script>
+  <script src="js/splash.js?v=212"></script>
 
   <div class="aura" aria-hidden="true">
     <span class="blob blob-1"></span>
@@ -752,6 +753,17 @@
           <div class="streak-tier-serit" id="streak-tier-serit"></div>
         </section>
 
+        <!-- Işık Bahçesi: büyüyen görsel yolculuk -->
+        <section class="card card-wide card-bahce" id="bahce">
+          <div class="bahce-baslik">
+            <h2>Işık Bahçen 🌱</h2>
+            <span class="bahce-asama" id="bahce-asama"></span>
+          </div>
+          <div class="bahce-sahne" id="bahce-sahne"></div>
+          <div class="bahce-alt" id="bahce-alt"></div>
+          <div class="bahce-bugun" id="bahce-bugun" hidden></div>
+        </section>
+
         <!-- Günün Enerji Seviyesi -->
         <section class="card card-wide card-enerji" id="enerji">
           <h2>Günün Enerji Seviyesi</h2>
@@ -1106,55 +1118,56 @@
     </button>
   </nav>
 
-  <script src="js/data.js?v=211"></script>
-  <script src="js/farkindalik-sorulari.js?v=211"></script>
-  <script src="js/mini-gorevler.js?v=211"></script>
-  <script src="js/store.js?v=211"></script>
-  <script src="js/perf.js?v=211"></script>
-  <script src="js/audio.js?v=211"></script>
-  <script src="js/muzik.js?v=211"></script>
-  <script src="js/rehbermed.js?v=211"></script>
-  <script src="js/rehber.js?v=211"></script>
-  <script src="js/ay.js?v=211"></script>
-  <script src="js/app.js?v=211"></script>
-  <script src="js/kartpaylas.js?v=211"></script>
-  <script src="js/haftalik-hedefler.js?v=211"></script>
-  <script src="js/puanla.js?v=211"></script>
-  <script src="js/haftalikhedef.js?v=211"></script>
-  <script src="js/streak.js?v=211"></script>
-  <script src="js/gorevler.js?v=211"></script>
-  <script src="js/energy.js?v=211"></script>
-  <script src="js/gunluk.js?v=211"></script>
-  <script src="js/overlay-geri.js?v=211"></script>
-  <script src="js/pushtoken.js?v=211"></script>
-  <script src="js/gunlukilham.js?v=211"></script>
-  <script src="js/rapor.js?v=211"></script>
-  <script src="js/bildirim.js?v=211"></script>
-  <script src="js/bildirimayar.js?v=211"></script>
-  <script src="js/magaza.js?v=211"></script>
-  <script src="js/profil.js?v=211"></script>
-  <script src="js/rituel.js?v=211"></script>
-  <script src="js/test.js?v=211"></script>
-  <script src="js/enerjitipi.js?v=211"></script>
-  <script src="js/cakra.js?v=211"></script>
-  <script src="js/nefes.js?v=211"></script>
-  <script src="js/vision.js?v=211"></script>
-  <script src="js/ciftsaat.js?v=211"></script>
-  <script src="js/takvim.js?v=211"></script>
-  <script src="js/hafta.js?v=211"></script>
+  <script src="js/data.js?v=212"></script>
+  <script src="js/farkindalik-sorulari.js?v=212"></script>
+  <script src="js/mini-gorevler.js?v=212"></script>
+  <script src="js/store.js?v=212"></script>
+  <script src="js/perf.js?v=212"></script>
+  <script src="js/audio.js?v=212"></script>
+  <script src="js/muzik.js?v=212"></script>
+  <script src="js/rehbermed.js?v=212"></script>
+  <script src="js/rehber.js?v=212"></script>
+  <script src="js/ay.js?v=212"></script>
+  <script src="js/app.js?v=212"></script>
+  <script src="js/kartpaylas.js?v=212"></script>
+  <script src="js/haftalik-hedefler.js?v=212"></script>
+  <script src="js/puanla.js?v=212"></script>
+  <script src="js/haftalikhedef.js?v=212"></script>
+  <script src="js/streak.js?v=212"></script>
+  <script src="js/bahce.js?v=212"></script>
+  <script src="js/gorevler.js?v=212"></script>
+  <script src="js/energy.js?v=212"></script>
+  <script src="js/gunluk.js?v=212"></script>
+  <script src="js/overlay-geri.js?v=212"></script>
+  <script src="js/pushtoken.js?v=212"></script>
+  <script src="js/gunlukilham.js?v=212"></script>
+  <script src="js/rapor.js?v=212"></script>
+  <script src="js/bildirim.js?v=212"></script>
+  <script src="js/bildirimayar.js?v=212"></script>
+  <script src="js/magaza.js?v=212"></script>
+  <script src="js/profil.js?v=212"></script>
+  <script src="js/rituel.js?v=212"></script>
+  <script src="js/test.js?v=212"></script>
+  <script src="js/enerjitipi.js?v=212"></script>
+  <script src="js/cakra.js?v=212"></script>
+  <script src="js/nefes.js?v=212"></script>
+  <script src="js/vision.js?v=212"></script>
+  <script src="js/ciftsaat.js?v=212"></script>
+  <script src="js/takvim.js?v=212"></script>
+  <script src="js/hafta.js?v=212"></script>
   
-  <script src="js/kozmik.js?v=211"></script>
+  <script src="js/kozmik.js?v=212"></script>
   <!-- Bulut üyelik & senkron (Supabase) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/supabase-config.js?v=211"></script>
-  <script src="js/bulut.js?v=211"></script>
-  <script src="js/topluluk.js?v=211"></script>
-  <script src="js/topluluk-sosyal.js?v=211"></script>
-  <script src="js/topluluk-duyuru.js?v=211"></script>
-  <script src="js/siteayar.js?v=211"></script>
-  <script src="js/kutuphane.js?v=211"></script>
-  <script src="js/magazaurun.js?v=211"></script>
-  <script src="js/ilhamyonet.js?v=211"></script>
+  <script src="js/supabase-config.js?v=212"></script>
+  <script src="js/bulut.js?v=212"></script>
+  <script src="js/topluluk.js?v=212"></script>
+  <script src="js/topluluk-sosyal.js?v=212"></script>
+  <script src="js/topluluk-duyuru.js?v=212"></script>
+  <script src="js/siteayar.js?v=212"></script>
+  <script src="js/kutuphane.js?v=212"></script>
+  <script src="js/magazaurun.js?v=212"></script>
+  <script src="js/ilhamyonet.js?v=212"></script>
   <script>
     if ("serviceWorker" in navigator) {
       // SW'yi kaydet ve arka planda güncelle. ZORLA RELOAD YOK: fetch network-first
