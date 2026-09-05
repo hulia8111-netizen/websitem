@@ -76,3 +76,25 @@ html.ay-yeniay  .ay-atmosfer { background: radial-gradient(120% 95% at 50% 118%,
   100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.9); opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) { .keyif-parlama { display: none; } }
+
+/* iPhone "Ana Ekrana Ekle" ipucu 🍎 */
+#ios-ekle-ipucu {
+  position: fixed; left: 12px; right: 12px; bottom: 14px; z-index: 10000;
+  background: linear-gradient(140deg, #1c1440, #241a4e);
+  border: 1px solid rgba(243,217,140,.35); border-radius: 16px;
+  box-shadow: 0 12px 34px rgba(0,0,0,.5);
+  padding: 12px 40px 12px 14px;
+  transform: translateY(140%); opacity: 0; transition: transform .45s cubic-bezier(.2,.8,.3,1), opacity .45s;
+}
+#ios-ekle-ipucu.gor { transform: translateY(0); opacity: 1; }
+#ios-ekle-ipucu .ios-ic { display: flex; align-items: center; gap: 12px; }
+#ios-ekle-ipucu .ios-ay { font-size: 1.7rem; flex: 0 0 auto; filter: drop-shadow(0 0 8px rgba(243,217,140,.5)); }
+#ios-ekle-ipucu .ios-metin { display: flex; flex-direction: column; gap: 2px; }
+#ios-ekle-ipucu .ios-metin b { color: #f3d98c; font-size: .92rem; }
+#ios-ekle-ipucu .ios-metin span { color: rgba(255,255,255,.8); font-size: .82rem; line-height: 1.45; }
+#ios-ekle-ipucu .ios-metin span b { color: #fff; }
+#ios-ekle-ipucu .ios-share { vertical-align: -3px; margin: 0 1px; }
+#ios-ekle-ipucu .ios-kapat {
+  position: absolute; top: 8px; right: 8px; width: 26px; height: 26px; border-radius: 50%;
+  border: none; background: rgba(255,255,255,.1); color: #fff; font-size: .8rem; cursor: pointer;
+}
