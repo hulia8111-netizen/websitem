@@ -46,3 +46,18 @@
 @media (prefers-reduced-motion: reduce) {
   .bh-bitki, .bh-cicek, .bh-firefly, .bh-yildiz { animation: none; }
 }
+
+/* Sana Dair 🪞 — kişisel yansımalar */
+.yansima-ic { display: flex; flex-direction: column; gap: 10px; }
+.ya-satir { display: flex; align-items: flex-start; gap: 12px; padding: 11px 13px; border-radius: 13px;
+  background: rgba(179,140,255,0.08); border: 1px solid rgba(179,140,255,0.18); }
+.ya-ikon { font-size: 1.15rem; line-height: 1.4; flex: 0 0 auto; }
+.ya-metin { font-size: 0.9rem; line-height: 1.5; color: var(--metin-soft, rgba(255,255,255,.78)); }
+.ya-metin b { color: #d9c6ff; font-weight: 700; }
+
+/* Ay evresine tepki veren atmosfer 🌙 (içeriğin ARKASINDA, çok hafif) */
+.ay-atmosfer { position: fixed; inset: 0; pointer-events: none; z-index: -1; transition: background 1.2s ease; }
+html.ay-dolunay .ay-atmosfer { background: radial-gradient(130% 70% at 50% -8%, rgba(200,214,255,0.20), transparent 58%); }
+html.ay-buyuyen .ay-atmosfer { background: radial-gradient(130% 70% at 50% -8%, rgba(243,217,140,0.10), transparent 58%); }
+html.ay-solan   .ay-atmosfer { background: radial-gradient(130% 70% at 50% -8%, rgba(179,140,255,0.11), transparent 58%); }
+html.ay-yeniay  .ay-atmosfer { background: radial-gradient(120% 95% at 50% 118%, rgba(12,6,30,0.40), transparent 55%); }

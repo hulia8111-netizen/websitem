@@ -321,10 +321,21 @@ document.addEventListener("DOMContentLoaded", () => {
     "Bu kart bir dostun olsaydı sana ne fısıldardı?",
     "Bugün bu niyeti nasıl yaşayabilirsin?"
   ];
+  // Nadir kart sürprizi (değişken ödül) — kartı çekince ~%14 ihtimalle "nadir"
+  const NADIR_MESAJ = [
+    "🌟 Bugün nadir bir kart çektin — evren sana özel bir işaret gönderiyor.",
+    "✨ Bu kart nadiren gelir; bugünün senin için özel bir anlamı var.",
+    "🌙 Nadir bir an — bu kartın enerjisi bugün seninle özellikle güçlü."
+  ];
 
-  function kartEkle(hedef, kart) {
+  function kartEkle(hedef, kart, nadir) {
     const wrap = document.createElement("div");
-    wrap.className = "kart-icerik";
+    wrap.className = "kart-icerik" + (nadir ? " nadir" : "");
+    if (nadir) {
+      const rozet = document.createElement("div");
+      rozet.className = "nadir-rozet"; rozet.textContent = "✨ Nadir Kart";
+      wrap.appendChild(rozet);
+    }
     const cerceve = document.createElement("div");
     cerceve.className = "kart-gorsel-cerceve";
     const img = document.createElement("img");
@@ -337,6 +348,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const p = document.createElement("p");
     p.textContent = kart.mesaj;
     wrap.append(cerceve, h, p);
+    if (nadir) {
+      const nm = document.createElement("div");
+      nm.className = "nadir-mesaj";
+      const di = (typeof dayIndex === "function") ? dayIndex() : 0;
+      nm.textContent = NADIR_MESAJ[di % NADIR_MESAJ.length];
+      wrap.appendChild(nm);
+    }
     // Paylaş butonu — kartı şık bir görsel olarak paylaş
     const pay = document.createElement("button");
     pay.className = "kart-paylas"; pay.type = "button";
@@ -349,7 +367,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const idx1 = Store.get("card-" + today);
     // Günün kartı (her zaman, günde 1)
     kartAlani.innerHTML = "";
-    if (idx1 !== null && DATA.kartlar[idx1]) kartEkle(kartAlani, DATA.kartlar[idx1]);
+    if (idx1 !== null && DATA.kartlar[idx1]) kartEkle(kartAlani, DATA.kartlar[idx1], !!Store.get("card-ozel-" + today));
     else kartAlani.innerHTML = `<div class="kart-placeholder">Kartını çekmek için butona dokun</div>`;
     kartCekBtn.hidden = idx1 !== null;
     // Derin Anlam (seviye ödülü)
@@ -391,7 +409,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function kartCek() {
     if (Store.get("card-" + today) === null) {
       Store.set("card-" + today, Math.floor(Math.random() * DATA.kartlar.length));
-      try { if (navigator.vibrate) navigator.vibrate([12, 40, 18]); } catch (e) {}   // kart çekme hafif dokunuş
+      const nadir = Math.random() < 0.14;                                            // ~%14 nadir sürpriz
+      Store.set("card-ozel-" + today, nadir);
+      try { if (navigator.vibrate) navigator.vibrate(nadir ? [10, 30, 10, 30, 60] : [12, 40, 18]); } catch (e) {}
     }
     gosterKartlar();
   }
