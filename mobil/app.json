@@ -15,7 +15,7 @@
     },
     "android": {
       "package": "net.isiginibull.app",
-      "versionCode": 6,
+      "versionCode": 7,
       "adaptiveIcon": {
         "backgroundColor": "#0c0a1c",
         "foregroundImage": "./assets/android-icon-foreground.png",

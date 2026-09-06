@@ -98,7 +98,27 @@ window.Reklam = (() => {
   window.addEventListener("isigini-reklam-hazir", butonDurum);
   window.addEventListener("isigini-reklam-kapandi", () => { bekliyor = false; butonDurum(); });
   window.addEventListener("isigini-reklam-odul", odulVer);
-  document.addEventListener("DOMContentLoaded", () => { setTimeout(rozetGuncelle, 800); });
 
-  return { izle, hazirMi, destekSayi, butonaBagla, butonDurum, rozetGuncelle };
+  /* ---------- GEÇİŞ (interstitial) reklamı — kart sekmesinde, günde 1 ---------- */
+  function gecisNative() { return native() && window.__ISIGINI_GECIS_HAZIR === true; }
+  function gecisDene() {
+    if (!gecisNative()) return;
+    let bugun = ""; try { bugun = todayKey(); } catch (e) { return; }
+    try { if (Store.get("kart-reklam-gun") === bugun) return; } catch (e) {}   // bugün zaten gösterildi
+    try {
+      Store.set("kart-reklam-gun", bugun);
+      window.ReactNativeWebView.postMessage(JSON.stringify({ type: "gecis-reklam-goster" }));
+    } catch (e) {}
+  }
+  function gecisBagla() {
+    const tile = document.getElementById("kartlar-tile");
+    if (tile && !tile.dataset.gecisBagli) {
+      tile.dataset.gecisBagli = "1";
+      tile.addEventListener("click", () => setTimeout(gecisDene, 600));   // kartlar açılınca göster
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => { setTimeout(rozetGuncelle, 800); setTimeout(gecisBagla, 1000); });
+
+  return { izle, hazirMi, destekSayi, butonaBagla, butonDurum, rozetGuncelle, gecisDene };
 })();

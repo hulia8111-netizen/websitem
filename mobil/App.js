@@ -13,11 +13,12 @@ import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
 import Constants from "expo-constants";
 import * as StoreReview from "expo-store-review";
-import mobileAds, { RewardedAd, RewardedAdEventType, AdEventType } from "react-native-google-mobile-ads";
+import mobileAds, { RewardedAd, RewardedAdEventType, InterstitialAd, AdEventType } from "react-native-google-mobile-ads";
 
 const SITE = "https://isiginibull.net";
 const BG = "#0c0a1c";
 const REKLAM_BIRIMI = "ca-app-pub-6623600258686617/8573778487";  // Ödüllü (Rewarded)
+const GECIS_BIRIMI = "ca-app-pub-6623600258686617/6642583864";   // Geçiş (Interstitial) — kart
 
 // Bildirim geldiğinde (uygulama açıkken) sistemde göster
 Notifications.setNotificationHandler({
@@ -66,6 +67,8 @@ export default function App() {
   const bekleyenYol = useRef(null);
   const reklamRef = useRef(null);
   const reklamHazirRef = useRef(false);
+  const gecisRef = useRef(null);
+  const gecisHazirRef = useRef(false);
 
   // Android donanım geri tuşu → sitede geri git
   useEffect(() => {
@@ -118,14 +121,29 @@ export default function App() {
       r.load();
     } catch (e) { /* sessiz */ }
   }
-  // AdMob başlat + ilk reklamı yükle
+  // Geçiş (interstitial) reklamı — kart açılışında (günde 1, sıklık web'de)
+  function gecisHazirGonder(h) {
+    gecisHazirRef.current = h;
+    reklamWebBildir(`window.__ISIGINI_GECIS_HAZIR=${h ? "true" : "false"};window.dispatchEvent(new Event('isigini-gecis-hazir'));true;`);
+  }
+  function yeniGecisYukle() {
+    try {
+      const g = InterstitialAd.createForAdRequest(GECIS_BIRIMI);
+      gecisRef.current = g;
+      g.addAdEventListener(AdEventType.LOADED, () => gecisHazirGonder(true));
+      g.addAdEventListener(AdEventType.CLOSED, () => { gecisHazirGonder(false); setTimeout(yeniGecisYukle, 1000); });
+      g.addAdEventListener(AdEventType.ERROR, () => { gecisHazirGonder(false); setTimeout(yeniGecisYukle, 30000); });
+      g.load();
+    } catch (e) { /* sessiz */ }
+  }
+  // AdMob başlat + ilk reklamları yükle
   useEffect(() => {
     let iptal = false;
-    try { mobileAds().initialize().then(() => { if (!iptal) yeniReklamYukle(); }).catch(() => {}); } catch (e) {}
+    try { mobileAds().initialize().then(() => { if (!iptal) { yeniReklamYukle(); yeniGecisYukle(); } }).catch(() => {}); } catch (e) {}
     return () => { iptal = true; };
   }, []);
-  // Sayfa hazır olunca mevcut reklam durumunu bildir
-  useEffect(() => { if (sayfaHazir) reklamHazirGonder(reklamHazirRef.current); }, [sayfaHazir]);
+  // Sayfa hazır olunca mevcut reklam durumlarını bildir
+  useEffect(() => { if (sayfaHazir) { reklamHazirGonder(reklamHazirRef.current); gecisHazirGonder(gecisHazirRef.current); } }, [sayfaHazir]);
 
   // Web'den gelen mesaj (ör. puan penceresi isteği)
   async function mesajGeldi(e) {
@@ -139,6 +157,10 @@ export default function App() {
     }
     if (veri && veri.type === "reklam-goster") {
       try { if (reklamRef.current && reklamHazirRef.current) reklamRef.current.show(); } catch (_e) { /* sessiz */ }
+      return;
+    }
+    if (veri && veri.type === "gecis-reklam-goster") {
+      try { if (gecisRef.current && gecisHazirRef.current) gecisRef.current.show(); } catch (_e) { /* sessiz */ }
       return;
     }
   }
