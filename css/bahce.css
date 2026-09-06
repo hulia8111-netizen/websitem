@@ -62,6 +62,36 @@ html.ay-buyuyen .ay-atmosfer { background: radial-gradient(130% 70% at 50% -8%, 
 html.ay-solan   .ay-atmosfer { background: radial-gradient(130% 70% at 50% -8%, rgba(179,140,255,0.11), transparent 58%); }
 html.ay-yeniay  .ay-atmosfer { background: radial-gradient(120% 95% at 50% 118%, rgba(12,6,30,0.40), transparent 55%); }
 
+/* Ödüllü reklam — Ekstra İlham 🎬 */
+.ilham-reklam { margin-top: 18px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.ilham-reklam-btn {
+  border: 1px solid rgba(243,217,140,.5); border-radius: 999px; padding: 14px 22px; cursor: pointer;
+  background: linear-gradient(135deg, rgba(243,217,140,.16), rgba(179,140,255,.14)); color: #f3d98c;
+  font-size: .92rem; font-weight: 700;
+}
+.ilham-reklam-btn:disabled { opacity: .6; cursor: default; }
+.ilham-destekci { font-size: .8rem; color: #d9c6ff; }
+
+.reklam-modal { position: fixed; inset: 0; z-index: 10001; display: flex; align-items: center; justify-content: center;
+  background: rgba(6,4,18,.72); opacity: 0; transition: opacity .25s; padding: 24px; }
+.reklam-modal.gor { opacity: 1; }
+.reklam-ic { position: relative; max-width: 380px; width: 100%; text-align: center; padding: 34px 26px 28px;
+  border-radius: 24px; background: radial-gradient(120% 90% at 50% 0%, #2a1d52, #161033 70%);
+  border: 1px solid rgba(243,217,140,.3); box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+.reklam-kapat { position: absolute; top: 12px; right: 12px; width: 30px; height: 30px; border-radius: 50%;
+  border: none; background: rgba(255,255,255,.1); color: #fff; cursor: pointer; }
+.reklam-amblem { font-size: 2.4rem; filter: drop-shadow(0 0 12px rgba(243,217,140,.6)); }
+.reklam-baslik { font-family: var(--font-baslik, Georgia, serif); font-size: 1.5rem; color: #f3d98c; margin: 6px 0 14px; }
+.reklam-soz { font-family: var(--font-baslik, Georgia, serif); font-size: 1.2rem; line-height: 1.5; color: #fff; margin: 0 0 16px; }
+.reklam-destek { font-size: .92rem; color: #d9c6ff; margin-bottom: 8px; }
+.reklam-not { margin-bottom: 18px; }
+.reklam-tamam { border: none; border-radius: 999px; padding: 14px 32px; cursor: pointer; font-weight: 800;
+  background: linear-gradient(100deg, #ffe9a8, #f3d98c); color: #2a1d05; }
+
+/* Profil Destekçi rozeti */
+.destekci-rozet { display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; padding: 8px 16px;
+  border-radius: 999px; background: rgba(255,255,255,.06); border: 1px solid rgba(243,217,140,.3); color: #f3d98c; font-size: .85rem; }
+
 /* Keyif — mikro parıltı (kutlama anları) */
 .keyif-parlama { position: fixed; width: 0; height: 0; pointer-events: none; z-index: 9999; }
 .keyif-parlama span {

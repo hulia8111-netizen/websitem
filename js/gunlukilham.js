@@ -45,6 +45,10 @@ const GunlukIlham = window.GunlukIlham = (() => {
             '<button class="ilham-pay fb" id="ilham-pay-fb" type="button" aria-label="Facebook\'ta paylaş">👍<span>Facebook</span></button>' +
           '</div>' +
         '</div>' +
+        '<div class="ilham-reklam" id="ilham-reklam" hidden>' +
+          '<button class="ilham-reklam-btn" id="ilham-reklam-btn" type="button">🎬 Reklam izle · Ekstra İlham al ✨</button>' +
+          '<div class="ilham-destekci" id="ilham-destekci" hidden></div>' +
+        '</div>' +
       '</div>';
     document.body.appendChild(ov);
     ov.querySelector(".ilham-kapat").addEventListener("click", kapat);
@@ -82,6 +86,7 @@ const GunlukIlham = window.GunlukIlham = (() => {
     if (t) t.textContent = tarihMetni();
     document.body.classList.add("ilham-aktif");
     ov.hidden = false; ov.classList.remove("gor"); void ov.offsetWidth; ov.classList.add("gor");
+    try { if (window.Reklam) Reklam.butonaBagla(); } catch (e) {}
   }
   function kapat() {
     if (!ov) return;

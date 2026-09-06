@@ -15,7 +15,7 @@
     },
     "android": {
       "package": "net.isiginibull.app",
-      "versionCode": 4,
+      "versionCode": 5,
       "adaptiveIcon": {
         "backgroundColor": "#0c0a1c",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -31,6 +31,12 @@
         "expo-notifications",
         {
           "color": "#f3d98c"
+        }
+      ],
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-6623600258686617~8674579785"
         }
       ]
     ],

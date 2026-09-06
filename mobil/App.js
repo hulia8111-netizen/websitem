@@ -13,9 +13,11 @@ import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
 import Constants from "expo-constants";
 import * as StoreReview from "expo-store-review";
+import mobileAds, { RewardedAd, RewardedAdEventType, AdEventType } from "react-native-google-mobile-ads";
 
 const SITE = "https://isiginibull.net";
 const BG = "#0c0a1c";
+const REKLAM_BIRIMI = "ca-app-pub-6623600258686617/8573778487";  // Ödüllü (Rewarded)
 
 // Bildirim geldiğinde (uygulama açıkken) sistemde göster
 Notifications.setNotificationHandler({
@@ -62,6 +64,8 @@ export default function App() {
   const [token, setToken] = useState(null);
   const [sayfaHazir, setSayfaHazir] = useState(false);
   const bekleyenYol = useRef(null);
+  const reklamRef = useRef(null);
+  const reklamHazirRef = useRef(false);
 
   // Android donanım geri tuşu → sitede geri git
   useEffect(() => {
@@ -92,6 +96,37 @@ export default function App() {
     try { webRef.current.injectJavaScript(js); } catch (e) {}
   }
 
+  /* ---------- Ödüllü reklam (AdMob) ---------- */
+  function reklamWebBildir(js) { try { webRef.current && webRef.current.injectJavaScript(js); } catch (e) {} }
+  function reklamHazirGonder(h) {
+    reklamHazirRef.current = h;
+    reklamWebBildir(`window.__ISIGINI_REKLAM_HAZIR=${h ? "true" : "false"};window.dispatchEvent(new Event('isigini-reklam-hazir'));true;`);
+  }
+  function yeniReklamYukle() {
+    try {
+      const r = RewardedAd.createForAdRequest(REKLAM_BIRIMI);
+      reklamRef.current = r;
+      r.addAdEventListener(RewardedAdEventType.LOADED, () => reklamHazirGonder(true));
+      r.addAdEventListener(RewardedAdEventType.EARNED_REWARD, () =>
+        reklamWebBildir("window.dispatchEvent(new Event('isigini-reklam-odul'));true;"));
+      r.addAdEventListener(AdEventType.CLOSED, () => {
+        reklamHazirGonder(false);
+        reklamWebBildir("window.dispatchEvent(new Event('isigini-reklam-kapandi'));true;");
+        setTimeout(yeniReklamYukle, 1000);           // sonraki için yeni reklam yükle
+      });
+      r.addAdEventListener(AdEventType.ERROR, () => { reklamHazirGonder(false); setTimeout(yeniReklamYukle, 30000); });
+      r.load();
+    } catch (e) { /* sessiz */ }
+  }
+  // AdMob başlat + ilk reklamı yükle
+  useEffect(() => {
+    let iptal = false;
+    try { mobileAds().initialize().then(() => { if (!iptal) yeniReklamYukle(); }).catch(() => {}); } catch (e) {}
+    return () => { iptal = true; };
+  }, []);
+  // Sayfa hazır olunca mevcut reklam durumunu bildir
+  useEffect(() => { if (sayfaHazir) reklamHazirGonder(reklamHazirRef.current); }, [sayfaHazir]);
+
   // Web'den gelen mesaj (ör. puan penceresi isteği)
   async function mesajGeldi(e) {
     let veri = {};
@@ -100,6 +135,11 @@ export default function App() {
       try {
         if (await StoreReview.isAvailableAsync()) await StoreReview.requestReview();
       } catch (_e) { /* sessiz */ }
+      return;
+    }
+    if (veri && veri.type === "reklam-goster") {
+      try { if (reklamRef.current && reklamHazirRef.current) reklamRef.current.show(); } catch (_e) { /* sessiz */ }
+      return;
     }
   }
 
