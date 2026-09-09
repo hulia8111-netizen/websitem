@@ -36,8 +36,20 @@ const Magaza = window.Magaza = (() => {
           aciklama: "Eşsiz Delphinula (Angaria Delphinus) deniz kabuğu ucu, doğal sedef taş kırıklarıyla buluştu. Sedefin ışıltısı denizin dinginliğini taşır; her kolye doğal taş olduğundan kendine özgüdür — el yapımı, sevgiyle hazırlandı, özel kutusunda gönderilir. 🐚",
           gorsel: "/urunler/delphinula-sedef-kolye.jpg",
           gorseller: ["/urunler/delphinula-sedef-boyunda.jpg", "/urunler/delphinula-sedef-kolye.jpg"],
-          fiyat: "1.204,99 TL",
+          fiyat: "204,99 TL",
           link: "https://www.shopier.com/dreamyhandmade/50249821"
+        },
+        {
+          id: "tas-labradorit", ad: "Tel Sarım Labradorit Kolye", ikon: "🌙",
+          aciklama: "El işçiliğiyle gümüş renkli tel sarım yapılmış, doğal Labradorit kolye. Mavi-yeşil ışıltısıyla (labradoresans) büyüleyen Labradorit; koruma ve dönüşüm taşı olarak bilinir — sezgiyi güçlendirir, negatif enerjiden korur, hayal gücünü ve içsel ışığı uyandırır. Işığını yanında taşı. 🌙",
+          gorsel: "/urunler/labradorit-kolye.jpg", fiyat: "654,99 TL",
+          link: "https://www.shopier.com/dreamyhandmade/50596224"
+        },
+        {
+          id: "tas-sedef-bileklik", ad: "Kırık Sedef Taşlı Bileklik", ikon: "🐚",
+          aciklama: "Doğal kırık sedef taşlarından, 316L paslanmaz çelik zincirli el yapımı bileklik. Sedef; denizin dinginliğini ve şefkatini taşır — sakinleştirir, duygusal dengeyi destekler, koruyucu bir enerji sunar. Suya dayanıklı, kararmaz; günlük kullanıma uygun. Doğanın zarafetini bileğinde taşı. 🐚",
+          gorsel: "/urunler/kirik-sedef-bileklik.jpg", fiyat: "504,99 TL",
+          link: "https://www.shopier.com/dreamyhandmade/50543990"
         },
         {
           id: "tas-dendritli-opal", ad: "Dendiritli Opal", ikon: "🌿",
