@@ -68,12 +68,6 @@ const Magaza = window.Magaza = (() => {
           aciklama: "Kalp formunda, doğal Sodalit taşından el yapımı kolye. Zihinsel netlik ve sakinlik taşı; mantıklı düşünmeyi ve odaklanmayı destekler, iletişimi güçlendirir, kaygıyı hafifletir. Kalbinin üzerinde huzur. Çelik zincirli. 💙",
           gorsel: "/urunler/sodalit-kalp-kolye.jpg", fiyat: "304,99 TL",
           link: "https://www.shopier.com/dreamyhandmade/50075370"
-        },
-        {
-          id: "tas-akik", ad: "Akik (Agat) Taşı", ikon: "💎",
-          aciklama: "Her biri benzersiz, doğal ağaç-kesiti dokulu akik taşı. Topraklar, dengeler; iç huzuru ve güven duygusunu güçlendirir, yaşam alanına sakin bir enerji katar. 🌿",
-          gorsel: "/urunler/akik-tasi.jpg", fiyat: "304,99 TL",
-          link: "https://www.shopier.com/dreamyhandmade/50076643?utm_id=97757_v0_s00_e0_tv0"
         }
       ]
     }
