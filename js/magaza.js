@@ -36,8 +36,14 @@ const Magaza = window.Magaza = (() => {
           aciklama: "Eşsiz Delphinula (Angaria Delphinus) deniz kabuğu ucu, doğal sedef taş kırıklarıyla buluştu. Sedefin ışıltısı denizin dinginliğini taşır; her kolye doğal taş olduğundan kendine özgüdür — el yapımı, sevgiyle hazırlandı, özel kutusunda gönderilir. 🐚",
           gorsel: "/urunler/delphinula-sedef-kolye.jpg",
           gorseller: ["/urunler/delphinula-sedef-boyunda.jpg", "/urunler/delphinula-sedef-kolye.jpg"],
-          fiyat: "204,99 TL",
+          fiyat: "1.204,99 TL",
           link: "https://www.shopier.com/dreamyhandmade/50249821"
+        },
+        {
+          id: "tas-delphinula-sedef-2", ad: "Delphinula Sedef Kolye", ikon: "🐚",
+          aciklama: "Eşsiz Delphinula (Angaria Delphinus) deniz kabuğu ucu, doğal sedef taş kırıklarıyla buluştu. Sedefin ışıltısı denizin dinginliğini taşır; her kolye doğal taş olduğundan kendine özgüdür — el yapımı, sevgiyle hazırlandı, özel kutusunda gönderilir. 🐚",
+          gorsel: "/urunler/delphinula-sedef-2.jpg", fiyat: "1.204,99 TL",
+          link: "https://www.shopier.com/dreamyhandmade/50543971"
         },
         {
           id: "tas-labradorit", ad: "Tel Sarım Labradorit Kolye", ikon: "🌙",
