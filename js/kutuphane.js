@@ -22,18 +22,7 @@ const Kutuphane = window.Kutuphane = (() => {
   /* ---------- KATALOG (dijital ürünler; en yeni en üstte) ----------
      Not: Asıl katalog Supabase `dijital_urun` tablosundan yüklenir
      (katalogYukle). Aşağıdaki dizi yalnızca bulut gelmezse yedektir. */
-  let KATALOG = [
-    {
-      kod: "ritueller-2026-08",
-      baslik: "Ağustos 2026 · Spiritüel Ritüeller",
-      ozet: "Dolunay Bırakma Ritüeli · 28 Ağustos",
-      aciklama: "Bu ayın teması: Bırakma · Arınma · Yeni alana yer açma. Dolunay bırakma ritüeli, ritüel sonrası farkındalık soruları ve yazdırılabilir “Ayın Niyeti” kartı — hepsi kalıcı olarak senin.",
-      icerik: ["Aylık Spiritüel Ritüeller PDF’si", "PDF’ye kalıcı erişim", "İstediğin zaman tekrar aç & indir"],
-      fiyat: "88 TL",
-      tarih: "2026-08",
-      dosyalar: [{ tip: "pdf", ad: "Ritüel Rehberi (PDF)", yol: "rehber.pdf" }]
-    }
-  ];
+  let KATALOG = [];   // Ücretli dijital ürünler yalnız Supabase'den yüklenir; kodda yedek tutulmaz (boşsa sadece ücretsiz ritüel görünür).
 
   /* ---------- ödeme bilgisi (web satın alma penceresi) ----------
      IBAN ve ad kullanıcı tarafından doldurulacak. */
