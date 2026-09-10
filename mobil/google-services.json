@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "260887005609",
+    "project_id": "isigini-bul",
+    "storage_bucket": "isigini-bul.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:260887005609:android:d5a6bdc5c35c750f02dcb8",
+        "android_client_info": {
+          "package_name": "net.isiginibull.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCkGUXWLoufaJInn3lilsiusZveKwCK8Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
