@@ -190,6 +190,7 @@ const Magaza = window.Magaza = (() => {
     ustNot("🌙 Spiritüel Ritüeller");
     grid.className = "mg-grid";
     grid.innerHTML = "";
+    if (window.YeniAyRituel && YeniAyRituel.kart) YeniAyRituel.kart(grid);   // 🎁 ücretsiz tanıtım ritüeli (en üstte)
     if (window.Kutuphane && Kutuphane.magazaKartlari) Kutuphane.magazaKartlari(grid);
     if (!grid.children.length) {
       grid.className = "mg-grid mg-grid-bos";

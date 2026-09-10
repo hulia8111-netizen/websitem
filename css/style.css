@@ -3254,3 +3254,110 @@ body.mg-aktif { overflow: hidden; }
     opacity: 1;
   }
 }
+
+/* ============================================================
+   Ücretsiz Yeni Ay Ritüeli 🌑🎁 (yeniayrituel.js)
+   ============================================================ */
+/* Mağaza kartı */
+.yar-kart { overflow: hidden; padding: 0; display: flex; flex-direction: column; }
+.yar-kapak {
+  position: relative; height: 120px;
+  background:
+    radial-gradient(120% 140% at 20% 0%, rgba(179,140,255,0.35), transparent 55%),
+    radial-gradient(120% 120% at 90% 100%, rgba(233,196,106,0.22), transparent 50%),
+    linear-gradient(160deg, #211743, #0c0a1c);
+  display: flex; align-items: center; justify-content: center;
+}
+.yar-kapak-ay { font-size: 3.2rem; filter: drop-shadow(0 0 18px rgba(179,140,255,0.55)); }
+.yar-rozet {
+  display: inline-block; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.02em;
+  color: #1a1330; background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+  padding: 0.22rem 0.6rem; border-radius: 999px; box-shadow: 0 4px 14px rgba(233,196,106,0.3);
+}
+.yar-kapak .yar-rozet { position: absolute; top: 10px; left: 10px; }
+.yar-kart-govde { padding: var(--sp-3); display: flex; flex-direction: column; gap: 0.4rem; }
+.yar-kart-alt { font-size: 0.82rem; color: var(--accent); font-weight: 600; }
+.yar-ac-btn {
+  margin-top: 0.5rem; width: 100%; border: 0; cursor: pointer;
+  font-family: var(--font-govde); font-size: 0.95rem; font-weight: 700; color: #1a1330;
+  padding: 0.7rem 1rem; border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+  box-shadow: 0 8px 22px rgba(233,196,106,0.28); transition: transform 0.15s, box-shadow 0.15s;
+}
+.yar-ac-btn:active { transform: translateY(1px) scale(0.99); }
+
+/* Okuyucu katmanı */
+.yar-overlay {
+  position: fixed; inset: 0; z-index: 2400; display: flex; align-items: center; justify-content: center;
+  padding: max(env(safe-area-inset-top), 14px) 14px max(env(safe-area-inset-bottom), 14px);
+  background: rgba(6, 4, 18, 0.72); backdrop-filter: blur(8px);
+  opacity: 0; transition: opacity 0.3s ease;
+}
+.yar-overlay.gor { opacity: 1; }
+.yar-govde {
+  position: relative; width: 100%; max-width: 560px; max-height: 100%;
+  overflow-y: auto; -webkit-overflow-scrolling: touch;
+  background: linear-gradient(180deg, var(--bg-1), var(--bg-0));
+  border: 1px solid var(--card-border); border-radius: var(--radius);
+  box-shadow: var(--shadow); transform: translateY(16px) scale(0.98); transition: transform 0.3s ease;
+}
+.yar-overlay.gor .yar-govde { transform: none; }
+.yar-ust {
+  position: relative; text-align: center; padding: var(--sp-5) var(--sp-4) var(--sp-4);
+  background:
+    radial-gradient(100% 120% at 50% 0%, rgba(179,140,255,0.28), transparent 60%),
+    linear-gradient(160deg, rgba(33,23,67,0.9), transparent);
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+.yar-ust-ay { font-size: 3.4rem; filter: drop-shadow(0 0 20px rgba(179,140,255,0.6)); margin-bottom: 0.4rem; }
+.yar-baslik { font-family: var(--font-baslik); font-size: 1.5rem; color: var(--metin); margin: 0.5rem 0 0.2rem; }
+.yar-altbaslik { font-size: 0.9rem; color: var(--accent); font-weight: 600; }
+.yar-kapat-x {
+  position: absolute; top: 10px; right: 12px; z-index: 2; width: 34px; height: 34px;
+  border-radius: 50%; border: 1px solid var(--card-border); cursor: pointer;
+  background: rgba(12,10,28,0.6); color: var(--metin-soft); font-size: 1rem; line-height: 1;
+}
+.yar-ic { padding: var(--sp-4); display: flex; flex-direction: column; gap: var(--sp-3); }
+.yar-giris { color: var(--metin-soft); line-height: 1.65; margin: 0; }
+.yar-giris b { color: var(--metin); }
+.yar-hazirlik {
+  background: var(--card-bg-soft); border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm); padding: var(--sp-3);
+}
+.yar-hazirlik-bas { font-weight: 700; color: var(--gold-soft); margin-bottom: 0.4rem; }
+.yar-hazirlik p { margin: 0; color: var(--metin-soft); line-height: 1.6; }
+.yar-adim {
+  position: relative; background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm); padding: var(--sp-3); padding-left: calc(var(--sp-3) + 4px);
+}
+.yar-adim::before {
+  content: ""; position: absolute; left: 0; top: 12px; bottom: 12px; width: 3px; border-radius: 3px;
+  background: linear-gradient(180deg, var(--accent), var(--gold));
+}
+.yar-adim-bas { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; color: var(--metin); }
+.yar-adim-no {
+  flex: none; width: 22px; height: 22px; border-radius: 50%; font-size: 0.8rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; color: #1a1330;
+  background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+}
+.yar-adim-ikon { font-size: 1.1rem; }
+.yar-adim-metin { margin: 0; color: var(--metin-soft); line-height: 1.6; }
+.yar-adim-metin b { color: var(--metin); }
+.yar-soz {
+  margin-top: 0.6rem; padding: 0.55rem 0.8rem; border-radius: var(--radius-sm);
+  background: var(--accent-soft); color: var(--metin); font-style: italic; line-height: 1.5;
+  border-left: 3px solid var(--accent);
+}
+.yar-kapanis {
+  text-align: center; padding: var(--sp-3); border-radius: var(--radius-sm);
+  background: radial-gradient(120% 140% at 50% 0%, rgba(233,196,106,0.14), transparent 60%);
+}
+.yar-kapanis p { color: var(--metin-soft); line-height: 1.65; margin: 0 0 0.6rem; }
+.yar-olumlama { font-family: var(--font-baslik); font-size: 1.1rem; color: var(--gold-soft); line-height: 1.5; }
+.yar-kapat-alt {
+  display: block; width: calc(100% - var(--sp-4) * 2); margin: 0 var(--sp-4) var(--sp-4);
+  padding: 0.75rem; border-radius: var(--radius-sm); cursor: pointer;
+  border: 1px solid var(--card-border); background: var(--card-bg); color: var(--metin-soft);
+  font-family: var(--font-govde); font-size: 0.95rem; font-weight: 600;
+}
+body.yar-acik { overflow: hidden; }

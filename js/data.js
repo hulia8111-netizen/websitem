@@ -363,6 +363,18 @@ const DATA = {
     { ay: 12, gun: 21, tip: "gecis",       baslik: "Kış Gündönümü ❄️",       mesaj: "Yılın en uzun gecesi; içe dönüş ve yeniden doğuş." },
     { ay: 12, gun: 31, tip: "farkindalik", baslik: "Bırakma Günü",           mesaj: "Yılı şükran ve affedişle kapat." }
   ],
+  /* Tek seferlik, tam tarihli (YYYY-MM-DD) özel günler — tekrar etmez.
+     tip aynı ay fazıysa (yeniay/dolunay) otomatik faz kaydını zenginleştirir. */
+  ozelTarihler: [
+    {
+      tarih: "2026-09-11", tip: "yeniay",
+      baslik: "Başak Yeni Ayı · Işık Kapısı 🌑",
+      mesaj: "11 Eylül — güçlü bir niyet kapısı. Bugün niyetini tohumla; Cumartesi canlı yayında birlikte mühürleyeceğiz. 🌙",
+      rituel: "🎁 Ücretsiz Yeni Ay Ritüeli — Mağaza’dan hemen aç.",
+      meditasyon: "11 nefeslik niyet belirleme meditasyonu.",
+      olumlama: "Yeni başlangıçlara güvenle açığım; niyetim ışıkla mühürleniyor."
+    }
+  ],
   /* Merkür retrosu dönemleri (yaklaşık; istediğin gibi güncelleyebilirsin). */
   merkurRetro: [
     { bas: "2026-02-25", bit: "2026-03-20" },

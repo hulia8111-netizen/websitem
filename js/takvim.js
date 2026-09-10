@@ -44,12 +44,24 @@ const Takvim = window.Takvim = (() => {
   function sabitGunler(d) { return (DATA.spirituelGunler || []).filter(x => x.ay === d.getMonth() + 1 && x.gun === d.getDate()); }
   function ozelAl() { return Store.get(OZEL, []) || []; }
   function ozelGunler(k) { return ozelAl().filter(x => x.tarih === k); }
+  function ozelTarih(k) { return (DATA.ozelTarihler || []).find(x => x.tarih === k) || null; }
 
   /* Bir güne ait tüm olaylar (birleştirilmiş içerikle) */
   function olaylar(d) {
     const k = key(d), out = [];
     const faz = ayFazi(d);
-    if (faz) out.push(Object.assign({}, DATA.takvimTipleri[faz], { tip: faz }));
+    const ot = ozelTarih(k);            // tek seferlik tam tarihli özel gün (varsa)
+    let otKullanildi = false;
+    if (faz) {
+      const base = DATA.takvimTipleri[faz];
+      // Özel tarih aynı ay fazıysa onun zengin içeriğiyle birleştir (çift kayıt olmasın)
+      if (ot && (!ot.tip || ot.tip === faz)) { out.push(Object.assign({}, base, ot, { tip: faz })); otKullanildi = true; }
+      else out.push(Object.assign({}, base, { tip: faz }));
+    }
+    if (ot && !otKullanildi) {           // faz yok / farklı → özel günü ayrı ekle
+      const base = DATA.takvimTipleri[ot.tip] || DATA.takvimTipleri.kisisel;
+      out.push(Object.assign({}, base, ot, { tip: ot.tip || "kisisel" }));
+    }
     if (retroMu(d)) out.push(Object.assign({}, DATA.takvimTipleri.retro, { tip: "retro" }));
     sabitGunler(d).forEach(s => out.push(Object.assign({}, DATA.takvimTipleri[s.tip] || {}, s)));
     ozelGunler(k).forEach(o => {
@@ -114,8 +126,8 @@ const Takvim = window.Takvim = (() => {
     const yeniayVar = evs.some(e => e.tip === "yeniay");
     if (dolunayVar || yeniayVar) {
       const cAy = dolunayVar ? "🌕" : "🌑";
-      const cBas = dolunayVar ? "Dolunay Bırakma Ritüeli" : "Yeni Ay Ritüeli";
-      const cAlt = dolunayVar ? "Bu dolunay için rehberi edin →" : "Bu yeni ay için rehberi edin →";
+      const cBas = dolunayVar ? "Dolunay Bırakma Ritüeli" : "🎁 Ücretsiz Yeni Ay Ritüeli";
+      const cAlt = dolunayVar ? "Bu dolunay için rehberi edin →" : "Hemen aç, ücretsiz →";
       html += `<button class="tk-magaza-cta" id="tk-magaza-cta">
         <span class="tk-cta-ay">${cAy}</span>
         <span class="tk-cta-metin"><b>${cBas}</b><small>${cAlt}</small></span></button>`;
@@ -124,7 +136,14 @@ const Takvim = window.Takvim = (() => {
     el.classList.remove("tk-fade"); void el.offsetWidth; el.classList.add("tk-fade");
     el.querySelectorAll("[data-sil]").forEach(b => b.addEventListener("click", () => { ozelSil(b.dataset.sil); cizGrid(); cizDetay(d); }));
     const mc = $("tk-magaza-cta");
-    if (mc) mc.addEventListener("click", () => { kapat(); setTimeout(() => { if (window.Magaza && Magaza.ac) Magaza.ac("rituel-araclar", "ritueller"); }, 320); });
+    if (mc) mc.addEventListener("click", () => {
+      kapat();
+      // Yeni ay → ücretsiz ritüeli doğrudan aç; dolunay → mağaza ritüel rehberi
+      setTimeout(() => {
+        if (yeniayVar && window.YeniAyRituel && YeniAyRituel.ac) YeniAyRituel.ac();
+        else if (window.Magaza && Magaza.ac) Magaza.ac("rituel-araclar", "ritueller");
+      }, 320);
+    });
     const enLink = $("tk-enerji-link");
     if (enLink) enLink.addEventListener("click", () => { kapat(); if (window.gotoView) window.gotoView("home"); const en = document.getElementById("enerji"); if (en) setTimeout(() => en.scrollIntoView({ behavior: "smooth", block: "center" }), 450); });
     const di = $("tk-ekle-tarih"); if (di) di.value = k;
