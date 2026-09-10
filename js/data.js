@@ -369,10 +369,10 @@ const DATA = {
     {
       tarih: "2026-09-11", tip: "yeniay",
       baslik: "Başak Yeni Ayı · Işık Kapısı 🌑",
-      mesaj: "11 Eylül — güçlü bir niyet kapısı. Bugün niyetini tohumla; Cumartesi canlı yayında birlikte mühürleyeceğiz. 🌙",
-      rituel: "🎁 Ücretsiz Yeni Ay Ritüeli — Mağaza’dan hemen aç.",
+      mesaj: "11 Eylül — güçlü bir niyet kapısı. Bugün niyetini tohumla; yeni ay boyunca seninle büyüsün. 🌙",
+      rituel: "🎁 Ücretsiz Yeni Ay Ritüeli — hemen aç, oku, PDF indir.",
       meditasyon: "11 nefeslik niyet belirleme meditasyonu.",
-      olumlama: "Yeni başlangıçlara güvenle açığım; niyetim ışıkla mühürleniyor."
+      olumlama: "Yeni başlangıçlara güvenle açığım; niyetim ışıkla mühürlendi, tohumum artık büyüyor."
     }
   ],
   /* Merkür retrosu dönemleri (yaklaşık; istediğin gibi güncelleyebilirsin). */

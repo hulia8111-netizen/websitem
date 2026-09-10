@@ -18,18 +18,23 @@ const YeniAyRituel = window.YeniAyRituel = (() => {
   const RITUEL = {
     rozet: "🎁 Ücretsiz",
     baslik: "Yeni Ay Işık Kapısı Ritüeli",
-    altbaslik: "11 Eylül · Başak Yeni Ayı",
-    ozet: "Niyetini tohumla — Cumartesi canlı yayında birlikte mühürleyelim. 🌙",
-    giris: "11 Eylül, yılın en güçlü niyet kapılarından biri. Bugün niyetini <b>tohumluyorsun</b>. Cumartesi canlı yayında hep birlikte o niyeti <b>mühürleyeceğiz</b> — evrene teslim edeceğiz. Bugün ektiğin tohum, Cumartesi kök salacak.",
-    hazirlik: "Sessiz bir köşe bul. İstersen bir mum ya da telefon ışığını yak. Üç kez yavaşça nefes al — burnundan al, ağzından ver. Omuzlarını indir.",
+    altbaslik: "Niyetini tohumla, ışığını çağır",
+    ozet: "Niyetini tohumla, ışığını yeni bir döngüye taşı. 🌙",
+    pdf: "/ritueller/yeni-ay-isik-kapisi-rituel.pdf",
+    pdfAd: "Yeni-Ay-Isik-Kapisi-Rituel.pdf",
+    giris: "Yeni ay, gökyüzünün “yeniden başlama” anıdır — niyetler, tohumlar ve taze başlangıçlar için en güçlü zaman. Ay karanlıkken ektiğin niyet, o büyürken seninle birlikte büyür. Bu ritüel, içindeki ışığı yeni bir döngüye taşıman için hazırlandı. 🤍",
+    malzemeler: ["<b>1 mum</b> (beyaz ideal, elindeki de olur)", "1 <b>kağıt</b> + <b>kalem</b>", "Küçük bir <b>kase su</b>", "Bir tutam <b>tuz</b>", "<i>İsteğe bağlı:</i> <b>koku / tütsü</b>"],
+    hazirlik: "",
     adimlar: [
-      { ikon: "🚪", ad: "Kapıyı Aç", metin: "Kalbine elini koy ve içinden söyle:", soz: "Bugün yeni ay kapısındayım. Kalbim açık, niyetim net." },
-      { ikon: "🌱", ad: "Tohumu Ek", metin: "Şu soruyu kendine sor ve <b>tek bir cümleyle</b> cevapla: “Hayatıma daha çok ne çağırıyorum?” (Örn. “Huzuru çağırıyorum.” / “Bereketi çağırıyorum.”) Bu cümle senin niyet tohumun — bir kağıda ya da günlüğüne yaz.", soz: "" },
-      { ikon: "💫", ad: "Işıkla Sula", metin: "Gözlerini kapat. Niyetinin çoktan gerçekleştiğini <b>hisset</b> — sadece düşünme, hisset. O huzur, o bereket şu an içinde. 11 saniye bu duyguda kal.", soz: "" },
-      { ikon: "🔒", ad: "Mührü Bekle", metin: "Niyetini içinden üç kez tekrarla, sonra bırak:", soz: "Ektim. Güveniyorum. Cumartesi mühürlüyorum." }
+      { ikon: "🌙", ad: "Alanını Hazırla", metin: "Sessiz bir köşe bul, telefonu sessize al. Üç kez derin nefes al — burnundan al, ağzından ver. Omuzlarını indir.", soz: "" },
+      { ikon: "🚪", ad: "Kapıyı Aç", metin: "Mumu yak. Ateşe bakarak içinden söyle:", soz: "Bu ışıkla yeni bir kapı açıyorum. Kalbim açık, niyetim net." },
+      { ikon: "🌱", ad: "Tohumunu Ek", metin: "Kağıda, hayatına <b>daha çok ne çağırdığını</b> yaz. Tek cümle yeter: “Huzuru çağırıyorum.” / “Bereketi çağırıyorum.”", soz: "" },
+      { ikon: "💫", ad: "Işıkla Sula", metin: "Gözlerini kapat. Niyetinin <b>çoktan gerçekleştiğini hisset</b> — sadece düşünme, hisset. O duyguda 11 saniye kal.", soz: "" },
+      { ikon: "🔒", ad: "Mühürle", metin: "Kaseye bir tutam tuz at, parmağını suya değdir ve kağıdın köşesine dokun. Niyetini üç kez tekrarla, sonra kağıdı katla:", soz: "Ektim. Güveniyorum. Bırakıyorum." }
     ],
-    kapanis: "Bugün tohumunu ektin. Cumartesi canlı yayında bu tohumları hep birlikte ışıkla mühürleyeceğiz. Sen yalnız değilsin — aynı kapıdan geçen bir topluluğun parçasısın. 🌙",
-    olumlama: "Yeni başlangıçlara güvenle açığım; niyetim ışıkla mühürleniyor."
+    kapanis: "Mumu güvenle söndür. Yeni ay boyunca niyetinin filizlendiğini hayal et. Sen yalnız değilsin — aynı kapıdan geçen bir topluluğun parçasısın. 🌱",
+    olumlama: "Yeni başlangıçlara güvenle açığım. Niyetim ışıkla mühürlendi, tohumum artık büyüyor.",
+    ig: "hulia.isiginibul"
   };
 
   /* ---------- MAĞAZA KARTI ---------- */
@@ -64,6 +69,7 @@ const YeniAyRituel = window.YeniAyRituel = (() => {
   }
 
   function icerikHTML() {
+    const malz = RITUEL.malzemeler.map(m => `<li>${m}</li>`).join("");
     const adimlar = RITUEL.adimlar.map((a, i) => `
       <div class="yar-adim">
         <div class="yar-adim-bas"><span class="yar-adim-no">${i + 1}</span><span class="yar-adim-ikon">${a.ikon}</span><b>${esc(a.ad)}</b></div>
@@ -81,24 +87,44 @@ const YeniAyRituel = window.YeniAyRituel = (() => {
         </div>
         <div class="yar-ic">
           <p class="yar-giris">${RITUEL.giris}</p>
-          <div class="yar-hazirlik">
-            <div class="yar-hazirlik-bas">🕯️ Hazırlık <span class="muted small">(2 dakika)</span></div>
-            <p>${esc(RITUEL.hazirlik)}</p>
-          </div>
+          <div class="yar-sec-h">🕯️ Malzemeler <span class="muted small">· hepsi evinde var</span></div>
+          <ul class="yar-malz">${malz}</ul>
+          <div class="yar-sec-h">✨ Uygulama <span class="muted small">· yaklaşık 10 dakika</span></div>
           ${adimlar}
           <div class="yar-kapanis">
-            <p>${esc(RITUEL.kapanis)}</p>
             <div class="yar-olumlama">“${esc(RITUEL.olumlama)}”</div>
+            <p>${esc(RITUEL.kapanis)}</p>
+          </div>
+          <div class="yar-cta">
+            <button class="yar-indir" type="button">📥 Ritüeli PDF İndir</button>
+            <a class="yar-ig" href="https://www.instagram.com/${esc(RITUEL.ig)}" target="_blank" rel="noopener noreferrer">📸 Uygulamalı Reels anlatımı için: <b>@${esc(RITUEL.ig)}</b></a>
+            <div class="yar-ucretsiz-not">Tamamen ücretsiz 🤍</div>
           </div>
         </div>
         <button class="yar-kapat yar-kapat-alt" type="button">Kapat</button>
       </div>`;
   }
 
+  /* ---------- PDF indir (web: kaydet · uygulama/mobil: yeni sekmede aç) ---------- */
+  function indir() {
+    const url = RITUEL.pdf;
+    const abs = location.origin + url;
+    const native = window.__ISIGINI_NATIVE === true || /\bwv\b/i.test(navigator.userAgent || "");
+    try {
+      if (native) { window.open(abs, "_blank", "noopener,noreferrer"); return; }
+      const a = document.createElement("a");
+      a.href = url; a.download = RITUEL.pdfAd; a.rel = "noopener";
+      document.body.appendChild(a); a.click(); a.remove();
+    } catch (e) {
+      try { window.open(abs, "_blank", "noopener,noreferrer"); } catch (_e) {}
+    }
+  }
+
   function ac() {
     const ov = overlayYap();
     ov.innerHTML = icerikHTML();
     ov.querySelectorAll(".yar-kapat").forEach(b => b.addEventListener("click", kapat));
+    const ind = ov.querySelector(".yar-indir"); if (ind) ind.addEventListener("click", indir);
     ov.hidden = false;
     document.body.classList.add("yar-acik");
     requestAnimationFrame(() => ov.classList.add("gor"));

@@ -3361,3 +3361,31 @@ body.mg-aktif { overflow: hidden; }
   font-family: var(--font-govde); font-size: 0.95rem; font-weight: 600;
 }
 body.yar-acik { overflow: hidden; }
+
+/* Ücretsiz ritüel okuyucu — malzemeler + indirme CTA */
+.yar-sec-h { display: flex; align-items: baseline; gap: 0.5rem; font-family: var(--font-baslik); font-size: 1.15rem; color: var(--gold-soft); font-weight: 700; margin: 0.2rem 0 -0.2rem; }
+.yar-sec-h .muted { font-family: var(--font-govde); font-weight: 500; }
+.yar-malz {
+  list-style: none; margin: 0; padding: var(--sp-3);
+  background: var(--card-bg-soft); border: 1px solid rgba(233,196,106,0.28); border-radius: var(--radius-sm);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem 1rem;
+}
+.yar-malz li { position: relative; padding-left: 1.2rem; color: var(--metin-soft); font-size: 0.9rem; line-height: 1.4; }
+.yar-malz li::before { content: "✦"; position: absolute; left: 0; top: 0; color: var(--gold); font-size: 0.75rem; }
+.yar-malz li b { color: var(--metin); }
+.yar-malz li i { color: var(--accent); font-style: italic; }
+@media (max-width: 380px) { .yar-malz { grid-template-columns: 1fr; } }
+
+.yar-cta { text-align: center; margin-top: 0.4rem; }
+.yar-indir {
+  width: 100%; border: 0; cursor: pointer; font-family: var(--font-govde);
+  font-size: 1.02rem; font-weight: 700; color: #1a1330; padding: 0.85rem 1rem; border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+  box-shadow: 0 10px 26px rgba(233,196,106,0.3); transition: transform 0.15s;
+}
+.yar-indir:active { transform: translateY(1px) scale(0.99); }
+.yar-ig {
+  display: block; margin-top: 0.85rem; color: var(--metin-soft); text-decoration: none; font-size: 0.9rem;
+}
+.yar-ig b { color: var(--gold-soft); }
+.yar-ucretsiz-not { margin-top: 0.6rem; font-size: 0.82rem; color: var(--accent); font-weight: 600; }
