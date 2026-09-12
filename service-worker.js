@@ -3,7 +3,7 @@
    SÃ¼rÃ¼m deÄŸiÅŸince CACHE adÄ±nÄ± artÄ±r ki eski dosyalar temizlensin.
    ============================================================ */
 
-const CACHE = "isigini-bul-v226";
+const CACHE = "isigini-bul-v227";
 const KABUK = [
   ".",
   "index.html",
@@ -62,6 +62,7 @@ const KABUK = [
   "js/takvim.js",
   "js/hafta.js",
   "js/kozmik.js",
+  "js/supabase.min.js",
   "js/supabase-config.js",
   "js/bulut.js",
   "manifest.webmanifest",
@@ -91,9 +92,23 @@ self.addEventListener("fetch", e => {
   if (istek.method !== "GET") return;
   const ayniKaynak = istek.url.startsWith(self.location.origin);
 
-  // Farkli kaynak (Supabase vb.) -> dogrudan ag, hata olursa (varsa) onbellek.
+  // Farkli kaynak (fontlar, Supabase vb.):
+  //  • Google Fonts (googleapis/gstatic) -> cache-first (offline'da da yazi tipleri gelir).
+  //  • Digerleri -> once ag, hata olursa onbellek; asla undefined donme.
   if (!ayniKaynak) {
-    e.respondWith(fetch(istek).catch(() => caches.match(istek)));
+    const fontMu = /fonts\.(googleapis|gstatic)\.com/.test(istek.url);
+    e.respondWith((async () => {
+      const cache = await caches.open(CACHE);
+      const onbellek = await cache.match(istek);
+      if (fontMu && onbellek) return onbellek;            // font: aninda onbellekten
+      try {
+        const yanit = await fetch(istek);
+        if (yanit && (yanit.ok || yanit.type === "opaque")) { try { await cache.put(istek, yanit.clone()); } catch (e) {} }
+        return yanit;
+      } catch (e) {
+        return onbellek || Response.error();              // offline: onbellek varsa ver, yoksa temiz hata
+      }
+    })());
     return;
   }
 
