@@ -18,9 +18,10 @@ const Yolculuk21 = window.Yolculuk21 = (() => {
     baslik: "Bana Ait Olan Bana Dönüyor",
     altbaslik: "21 Günlük Ses Ritüeli",
     ozet: "Emeğinin karşılığını almaya hazır mısın? 21 gün dinle — bir kez al, sonsuza kadar senin. 🤍",
-    fiyat: "888 TL",
+    fiyat: "444 TL",
+    fiyatNot: "açılışa özel · normal 888 TL",
     kapak: "/urunler/bana-ait-olan-kapak.png",
-    shopier: "",                       // SiteAyar → "yolculuk_link_ses-bana-ait-olan" ile ayarlanır
+    shopier: "https://www.shopier.com/50878921",   // SiteAyar → "yolculuk_link_ses-bana-ait-olan" ile değiştirilebilir
     bucket: "ritueller",
     medyaYol: "ses-bana-ait-olan/rituel.mp3",   // depoya yüklenecek dosya (mp3/mp4)
     gunSayisi: 21,
@@ -84,11 +85,11 @@ const Yolculuk21 = window.Yolculuk21 = (() => {
       butonHTML = `<div class="y21-ilerleme-mini">${il.gun >= URUN.gunSayisi ? "✓ Tamamlandı" : "Gün " + il.gun + " / " + URUN.gunSayisi}</div>
         <button class="y21-ac-btn" type="button">▶️ Yolculuğa Başla</button>`;
     } else if (!girisli()) {
-      butonHTML = `<div class="y21-fiyat">${esc(URUN.fiyat)}</div><button class="y21-ac-btn giris" type="button">Erişmek için Giriş Yap</button>`;
+      butonHTML = `<div class="y21-fiyat">${esc(URUN.fiyat)}</div><div class="y21-fiyat-not">${esc(URUN.fiyatNot || "")}</div><button class="y21-ac-btn giris" type="button">Erişmek için Giriş Yap</button>`;
     } else if (nativeMi()) {
-      butonHTML = `<div class="y21-fiyat">${esc(URUN.fiyat)}</div><button class="y21-ac-btn web" type="button">🌐 Web'den Edin</button>`;
+      butonHTML = `<div class="y21-fiyat">${esc(URUN.fiyat)}</div><div class="y21-fiyat-not">${esc(URUN.fiyatNot || "")}</div><button class="y21-ac-btn web" type="button">🌐 Web'den Edin</button>`;
     } else {
-      butonHTML = `<div class="y21-fiyat">${esc(URUN.fiyat)}</div><button class="y21-ac-btn satinal" type="button">Satın Al ✦</button>`;
+      butonHTML = `<div class="y21-fiyat">${esc(URUN.fiyat)}</div><div class="y21-fiyat-not">${esc(URUN.fiyatNot || "")}</div><button class="y21-ac-btn satinal" type="button">Satın Al ✦</button>`;
     }
     k.innerHTML = `
       <div class="y21-kapak" style="background-image:url('${esc(URUN.kapak)}')">
