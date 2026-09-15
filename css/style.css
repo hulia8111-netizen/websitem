@@ -3504,3 +3504,8 @@ body.y21-acik { overflow: hidden; }
 .y21-modal-ic p { color: var(--metin-soft); line-height: 1.6; margin: 0; }
 .y21-modal-amblem { font-size: 2.4rem; }
 .y21-modal-kapat { position: absolute; top: 8px; right: 10px; width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--card-border); background: transparent; color: var(--metin-faint); cursor: pointer; }
+
+/* Yolculuk21 — erişim kodu */
+.y21-kod-link { display: block; width: 100%; margin-top: 0.55rem; background: transparent; border: 0; cursor: pointer; color: var(--accent); font-size: 0.85rem; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.y21-kod-input { width: 100%; margin: 0.6rem 0; padding: 0.8rem 0.9rem; text-align: center; letter-spacing: 0.08em; text-transform: uppercase; font-family: var(--font-govde); font-weight: 700; font-size: 1.05rem; color: var(--metin); background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-sm); }
+.y21-kod-input::placeholder { color: var(--metin-faint); letter-spacing: 0.06em; font-weight: 500; }

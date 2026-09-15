@@ -99,6 +99,7 @@ const Yolculuk21 = window.Yolculuk21 = (() => {
         <div class="y21-alt">${esc(URUN.altbaslik)}</div>
         <p class="mg-kart-aciklama">${esc(URUN.ozet)}</p>
         ${butonHTML}
+        ${sahip ? "" : `<button class="y21-kod-link" type="button">🔑 Kodun mu var? Buraya gir</button>`}
       </div>`;
     k.querySelector(".y21-ac-btn").addEventListener("click", () => {
       if (sahip) return ac();
@@ -106,6 +107,8 @@ const Yolculuk21 = window.Yolculuk21 = (() => {
       if (nativeMi()) return webdenEdin();
       return satinAl();
     });
+    const kl = k.querySelector(".y21-kod-link");
+    if (kl) kl.addEventListener("click", () => kodInputModal());
     grid.appendChild(k);
   }
 
@@ -278,5 +281,88 @@ const Yolculuk21 = window.Yolculuk21 = (() => {
     kutu.innerHTML = s; setTimeout(() => { kutu.innerHTML = ""; }, 1200);
   }
 
-  return { kart, ac, kapat, KOD: URUN.kod };
+  /* ---------- ERİŞİM KODU (Shopier → kalıcı erişim) ---------- */
+  const BEKLEYEN = "y21-bekleyen-kod";
+
+  async function kodCekirdek(kod) {
+    const c = sb();
+    if (!c) return { ok: false, mesaj: "Bağlantı yok. İnternetini kontrol et." };
+    if (!girisli()) return { ok: false, giris: true, mesaj: "Önce giriş yapmalısın." };
+    kod = (kod || "").trim();
+    if (!kod) return { ok: false, mesaj: "Kod boş." };
+    try {
+      const { data, error } = await c.rpc("kod_kullan", { p_kod: kod });
+      if (error) return { ok: false, mesaj: error.message };
+      return data || { ok: false, mesaj: "Bilinmeyen yanıt" };
+    } catch (e) { return { ok: false, mesaj: (e && e.message) || "hata" }; }
+  }
+
+  async function kodGir(kod, btn) {
+    if (btn) { btn.disabled = true; btn.dataset.eski = btn.textContent; btn.textContent = "Kontrol ediliyor…"; }
+    const r = await kodCekirdek(kod);
+    if (btn) { btn.disabled = false; btn.textContent = btn.dataset.eski || "Kilidi Aç"; }
+    if (r.ok) {
+      try { localStorage.removeItem(BEKLEYEN); } catch (e) {}
+      try { if (window.Kutuphane && Kutuphane.yenile) await Kutuphane.yenile(); } catch (e) {}
+      kodModalKapat();
+      bilgiKutu("🎉 Erişim Açıldı", "Ritüelin artık senin — <b>sonsuza kadar.</b> Dinlemeye başlayalım 🤍");
+      setTimeout(() => { const p = document.getElementById("y21-bilgi"); if (p) { p.classList.remove("gor"); setTimeout(() => p.hidden = true, 200); } ac(); }, 1500);
+      return true;
+    }
+    if (r.giris) {
+      try { localStorage.setItem(BEKLEYEN, (kod || "").trim()); } catch (e) {}
+      kodModalKapat(); girisUyar();
+      return false;
+    }
+    const bil = document.getElementById("y21-kod-bilgi");
+    if (bil) { bil.textContent = "⚠️ " + (r.mesaj || "Tekrar dene."); bil.style.color = "var(--uyari)"; }
+    else bilgiKutu("Kod Kullanılamadı", esc(r.mesaj || "Tekrar dene."));
+    return false;
+  }
+
+  function kodModalKapat() { const p = document.getElementById("y21-kodmodal"); if (p) { p.classList.remove("gor"); setTimeout(() => p.hidden = true, 200); } }
+  function kodInputModal(prefill) {
+    let p = document.getElementById("y21-kodmodal");
+    if (!p) {
+      p = document.createElement("div"); p.id = "y21-kodmodal"; p.className = "y21-modal"; document.body.appendChild(p);
+      p.addEventListener("click", e => { if (e.target === p || e.target.classList.contains("y21-modal-kapat")) kodModalKapat(); });
+    }
+    p.innerHTML = `<div class="y21-modal-ic">
+        <button class="y21-modal-kapat" aria-label="Kapat">✕</button>
+        <div class="y21-modal-amblem">🔑</div>
+        <h3>Erişim Kodun</h3>
+        <p class="muted small">Satın aldıktan sonra sana gelen kodu buraya yaz.</p>
+        <input type="text" id="y21-kod-input" class="y21-kod-input" placeholder="ISIK-XXXX-XXXX" autocapitalize="characters" autocomplete="off" spellcheck="false" value="${esc(prefill || "")}"/>
+        <button class="y21-tamamla" id="y21-kod-btn" type="button">Kilidi Aç ✦</button>
+        <p id="y21-kod-bilgi" class="muted small"></p>
+      </div>`;
+    p.hidden = false; requestAnimationFrame(() => p.classList.add("gor"));
+    const inp = p.querySelector("#y21-kod-input");
+    const btn = p.querySelector("#y21-kod-btn");
+    setTimeout(() => { try { inp.focus(); } catch (e) {} }, 120);
+    btn.addEventListener("click", () => kodGir(inp.value, btn));
+    inp.addEventListener("keydown", e => { if (e.key === "Enter") kodGir(inp.value, btn); });
+  }
+
+  /* Sihirli link (?kod=...) + giriş sonrası bekleyen kodu dene */
+  function bekleyenKoduDene() {
+    let bk = null; try { bk = localStorage.getItem(BEKLEYEN); } catch (e) {}
+    if (bk && girisli()) kodGir(bk);
+  }
+  function sihirliLink() {
+    let k = null;
+    try { k = new URLSearchParams(location.search).get("kod"); } catch (e) {}
+    if (!k) return;
+    try { history.replaceState(null, "", location.pathname); } catch (e) {}   // URL'den temizle
+    if (girisli()) kodGir(k);
+    else { try { localStorage.setItem(BEKLEYEN, k.trim()); } catch (e) {} setTimeout(girisUyar, 1400); }
+  }
+  function baglan() {
+    setTimeout(sihirliLink, 3200);   // splash bitsin
+    window.addEventListener("isigini-oturum-degisti", () => setTimeout(bekleyenKoduDene, 900));
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", baglan);
+  else baglan();
+
+  return { kart, ac, kapat, kodGir, kodInputModal, KOD: URUN.kod };
 })();
