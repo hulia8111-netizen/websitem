@@ -100,6 +100,7 @@ const Yolculuk21 = window.Yolculuk21 = (() => {
         <div class="y21-alt">${esc(URUN.altbaslik)}</div>
         <p class="mg-kart-aciklama">${esc(URUN.ozet)}</p>
         ${butonHTML}
+        ${(!sahip && girisli()) ? `<button class="y21-talep-link" type="button">✓ Ödedim — Erişimimi Aç</button>` : ""}
         ${sahip ? "" : `<button class="y21-kod-link" type="button">🔑 Kodun mu var? Buraya gir</button>`}
       </div>`;
     k.querySelector(".y21-ac-btn").addEventListener("click", () => {
@@ -108,6 +109,8 @@ const Yolculuk21 = window.Yolculuk21 = (() => {
       if (nativeMi()) return webdenEdin();
       return satinAl();
     });
+    const tl = k.querySelector(".y21-talep-link");
+    if (tl) tl.addEventListener("click", () => talepAt(tl));
     const kl = k.querySelector(".y21-kod-link");
     if (kl) kl.addEventListener("click", () => kodInputModal());
     grid.appendChild(k);
@@ -123,6 +126,25 @@ const Yolculuk21 = window.Yolculuk21 = (() => {
     if (gecerliLink(l)) { window.open(l, "_blank", "noopener,noreferrer"); return; }
     bilgiKutu("Çok Yakında", "Bu ritüel çok yakında satışa açılacak. Duyurular için takipte kal ✨");
   }
+  // Ödedim → talep bırak (yöneticiye push + admin panelde tek tık onay). Mevcut satinalma_talep sistemi.
+  async function talepAt(btn) {
+    const c = sb();
+    if (!girisli()) return girisUyar();
+    if (!c) { bilgiKutu("Bağlantı yok", "İnternetini kontrol edip tekrar dene."); return; }
+    let uid = null, email = "";
+    try { uid = Bulut.kullaniciId ? Bulut.kullaniciId() : null; } catch (e) {}
+    try { email = (Bulut.durum && Bulut.durum().email) || ""; } catch (e) {}
+    if (btn) { btn.disabled = true; btn.dataset.eski = btn.textContent; btn.textContent = "Gönderiliyor…"; }
+    try {
+      await c.from("satinalma_talep").insert({ user_id: uid, email: email, urun_kod: URUN.kod, urun_baslik: URUN.baslik, fiyat: URUN.fiyat, kaynak: nativeMi() ? "native" : "web", durum: "talep" });
+      try { c.functions.invoke("satis-bildir", { body: { email: email, urun_baslik: URUN.baslik, fiyat: URUN.fiyat } }); } catch (e) {}
+      bilgiKutu("🤍 Talebin Alındı", "Ödemen görülünce erişimin açılacak (genelde çok kısa sürede). Açılınca burada <b>▶️ Yolculuğa Başla</b> göreceksin. Sorun olursa <b>@hulia.isiginibul</b> DM at.");
+    } catch (e) {
+      bilgiKutu("Olmadı", "Tekrar dener misin? Sürerse <b>@hulia.isiginibul</b> DM at.");
+    }
+    if (btn) { btn.disabled = false; btn.textContent = btn.dataset.eski || "✓ Ödedim — Erişimimi Aç"; }
+  }
+
   function webdenEdin() {
     bilgiKutu("🌐 Web'den Edin", `Bu ritüeli <b>isiginibull.net</b> üzerinden edinebilirsin. Aynı hesapla giriş yaptığında burada, <b>${esc(URUN.baslik)}</b> yolculuğun seni bekliyor olacak. 🤍`);
   }
