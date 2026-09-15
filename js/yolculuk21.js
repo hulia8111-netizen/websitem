@@ -100,8 +100,7 @@ const Yolculuk21 = window.Yolculuk21 = (() => {
         <div class="y21-alt">${esc(URUN.altbaslik)}</div>
         <p class="mg-kart-aciklama">${esc(URUN.ozet)}</p>
         ${butonHTML}
-        ${(!sahip && girisli()) ? `<button class="y21-talep-link" type="button">✓ Ödedim — Erişimimi Aç</button>` : ""}
-        ${sahip ? "" : `<button class="y21-kod-link" type="button">🔑 Kodun mu var? Buraya gir</button>`}
+        ${(!sahip && girisli()) ? `<button class="y21-talep-link" type="button">✓ Ödemeyi yaptım — Erişim İste</button>` : ""}
       </div>`;
     k.querySelector(".y21-ac-btn").addEventListener("click", () => {
       if (sahip) return ac();
@@ -111,8 +110,6 @@ const Yolculuk21 = window.Yolculuk21 = (() => {
     });
     const tl = k.querySelector(".y21-talep-link");
     if (tl) tl.addEventListener("click", () => talepAt(tl));
-    const kl = k.querySelector(".y21-kod-link");
-    if (kl) kl.addEventListener("click", () => kodInputModal());
     grid.appendChild(k);
   }
 
@@ -131,6 +128,8 @@ const Yolculuk21 = window.Yolculuk21 = (() => {
     const c = sb();
     if (!girisli()) return girisUyar();
     if (!c) { bilgiKutu("Bağlantı yok", "İnternetini kontrol edip tekrar dene."); return; }
+    // Yanlışlıkla / ödemeden tıklanmasın diye onay
+    if (!confirm("Shopier'den ödemeni TAMAMLADIN mı?\n\nSadece ödeme yaptıysan devam et. Erişimin, ödemen onaylandıktan sonra açılır.")) return;
     let uid = null, email = "";
     try { uid = Bulut.kullaniciId ? Bulut.kullaniciId() : null; } catch (e) {}
     try { email = (Bulut.durum && Bulut.durum().email) || ""; } catch (e) {}
