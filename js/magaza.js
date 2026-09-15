@@ -191,6 +191,7 @@ const Magaza = window.Magaza = (() => {
     grid.className = "mg-grid";
     grid.innerHTML = "";
     if (window.YeniAyRituel && YeniAyRituel.kart) YeniAyRituel.kart(grid);   // 🎁 ücretsiz tanıtım ritüeli (en üstte)
+    if (window.Yolculuk21 && Yolculuk21.kart) Yolculuk21.kart(grid);         // 💎 premium 21 günlük ses ritüeli
     if (window.Kutuphane && Kutuphane.magazaKartlari) Kutuphane.magazaKartlari(grid);
     if (!grid.children.length) {
       grid.className = "mg-grid mg-grid-bos";

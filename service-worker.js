@@ -3,13 +3,14 @@
    SÃ¼rÃ¼m deÄŸiÅŸince CACHE adÄ±nÄ± artÄ±r ki eski dosyalar temizlensin.
    ============================================================ */
 
-const CACHE = "isigini-bul-v227";
+const CACHE = "isigini-bul-v228";
 const KABUK = [
   ".",
   "index.html",
   "css/style.css",
   "js/acilis-cumleler.js",
   "js/splash.js",
+  "js/guncelle.js",
   "js/data.js",
   "js/farkindalik-sorulari.js",
   "js/mini-gorevler.js",
@@ -62,6 +63,7 @@ const KABUK = [
   "js/takvim.js",
   "js/hafta.js",
   "js/kozmik.js",
+  "js/yolculuk21.js",
   "js/supabase.min.js",
   "js/supabase-config.js",
   "js/bulut.js",
@@ -91,6 +93,12 @@ self.addEventListener("fetch", e => {
   const istek = e.request;
   if (istek.method !== "GET") return;
   const ayniKaynak = istek.url.startsWith(self.location.origin);
+
+  // surum.json -> HER ZAMAN taze ağ (önbelleğe alma); güncelleme kontrolü doğru çalışsın.
+  if (istek.url.indexOf("/surum.json") !== -1) {
+    e.respondWith(fetch(istek, { cache: "no-store" }).catch(() => new Response('{"v":0}', { headers: { "Content-Type": "application/json" } })));
+    return;
+  }
 
   // Farkli kaynak (fontlar, Supabase vb.):
   //  • Google Fonts (googleapis/gstatic) -> cache-first (offline'da da yazi tipleri gelir).

@@ -240,7 +240,10 @@ const Kutuphane = window.Kutuphane = (() => {
   // magaza.js "rituel-araclar" bölümünü çizince en üste ekler.
   function magazaKartlari(grid) {
     if (!grid) return;
+    // Yolculuk21 gibi özel modüllerin yönettiği ürünler burada normal kart olarak çizilmez (çift olmasın).
+    const ATLA = (window.Yolculuk21 && Yolculuk21.KOD) ? [Yolculuk21.KOD] : [];
     KATALOG.forEach(urun => {
+      if (ATLA.indexOf(urun.kod) !== -1) return;
       const kart = document.createElement("div");
       kart.className = "mg-kart ktp-kart";
       const sahipVar = sahipMi(urun.kod);
