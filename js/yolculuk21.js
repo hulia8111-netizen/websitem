@@ -288,10 +288,27 @@ const Yolculuk21 = window.Yolculuk21 = (() => {
     } catch (e) {}
     return null;
   }
+  // Klasördeki ses dosyasını ADINDAN BAĞIMSIZ bul (rituel.mp3, rituel.mp4, ... fark etmez)
+  let _cozulenYol = null;
+  async function medyaYolCoz() {
+    if (_cozulenYol) return _cozulenYol;
+    const c = sb();
+    const klasor = URUN.medyaYol.split("/")[0];   // "ses-bana-ait-olan"
+    try {
+      const { data } = await c.storage.from(URUN.bucket).list(klasor, { limit: 50 });
+      if (data && data.length) {
+        const ses = data.find(f => /\.(mp3|m4a|aac|ogg|wav|mp4)$/i.test(f.name || ""));
+        if (ses) { _cozulenYol = klasor + "/" + ses.name; return _cozulenYol; }
+      }
+    } catch (e) { /* list olmazsa sabit yola düş */ }
+    _cozulenYol = URUN.medyaYol;
+    return _cozulenYol;
+  }
   async function imzaliUrl() {
     const c = sb();
     if (!c || !girisli()) throw new Error("giris");
-    const { data, error } = await c.storage.from(URUN.bucket).createSignedUrl(URUN.medyaYol, 3600);
+    const yol = await medyaYolCoz();
+    const { data, error } = await c.storage.from(URUN.bucket).createSignedUrl(yol, 3600);
     if (error || !data || !data.signedUrl) throw error || new Error("erişim yok");
     return data.signedUrl;
   }
@@ -299,7 +316,8 @@ const Yolculuk21 = window.Yolculuk21 = (() => {
   async function sesBlobIndir() {
     const c = sb();
     if (!c || !girisli()) throw new Error("giris");
-    const { data, error } = await c.storage.from(URUN.bucket).download(URUN.medyaYol);
+    const yol = await medyaYolCoz();
+    const { data, error } = await c.storage.from(URUN.bucket).download(yol);
     if (error || !data) throw error || new Error("erişim yok");
     return data; // Blob
   }
@@ -322,8 +340,7 @@ const Yolculuk21 = window.Yolculuk21 = (() => {
     try {
       let src = await onbellektenUrl();               // 1) offline: önbellekten
       if (!src) src = await imzaliUrl();              // 2) online: imzalı akış
-      const video = /\.mp4$/i.test(URUN.medyaYol);
-      const el = document.createElement(video ? "video" : "audio");
+      const el = document.createElement("audio");
       el.src = src; el.controls = true; el.autoplay = true; el.className = "y21-medya";
       el.setAttribute("controlsList", "nodownload noplaybackrate");
       el.oncontextmenu = () => false;
