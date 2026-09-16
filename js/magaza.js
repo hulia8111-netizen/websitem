@@ -183,20 +183,36 @@ const Magaza = window.Magaza = (() => {
     });
   }
 
+  /* ---------- Meditasyonlar kartı → anasayfadaki Meditasyon sayfasını açar ---------- */
+  function meditasyonlarKart(grid) {
+    if (!grid) return;
+    const k = document.createElement("div");
+    k.className = "mg-kart rit-kart med-kart";
+    k.innerHTML = `
+      <div class="rit-kapak"><span class="rit-ikon">🧘</span></div>
+      <div class="rit-govde">
+        <div class="mg-kart-ad">Meditasyonlar</div>
+        <p class="rit-aciklama">Rehberli ses meditasyonları · dinle & rahatla 🎧</p>
+        <button class="rit-btn" type="button">Aç →</button>
+      </div>`;
+    k.querySelector(".rit-btn").addEventListener("click", () => {
+      if (window.Magaza && Magaza.kapat) Magaza.kapat();
+      setTimeout(() => { if (window.gotoView) try { gotoView("meditasyon"); } catch (e) {} }, 340);
+    });
+    grid.appendChild(k);
+  }
+
   /* ---------- 3. KATMAN: Ritüeller (dijital) ---------- */
   function cizRituelUrunler(k) {
     const grid = $("#mg-grid"); if (!grid) return;
     geriAyar("← Ritüel & Araçlar", () => { altKat = null; cizAltGruplar(k); });
     ustNot("🌙 Ritüeller");
-    grid.className = "mg-grid";
+    grid.className = "mg-grid mg-grid-rit";                                   // 2 sütun kompakt kutucuklar
     grid.innerHTML = "";
-    if (window.YeniAyRituel && YeniAyRituel.kart) YeniAyRituel.kart(grid);   // 🎁 ücretsiz tanıtım ritüeli (en üstte)
+    if (window.YeniAyRituel && YeniAyRituel.kart) YeniAyRituel.kart(grid);   // 🎁 ücretsiz tanıtım ritüeli
     if (window.Yolculuk21 && Yolculuk21.kart) Yolculuk21.kart(grid);         // 💎 premium 21 günlük ses ritüeli
     if (window.Kutuphane && Kutuphane.magazaKartlari) Kutuphane.magazaKartlari(grid);
-    if (!grid.children.length) {
-      grid.className = "mg-grid mg-grid-bos";
-      grid.innerHTML = `<div class="mg-bos-durum"><div class="mg-bos-amblem">🌙</div><p>Ritüel rehberleri çok yakında ✨</p></div>`;
-    }
+    meditasyonlarKart(grid);                                                 // 🧘 anasayfadaki Meditasyonlar sayfasına götürür
   }
 
   /* ---------- 3. KATMAN: Doğal Taşlar ---------- */

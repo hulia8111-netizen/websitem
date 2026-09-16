@@ -3514,3 +3514,45 @@ body.y21-acik { overflow: hidden; }
 
 .y21-cevrimdisi { display:block; width:100%; margin-top:0.5rem; padding:0.6rem; cursor:pointer; border:1px solid var(--card-border); border-radius:var(--radius-sm); background:var(--card-bg); color:var(--metin-soft); font-family:var(--font-govde); font-size:0.88rem; font-weight:600; }
 .y21-cevrimdisi:disabled { color:var(--basari); border-color:rgba(111,224,168,0.4); cursor:default; }
+
+/* ============================================================
+   Ritüeller — kompakt 2 sütun kutucuklar + Meditasyonlar kartı
+   ============================================================ */
+.mg-grid-rit { display: grid !important; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; }
+/* uzun açıklamaları kompakt görünümde gizle → kutular kısalsın */
+.mg-grid-rit .mg-kart-aciklama,
+.mg-grid-rit .yar-kart-alt,
+.mg-grid-rit .y21-alt,
+.mg-grid-rit .y21-fiyat-not,
+.mg-grid-rit .y21-meta,
+.mg-grid-rit .yar-kisa-amac { display: none; }
+/* kapaklar kısa */
+.mg-grid-rit .yar-kapak,
+.mg-grid-rit .y21-kapak,
+.mg-grid-rit .rit-kapak { height: 84px; }
+.mg-grid-rit .yar-kapak-ay { font-size: 2.1rem; }
+.mg-grid-rit .yar-rozet, .mg-grid-rit .y21-rozet { font-size: 0.62rem; padding: 0.15rem 0.45rem; }
+/* gövde + başlık kompakt (yazı sığsın) */
+.mg-grid-rit .yar-kart-govde,
+.mg-grid-rit .y21-govde,
+.mg-grid-rit .rit-govde { padding: 0.7rem; gap: 0.4rem; }
+.mg-grid-rit .mg-kart-ad { font-size: 0.92rem; line-height: 1.2; }
+.mg-grid-rit .y21-fiyat { font-size: 1.05rem; margin-top: 0.1rem; }
+.mg-grid-rit .yar-indir-btn,
+.mg-grid-rit .y21-ac-btn,
+.mg-grid-rit .rit-btn { font-size: 0.84rem; padding: 0.6rem 0.4rem; margin-top: 0.2rem; }
+.mg-grid-rit .y21-talep-link { font-size: 0.72rem; padding: 0.45rem 0.3rem; margin-top: 0.35rem; }
+.mg-grid-rit .y21-ilerleme-mini { font-size: 0.75rem; }
+
+/* Meditasyonlar kartı */
+.rit-kart { overflow: hidden; padding: 0; display: flex; flex-direction: column; }
+.rit-kapak { position: relative; height: 84px; display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(120% 140% at 30% 0%, rgba(111,224,168,0.30), transparent 55%), linear-gradient(160deg, #1a2740, #0c0a1c); }
+.rit-ikon { font-size: 2.3rem; filter: drop-shadow(0 0 14px rgba(111,224,168,0.5)); }
+.rit-govde { padding: 0.7rem; display: flex; flex-direction: column; gap: 0.4rem; }
+.rit-aciklama { font-size: 0.78rem; color: var(--metin-soft); line-height: 1.35; margin: 0; }
+.mg-grid-rit .rit-aciklama { display: none; }
+.rit-btn { width: 100%; border: 0; cursor: pointer; font-family: var(--font-govde); font-size: 0.84rem; font-weight: 700;
+  color: #1a1330; padding: 0.6rem 0.4rem; border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, #9be7c4, #6fe0a8); box-shadow: 0 6px 16px rgba(111,224,168,0.28); }
+.mg-grid-rit .yar-meta { display: none; }
