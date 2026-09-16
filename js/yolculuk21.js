@@ -295,12 +295,18 @@ const Yolculuk21 = window.Yolculuk21 = (() => {
     if (error || !data || !data.signedUrl) throw error || new Error("erişim yok");
     return data.signedUrl;
   }
-  async function onbellegeAl(url) {
+  // Sesi Supabase istemcisiyle indir (CORS-güvenli, RLS ile yetkilendirilir — PDF sistemiyle aynı yol)
+  async function sesBlobIndir() {
+    const c = sb();
+    if (!c || !girisli()) throw new Error("giris");
+    const { data, error } = await c.storage.from(URUN.bucket).download(URUN.medyaYol);
+    if (error || !data) throw error || new Error("erişim yok");
+    return data; // Blob
+  }
+  async function onbellegeAl() {
     try {
       if (!window.caches) return false;
-      const resp = await fetch(url);
-      if (!resp.ok) return false;
-      const blob = await resp.blob();
+      const blob = await sesBlobIndir();
       const c = await caches.open(SES_CACHE);
       await c.put(cacheKey(), new Response(blob, { headers: { "Content-Type": "audio/mpeg" } }));
       return true;
@@ -340,8 +346,7 @@ const Yolculuk21 = window.Yolculuk21 = (() => {
     if (already) { if (btn) { btn.disabled = true; btn.textContent = "✓ İndirildi · internetsiz dinle"; } return; }
     if (btn) { btn.disabled = true; btn.textContent = "İndiriliyor… ⏳"; }
     try {
-      const url = await imzaliUrl();
-      const ok = await onbellegeAl(url);
+      const ok = await onbellegeAl();
       if (btn) { btn.textContent = ok ? "✓ İndirildi · internetsiz dinle" : "⬇️ Çevrimdışı için indir"; btn.disabled = ok; }
       if (!ok) bilgiKutu("Olmadı", "İndirilemedi. İnternetini kontrol edip tekrar dene.");
     } catch (e) {
