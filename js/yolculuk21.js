@@ -196,7 +196,7 @@ const Yolculuk21 = window.Yolculuk21 = (() => {
         <div class="y21-ic">
           <div class="y21-soz">“${esc(soz)}”</div>
           <div class="y21-player" id="y21-player"><button class="y21-dinle" id="y21-dinle" type="button">🎧 Ritüeli Dinle</button><div class="y21-player-durum" id="y21-player-durum"></div></div>
-          <button class="y21-cevrimdisi" id="y21-cevrimdisi" type="button">⬇️ Çevrimdışı için indir</button>
+          <button class="y21-cevrimdisi" id="y21-cevrimdisi" type="button">⬇️ Telefonuma indir</button>
           <div class="y21-not-kutu">
             <label class="y21-not-baslik">✍️ Bugünün niyeti / notu</label>
             <textarea id="y21-not" class="y21-not" rows="2" placeholder="Bugün ne hissediyorsun, neyi çağırıyorsun?">${esc(not)}</textarea>
@@ -223,7 +223,7 @@ const Yolculuk21 = window.Yolculuk21 = (() => {
     const ci = ov.querySelector("#y21-cevrimdisi");
     if (ci) {
       ci.addEventListener("click", () => cevrimdisiIndir(ci));
-      onbellektenUrl().then(u => { if (u) { ci.disabled = true; ci.textContent = "✓ İndirildi · internetsiz dinle"; } });
+      onbellektenUrl().then(u => { if (u) { ci.disabled = true; ci.textContent = "✓ İndirildi"; } });
     }
     const n = ov.querySelector("#y21-not"); if (n) n.addEventListener("change", notKaydet);
     const g = ov.querySelector(".y21-govde-ov"); if (g) g.scrollTop = 0;
@@ -356,19 +356,25 @@ const Yolculuk21 = window.Yolculuk21 = (() => {
     }
   }
 
-  // "Çevrimdışı için indir": sesi cihaza (Cache Storage) alır → internetsiz dinlenir
+  // "Telefonuma indir": sesi TELEFONA kaydeder (gerçek dosya) + uygulama içi çevrimdışına alır.
   async function cevrimdisiIndir(btn) {
-    if (!window.caches) { bilgiKutu("Desteklenmiyor", "Bu cihaz çevrimdışı kaydı desteklemiyor."); return; }
-    const already = await onbellektenUrl();
-    if (already) { if (btn) { btn.disabled = true; btn.textContent = "✓ İndirildi · internetsiz dinle"; } return; }
-    if (btn) { btn.disabled = true; btn.textContent = "İndiriliyor… ⏳"; }
+    if (btn) { btn.disabled = true; btn.dataset.eski = btn.textContent; btn.textContent = "İndiriliyor… ⏳"; }
     try {
-      const ok = await onbellegeAl();
-      if (btn) { btn.textContent = ok ? "✓ İndirildi · internetsiz dinle" : "⬇️ Çevrimdışı için indir"; btn.disabled = ok; }
-      if (!ok) bilgiKutu("Olmadı", "İndirilemedi. İnternetini kontrol edip tekrar dene.");
+      const blob = await sesBlobIndir();
+      // 1) uygulama içi çevrimdışı önbellek
+      try { if (window.caches) { const c = await caches.open(SES_CACHE); await c.put(cacheKey(), new Response(blob, { headers: { "Content-Type": "audio/mpeg" } })); } } catch (e) {}
+      // 2) telefona gerçek indirme (dosya kaydı)
+      try {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url; a.download = "Bana-Ait-Olan-Bana-Donuyor.mp3"; a.rel = "noopener";
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => { try { URL.revokeObjectURL(url); } catch (e) {} }, 6000);
+      } catch (e) {}
+      if (btn) { btn.textContent = "✓ İndirildi · telefonunda"; btn.disabled = true; }
     } catch (e) {
-      if (btn) { btn.disabled = false; btn.textContent = "⬇️ Çevrimdışı için indir"; }
-      bilgiKutu("Olmadı", (e && e.message === "giris") ? "Önce giriş yapmalısın." : "İndirilemedi, tekrar dene.");
+      if (btn) { btn.disabled = false; btn.textContent = btn.dataset.eski || "⬇️ Telefonuma indir"; }
+      bilgiKutu("Olmadı", (e && e.message === "giris") ? "Önce giriş yapmalısın." : "İndirilemedi 😔 İnternetini kontrol et; sorun sürerse @hulia.isiginibul DM.");
     }
   }
 
