@@ -196,6 +196,7 @@ const Yolculuk21 = window.Yolculuk21 = (() => {
         <div class="y21-ic">
           <div class="y21-soz">“${esc(soz)}”</div>
           <div class="y21-player" id="y21-player"><button class="y21-dinle" id="y21-dinle" type="button">🎧 Ritüeli Dinle</button><div class="y21-player-durum" id="y21-player-durum"></div></div>
+          <button class="y21-cevrimdisi" id="y21-cevrimdisi" type="button">⬇️ Çevrimdışı için indir</button>
           <div class="y21-not-kutu">
             <label class="y21-not-baslik">✍️ Bugünün niyeti / notu</label>
             <textarea id="y21-not" class="y21-not" rows="2" placeholder="Bugün ne hissediyorsun, neyi çağırıyorsun?">${esc(not)}</textarea>
@@ -219,6 +220,11 @@ const Yolculuk21 = window.Yolculuk21 = (() => {
     const t = ov.querySelector("#y21-tamamla"); if (t) t.addEventListener("click", bugunuTamamla);
     const y = ov.querySelector("#y21-yeni"); if (y) y.addEventListener("click", yeniDongu);
     const d = ov.querySelector("#y21-dinle"); if (d) d.addEventListener("click", dinle);
+    const ci = ov.querySelector("#y21-cevrimdisi");
+    if (ci) {
+      ci.addEventListener("click", () => cevrimdisiIndir(ci));
+      onbellektenUrl().then(u => { if (u) { ci.disabled = true; ci.textContent = "✓ İndirildi · internetsiz dinle"; } });
+    }
     const n = ov.querySelector("#y21-not"); if (n) n.addEventListener("change", notKaydet);
     const g = ov.querySelector(".y21-govde-ov"); if (g) g.scrollTop = 0;
   }
@@ -267,28 +273,80 @@ const Yolculuk21 = window.Yolculuk21 = (() => {
     ciz();
   }
 
-  /* ---------- güvenli oynatıcı (özel depodan imzalı akış) ---------- */
+  /* ---------- güvenli oynatıcı + ÇEVRİMDIŞI dinleme ----------
+     Önce cihaz önbelleği (offline çalışır) → yoksa özel depodan imzalı akış.
+     "Çevrimdışı için indir" sesi Cache Storage'a alır → internetsiz de dinlenir. */
+  const SES_CACHE = "y21-ses";
+  function cacheKey() { return "/__y21ses__/" + URUN.kod; }
+
+  async function onbellektenUrl() {
+    try {
+      if (!window.caches) return null;
+      const c = await caches.open(SES_CACHE);
+      const m = await c.match(cacheKey());
+      if (m) return URL.createObjectURL(await m.blob());
+    } catch (e) {}
+    return null;
+  }
+  async function imzaliUrl() {
+    const c = sb();
+    if (!c || !girisli()) throw new Error("giris");
+    const { data, error } = await c.storage.from(URUN.bucket).createSignedUrl(URUN.medyaYol, 3600);
+    if (error || !data || !data.signedUrl) throw error || new Error("erişim yok");
+    return data.signedUrl;
+  }
+  async function onbellegeAl(url) {
+    try {
+      if (!window.caches) return false;
+      const resp = await fetch(url);
+      if (!resp.ok) return false;
+      const blob = await resp.blob();
+      const c = await caches.open(SES_CACHE);
+      await c.put(cacheKey(), new Response(blob, { headers: { "Content-Type": "audio/mpeg" } }));
+      return true;
+    } catch (e) { return false; }
+  }
+
   async function dinle() {
     const durum = document.getElementById("y21-player-durum");
     const player = document.getElementById("y21-player");
     if (!player) return;
-    if (player.querySelector("audio")) return;    // zaten yüklendi
+    if (player.querySelector("audio,video")) return;    // zaten yüklendi
     if (durum) durum.textContent = "Açılıyor… 🌙";
-    const c = sb();
-    if (!c || !girisli()) { if (durum) durum.textContent = "Dinlemek için giriş yapmalısın."; return; }
     try {
-      const { data, error } = await c.storage.from(URUN.bucket).createSignedUrl(URUN.medyaYol, 3600);
-      if (error || !data || !data.signedUrl) throw error || new Error("erişim yok");
+      let src = await onbellektenUrl();               // 1) offline: önbellekten
+      if (!src) src = await imzaliUrl();              // 2) online: imzalı akış
       const video = /\.mp4$/i.test(URUN.medyaYol);
       const el = document.createElement(video ? "video" : "audio");
-      el.src = data.signedUrl; el.controls = true; el.autoplay = true; el.className = "y21-medya";
+      el.src = src; el.controls = true; el.autoplay = true; el.className = "y21-medya";
       el.setAttribute("controlsList", "nodownload noplaybackrate");
       el.oncontextmenu = () => false;
       const btn = document.getElementById("y21-dinle"); if (btn) btn.remove();
       if (durum) durum.textContent = "";
       player.insertBefore(el, durum || null);
     } catch (e) {
-      if (durum) durum.innerHTML = "İçerik açılamadı 😔<br><span class='muted small'>Erişimin yoksa satın alman gerekebilir; aldıysan biraz sonra tekrar dene.</span>";
+      if (durum) {
+        durum.innerHTML = (e && e.message === "giris")
+          ? "Dinlemek için giriş yapmalısın."
+          : "İçerik açılamadı 😔<br><span class='muted small'>İnternetin yoksa önce bir kez internetliyken '⬇️ Çevrimdışı için indir' de. Erişim sorunu varsa @hulia.isiginibul DM.</span>";
+      }
+    }
+  }
+
+  // "Çevrimdışı için indir": sesi cihaza (Cache Storage) alır → internetsiz dinlenir
+  async function cevrimdisiIndir(btn) {
+    if (!window.caches) { bilgiKutu("Desteklenmiyor", "Bu cihaz çevrimdışı kaydı desteklemiyor."); return; }
+    const already = await onbellektenUrl();
+    if (already) { if (btn) { btn.disabled = true; btn.textContent = "✓ İndirildi · internetsiz dinle"; } return; }
+    if (btn) { btn.disabled = true; btn.textContent = "İndiriliyor… ⏳"; }
+    try {
+      const url = await imzaliUrl();
+      const ok = await onbellegeAl(url);
+      if (btn) { btn.textContent = ok ? "✓ İndirildi · internetsiz dinle" : "⬇️ Çevrimdışı için indir"; btn.disabled = ok; }
+      if (!ok) bilgiKutu("Olmadı", "İndirilemedi. İnternetini kontrol edip tekrar dene.");
+    } catch (e) {
+      if (btn) { btn.disabled = false; btn.textContent = "⬇️ Çevrimdışı için indir"; }
+      bilgiKutu("Olmadı", (e && e.message === "giris") ? "Önce giriş yapmalısın." : "İndirilemedi, tekrar dene.");
     }
   }
 
