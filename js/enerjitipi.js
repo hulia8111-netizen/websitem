@@ -87,11 +87,20 @@ const EnerjiTipi = window.EnerjiTipi = (() => {
     $("et-gunluk").textContent = t.gunluk;
     $("et-uyum").innerHTML = uy ? `En uyumlu enerjin: <strong>${esc(uy.ad)}</strong> ${uy.ikon}` : "";
     const med = $("et-med");
-    med.textContent = `Önerilen meditasyon · ${katAd(t.med)} →`;
-    med.onclick = () => {
-      if (typeof window.setMeditasyonKategori === "function") window.setMeditasyonKategori(t.med);
-      if (typeof window.gotoView === "function") window.gotoView("meditasyon");
-    };
+    if (t.oneri) {
+      // Özel öneri (ör. dönüşümdeki kişiye Hasat Ritüel Meditasyonu) → uygulama içi Meditasyon sayfası
+      med.textContent = `Önerilen meditasyon · ${t.oneri} →`;
+      med.onclick = () => {
+        if (typeof window.setMeditasyonKategori === "function" && t.med) window.setMeditasyonKategori(t.med);
+        if (typeof window.gotoView === "function") window.gotoView(t.oneriHedef || "meditasyon");
+      };
+    } else {
+      med.textContent = `Önerilen meditasyon · ${katAd(t.med)} →`;
+      med.onclick = () => {
+        if (typeof window.setMeditasyonKategori === "function") window.setMeditasyonKategori(t.med);
+        if (typeof window.gotoView === "function") window.gotoView("meditasyon");
+      };
+    }
     gecmisUpsert(t);
     cizGecmis();
     parcacik();
