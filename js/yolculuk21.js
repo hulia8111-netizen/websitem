@@ -222,8 +222,7 @@ const Yolculuk21 = window.Yolculuk21 = (() => {
     const d = ov.querySelector("#y21-dinle"); if (d) d.addEventListener("click", dinle);
     const ci = ov.querySelector("#y21-cevrimdisi");
     if (ci) {
-      ci.addEventListener("click", () => cevrimdisiIndir(ci));
-      onbellektenUrl().then(u => { if (u) { ci.disabled = true; ci.textContent = "✓ İndirildi"; } });
+      ci.addEventListener("click", () => cevrimdisiIndir(ci));   // her zaman açık — dilediğinde tekrar indir
     }
     const n = ov.querySelector("#y21-not"); if (n) n.addEventListener("change", notKaydet);
     const g = ov.querySelector(".y21-govde-ov"); if (g) g.scrollTop = 0;
@@ -371,7 +370,11 @@ const Yolculuk21 = window.Yolculuk21 = (() => {
         document.body.appendChild(a); a.click(); a.remove();
         setTimeout(() => { try { URL.revokeObjectURL(url); } catch (e) {} }, 6000);
       } catch (e) {}
-      if (btn) { btn.textContent = "✓ İndirildi · telefonunda"; btn.disabled = true; }
+      if (btn) {
+        btn.disabled = false;                              // kilitleme — istediğinde tekrar indirebilsin (ömür boyu)
+        btn.textContent = "✓ İndirildi — istediğinde tekrar indir";
+        setTimeout(() => { if (btn) btn.textContent = "⬇️ Telefonuma indir"; }, 3500);
+      }
     } catch (e) {
       if (btn) { btn.disabled = false; btn.textContent = btn.dataset.eski || "⬇️ Telefonuma indir"; }
       bilgiKutu("Olmadı", (e && e.message === "giris") ? "Önce giriş yapmalısın." : "İndirilemedi 😔 İnternetini kontrol et; sorun sürerse @hulia.isiginibul DM.");
