@@ -165,7 +165,7 @@ const Magaza = window.Magaza = (() => {
     grid.className = "mg-grid mg-grid-kat";
     grid.innerHTML = "";
     const gruplar = [
-      { id: "ritueller", ad: "Spiritüel Ritüeller", ikon: "🌙", aciklama: "Aylık dolunay ve yeni ay ritüel rehberleri — dijital, kalıcı erişim." },
+      { id: "ritueller", ad: "Ritüeller", ikon: "🌙", aciklama: "Aylık dolunay ve yeni ay ritüel rehberleri — dijital, kalıcı erişim." },
       { id: "taslar", ad: "Doğal Taşlar", ikon: "💎", aciklama: "El yapımı doğal taş kolyeler ve özel parçalar." }
     ];
     gruplar.forEach(gr => {
@@ -183,11 +183,11 @@ const Magaza = window.Magaza = (() => {
     });
   }
 
-  /* ---------- 3. KATMAN: Spiritüel Ritüeller (dijital) ---------- */
+  /* ---------- 3. KATMAN: Ritüeller (dijital) ---------- */
   function cizRituelUrunler(k) {
     const grid = $("#mg-grid"); if (!grid) return;
     geriAyar("← Ritüel & Araçlar", () => { altKat = null; cizAltGruplar(k); });
-    ustNot("🌙 Spiritüel Ritüeller");
+    ustNot("🌙 Ritüeller");
     grid.className = "mg-grid";
     grid.innerHTML = "";
     if (window.YeniAyRituel && YeniAyRituel.kart) YeniAyRituel.kart(grid);   // 🎁 ücretsiz tanıtım ritüeli (en üstte)
