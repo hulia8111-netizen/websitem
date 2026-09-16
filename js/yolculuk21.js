@@ -18,8 +18,8 @@ const Yolculuk21 = window.Yolculuk21 = (() => {
     baslik: "Bana Ait Olan Bana Dönüyor",
     altbaslik: "21 Günlük Ses Ritüeli",
     ozet: "Emeğinin karşılığını almaya hazır mısın? 21 gün dinle — bir kez al, sonsuza kadar senin. 🤍",
-    fiyat: "444 TL",
-    fiyatNot: "açılışa özel · normal 888 TL",
+    fiyat: "44 TL",
+    fiyatNot: "açılışa özel fiyat",
     kapak: "/urunler/bana-ait-olan-kapak.png",
     shopier: "https://www.shopier.com/50878921",   // SiteAyar → "yolculuk_link_ses-bana-ait-olan" ile değiştirilebilir
     bucket: "ritueller",
