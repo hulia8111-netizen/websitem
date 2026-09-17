@@ -64,10 +64,13 @@ const MagazaUrun = window.MagazaUrun = (() => {
       : `<div class="mg-kart-gorsel bos"><span>${b.ikon}</span></div>`;
     const fiyatHTML = u.fiyat ? `<div class="mg-kart-fiyat">${esc(u.fiyat)}</div>` : "";
     let notHTML = "", btnCls = "mg-satinal", btnTxt = "Satın Al ✦", tikla;
-    const linkVar = u.link && /^https?:\/\//i.test(u.link);
+    // Link protokolsüz de olsa kabul et (ör. "shopier.com/123" → "https://shopier.com/123")
+    let nlink = (u.link || "").trim();
+    if (nlink && !/^https?:\/\//i.test(nlink)) nlink = "https://" + nlink.replace(/^\/+/, "");
+    const linkVar = /^https?:\/\/[^\s.]+\.[^\s]+/i.test(nlink);
     if (linkVar) {
       // Ürünün kendi Shopier (veya dış) linki VARSA → doğrudan "Satın Al" (WhatsApp yok)
-      tikla = () => window.open(u.link, "_blank", "noopener,noreferrer");
+      tikla = () => window.open(nlink, "_blank", "noopener,noreferrer");
     } else if (b.siparis === "link") {
       // Link bekleyen bölüm (Işık Kartları) ama link yok → çok yakında
       btnCls += " yakinda"; btnTxt = "Çok Yakında"; tikla = () => {};
