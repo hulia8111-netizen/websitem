@@ -65,12 +65,14 @@ const MagazaUrun = window.MagazaUrun = (() => {
     const fiyatHTML = u.fiyat ? `<div class="mg-kart-fiyat">${esc(u.fiyat)}</div>` : "";
     let notHTML = "", btnCls = "mg-satinal", btnTxt = "Satın Al ✦", tikla;
     const linkVar = u.link && /^https?:\/\//i.test(u.link);
-    if (b.siparis === "link") {
-      // Işık Kartları → Satın Al = dış link (Shopier vb.)
-      if (linkVar) { tikla = () => window.open(u.link, "_blank", "noopener,noreferrer"); }
-      else { btnCls += " yakinda"; btnTxt = "Çok Yakında"; tikla = () => {}; }
+    if (linkVar) {
+      // Ürünün kendi Shopier (veya dış) linki VARSA → doğrudan "Satın Al" (WhatsApp yok)
+      tikla = () => window.open(u.link, "_blank", "noopener,noreferrer");
+    } else if (b.siparis === "link") {
+      // Link bekleyen bölüm (Işık Kartları) ama link yok → çok yakında
+      btnCls += " yakinda"; btnTxt = "Çok Yakında"; tikla = () => {};
     } else {
-      // Işık Mumları → Sipariş Oluştur = WhatsApp
+      // Link yoksa Işık Mumları → Sipariş Oluştur = WhatsApp (yedek)
       notHTML = `<div class="mg-siparis-not">🕊️ Siparişle özel hazırlanır</div>`;
       btnCls += " siparis"; btnTxt = "Sipariş Oluştur ✦";
       tikla = () => window.open(siparisWA(u, bolum), "_blank", "noopener,noreferrer");
