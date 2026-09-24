@@ -217,6 +217,7 @@ const Magaza = window.Magaza = (() => {
     ustNot("🌙 Ritüeller");
     grid.className = "mg-grid mg-grid-rit";                                   // 2 sütun kompakt kutucuklar
     grid.innerHTML = "";
+    if (window.DolunayRituel && DolunayRituel.kart) DolunayRituel.kart(grid); // 🌕 ücretsiz dolunay ritüeli (güncel)
     if (window.YeniAyRituel && YeniAyRituel.kart) YeniAyRituel.kart(grid);   // 🎁 ücretsiz tanıtım ritüeli
     if (window.Yolculuk21 && Yolculuk21.kart) Yolculuk21.kart(grid);         // 💎 premium 21 günlük ses ritüeli
     if (window.Kutuphane && Kutuphane.magazaKartlari) Kutuphane.magazaKartlari(grid);

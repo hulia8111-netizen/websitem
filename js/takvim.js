@@ -126,8 +126,8 @@ const Takvim = window.Takvim = (() => {
     const yeniayVar = evs.some(e => e.tip === "yeniay");
     if (dolunayVar || yeniayVar) {
       const cAy = dolunayVar ? "🌕" : "🌑";
-      const cBas = dolunayVar ? "Dolunay Bırakma Ritüeli" : "🎁 Ücretsiz Yeni Ay Ritüeli";
-      const cAlt = dolunayVar ? "Bu dolunay için rehberi edin →" : "Hemen aç, ücretsiz →";
+      const cBas = dolunayVar ? "🎁 Ücretsiz Dolunay Ritüeli" : "🎁 Ücretsiz Yeni Ay Ritüeli";
+      const cAlt = dolunayVar ? "Hemen aç, ücretsiz →" : "Hemen aç, ücretsiz →";
       html += `<button class="tk-magaza-cta" id="tk-magaza-cta">
         <span class="tk-cta-ay">${cAy}</span>
         <span class="tk-cta-metin"><b>${cBas}</b><small>${cAlt}</small></span></button>`;
@@ -140,7 +140,8 @@ const Takvim = window.Takvim = (() => {
       kapat();
       // Yeni ay → ücretsiz ritüeli doğrudan aç; dolunay → mağaza ritüel rehberi
       setTimeout(() => {
-        if (yeniayVar && window.YeniAyRituel && YeniAyRituel.ac) YeniAyRituel.ac();
+        if (dolunayVar && window.DolunayRituel && DolunayRituel.ac) DolunayRituel.ac();
+        else if (yeniayVar && window.YeniAyRituel && YeniAyRituel.ac) YeniAyRituel.ac();
         else if (window.Magaza && Magaza.ac) Magaza.ac("rituel-araclar", "ritueller");
       }, 320);
     });
