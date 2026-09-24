@@ -32,6 +32,14 @@ const Magaza = window.Magaza = (() => {
       aciklama: "Doğal taşlar ve ritüellerine eşlik edecek özel parçalar.",
       urunler: [
         {
+          id: "tas-ammonite-kaplangozu", ad: "Ammonite & Kaplangözü Kolye", ikon: "🐚",
+          aciklama: "Ammonite fosil tel sarım uç ve doğal Kaplangözü taşlarından, el işçiliğiyle hazırlanmış özel tasarım kolye. Ammonite; yaklaşık 400 milyon yıllık antik bir deniz fosilidir — stresi ve olumsuz enerjiyi azalttığı, canlılık ve denge verdiği, Feng Shui'de bolluk, bereket ve uzun ömrü simgelediğine inanılır. Kaplangözü ise 'güç taşı': özgüven, cesaret ve irade aşılar; odağı ve zihinsel netliği güçlendirir, Kök ve Solar Pleksus çakralarıyla uyumludur. İki taşın harmonisini boynunda taşı. ✨ (Fosil stabilize edilip tel sarım yapılmıştır; darbelerden koruyarak dikkatli kullanın.)",
+          gorsel: "/urunler/ammonite-kaplangozu-kolye.jpg",
+          gorseller: ["/urunler/ammonite-kaplangozu-kolye.jpg", "/urunler/ammonite-kaplangozu-2.jpg"],
+          fiyat: "1.504,99 TL",
+          link: "https://www.shopier.com/dreamyhandmade/51039216"
+        },
+        {
           id: "tas-delphinula-sedef", ad: "Delphinula Sedef Kolye", ikon: "🐚",
           aciklama: "Eşsiz Delphinula (Angaria Delphinus) deniz kabuğu ucu, doğal sedef taş kırıklarıyla buluştu. Sedefin ışıltısı denizin dinginliğini taşır; her kolye doğal taş olduğundan kendine özgüdür — el yapımı, sevgiyle hazırlandı, özel kutusunda gönderilir. 🐚",
           gorsel: "/urunler/delphinula-sedef-kolye.jpg",
