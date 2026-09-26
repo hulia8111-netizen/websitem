@@ -88,6 +88,13 @@ const PushToken = window.PushToken = (() => {
         else if (window.Topluluk && Topluluk.ac) Topluluk.ac();
       } else if (hedef === "topluluk") {
         if (window.Topluluk && Topluluk.ac) Topluluk.ac();
+      } else if (/^[a-z]+(#[\w-]+)?$/.test(hedef)) {
+        // Görünüm (+ isteğe bağlı bölüm): "meditasyon#hasat-med" → Meditasyon sayfası, Hasat kartına kaydır
+        const [v, a] = hedef.split("#");
+        if (document.getElementById("view-" + v) && window.gotoView) {
+          gotoView(v);
+          if (a) setTimeout(() => { const el = document.getElementById(a); if (el) el.scrollIntoView({ block: "start", behavior: "smooth" }); }, 450);
+        }
       }
     } catch (e) {}
   }
