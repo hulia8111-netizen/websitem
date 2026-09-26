@@ -3556,3 +3556,7 @@ body.y21-acik { overflow: hidden; }
   color: #1a1330; padding: 0.6rem 0.4rem; border-radius: var(--radius-sm);
   background: linear-gradient(135deg, #9be7c4, #6fe0a8); box-shadow: 0 6px 16px rgba(111,224,168,0.28); }
 .mg-grid-rit .yar-meta { display: none; }
+
+/* ---------- Meditasyonlar: Hasat/Dönüşüm sesli meditasyon + 21 gün kartı (v246) ---------- */
+.hasat-med .hasat-audio { width: 100%; margin: 0.6rem 0 0.2rem; }
+#y21-med-grid { grid-template-columns: minmax(0, 1fr); max-width: 420px; }

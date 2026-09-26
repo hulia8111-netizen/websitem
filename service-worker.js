@@ -3,7 +3,7 @@
    SÃ¼rÃ¼m deÄŸiÅŸince CACHE adÄ±nÄ± artÄ±r ki eski dosyalar temizlensin.
    ============================================================ */
 
-const CACHE = "isigini-bul-v245";
+const CACHE = "isigini-bul-v246";
 const KABUK = [
   ".",
   "index.html",
@@ -93,6 +93,8 @@ self.addEventListener("activate", e => {
 self.addEventListener("fetch", e => {
   const istek = e.request;
   if (istek.method !== "GET") return;
+  // Ses dosyaları (mp3/m4a): SW karışmasın -> tarayıcı Range isteğiyle akış/ileri sarma yapabilsin, dev dosya önbelleğe yığılmasın.
+  if (/\.(mp3|m4a)(\?|$)/i.test(istek.url)) return;
   const ayniKaynak = istek.url.startsWith(self.location.origin);
 
   // surum.json -> HER ZAMAN taze ağ (önbelleğe alma); güncelleme kontrolü doğru çalışsın.

@@ -18,8 +18,8 @@ const Yolculuk21 = window.Yolculuk21 = (() => {
     baslik: "Bana Ait Olan Bana Dönüyor",
     altbaslik: "21 Günlük Ses Ritüeli",
     ozet: "Emeğinin karşılığını almaya hazır mısın? 21 gün dinle — bir kez al, sonsuza kadar senin. 🤍",
-    fiyat: "44 TL",
-    fiyatNot: "açılışa özel fiyat",
+    fiyat: "444 TL",
+    fiyatNot: "tek seferlik ödeme",
     kapak: "/urunler/bana-ait-olan-kapak.png",
     shopier: "https://www.shopier.com/50878921",   // SiteAyar → "yolculuk_link_ses-bana-ait-olan" ile değiştirilebilir
     bucket: "ritueller",
@@ -468,9 +468,20 @@ const Yolculuk21 = window.Yolculuk21 = (() => {
     if (girisli()) kodGir(k);
     else { try { localStorage.setItem(BEKLEYEN, k.trim()); } catch (e) {} setTimeout(girisUyar, 1400); }
   }
+  /* Meditasyonlar sayfasındaki kopya kart (mağazadakiyle aynı ürün, aynı fiyat/link) */
+  function medKartCiz() {
+    const g = document.getElementById("y21-med-grid");
+    if (!g) return;
+    g.innerHTML = "";
+    kart(g);
+  }
+
   function baglan() {
     setTimeout(sihirliLink, 3200);   // splash bitsin
-    window.addEventListener("isigini-oturum-degisti", () => setTimeout(bekleyenKoduDene, 900));
+    window.addEventListener("isigini-oturum-degisti", () => { setTimeout(bekleyenKoduDene, 900); setTimeout(medKartCiz, 1000); });
+    medKartCiz();
+    const nb = document.querySelector('.nav-btn[data-view="meditasyon"]');
+    if (nb) nb.addEventListener("click", medKartCiz);   // giriş/sahiplik durumu güncel çizilsin
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", baglan);
   else baglan();
