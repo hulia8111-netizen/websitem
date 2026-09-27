@@ -1,66 +1,69 @@
 # Google Play Mağaza Metinleri — Işığını Bul
 
-> Play Console → "Ana mağaza girişi" (Main store listing) bölümüne kopyala.
+> Play Console → Büyüme → Mağaza varlığı → **Ana mağaza girişi** bölümüne kopyala.
+> Güncelleme: 27 Eylül 2026 — arama görünürlüğü için yeniden yazıldı; "reklam göstermez" ifadesi kaldırıldı (v8'de AdMob var, beyan "Evet").
 
 ## Uygulama adı (Title) — maks. 30 karakter
 ```
-Işığını Bul
+Işığını Bul: Farkındalık
 ```
 
 ## Kısa açıklama (Short description) — maks. 80 karakter
 ```
-Kartlar, meditasyon, ruh hali ve farkındalıkla huzurlu bir içsel yolculuk.
+Günde 5 dakika: ruh halin, günün kartı, farkındalık sorusu ve meditasyon.
 ```
 
 ## Tam açıklama (Full description) — maks. 4000 karakter
 ```
-Işığını Bul ✨ — günlük spiritüel rutinini tek bir huzurlu alanda topla.
+Günde 5 dakikada kendine dön. 🌙
 
-Işığını Bul; farkındalık, ruh hali takibi, meditasyon ve ilham veren kartlarla kendine nazik bir alan açan spiritüel wellbeing uygulamasıdır. Her gün birkaç dakikanı kendine ayır; sezgini dinle, dengeni bul ve içsel yolculuğunda ilerle.
+Işığını Bul; ruh hali takibi, günün kartı, farkındalık soruları, günlük, nefes egzersizleri ve meditasyonu tek bir sakin alanda toplayan ücretsiz bir farkındalık uygulamasıdır. Her gün birkaç dakikanı kendine ayır: nasıl hissettiğini fark et, küçük bir adım at, ışığının büyüdüğünü gör.
 
-🃏 GÜNÜN KARTI — IŞIK KARTLARI
-Her gün ilham veren bir kart çek. Kartlar; sezgi, cesaret, denge, şifa, bırakış ve yükseliş gibi hayatının tüm katmanlarına dokunur. "Ne olacak?" değil, "Neye hazırsın?" diye sorar.
+🌙 RUH HALİ TAKİBİ
+Bugün nasıl hissettiğini tek dokunuşla seç. Son 7 gününü ve ay boyunca seni en çok ziyaret eden duyguyu gör.
 
-🌙 RUH HALİ & ENERJİ
-Gününü tek dokunuşla kaydet; haftalık ruh hali ve enerji dengeni grafiklerle gör.
+🔮 GÜNÜN KARTI
+Her gün bir kart çek. Kart sana bir mesaj ve bir soru bırakır: "Bugün buna nasıl bakarsın?" Kartlar geleceği söylemez; kendine sormayı hatırlatır.
 
-📔 KİLİTLİ GÜNLÜK DEFTERİ
-Düşüncelerini şifreyle koruduğun kişisel bir günlüğe yaz; sayfa çevirme deneyimiyle geçmişine dön.
+✨ GÜNÜN İLHAMI VE FARKINDALIK SORUSU
+Güne kendi cümlenle başla. Her gün yeni bir farkındalık sorusu gelir; tek cümleyle cevapla, cevapların birikir.
 
-✅ GÜNÜN GÖREVLERİ
-Her gün Fiziksel, Zihinsel ve Ruhsal alanlara dokunan küçük, anlamlı görevlerle dengeni koru.
+🌿 GÜNÜN GÖREVLERİ
+Her gün beden, ruh ve zihin için üç küçük görev. Büyük hedefler yerine tekrar edilebilir küçük adımlar.
 
-🧘 REHBERLİ MEDİTASYONLAR
-İstikrar kazandıkça açılan, adım adım yazılı rehberli meditasyonlarla derin bir nefes al.
+📔 ŞİFRELİ GÜNLÜK VE ŞÜKRAN
+Kimsenin okuyamadığı, şifreyle koruduğun kişisel günlüğün. Her gün üç şükran.
 
-🌬️ NEFES & SAKİNLEŞME
-Rehberli nefes egzersizleriyle anı yavaşlat, sakinleş.
+🌬️ NEFES VE SAKİNLEŞME
+Zor anlarda ekrandaki ışıkla birlikte nefes al, bedenine bir ritim ver.
 
-🌟 HAYAL PANOSU
-Niyetlerini ve hayallerini görselleştirdiğin kişisel bir pano oluştur.
+🧘 MEDİTASYON
+Uyku, rahatlama ve odak için sakinleştirici sesler; sesli rehberli meditasyonlar. Yedinci gününde Rehberli Meditasyonlar bölümü açılır.
 
-📅 SPİRİTÜEL TAKVİM & AY EVRELERİ
-Ay döngülerini ve enerji geçişlerini takip et; kendi özel günlerini ekle.
+🌱 IŞIK BAHÇEN VE NAZİK SERİ
+Her gün geldikçe bahçen büyür. Bir günü kaçırırsan "affet hakkın" var; zincir kırılmaz. 3., 7., 21. ve 30. günlerde yeni seviyeler.
 
-🕒 ÇİFT SAATLER
-11:11, 22:22 gibi ayna saatlerin anlamlarını keşfet.
+📊 HAFTALIK VE AYLIK RAPOR
+Beden, ruh ve zihin dengeni haftalık olarak gör; her ay sana özel bir gelişim raporu.
 
-📊 HAFTALIK DENGE RAPORU
-Haftanı değerlendiren nazik bir özet ve gelişim önerileri.
+💞 ENERJİ TİPİN, AURA VE ÇAKRA
+Kendine farklı bir aynadan bakman için eğlenceli testler (bilimsel kişilik testi değildir).
 
-✨ EVRENDEN MESAJIN VAR
-Gün içinde, senin seçtiğin saatlerde ilham veren kısa mesajlar (isteğe bağlı bildirim).
+📅 AY TAKVİMİ VE RİTÜELLER
+Yeni ay ve dolunay günleri, ücretsiz dolunay bırakma ritüeli, çift saatlerin anlamları ve hayal panosu.
 
-☁️ BULUT SENKRONİZASYONU
-Hesabınla giriş yap; verilerin güvenle saklanır ve cihazların arasında otomatik senkronlanır.
+🌟 TOPLULUK
+Haftanın Işığı'nda deneyimini paylaş, başkalarının yolculuğundan ilham al.
 
-🛍️ MAĞAZA
-Işık Kartları, Işık Mumları ve daha fazlasını keşfet (satın alma, güvenli dış mağazalarda tamamlanır).
+☁️ HESAP OPSİYONEL
+Hesap açmadan kullanabilirsin. İstersen bulut hesabıyla verilerini yedekle ve cihazların arasında senkronla.
 
-— 
-Işığını Bul reklam göstermez ve verilerini takip amacıyla kullanmaz. Bu uygulama bir eğlence ve kişisel farkındalık aracıdır; tıbbi, psikolojik veya profesyonel bir tavsiye yerine geçmez.
+—
+Işığını Bul ücretsizdir; bazı bölümlerde reklam gösterilebilir. Uygulama kişisel farkındalık aracıdır; tıbbi, psikolojik veya profesyonel desteğin yerine geçmez.
 
-Kendine nazik ol. 🌙
+Işığını Bul, Işığını Bul kitabının yazarı ve Işık Kartları destesinin yaratıcısı Hülya tarafından geliştirildi: https://isiginibull.net/hakkimda.html
+
+iPhone'dan: isiginibull.net'i Safari'de aç → Paylaş → Ana Ekrana Ekle.
 Gizlilik politikası: https://isiginibull.net/gizlilik/
 İletişim: hulia8111@gmail.com
 ```
