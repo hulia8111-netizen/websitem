@@ -27,11 +27,11 @@ async function havuzGetir(): Promise<string[]> {
     const son = txt.indexOf("]", bas);
     if (bas < 0 || son < 0) return [];
     const out: string[] = [];
-    const re = /"((?:\.|[^"\])*)"/g;
+    const re = /"((?:\\.|[^"\\])*)"/g;
     let m: RegExpExecArray | null;
     const dizi = txt.slice(bas + 1, son);
     while ((m = re.exec(dizi)) !== null) {
-      const s = m[1].replace(/\\"/g, '"').replace(/\\/g, "\\").trim();
+      const s = m[1].replace(/\\"/g, '"').replace(/\\\\/g, "\\").trim();
       if (s) out.push(s);
     }
     return out;
