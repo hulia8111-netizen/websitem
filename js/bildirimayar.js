@@ -4,7 +4,8 @@
    Tek sade kart, üç kategori:
      • Duyurular  (duyuru)
      • Topluluk   (topluluk)
-     • Günün İlham Cümlesi (ilham) — her gün 12:00 sabit
+     • Günün İlham Cümlesi (ilham) — hafta içi 12:00 / hafta sonu 16:00 sabit
+       + kullanıcının seçtiği en fazla 2 ek saat (ilhamEkSaatler)
    Tercihler bildirim.js ile ortak "bildirim-ayar" anahtarında tutulur;
    değişince pushtoken.js buluttaki push_token satırını senkronlar.
    Global: window.BildirimAyar
@@ -37,6 +38,22 @@ const BildirimAyar = window.BildirimAyar = (() => {
     if (b) b.addEventListener("click", izinIste);
   }
 
+  /* ---------- ek ilham saatleri (en fazla 2, yarım saatlik) ---------- */
+  const SAATLER = [];
+  for (let h = 6; h <= 23; h++) for (const m of ["00", "30"]) SAATLER.push(String(h).padStart(2, "0") + ":" + m);
+
+  function ekDoldur(sel, secili) {
+    sel.innerHTML = `<option value="">Ek saat yok</option>` +
+      SAATLER.map(s => `<option value="${s}"${s === secili ? " selected" : ""}>${s}</option>`).join("");
+  }
+  function ekKaydet() {
+    const x = ayarAl();
+    const set = new Set([$("#ba-ek-1").value, $("#ba-ek-2").value].filter(Boolean));
+    x.ilhamEkSaatler = [...set].sort();
+    ayarYaz(x);
+  }
+  function ekGorunur() { const k = $("#ba-ek"); if (k) k.hidden = !$("#ba-ilham").checked; }
+
   /* ---------- UI ---------- */
   function baglan() {
     if (!$("#ba-ilham")) return;             // bu ekran yoksa çık
@@ -46,6 +63,16 @@ const BildirimAyar = window.BildirimAyar = (() => {
     $("#ba-topluluk").checked = a.topluluk !== false;
     $("#ba-ilham").checked    = a.ilham    !== false;
     izinCiz();
+
+    const ek = Array.isArray(a.ilhamEkSaatler) ? a.ilhamEkSaatler : [];
+    if ($("#ba-ek-1")) {
+      ekDoldur($("#ba-ek-1"), ek[0] || "");
+      ekDoldur($("#ba-ek-2"), ek[1] || "");
+      $("#ba-ek-1").addEventListener("change", ekKaydet);
+      $("#ba-ek-2").addEventListener("change", ekKaydet);
+      $("#ba-ilham").addEventListener("change", ekGorunur);
+      ekGorunur();
+    }
 
     function baglaToggle(sel, alan) {
       const el = $(sel);

@@ -36,7 +36,7 @@ const PushToken = window.PushToken = (() => {
       topluluk: a.topluluk !== false,
       ilham:    a.ilham    !== false,          // temel — varsayılan açık
       ilham_saat: a.ilhamSaat || "12:00",
-      ek_saatler: Array.isArray(a.ilhamEkSaatler) ? a.ilhamEkSaatler : []
+      ek_saatler: Array.isArray(a.ilhamEkSaatler) ? a.ilhamEkSaatler.slice(0, 2) : []
     };
   }
 
