@@ -62,6 +62,7 @@ const BildirimAyar = window.BildirimAyar = (() => {
     $("#ba-duyuru").checked   = a.duyuru   !== false;
     $("#ba-topluluk").checked = a.topluluk !== false;
     $("#ba-ilham").checked    = a.ilham    !== false;
+    if ($("#ba-hatirlatma")) $("#ba-hatirlatma").checked = a.hatirlatma !== false;
     izinCiz();
 
     const ek = Array.isArray(a.ilhamEkSaatler) ? a.ilhamEkSaatler : [];
@@ -87,6 +88,7 @@ const BildirimAyar = window.BildirimAyar = (() => {
     baglaToggle("#ba-duyuru", "duyuru");
     baglaToggle("#ba-topluluk", "topluluk");
     baglaToggle("#ba-ilham", "ilham");
+    baglaToggle("#ba-hatirlatma", "hatirlatma");
 
     const dene = $("#ba-dene");
     if (dene) dene.addEventListener("click", () => {

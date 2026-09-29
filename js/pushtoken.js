@@ -35,6 +35,7 @@ const PushToken = window.PushToken = (() => {
       duyuru:   a.duyuru   !== false,          // temel — varsayılan açık
       topluluk: a.topluluk !== false,
       ilham:    a.ilham    !== false,          // temel — varsayılan açık
+      hatirlatma: a.hatirlatma !== false,      // nazik geri çağırma — varsayılan açık
       ilham_saat: a.ilhamSaat || "12:00",
       ek_saatler: Array.isArray(a.ilhamEkSaatler) ? a.ilhamEkSaatler.slice(0, 2) : []
     };
@@ -55,12 +56,20 @@ const PushToken = window.PushToken = (() => {
       cihaz_id: cihazId(),
       platform: (window.__ISIGINI_PUSH && window.__ISIGINI_PUSH.platform) || "android",
       duyuru: t.duyuru, topluluk: t.topluluk, ilham: t.ilham,
-      ilham_saat: t.ilham_saat, ek_saatler: t.ek_saatler,
-      tz: tz(), guncelleme: new Date().toISOString()
+      ilham_saat: t.ilham_saat, ek_saatler: t.ek_saatler, hatirlatma: t.hatirlatma,
+      son_ruh: (window.Donus && Donus.ruhDusuk && Donus.ruhDusuk()) ? "dusuk" : null,
+      tz: tz(), guncelleme: new Date().toISOString(),
+      son_acilis: new Date().toISOString()     // nazik geri çağırma: son kullanım
     };
-    try { await c.from("push_token").upsert(satir, { onConflict: "token" }); }
+    try { await c.from("push_token").upsert(satir, { onConflict: "token" }); sonKayit = Date.now(); }
     catch (e) { /* sessiz */ }
   }
+  let sonKayit = 0;
+
+  /* Uygulama arka plandan öne gelince de "son açılış" tazelensin (6 saatte bir) */
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible" && sonToken && Date.now() - sonKayit > 6 * 3600 * 1000) kaydet();
+  });
 
   /* Ayarlar değişince yeniden yaz (bildirim.js çağırır) */
   function tercihGuncelle() { if (sonToken) kaydet(); }
@@ -81,7 +90,11 @@ const PushToken = window.PushToken = (() => {
   function yol(hedef) {
     if (!hedef) return;
     try {
-      if (hedef === "ilham") {
+      if (/^donus(:|$)/.test(hedef)) {
+        // Nazik geri çağırma → Dönüş Eşiği ("donus:<öne>:<aşama>")
+        const [, one, asama] = hedef.split(":");
+        if (window.Donus && Donus.ac) Donus.ac(one, asama);
+      } else if (hedef === "ilham") {
         if (window.GunlukIlham && GunlukIlham.ac) GunlukIlham.ac();
       } else if (hedef === "duyuru") {
         if (window.ToplulukDuyuru && ToplulukDuyuru.ac) ToplulukDuyuru.ac();

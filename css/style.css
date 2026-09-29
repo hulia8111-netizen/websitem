@@ -2537,6 +2537,17 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
 .ilham-yildizlar span:nth-child(3){ top:72%; left:24%; animation-delay:1.1s; } .ilham-yildizlar span:nth-child(4){ top:64%; left:76%; animation-delay:.3s; }
 .ilham-yildizlar span:nth-child(5){ top:84%; left:52%; animation-delay:1.4s; }
 @media (prefers-reduced-motion: reduce){ .ilham-yildizlar span { animation: none; } .ilham-overlay { transition: none; } }
+
+/* Dönüş Eşiği (nazik geri çağırma karşılaması) */
+.donus-baslik { font-family: var(--font-baslik), Georgia, serif; font-size: 1.7rem; color: #fdf3d6; margin: 0.2rem 0 0.6rem; font-weight: 500; }
+.donus-metin { color: var(--metin-soft); line-height: 1.55; margin: 0 auto 1.3rem; max-width: 340px; }
+.donus-secenekler { display: flex; flex-direction: column; gap: 0.6rem; max-width: 320px; margin: 0 auto; }
+.donus-secenek { display: flex; align-items: center; gap: 0.7rem; width: 100%; padding: 0.85rem 1rem; border-radius: 16px; font: inherit; font-size: 1rem; color: var(--metin); cursor: pointer; text-align: left;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(179,140,255,0.25); transition: transform .15s ease, border-color .15s ease; }
+.donus-secenek:hover { transform: translateY(-1px); border-color: var(--accent-2); }
+.donus-secenek.one { background: linear-gradient(135deg, rgba(179,140,255,0.28), rgba(233,196,106,0.18)); border-color: rgba(233,196,106,0.45); box-shadow: var(--glow-mor); }
+.donus-secenek .ds-ikon { font-size: 1.3rem; }
+.donus-bak { margin-top: 1.2rem; background: none; border: 0; color: var(--metin-faint); font: inherit; font-size: 0.88rem; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
 .td-mini { background: var(--card-bg); border: 1px solid var(--card-border); color: var(--metin-soft); border-radius: 9px; padding: 0.35rem 0.7rem; font-size: 0.8rem; cursor: pointer; }
 .td-mini:hover { background: rgba(255, 255, 255, 0.1); }
 .td-mini.td-sil:hover { color: var(--uyari); border-color: var(--uyari); }
