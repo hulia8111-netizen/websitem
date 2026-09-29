@@ -13,12 +13,13 @@
 //
 // NAZİK GERİ ÇAĞIRMA (push_token.son_acilis'e göre, "pasif gün"):
 //   0–6   → normal akış
-//   7–29  → ek saatler durur; sabit ilham yalnız Pzt/Çar/Cmt
-//   30–89 → ilham durur
-//   90+   → hiçbir şey gönderilmez
+//   7–29    → ek saatler durur; sabit ilham yalnız Pzt/Çar/Cmt
+//   30–89   → sabit ilham haftada 1 (Çar)
+//   90–179  → ilham yok; yalnız ayda en fazla bir Yeni Ay/Dolunay mesajı
+//   180+    → hiçbir şey gönderilmez
 //   Özel mesajlar (sabit slotta, o günün ilhamının YERİNE, her biri bir kez):
 //   7. gün · 14. gün · 15–29 arası ilk Yeni Ay/Dolunay · 30. gün ·
-//   30+ ayda en fazla bir Yeni Ay/Dolunay. İki özel mesaj arası ≥ 4 gün.
+//   30–179 ayda en fazla bir Yeni Ay/Dolunay. İki özel mesaj arası ≥ 4 gün.
 //   Kişi uygulamayı açınca aşamalar sıfırlanır. Aynı mesaj tekrar gitmez.
 //   hatirlatma=false → özel mesaj yok. son_ruh='dusuk' → yalnız yumuşak ton.
 //   Tıklayınca data.yol="donus:<öne>:<aşama>" → Dönüş Eşiği ekranı.
@@ -61,6 +62,8 @@ const HAVUZ_ASAMA: Record<string, number[]> = {
 };
 const HAVUZ_YUMUSAK = [1, 2, 3, 4];     // son ruh hali düşükse (her aşamada)
 const SEYREK_GUNLER = ["Mon", "Wed", "Sat"]; // 7–29 gün pasifken ilham günleri
+const HAFTALIK_GUN = "Wed";                   // 30–89 gün pasifken tek ilham günü
+const SESSIZ_GUN = 180;                       // bu kadar gün pasif → hiçbir şey gönderilmez
 
 async function havuzGetir(): Promise<string[]> {
   try {
@@ -172,7 +175,7 @@ Deno.serve(async () => {
     const acilisHam = String(t.son_acilis || t.guncelleme || "");
     const acilisT = Date.parse(acilisHam);
     const pasif = isNaN(acilisT) ? 0 : gunFarki(gun, trZaman(new Date(acilisT)).gun);
-    if (pasif >= 90) continue;
+    if (pasif >= SESSIZ_GUN) continue;
 
     if (pasif < 7) {
       // ---- normal akış: sabit + ek saatler ----
@@ -198,7 +201,7 @@ Deno.serve(async () => {
     let asama: string | null = null;
     const araYeter = !geri.son || gunFarki(gun, geri.son) >= 4;
     if (t.hatirlatma !== false && araYeter) {
-      if (pasif >= 30 && !asamalar.includes("30")) asama = "30";
+      if (pasif >= 30 && pasif < 90 && !asamalar.includes("30")) asama = "30";
       else if (pasif >= 14 && pasif < 30 && !asamalar.includes("14")) asama = "14";
       else if (pasif < 14 && !asamalar.includes("7")) asama = "7";
       else if (bugunAyOlayi && (
@@ -221,8 +224,8 @@ Deno.serve(async () => {
         msgler: [...msgler, id].slice(-30),
       };
       plan.push({ token, slotlar: [{ saat: sabit, sira: 0 }], gonderilen, ozel: { id, asama }, geri });
-    } else if (pasif < 30 && SEYREK_GUNLER.includes(hg)) {
-      // seyrekleşmiş ilham (haftada 3)
+    } else if ((pasif < 30 && SEYREK_GUNLER.includes(hg)) || (pasif >= 30 && pasif < 90 && hg === HAFTALIK_GUN)) {
+      // seyrekleşmiş ilham (7–29: haftada 3 · 30–89: haftada 1)
       plan.push({ token, slotlar: [{ saat: sabit, sira: 0 }], gonderilen, geri });
     } else if (geri !== t.geri) {
       // gönderim yok; yalnız sıfırlanan durumu kaydet
