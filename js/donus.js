@@ -25,7 +25,8 @@ const Donus = window.Donus = (() => {
 
   function goster(gorunum, bolum) {
     if (window.gotoView) gotoView(gorunum);
-    if (bolum) setTimeout(() => { const el = document.getElementById(bolum); if (el) el.scrollIntoView({ block: "start", behavior: "smooth" }); }, 450);
+    // gotoView'in "en üste yumuşak kaydır"ı ile çakışmasın diye anında kaydır
+    if (bolum) setTimeout(() => { const el = document.getElementById(bolum); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 12, behavior: "auto" }); }, 600);
   }
 
   /* Son 14 gün içinde kaydedilen en yeni ruh hali düşük mü? */

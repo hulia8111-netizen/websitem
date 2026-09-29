@@ -37,6 +37,7 @@ const GunlukIlham = window.GunlukIlham = (() => {
         '<div class="ilham-amblem">✨</div>' +
         '<blockquote class="ilham-soz" id="ilham-soz"></blockquote>' +
         '<p class="ilham-alt muted small">Günün ilham cümlesi · her gün yeni</p>' +
+        '<button class="ilham-ayar-link" id="ilham-ayar-link" type="button">🔔 Bildirim saatlerini ayarla</button>' +
         '<div class="ilham-paylas">' +
           '<span class="ilham-paylas-baslik">Paylaş</span>' +
           '<div class="ilham-paylas-btnlar">' +
@@ -53,6 +54,7 @@ const GunlukIlham = window.GunlukIlham = (() => {
     document.body.appendChild(ov);
     ov.querySelector(".ilham-kapat").addEventListener("click", kapat);
     ov.addEventListener("click", e => { if (e.target === ov) kapat(); });
+    ov.querySelector("#ilham-ayar-link").addEventListener("click", () => { kapat(); setTimeout(bildirimAyarinaGit, 380); });
     ov.querySelector("#ilham-pay-wa").addEventListener("click", waPaylas);
     ov.querySelector("#ilham-pay-fb").addEventListener("click", fbPaylas);
     ov.querySelector("#ilham-pay-ig").addEventListener("click", igPaylas);
@@ -88,6 +90,20 @@ const GunlukIlham = window.GunlukIlham = (() => {
     ov.hidden = false; ov.classList.remove("gor"); void ov.offsetWidth; ov.classList.add("gor");
     try { if (window.Reklam) Reklam.butonaBagla(); } catch (e) {}
   }
+  /* Profil › Ayarlar › Bildirimler kartına götür (aç-kapa + ek saatler) */
+  function bildirimAyarinaGit() {
+    if (window.gotoView) gotoView("profil");
+    const sekme = document.querySelector('#profil-sekme .psek-btn[data-pgrup="ayarlar"]');
+    if (sekme) sekme.click();
+    setTimeout(() => {
+      const kart = document.getElementById("bildirim");
+      if (!kart) return;
+      // gotoView'in "en üste yumuşak kaydır"ı ile çakışmasın diye anında kaydır
+      window.scrollTo({ top: kart.getBoundingClientRect().top + window.scrollY - 12, behavior: "auto" });
+      kart.classList.remove("vurgu-parla"); void kart.offsetWidth; kart.classList.add("vurgu-parla");
+    }, 600);
+  }
+
   function kapat() {
     if (!ov) return;
     ov.classList.remove("gor");

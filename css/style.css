@@ -2538,6 +2538,12 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
 .ilham-yildizlar span:nth-child(5){ top:84%; left:52%; animation-delay:1.4s; }
 @media (prefers-reduced-motion: reduce){ .ilham-yildizlar span { animation: none; } .ilham-overlay { transition: none; } }
 
+.ilham-ayar-link { display: inline-block; margin: 0.2rem 0 1rem; padding: 0.45rem 0.9rem; border-radius: 999px; font: inherit; font-size: 0.85rem; color: var(--metin-soft); cursor: pointer;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(179,140,255,0.25); transition: border-color .15s ease, color .15s ease; }
+.ilham-ayar-link:hover { color: var(--metin); border-color: var(--accent-2); }
+.vurgu-parla { animation: vurguParla 1.6s ease-out 1; }
+@keyframes vurguParla { 0% { box-shadow: 0 0 0 0 rgba(233,196,106,0.55); } 100% { box-shadow: 0 0 0 14px rgba(233,196,106,0); } }
+
 /* Dönüş Eşiği (nazik geri çağırma karşılaması) */
 .donus-baslik { font-family: var(--font-baslik), Georgia, serif; font-size: 1.7rem; color: #fdf3d6; margin: 0.2rem 0 0.6rem; font-weight: 500; }
 .donus-metin { color: var(--metin-soft); line-height: 1.55; margin: 0 auto 1.3rem; max-width: 340px; }
