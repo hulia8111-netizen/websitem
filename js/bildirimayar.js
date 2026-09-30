@@ -29,6 +29,8 @@ const BildirimAyar = window.BildirimAyar = (() => {
   function izinCiz() {
     const k = $("#bildirim-izin");
     if (!k) return;
+    // Mobil uygulamada: telefonun (native) bildirim durumu
+    if (window.BildirimDavet && BildirimDavet.ayarSatiri(k)) return;
     if (!destekVar) { k.innerHTML = `<p class="muted small">Bildirimler uygulama içinde gösterilir.</p>`; return; }
     const d = izinDurum();
     if (d === "granted") k.innerHTML = `<p class="bld-izinli">Bildirim izni verildi ✓</p>`;

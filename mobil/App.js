@@ -6,7 +6,7 @@
      ekrana yönlendirir. Uygulama kapalıyken de push çalışır (FCM).
    ============================================================ */
 import React, { useRef, useState, useEffect } from "react";
-import { View, ActivityIndicator, StyleSheet, BackHandler, Platform, StatusBar } from "react-native";
+import { View, ActivityIndicator, StyleSheet, BackHandler, Platform, StatusBar, Linking, AppState } from "react-native";
 import { WebView } from "react-native-webview";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import * as Notifications from "expo-notifications";
@@ -31,7 +31,8 @@ Notifications.setNotificationHandler({
 });
 
 // Expo push token al (izin + Android kanalı)
-async function pushTokenAl() {
+// iste=false → izin penceresi açma; yalnız izin zaten verildiyse jeton al
+async function pushTokenAl(iste = true) {
   try {
     if (Platform.OS === "android") {
       await Notifications.setNotificationChannelAsync("default", {
@@ -43,7 +44,7 @@ async function pushTokenAl() {
     if (!Device.isDevice) return null;
     const mevcut = await Notifications.getPermissionsAsync();
     let izin = mevcut.status;
-    if (izin !== "granted") {
+    if (izin !== "granted" && iste) {
       const istek = await Notifications.requestPermissionsAsync();
       izin = istek.status;
     }
@@ -82,6 +83,14 @@ export default function App() {
 
   // Push token al
   useEffect(() => { pushTokenAl().then(setToken); }, []);
+
+  // Kullanıcı ayarlardan bildirim iznini açıp geri dönerse → yeniden başlatmadan jeton al
+  useEffect(() => {
+    const sub = AppState.addEventListener("change", (durum) => {
+      if (durum === "active" && !token) pushTokenAl(false).then((t) => { if (t) setToken(t); });
+    });
+    return () => sub.remove();
+  }, [token]);
 
   // Bildirime tıklanınca hangi ekrana gidileceğini sakla → sayfaya köprüle
   useEffect(() => {
@@ -163,6 +172,11 @@ export default function App() {
       try { if (gecisRef.current && gecisHazirRef.current) gecisRef.current.show(); } catch (_e) { /* sessiz */ }
       return;
     }
+    // Bildirim izni kapalıysa: telefonun bu uygulamaya ait ayar ekranını aç
+    if (veri && veri.type === "bildirim-ayari-ac") {
+      try { await Linking.openSettings(); } catch (_e) { /* sessiz */ }
+      return;
+    }
   }
 
   // Token + sayfa hazır olunca token'ı siteye köprüle (site push_token'a yazar)
@@ -184,7 +198,7 @@ export default function App() {
         onLoadEnd={() => { setYukleniyor(false); setSayfaHazir(true); }}
         onNavigationStateChange={(s) => setGeriGidebilir(s.canGoBack)}
         onMessage={mesajGeldi}
-        injectedJavaScriptBeforeContentLoaded={"window.__ISIGINI_NATIVE=true;true;"}
+        injectedJavaScriptBeforeContentLoaded={"window.__ISIGINI_NATIVE=true;window.__ISIGINI_NATIVE_SURUM=9;true;"}
         javaScriptEnabled
         domStorageEnabled
         thirdPartyCookiesEnabled
