@@ -44,19 +44,19 @@ const Magaza = window.Magaza = (() => {
           aciklama: "Eşsiz Delphinula (Angaria Delphinus) deniz kabuğu ucu, doğal sedef taş kırıklarıyla buluştu. Sedefin ışıltısı denizin dinginliğini taşır; her kolye doğal taş olduğundan kendine özgüdür — el yapımı, sevgiyle hazırlandı, özel kutusunda gönderilir. 🐚",
           gorsel: "/urunler/delphinula-sedef-kolye.jpg",
           gorseller: ["/urunler/delphinula-sedef-boyunda.jpg", "/urunler/delphinula-sedef-kolye.jpg"],
-          fiyat: "1.204,99 TL",
+          fiyat: "1.404,99 TL",
           link: "https://www.shopier.com/dreamyhandmade/50249821"
         },
         {
           id: "tas-delphinula-sedef-2", ad: "Delphinula Sedef Kolye", ikon: "🐚",
           aciklama: "Eşsiz Delphinula (Angaria Delphinus) deniz kabuğu ucu, doğal sedef taş kırıklarıyla buluştu. Sedefin ışıltısı denizin dinginliğini taşır; her kolye doğal taş olduğundan kendine özgüdür — el yapımı, sevgiyle hazırlandı, özel kutusunda gönderilir. 🐚",
-          gorsel: "/urunler/delphinula-sedef-2.jpg", fiyat: "1.204,99 TL",
+          gorsel: "/urunler/delphinula-sedef-2.jpg", fiyat: "1.404,99 TL",
           link: "https://www.shopier.com/dreamyhandmade/50543971"
         },
         {
           id: "tas-labradorit", ad: "Tel Sarım Labradorit Kolye", ikon: "🌙",
           aciklama: "El işçiliğiyle gümüş renkli tel sarım yapılmış, doğal Labradorit kolye. Mavi-yeşil ışıltısıyla (labradoresans) büyüleyen Labradorit; koruma ve dönüşüm taşı olarak bilinir — sezgiyi güçlendirir, negatif enerjiden korur, hayal gücünü ve içsel ışığı uyandırır. Işığını yanında taşı. 🌙",
-          gorsel: "/urunler/labradorit-kolye.jpg", fiyat: "654,99 TL",
+          gorsel: "/urunler/labradorit-kolye.jpg", fiyat: "604,99 TL",
           link: "https://www.shopier.com/dreamyhandmade/50596224"
         },
         {
@@ -86,7 +86,7 @@ const Magaza = window.Magaza = (() => {
         {
           id: "tas-ametist", ad: "Ametist Tel Sarım Kolye", ikon: "💜",
           aciklama: "El işçiliğiyle tel sarım yapılmış, gümüş kaplama doğal Ametist kolye. Stresi yatıştırır, zihni sakinleştirir; ruhsal dengeyi ve sezgiyi güçlendirir. Doğanın enerjisini yanında taşı. Çelik zincirli. 💜",
-          gorsel: "/urunler/ametist-kolye.jpg", fiyat: "304,99 TL",
+          gorsel: "/urunler/ametist-kolye.jpg", fiyat: "604,99 TL",
           link: "https://www.shopier.com/dreamyhandmade/50073853"
         },
         {
