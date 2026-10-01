@@ -35,7 +35,7 @@ const Bulut = window.Bulut = (() => {
     const kurtarmaUrl = /type=recovery/i.test(String(location.hash)) || /type=recovery/i.test(String(location.search));
     sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } });
     hazir = true;
-    sb.auth.getSession().then(({ data }) => {
+    sb.auth.getSession().then(({ data, error }) => {
       oturum = data.session || null;
       if (kurtarmaUrl || kurtarmaModu) {
         kurtarmaModu = true;
@@ -46,12 +46,13 @@ const Bulut = window.Bulut = (() => {
       }
       durumCiz();
       if (oturum) { if (window.girisKapisiGizle) window.girisKapisiGizle(); acilisSenkron(); realtimeBaslat(); }
+      else if (cevrimdisiOturum(error)) cevrimdisiOturumBekle();   // giriş kapısını AÇMA, yerelde devam
       else if (window.girisKapisiGoster) window.girisKapisiGoster();
     });
     sb.auth.onAuthStateChange((event, session) => {
       oturum = session || null;
       if (event === "PASSWORD_RECOVERY") { kurtarmaModu = true; if (window.girisKapisiGizle) window.girisKapisiGizle(); kurtarmaEkraniGoster(); }
-      if (event === "SIGNED_OUT") { realtimeDur(); if (window.girisKapisiGoster) window.girisKapisiGoster(); }
+      if (event === "SIGNED_OUT") { realtimeDur(); if (!cevrimdisiOturum() && window.girisKapisiGoster) window.girisKapisiGoster(); }
       if (event === "SIGNED_IN" && oturum) realtimeBaslat();
       durumCiz();
       try { window.dispatchEvent(new Event("isigini-oturum-degisti")); } catch (e) {}
@@ -70,8 +71,45 @@ const Bulut = window.Bulut = (() => {
     setInterval(() => { if (girisli() && cevrimici() && !indiriliyor && document.visibilityState === "visible") indir().then(d => { if (d) softTazele(); }); }, 25000);
   }
 
+  /* ---------- İNTERNETSİZ OTURUM ----------
+     Oturum anahtarı ~1 saatte bir yenilenir. İnternet yokken yenileme başarısız
+     olur ve getSession() boş döner — ama kayıtlı oturum hâlâ telefondadır.
+     Bu durumda giriş kapısını AÇMAYIZ: uygulama yerel verilerle çalışır,
+     internet gelince oturum yenilenir ve senkron kaldığı yerden devam eder. */
+  function cevrimdisiOturum(hata) {
+    if (!oturumVarMi()) return false;
+    if (!cevrimici()) return true;
+    const m = String((hata && (hata.message || hata.name)) || "");
+    return /fetch|network|ağ|Failed|Retryable|timeout/i.test(m);
+  }
+  let cevrimdisiBekliyor = false;
+  function cevrimdisiOturumBekle() {
+    if (cevrimdisiBekliyor) return;
+    cevrimdisiBekliyor = true;
+    const dene = () => {
+      if (!cevrimici()) return;
+      sb.auth.getSession().then(({ data, error }) => {
+        if (data && data.session) {
+          oturum = data.session; cevrimdisiBekliyor = false;
+          window.removeEventListener("online", dene);
+          durumCiz(); acilisSenkron(); realtimeBaslat();
+          try { window.dispatchEvent(new Event("isigini-oturum-degisti")); } catch (e) {}
+        } else if (!cevrimdisiOturum(error)) {
+          // Oturum gerçekten geçersiz (internet varken) → ancak şimdi giriş iste
+          cevrimdisiBekliyor = false;
+          window.removeEventListener("online", dene);
+          if (window.girisKapisiGoster) window.girisKapisiGoster();
+        }
+      }).catch(() => {});
+    };
+    window.addEventListener("online", dene);
+    setTimeout(dene, 15000);   // "online" olayı kaçarsa bir kez daha dene
+  }
+
   /* ---------- AUTH ---------- */
+  const INTERNET_YOK = { ok: false, mesaj: "İnternet bağlantısı yok. Bağlanınca tekrar dene ya da şimdilik hesapsız devam et." };
   async function kayitOl(email, sifre) {
+    if (!cevrimici()) return INTERNET_YOK;
     if (!hazir) return { ok: false, mesaj: "Bulut yapılandırılmamış" };
     const { data, error } = await sb.auth.signUp({ email: email.trim(), password: sifre });
     if (error) return { ok: false, mesaj: cevir(error.message) };
@@ -79,6 +117,7 @@ const Bulut = window.Bulut = (() => {
     return { ok: true, mesaj: "Kayıt oluşturuldu. (E-posta doğrulaması açıksa gelen kutunu kontrol et.)" };
   }
   async function girisYap(email, sifre) {
+    if (!cevrimici()) return INTERNET_YOK;
     if (!hazir) return { ok: false, mesaj: "Bulut yapılandırılmamış" };
     const { data, error } = await sb.auth.signInWithPassword({ email: email.trim(), password: sifre });
     if (error) return { ok: false, mesaj: cevir(error.message) };

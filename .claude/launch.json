@@ -4,8 +4,11 @@
     {
       "name": "site",
       "runtimeExecutable": "node",
-      "runtimeArgs": [".claude/server.js"],
-      "port": 5500
+      "runtimeArgs": [
+        ".claude/server.js"
+      ],
+      "port": 5500,
+      "autoPort": true
     }
   ]
 }
