@@ -40,6 +40,12 @@ const Magaza = window.Magaza = (() => {
           link: "https://www.shopier.com/dreamyhandmade/51039216"
         },
         {
+          id: "tas-aquamarine-set", ad: "Aquamarine Kolye & Bileklik Set", ikon: "🌊",
+          aciklama: "Doğal Aquamarine kırık taşlarından, deniz atı uçlu kolye ve eşlik eden bileklikten oluşan el yapımı set. Adını deniz suyundan alan Aquamarine; sakinlik, cesaret ve berrak iletişim taşı olarak bilinir — zihni yatıştırır, kendini ifade etmeyi destekler, Boğaz çakrasıyla uyumludur. Denizin dinginliğini üzerinde taşı. 🌊",
+          gorsel: "/urunler/aquamarine-set.webp", fiyat: "1.604,99 TL",
+          link: "https://www.shopier.com/dreamyhandmade/51022497"
+        },
+        {
           id: "tas-delphinula-sedef", ad: "Delphinula Sedef Kolye", ikon: "🐚",
           aciklama: "Eşsiz Delphinula (Angaria Delphinus) deniz kabuğu ucu, doğal sedef taş kırıklarıyla buluştu. Sedefin ışıltısı denizin dinginliğini taşır; her kolye doğal taş olduğundan kendine özgüdür — el yapımı, sevgiyle hazırlandı, özel kutusunda gönderilir. 🐚",
           gorsel: "/urunler/delphinula-sedef-kolye.jpg",
