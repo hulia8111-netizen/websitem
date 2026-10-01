@@ -6,7 +6,7 @@
      ekrana yönlendirir. Uygulama kapalıyken de push çalışır (FCM).
    ============================================================ */
 import React, { useRef, useState, useEffect } from "react";
-import { View, ActivityIndicator, StyleSheet, BackHandler, Platform, StatusBar, Linking, AppState } from "react-native";
+import { View, Text, Pressable, ActivityIndicator, StyleSheet, BackHandler, Platform, StatusBar, Linking, AppState } from "react-native";
 import { WebView } from "react-native-webview";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import * as Notifications from "expo-notifications";
@@ -70,6 +70,26 @@ export default function App() {
   const reklamHazirRef = useRef(false);
   const gecisRef = useRef(null);
   const gecisHazirRef = useRef(false);
+  // İnternetsiz kullanım: önce normal yükle; hata olursa (çevrimdışı) telefon
+  // önbelleğinden aç. Önbellek de boşsa sade bir "bağlantı yok" ekranı göster.
+  const [cacheModu, setCacheModu] = useState("LOAD_DEFAULT");
+  const [cevrimdisiHata, setCevrimdisiHata] = useState(false);
+
+  function yuklemeHatasi() {
+    if (cacheModu !== "LOAD_CACHE_ELSE_NETWORK") {
+      setCacheModu("LOAD_CACHE_ELSE_NETWORK");
+      setTimeout(() => { try { webRef.current && webRef.current.reload(); } catch (e) {} }, 60);
+    } else {
+      setCevrimdisiHata(true);
+      setYukleniyor(false);
+    }
+  }
+  function tekrarDene() {
+    setCevrimdisiHata(false);
+    setYukleniyor(true);
+    setCacheModu("LOAD_DEFAULT");
+    setTimeout(() => { try { webRef.current && webRef.current.reload(); } catch (e) {} }, 60);
+  }
 
   // Android donanım geri tuşu → sitede geri git
   useEffect(() => {
@@ -208,9 +228,19 @@ export default function App() {
         allowsInlineMediaPlayback
         mediaPlaybackRequiresUserAction={false}
         setSupportMultipleWindows={false}
-        cacheEnabled={false}
-        cacheMode="LOAD_NO_CACHE"
+        cacheEnabled
+        cacheMode={cacheModu}
+        onError={yuklemeHatasi}
+        renderError={() => <View style={styles.web} />}
       />
+      {cevrimdisiHata && (
+        <View style={styles.cevrimdisi}>
+          <Text style={styles.cdIkon}>🌙</Text>
+          <Text style={styles.cdBaslik}>İnternet bağlantısı yok</Text>
+          <Text style={styles.cdMetin}>Uygulamayı bir kez internete bağlıyken açtığında, sonraki seferlerde internetsiz de kullanabilirsin.</Text>
+          <Pressable style={styles.cdButon} onPress={tekrarDene}><Text style={styles.cdButonYazi}>Tekrar dene</Text></Pressable>
+        </View>
+      )}
       {yukleniyor && (
         <View style={styles.yukleyici} pointerEvents="none">
           <ActivityIndicator size="large" color="#f3d98c" />
@@ -224,4 +254,10 @@ const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: BG, paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0 },
   web: { flex: 1, backgroundColor: BG },
   yukleyici: { ...StyleSheet.absoluteFillObject, justifyContent: "center", alignItems: "center", backgroundColor: BG },
+  cevrimdisi: { ...StyleSheet.absoluteFillObject, justifyContent: "center", alignItems: "center", backgroundColor: BG, padding: 32 },
+  cdIkon: { fontSize: 44, marginBottom: 12 },
+  cdBaslik: { color: "#f3d98c", fontSize: 20, fontWeight: "600", marginBottom: 10, textAlign: "center" },
+  cdMetin: { color: "#c9bfe0", fontSize: 15, lineHeight: 22, textAlign: "center", marginBottom: 24 },
+  cdButon: { backgroundColor: "#b38cff", paddingVertical: 12, paddingHorizontal: 28, borderRadius: 999 },
+  cdButonYazi: { color: "#fff", fontSize: 16, fontWeight: "600" },
 });
