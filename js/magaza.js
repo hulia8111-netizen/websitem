@@ -72,6 +72,14 @@ const Magaza = window.Magaza = (() => {
           link: "https://www.shopier.com/dreamyhandmade/50543990"
         },
         {
+          id: "tas-ametist-bileklik", ad: "Ametist Bileklik", ikon: "💜",
+          aciklama: "Doğal Ametist kırık taşlarından el yapımı bileklik. Ametist; sakinlik ve sezgi taşı olarak bilinir — stresi yatıştırır, zihni dinginleştirir, ruhsal dengeyi ve iç huzuru destekler. Mor ışıltısını bileğinde taşı. 💜",
+          gorsel: "/urunler/ametist-bileklik.jpg",
+          gorseller: ["/urunler/ametist-bileklik.jpg", "/urunler/ametist-bileklik-2.jpg"],
+          fiyat: "354,99 TL",
+          link: "https://www.shopier.com/dreamyhandmade/51241711"
+        },
+        {
           id: "tas-dendritli-opal", ad: "Dendiritli Opal", ikon: "🌿",
           aciklama: "Nadir ve değerli Dendiritli Opal — beyaz opal zemin üzerinde ağaç dallarını andıran doğal desenler; her biri tek. Büyüme, bereket ve doğayla bağ taşı olarak bilinir; sabrı, kök salmayı ve içsel dinginliği destekler. Doğanın el yazısını avucunda taşı. 🌿",
           gorsel: "/urunler/dendritli-opal.jpg", fiyat: "304,99 TL",
