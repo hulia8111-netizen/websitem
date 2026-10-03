@@ -152,6 +152,29 @@
 .ik-t-btn:active { transform: scale(.98); }
 .ik-t-mini { position: relative; margin-top: 12px; }
 
+/* --- Destenin Fısıltısı (99 kart ön-lansman, isikfisilti.js) --- */
+.ik-fisilti { position: relative; max-width: 340px; margin: 0 auto 4px; padding: 16px 14px 14px;
+  border: 1px solid rgba(233,196,106,.3); border-radius: 16px; background: rgba(20,13,41,.45); }
+.ikf-baslik { font-family: "Playfair Display", Georgia, serif; color: var(--gold-soft); font-size: 1.05rem; margin-bottom: 12px; }
+.ikf-kart { width: 74px; height: 108px; margin: 0 auto 10px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(160deg, #4a3680, #1e1540); border: 1.5px solid var(--gold-soft);
+  box-shadow: 0 0 18px rgba(233,196,106,.35); animation: ikfBelir .6s ease-out; }
+.ikf-kart span { font-family: "Playfair Display", Georgia, serif; font-size: 1.9rem; color: #fbf4de; }
+.ikf-kapali span { color: var(--gold-soft); opacity: .8; }
+@keyframes ikfBelir { from { transform: rotateY(90deg); opacity: 0; } to { transform: none; opacity: 1; } }
+.ikf-davet { font-size: .9rem; color: var(--metin); margin: 0 0 12px; }
+.ikf-cek { width: 100%; }
+.ikf-etiket { font-size: .82rem; color: var(--gold-soft); letter-spacing: .02em; }
+.ikf-fisilti { font-family: "Playfair Display", Georgia, serif; font-style: italic; color: #fbf4de; font-size: 1.08rem; line-height: 1.45; margin: 8px 0 6px; }
+.ikf-tam { margin: 0; }
+.ikf-koleksiyon { margin: 14px 0 14px; text-align: left; }
+.ikf-k-metin { font-size: .82rem; color: var(--metin); margin-bottom: 6px; }
+.ikf-bar { height: 6px; border-radius: 6px; background: rgba(255,255,255,.1); overflow: hidden; }
+.ikf-bar span { display: block; height: 100%; min-width: 4px; background: linear-gradient(90deg, var(--gold-soft), var(--gold)); }
+.ikf-tamam { font-size: .88rem; color: var(--gold-soft); line-height: 1.4; }
+a.ik-t-btn { text-decoration: none; text-align: center; }
+@media (prefers-reduced-motion: reduce) { .ikf-kart { animation: none; } }
+
 /* --- Ana sayfa: öne çıkan Topluluk + Mağaza --- */
 .onemli-ust { padding: 14px; }
 .onemli-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
