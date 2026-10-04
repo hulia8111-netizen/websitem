@@ -60,13 +60,16 @@ const Topluluk = window.Topluluk = (() => {
   function sb() { try { return window.Bulut && Bulut.client ? Bulut.client() : null; } catch (e) { return null; } }
   function uid() { try { return window.Bulut && Bulut.kullaniciId ? Bulut.kullaniciId() : null; } catch (e) { return null; } }
   function benimAdim() { const p = Store.get("profil", {}) || {}; return (p.isim || "").trim() || "İsimsiz Işık"; }
+  // Vitrinde/sıralamada görünmek istemeyen kullanıcı → herkese "Bir Işık Yolcusu" olarak görünür
+  function vitrinGizli() { return Store.get("vitrin-gizli") === true; }
+  function skorAdi() { return vitrinGizli() ? "Bir Işık Yolcusu" : benimAdim(); }
 
   async function skorGonder() {
     const c = sb(); const id = uid(); if (!c || !id) return false;
     try {
       const k = kirilim();
       const { error } = await c.from("topluluk_skor").upsert(
-        { user_id: id, hafta: haftaId(), ad: benimAdim(), puan: k.toplam, kirilim: k.puanlar, guncelleme: new Date().toISOString() },
+        { user_id: id, hafta: haftaId(), ad: skorAdi(), puan: k.toplam, kirilim: k.puanlar, guncelleme: new Date().toISOString() },
         { onConflict: "user_id,hafta" });
       return !error;
     } catch (e) { return false; }
@@ -88,6 +91,7 @@ const Topluluk = window.Topluluk = (() => {
 
   /* ---------- Render ---------- */
   function rozetEtiket(r, sira) {
+    if (r === "yukselen" || sira === 0) return { ad: "Yükselen Işık", ikon: "🌱" };
     if (r === "altin" || sira === 1) return { ad: "Altın Işık Rozeti", ikon: "🥇" };
     return { ad: "Haftanın Işık Rozeti", ikon: "🏅" };
   }
@@ -134,7 +138,15 @@ const Topluluk = window.Topluluk = (() => {
         const ben = r.user_id === id ? " ben" : "";
         return `<li class="tp-lider${ben}${i < 3 ? " ust" : ""}"><span class="tp-sira">${madalya}</span><span class="tp-ad">${esc(r.ad || "İsimsiz Işık")}${ben ? " <b>(sen)</b>" : ""}</span><span class="tp-puan">${r.puan} ✨</span></li>`;
       }).join("");
-      const benimSira = benim >= 0 ? `<div class="tp-benim-sira">📍 Senin sıran: <b>${benim + 1}.</b> · ${liderlik[benim].puan} ✨</div>` : "";
+      let benimSira = "";
+      if (benim >= 0) {
+        const p = liderlik[benim].puan || 0;
+        const ucuncu = liderlik[2] ? (liderlik[2].puan || 0) : 0;
+        const motive = benim < 3
+          ? `🌟 Şu an ilk 3'tesin — Pazar 23:59'a kadar böyle kalırsan vitrine çıkarsın!`
+          : `✨ İlk 3'e <b>${Math.max(1, ucuncu - p + 1)}</b> ışık kaldı — vitrine çıkmak sana çok yakın.`;
+        benimSira = `<div class="tp-benim-sira">📍 Senin sıran: <b>${benim + 1}.</b> · ${p} ✨<div class="tp-motive">${motive}</div></div>`;
+      }
       liderHtml = `${benimSira}<ol class="tp-liderlik">${sat}</ol>`;
     }
 
@@ -148,9 +160,11 @@ const Topluluk = window.Topluluk = (() => {
         <h3>🏆 Haftanın Ödülleri</h3>
         <p>🥇 <b>1. sıra:</b> “Haftanın Işık Saçan Ruhu” unvanı + Altın Işık Rozeti + özel bir ışık kartı ve uzun mesajı.</p>
         <p>🏅 <b>İlk 10:</b> Haftanın Işık Rozeti + sana özel bir Işık Kartı.</p>
+        <p>👑 <b>İlk 3</b> ve 🌱 <b>Yükselen Işık</b> (geçen haftaya göre en çok parlayan): bir hafta boyunca topluluk vitrininde ve adının yanında rozetle görünür.</p>
       </div>
       <h3 class="tp-baslik2">🌟 Liderlik Tablosu</h3>
-      ${liderHtml}`;
+      ${liderHtml}
+      <label class="tp-vitrin-ayar"><input type="checkbox" id="tp-vitrin-gorun"${vitrinGizli() ? "" : " checked"}> Adım haftanın vitrininde ve sıralamada görünebilir <span class="muted small">(kapatırsan “Bir Işık Yolcusu” olarak görünürsün)</span></label>`;
   }
 
   function cizRozet() {
@@ -187,7 +201,8 @@ const Topluluk = window.Topluluk = (() => {
     kazananlar.forEach(r => { (gruplar[r.hafta] = gruplar[r.hafta] || []).push(r); });
     const haftalar = Object.keys(gruplar).sort().reverse();
     return haftalar.map(h => {
-      const liste = gruplar[h].sort((a, b) => a.sira - b.sira);
+      const yukselen = gruplar[h].find(r => r.sira === 0);
+      const liste = gruplar[h].filter(r => r.sira > 0).sort((a, b) => a.sira - b.sira);
       const bir = liste[0];
       const digerleri = liste.slice(1).map(r =>
         `<li><span class="tp-g-sira">${r.sira}</span><span class="tp-g-ad">${esc(r.ad || "İsimsiz Işık")}</span><span class="tp-g-puan">${r.puan || 0} ✨</span></li>`).join("");
@@ -200,6 +215,7 @@ const Topluluk = window.Topluluk = (() => {
           ${bir.kart_baslik ? `<div class="tp-ghb-kart">🃏 ${esc(bir.kart_baslik)}</div>` : ""}
         </div>` : ""}
         ${digerleri ? `<ol class="tp-gecmis-liste">${digerleri}</ol>` : ""}
+        ${yukselen ? `<div class="tp-gh-yukselen">🌱 Yükselen Işık: <b>${esc(yukselen.ad || "İsimsiz Işık")}</b></div>` : ""}
       </div>`;
     }).join("");
   }
@@ -215,7 +231,15 @@ const Topluluk = window.Topluluk = (() => {
       govde.innerHTML = `<div class="tp-bilgi">🌙 Topluluk için internet bağlantısı gerekiyor. Bağlandığında burası kendiliğinden yenilenir.<br><span class="muted small">Uygulamanın geri kalanını internetsiz de kullanabilirsin.</span></div>`;
       return;
     }
-    if (aktifSekme === "isik") govde.innerHTML = cizIsik();
+    if (aktifSekme === "isik") {
+      govde.innerHTML = cizIsik();
+      const vg = $("tp-vitrin-gorun");
+      if (vg) vg.addEventListener("change", async () => {
+        Store.set("vitrin-gizli", !vg.checked);
+        await skorGonder();                       // adı hemen güncelle (sıralama + vitrin)
+        liderlik = await liderlikAl(); ciz();
+      });
+    }
     else if (aktifSekme === "rozet") govde.innerHTML = cizRozet();
     else if (aktifSekme === "gecmis") govde.innerHTML = cizGecmis();
     else if (aktifSekme === "duyuru") { if (window.ToplulukDuyuru) ToplulukDuyuru.cizDuyurular(govde); else govde.innerHTML = `<div class="tp-bilgi">Yükleniyor…</div>`; }

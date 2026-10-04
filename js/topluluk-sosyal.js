@@ -196,7 +196,7 @@ const ToplulukSosyal = window.ToplulukSosyal = (() => {
     return `<article class="ts-gonderi" data-gid="${g.id}">
       <header class="ts-g-bas">
         <div class="ts-g-avatar">${esc((g.ad || "?").slice(0, 1).toUpperCase())}</div>
-        <div class="ts-g-kim"><div class="ts-g-ad">${esc(g.ad || "İsimsiz Işık")}</div><div class="ts-g-meta">${tp.ikon} ${esc(tp.ad)} · ${zamanFark(g.olusturma)}</div></div>
+        <div class="ts-g-kim"><div class="ts-g-ad">${esc(g.ad || "İsimsiz Işık")}${window.Vitrin ? Vitrin.rozet(g.user_id) : ""}</div><div class="ts-g-meta">${tp.ikon} ${esc(tp.ad)} · ${zamanFark(g.olusturma)}</div></div>
         ${takipBtn}
       </header>
       <div class="ts-g-metin">${esc(g.metin).replace(/\n/g, "<br>")}</div>
@@ -240,7 +240,8 @@ const ToplulukSosyal = window.ToplulukSosyal = (() => {
     const feed = liste.length
       ? liste.map(gonderiKart).join("")
       : `<div class="ts-bos">🌿 ${_filtre === "takip" ? "Takip ettiklerinden henüz paylaşım yok." : "Henüz paylaşım yok. İlk ışığı sen yak!"}</div>`;
-    return composer + filtre + `<div class="ts-feed">${feed}</div>`;
+    const vitrin = window.Vitrin ? Vitrin.kartHTML() : "";   // 👑 Haftanın Işıkları (bir hafta en üstte)
+    return vitrin + composer + filtre + `<div class="ts-feed">${feed}</div>`;
   }
 
   async function yorumlariCiz(gonderiId) {
@@ -251,7 +252,7 @@ const ToplulukSosyal = window.ToplulukSosyal = (() => {
     const liste = yorumlar.map(y => {
       const beklemede = y.durum !== "onayli";
       return `<div class="ts-yorum${beklemede ? " beklemede" : ""}">
-        <span class="ts-y-ad">${esc(y.ad || "İsimsiz Işık")}</span>
+        <span class="ts-y-ad">${esc(y.ad || "İsimsiz Işık")}${window.Vitrin ? Vitrin.rozet(y.user_id) : ""}</span>
         <span class="ts-y-metin">${esc(y.metin).replace(/\n/g, "<br>")}</span>
         <span class="ts-y-meta">${zamanFark(y.olusturma)}${beklemede ? " · ⏳ onay bekliyor" : ""}</span>
         ${y.user_id !== id ? `<button class="ts-y-rapor" data-act="rapor" data-id="${y.id}" data-rtip="yorum">🚩</button>` : ""}
@@ -268,6 +269,7 @@ const ToplulukSosyal = window.ToplulukSosyal = (() => {
   let _govde = null, _yeniTip = "paylasim", _yeniFoto = null;
   function bindFeed() {
     if (!_govde) return;
+    if (window.Vitrin) Vitrin.bagla(_govde);
     // composer tip seçimi
     _govde.querySelectorAll(".ts-tip-sec").forEach(b => b.addEventListener("click", () => {
       _yeniTip = b.dataset.tip; _govde.querySelectorAll(".ts-tip-sec").forEach(x => x.classList.toggle("aktif", x === b));
@@ -334,7 +336,7 @@ const ToplulukSosyal = window.ToplulukSosyal = (() => {
     _govde = govde;
     govde.innerHTML = `<div class="tp-bilgi">📝 Paylaşımlar yükleniyor…</div>`;
     if (!_hazir) await hazirla();
-    await akisYukle();
+    await Promise.all([akisYukle(), window.Vitrin ? Vitrin.yukle() : null]);
     govde.innerHTML = feedHTML(); bindFeed();
   }
 
