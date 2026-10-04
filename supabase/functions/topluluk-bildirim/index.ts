@@ -13,6 +13,9 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 function j(o: unknown, s = 200) { return new Response(JSON.stringify(o), { status: s, headers: { "Content-Type": "application/json" } }); }
 const THROTTLE_MS = 45 * 60 * 1000;
 const EXPO_URL = "https://exp.host/--/api/v2/push/send";
+// "Onay bekliyor" uyarısının AYRICA gideceği hesaplar (yalnız bildirim — moderatör
+// yetkisi VERMEZ). Hülya'nın telefonu huliaisiginibul@gmail.com ile girişli.
+const MOD_BILDIRIM_EK = ["bb3da950-2666-4eb1-ae43-30542e9fc5de"];
 
 Deno.serve(async (req) => {
   try {
@@ -36,7 +39,7 @@ Deno.serve(async (req) => {
       const son = meta?.deger && (meta.deger as { zaman?: string }).zaman ? new Date((meta.deger as { zaman: string }).zaman).getTime() : 0;
       if (Date.now() - son < THROTTLE_MS) return j({ ok: true, atlandi: "throttle" });
       const { data: mods } = await sb.from("topluluk_moderator").select("user_id");
-      hedefler = (mods || []).map((m: { user_id: string }) => m.user_id);
+      hedefler = [...new Set([...(mods || []).map((m: { user_id: string }) => m.user_id), ...MOD_BILDIRIM_EK])];
       baslik = "🛡️ Topluluk — onay bekliyor";
       govde = "Yeni içerik onayını bekliyor. Topluluk → Moderasyon.";
       await sb.from("topluluk_meta").upsert({ anahtar: "son_mod_bildirim", deger: { zaman: new Date().toISOString() }, guncelleme: new Date().toISOString() });
