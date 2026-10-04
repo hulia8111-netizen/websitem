@@ -1,11 +1,11 @@
 /* ============================================================
-   bildirimayar.js — Bildirim Ayarları 2.0 (3 kategori) 🔔
+   bildirimayar.js — Bildirim Ayarları 3.0 (sade) 🔔
    ------------------------------------------------------------
-   Tek sade kart, üç kategori:
-     • Duyurular  (duyuru)
-     • Topluluk   (topluluk)
-     • Günün İlham Cümlesi (ilham) — hafta içi 12:00 / hafta sonu 16:00 sabit
-       + kullanıcının seçtiği en fazla 2 ek saat (ilhamEkSaatler)
+   Tek sade kart:
+     • Günün İlham Cümlesi — ZORUNLU (anahtar yok): hafta içi 12:00,
+       hafta sonu 16:00. (Telefon ayarından kapatılabilir.)
+     • "Diğer bildirimler" — TEK anahtar: duyurular + topluluk + nazik
+       hatırlatmalar + seçilen ek ilham saatleri (en fazla 2) birlikte.
    Tercihler bildirim.js ile ortak "bildirim-ayar" anahtarında tutulur;
    değişince pushtoken.js buluttaki push_token satırını senkronlar.
    Global: window.BildirimAyar
@@ -21,6 +21,13 @@ const BildirimAyar = window.BildirimAyar = (() => {
     Store.set(AYAR, a);
     // Buluttaki tercihleri güncelle (native push için)
     if (window.PushToken && PushToken.tercihGuncelle) PushToken.tercihGuncelle();
+  }
+  /* "Diğer bildirimler" açık mı? (varsayılan AÇIK) */
+  function digerAcik(a) {
+    a = a || ayarAl();
+    if (a.diger !== undefined) return a.diger !== false;
+    // Eski ayarlardan geçiş: üçü birden kapatılmışsa kapalı say
+    return !(a.duyuru === false && a.topluluk === false && a.hatirlatma === false);
   }
 
   /* ---------- izin ---------- */
@@ -54,43 +61,31 @@ const BildirimAyar = window.BildirimAyar = (() => {
     x.ilhamEkSaatler = [...set].sort();
     ayarYaz(x);
   }
-  function ekGorunur() { const k = $("#ba-ek"); if (k) k.hidden = !$("#ba-ilham").checked; }
+  function ekGorunur() { const k = $("#ba-ek"); if (k) k.hidden = !$("#ba-diger").checked; }
 
   /* ---------- UI ---------- */
   function baglan() {
-    if (!$("#ba-ilham")) return;             // bu ekran yoksa çık
+    if (!$("#ba-diger")) return;             // bu ekran yoksa çık
     const a = ayarAl();
-    // Varsayılan AÇIK: yalnızca açıkça false ise kapalı
-    $("#ba-duyuru").checked   = a.duyuru   !== false;
-    $("#ba-topluluk").checked = a.topluluk !== false;
-    $("#ba-ilham").checked    = a.ilham    !== false;
-    if ($("#ba-hatirlatma")) $("#ba-hatirlatma").checked = a.hatirlatma !== false;
+    $("#ba-diger").checked = digerAcik(a);
     izinCiz();
 
     const ek = Array.isArray(a.ilhamEkSaatler) ? a.ilhamEkSaatler : [];
-    if ($("#ba-ek-1")) {
-      ekDoldur($("#ba-ek-1"), ek[0] || "");
-      ekDoldur($("#ba-ek-2"), ek[1] || "");
-      $("#ba-ek-1").addEventListener("change", ekKaydet);
-      $("#ba-ek-2").addEventListener("change", ekKaydet);
-      $("#ba-ilham").addEventListener("change", ekGorunur);
-      ekGorunur();
-    }
+    ekDoldur($("#ba-ek-1"), ek[0] || "");
+    ekDoldur($("#ba-ek-2"), ek[1] || "");
+    $("#ba-ek-1").addEventListener("change", ekKaydet);
+    $("#ba-ek-2").addEventListener("change", ekKaydet);
+    ekGorunur();
 
-    function baglaToggle(sel, alan) {
-      const el = $(sel);
-      if (!el) return;
-      el.addEventListener("change", e => {
-        const x = ayarAl();
-        x[alan] = e.target.checked;
-        ayarYaz(x);
-        if (e.target.checked && destekVar && Notification.permission === "default") izinIste();
-      });
-    }
-    baglaToggle("#ba-duyuru", "duyuru");
-    baglaToggle("#ba-topluluk", "topluluk");
-    baglaToggle("#ba-ilham", "ilham");
-    baglaToggle("#ba-hatirlatma", "hatirlatma");
+    // Tek anahtar → duyuru + topluluk + nazik hatırlatma birlikte; ilham hep açık
+    $("#ba-diger").addEventListener("change", e => {
+      const acik = e.target.checked;
+      const x = ayarAl();
+      x.diger = acik; x.duyuru = acik; x.topluluk = acik; x.hatirlatma = acik; x.ilham = true;
+      ayarYaz(x);
+      ekGorunur();
+      if (acik && destekVar && Notification.permission === "default") izinIste();
+    });
 
     const dene = $("#ba-dene");
     if (dene) dene.addEventListener("click", () => {
@@ -99,5 +94,5 @@ const BildirimAyar = window.BildirimAyar = (() => {
   }
 
   document.addEventListener("DOMContentLoaded", baglan);
-  return { ayarAl };
+  return { ayarAl, digerAcik };
 })();

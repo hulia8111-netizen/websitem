@@ -31,13 +31,16 @@ const PushToken = window.PushToken = (() => {
   /* Bildirim tercihleri (ayarlar ekranıyla ortak; makul varsayılanlar) */
   function tercihler() {
     const a = Store.get(AYAR, {}) || {};
+    // Bildirim Ayarları 3.0: ilham ZORUNLU; geri kalan her şey tek "diğer" anahtarına bağlı
+    const diger = a.diger !== undefined ? a.diger !== false
+      : !(a.duyuru === false && a.topluluk === false && a.hatirlatma === false);
     return {
-      duyuru:   a.duyuru   !== false,          // temel — varsayılan açık
-      topluluk: a.topluluk !== false,
-      ilham:    a.ilham    !== false,          // temel — varsayılan açık
-      hatirlatma: a.hatirlatma !== false,      // nazik geri çağırma — varsayılan açık
+      duyuru:   diger,
+      topluluk: diger,
+      ilham:    true,
+      hatirlatma: diger,                       // nazik geri çağırma
       ilham_saat: a.ilhamSaat || "12:00",
-      ek_saatler: Array.isArray(a.ilhamEkSaatler) ? a.ilhamEkSaatler.slice(0, 2) : []
+      ek_saatler: diger && Array.isArray(a.ilhamEkSaatler) ? a.ilhamEkSaatler.slice(0, 2) : []
     };
   }
 
