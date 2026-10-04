@@ -69,6 +69,10 @@ const PushToken = window.PushToken = (() => {
   }
   let sonKayit = 0;
 
+  /* Giriş / çıkış / hesap değişince jeton satırını YENİ hesapla hemen eşle
+     (yoksa bildirimler eski hesaba bağlı kalır — ör. moderatör uyarıları) */
+  window.addEventListener("isigini-oturum-degisti", () => { if (sonToken) setTimeout(kaydet, 500); });
+
   /* Uygulama arka plandan öne gelince de "son açılış" tazelensin (6 saatte bir) */
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible" && sonToken && Date.now() - sonKayit > 6 * 3600 * 1000) kaydet();
