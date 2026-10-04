@@ -9,7 +9,7 @@
    + buradaki YEREL_SURUM birlikte artırılır.
    ============================================================ */
 (function () {
-  var YEREL_SURUM = 260;          // bu kodun (yüklenen sürümün) numarası
+  var YEREL_SURUM = 261;          // bu kodun (yüklenen sürümün) numarası
   var GOSTERILDI = false;
 
   function bannerGoster() {
@@ -44,7 +44,8 @@
     try {
       if (window.caches) {
         var ks = await caches.keys();
-        for (var j = 0; j < ks.length; j++) { try { await caches.delete(ks[j]); } catch (e) {} }
+        // Kalıcı görsel önbelleği (isigini-gorsel-*) korunur → internetsiz kartlar kaybolmaz
+        for (var j = 0; j < ks.length; j++) { if (/^isigini-gorsel-/.test(ks[j])) continue; try { await caches.delete(ks[j]); } catch (e) {} }
       }
     } catch (e) {}
     try { location.reload(true); } catch (e) { location.reload(); }

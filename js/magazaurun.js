@@ -33,13 +33,21 @@ const MagazaUrun = window.MagazaUrun = (() => {
   function gorselli(g) { return typeof g === "string" && /^https?:\/\//i.test(g); }
 
   /* ---------- veri ---------- */
+  // Son başarılı listeyi telefonda sakla → internetsizken de ürünler görünsün
+  // (Store.set değil: o buluta senkronlar; bu yalnız yerel önbellek)
+  const YEREL = b => "kdm_magaza-urun-" + b;
+  function yerelAl(b) { try { return JSON.parse(localStorage.getItem(YEREL(b)) || "null"); } catch (e) { return null; } }
+  function yerelYaz(b, d) { try { localStorage.setItem(YEREL(b), JSON.stringify(d)); } catch (e) {} }
+
   async function yukle(bolum) {
     const c = sb();
-    if (!c) return cache[bolum] || [];
+    if (!c || navigator.onLine === false) return cache[bolum] || yerelAl(bolum) || [];
     try {
-      const { data } = await c.from("magaza_urun").select("*").eq("bolum", bolum).eq("aktif", true).order("sira", { ascending: false });
-      cache[bolum] = data || [];
-    } catch (e) { cache[bolum] = cache[bolum] || []; }
+      const { data, error } = await c.from("magaza_urun").select("*").eq("bolum", bolum).eq("aktif", true).order("sira", { ascending: false });
+      if (error || !data) throw error || new Error("veri yok");
+      cache[bolum] = data;
+      yerelYaz(bolum, data);
+    } catch (e) { cache[bolum] = cache[bolum] || yerelAl(bolum) || []; }
     return cache[bolum];
   }
 

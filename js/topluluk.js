@@ -122,7 +122,9 @@ const Topluluk = window.Topluluk = (() => {
     if (!id) {
       liderHtml = `<div class="tp-bilgi">🔒 Liderlik tablosunda yer almak için <b>giriş yap</b>. Puanların yine de aşağıda birikiyor; giriş yapınca tabloya eklenirsin.</div>`;
     } else if (liderlik === null) {
-      liderHtml = `<div class="tp-bilgi">🌐 Liderlik tablosu yükleniyor…</div>`;
+      liderHtml = navigator.onLine === false
+        ? `<div class="tp-bilgi">🌙 Liderlik tablosu için internet gerekiyor. Bağlanınca kendiliğinden yenilenir.</div>`
+        : `<div class="tp-bilgi">🌐 Liderlik tablosu yükleniyor…</div>`;
     } else if (!liderlik.length) {
       liderHtml = `<div class="tp-bilgi">✨ Bu hafta tablo henüz boş. İlk ışık sen ol — etkinliklerini tamamla!</div>`;
     } else {
@@ -207,6 +209,12 @@ const Topluluk = window.Topluluk = (() => {
     kutu.innerHTML = cizSekmeler() + `<div class="tp-govde" id="tp-govde"></div>`;
     kutu.querySelectorAll(".tp-sekme").forEach(b => b.addEventListener("click", () => { aktifSekme = b.dataset.sek; ciz(); if ((aktifSekme === "rozet" || aktifSekme === "gecmis") && kazananlar === null) verileriYukle(); }));
     const govde = $("tp-govde"); if (!govde) return;
+    // İnternet yoksa: buluttan gelen sekmelerde süresiz "yükleniyor" yerine açık mesaj
+    if (navigator.onLine === false && (["duyuru", "paylasim", "galeri", "moderasyon"].includes(aktifSekme) ||
+        ((aktifSekme === "rozet" || aktifSekme === "gecmis") && kazananlar === null))) {
+      govde.innerHTML = `<div class="tp-bilgi">🌙 Topluluk için internet bağlantısı gerekiyor. Bağlandığında burası kendiliğinden yenilenir.<br><span class="muted small">Uygulamanın geri kalanını internetsiz de kullanabilirsin.</span></div>`;
+      return;
+    }
     if (aktifSekme === "isik") govde.innerHTML = cizIsik();
     else if (aktifSekme === "rozet") govde.innerHTML = cizRozet();
     else if (aktifSekme === "gecmis") govde.innerHTML = cizGecmis();
@@ -224,6 +232,12 @@ const Topluluk = window.Topluluk = (() => {
     liderlik = lid === null ? [] : lid; kazananlar = kaz === null ? [] : kaz; yukleniyor = false;
     ciz();
   }
+
+  // İnternet geri gelince Topluluk açıksa tazele
+  window.addEventListener("online", () => {
+    const ov = $("topluluk-overlay");
+    if (ov && !ov.hidden) { if (liderlik === null || kazananlar === null) verileriYukle(); else ciz(); }
+  });
 
   /* ---------- Overlay aç/kapat ---------- */
   function ac() {

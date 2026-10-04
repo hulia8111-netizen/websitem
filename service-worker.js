@@ -3,7 +3,8 @@
    SÃ¼rÃ¼m deÄŸiÅŸince CACHE adÄ±nÄ± artÄ±r ki eski dosyalar temizlensin.
    ============================================================ */
 
-const CACHE = "isigini-bul-v260";
+const CACHE = "isigini-bul-v261";
+const GORSEL = "isigini-gorsel-v1";   // kalıcı görsel önbelleği (sürümden bağımsız)
 const KABUK = [
   ".",
   "index.html",
@@ -86,7 +87,7 @@ self.addEventListener("install", e => {
 self.addEventListener("activate", e => {
   e.waitUntil(
     caches.keys()
-      .then(adlar => Promise.all(adlar.filter(a => a !== CACHE).map(a => caches.delete(a))))
+      .then(adlar => Promise.all(adlar.filter(a => a !== CACHE && a !== GORSEL).map(a => caches.delete(a))))
       .then(() => self.clients.claim())
       // NOT: aÃ§Ä±k pencereleri zorla yeniden yÃ¼klemeyiz (splash 2. kez oynamasÄ±n);
       // network-first fetch sayesinde iÃ§erik bir sonraki aÃ§Ä±lÄ±ÅŸta zaten taze gelir.
@@ -99,6 +100,25 @@ self.addEventListener("fetch", e => {
   // Ses dosyaları (mp3/m4a): SW karışmasın -> tarayıcı Range isteğiyle akış/ileri sarma yapabilsin, dev dosya önbelleğe yığılmasın.
   if (/\.(mp3|m4a)(\?|$)/i.test(istek.url)) return;
   const ayniKaynak = istek.url.startsWith(self.location.origin);
+
+  // Kart ve ürün görselleri: AYRI, KALICI önbellek (sürüm değişince silinmez) + cache-first.
+  // İnternetsiz kart çekince görsel boş kalmasın; her sürümde 10 MB yeniden inmesin.
+  if (ayniKaynak && /\/(G%C3%B6rsellerim|Görsellerim|urunler)\//i.test(istek.url)) {
+    e.respondWith((async () => {
+      const c = await caches.open(GORSEL);
+      const var_ = await c.match(istek, { ignoreSearch: true });
+      if (var_) return var_;
+      try {
+        const yanit = await fetch(istek);
+        if (yanit && yanit.ok) { try { await c.put(istek, yanit.clone()); } catch (x) {} }
+        return yanit;
+      } catch (x) {
+        const eski = await caches.match(istek, { ignoreSearch: true });   // eski sürüm önbelleğinde olabilir
+        return eski || Response.error();
+      }
+    })());
+    return;
+  }
 
   // surum.json -> HER ZAMAN taze ağ (önbelleğe alma); güncelleme kontrolü doğru çalışsın.
   if (istek.url.indexOf("/surum.json") !== -1) {
@@ -149,6 +169,12 @@ self.addEventListener("fetch", e => {
       return onbellek;           // aninda onbellekten (takilma yok)
     }
     const ag = await agGuncelle;
+    if (ag && ag.ok) return ag;
+    // Ag yok: surum etiketi farkli olsa da ayni dosyanin onbellekteki kopyasini ver
+    // (kabuk "js/x.js" olarak saklanir, sayfa "js/x.js?v=NNN" ister). Bu olmazsa
+    // ilk kurulum / yeni surum / "Guncelle" sonrasi internetsiz acilista JS yuklenmez.
+    const yakin = await cache.match(istek, { ignoreSearch: true });
+    if (yakin) return yakin;
     if (ag) return ag;
     if (istek.mode === "navigate") {
       const kabuk = await cache.match("index.html") || await cache.match("./") || await cache.match(".");
