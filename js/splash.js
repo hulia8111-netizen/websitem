@@ -99,6 +99,10 @@
     }
     gosterMesaj();
     var msgInt = setInterval(gosterMesaj, Math.round(SENK_SURE / liste.length));
+    // Güvenlik: animasyon karesi (rAF) herhangi bir sebeple durursa açılış ekranında takılı kalınmasın
+    setTimeout(function () {
+      if (!splash.classList.contains("kapali")) { clearInterval(msgInt); kapat(splash); }
+    }, SENK_SURE + 4000);
 
     // ilerleme çubuğu — rAF ile yumuşak dolum
     var bas = performance.now();

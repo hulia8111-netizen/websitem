@@ -2526,6 +2526,10 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
 .ilham-overlay { position: fixed; inset: 0; z-index: 99970; display: flex; align-items: center; justify-content: center; padding: 1.5rem;
   background: radial-gradient(120% 90% at 50% 20%, #2a1d52 0%, #1a1233 55%, #0e0922 100%); opacity: 0; transition: opacity .35s ease; overflow: hidden; }
 .ilham-overlay.gor { opacity: 1; }
+/* Kapanınca gerçekten kaybolsun: display:flex, hidden özniteliğini eziyordu → görünmez
+   tam ekran katman tüm dokunuşları yutuyor, uygulama "donmuş" görünüyordu */
+.ilham-overlay[hidden] { display: none; }
+.ilham-overlay:not(.gor) { pointer-events: none; }
 .ilham-ic { position: relative; max-width: 480px; width: 100%; text-align: center; padding: 2rem 1.4rem; }
 .ilham-ay { font-size: 2.6rem; }
 .ilham-tarih { color: var(--metin-soft); font-size: 0.92rem; margin: 0.4rem 0 1rem; text-transform: capitalize; }

@@ -59,13 +59,21 @@ window.OverlayGeri = (() => {
     else if (el) el.hidden = true;            // yedek: doğrudan kapat
   });
 
+  const dinamik = new Set();             // sonradan JS ile oluşturulan overlay'ler (ilham, dönüş…)
   const obs = new MutationObserver(muts => {
     for (const m of muts) {
       const el = m.target;
-      if (!el.id || IDLER.indexOf(el.id) === -1) continue;
+      if (!el.id || (IDLER.indexOf(el.id) === -1 && !dinamik.has(el.id))) continue;
       if (gorunur(el)) acildi(el.id); else kapandi(el.id);
     }
   });
+  /* Sonradan oluşturulan bir overlay'i de geri tuşuna bağla */
+  function izle(el) {
+    if (!el || !el.id || dinamik.has(el.id)) return;
+    dinamik.add(el.id);
+    obs.observe(el, { attributes: true, attributeFilter: ["hidden"] });
+    if (gorunur(el)) acildi(el.id);
+  }
 
   function baglan() {
     IDLER.forEach(id => {
@@ -76,5 +84,5 @@ window.OverlayGeri = (() => {
   if (document.readyState !== "loading") baglan();
   else document.addEventListener("DOMContentLoaded", baglan);
 
-  return { acikSayisi: () => acik.length };
+  return { acikSayisi: () => acik.length, izle };
 })();

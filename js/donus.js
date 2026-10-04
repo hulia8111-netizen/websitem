@@ -69,6 +69,7 @@ const Donus = window.Donus = (() => {
         '<button class="donus-bak" id="donus-bak" type="button">Sadece etrafa bakacağım →</button>' +
       '</div>';
     document.body.appendChild(ov);
+    if (window.OverlayGeri && OverlayGeri.izle) OverlayGeri.izle(ov);   // telefon GERİ tuşu kapatsın
     ov.querySelector(".ilham-kapat").addEventListener("click", kapat);
     ov.querySelector("#donus-bak").addEventListener("click", kapat);
     ov.addEventListener("click", e => { if (e.target === ov) kapat(); });

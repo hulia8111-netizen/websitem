@@ -52,6 +52,7 @@ const GunlukIlham = window.GunlukIlham = (() => {
         '</div>' +
       '</div>';
     document.body.appendChild(ov);
+    if (window.OverlayGeri && OverlayGeri.izle) OverlayGeri.izle(ov);   // telefon GERİ tuşu kapatsın
     ov.querySelector(".ilham-kapat").addEventListener("click", kapat);
     ov.addEventListener("click", e => { if (e.target === ov) kapat(); });
     ov.querySelector("#ilham-ayar-link").addEventListener("click", () => { kapat(); setTimeout(bildirimAyarinaGit, 380); });
