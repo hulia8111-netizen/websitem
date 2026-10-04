@@ -13,6 +13,8 @@ import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
 import Constants from "expo-constants";
 import * as StoreReview from "expo-store-review";
+import * as Sharing from "expo-sharing";
+import * as FileSystem from "expo-file-system/legacy";
 import mobileAds, { RewardedAd, RewardedAdEventType, InterstitialAd, AdEventType } from "react-native-google-mobile-ads";
 
 const SITE = "https://isiginibull.net";
@@ -197,6 +199,19 @@ export default function App() {
       try { await Linking.openSettings(); } catch (_e) { /* sessiz */ }
       return;
     }
+    // Görsel paylaş (ör. Günün ilham cümlesi 1080×1920): dosyaya yaz → sistem paylaşım menüsü
+    // (Instagram burada Hikaye / Reels / Gönderi / Mesaj seçenekleriyle çıkar)
+    if (veri && veri.type === "gorsel-paylas" && typeof veri.base64 === "string") {
+      try {
+        const ad = String(veri.ad || "isigini-bul.jpg").replace(/[^a-z0-9._-]/gi, "_");
+        const yol = FileSystem.cacheDirectory + ad;
+        await FileSystem.writeAsStringAsync(yol, veri.base64, { encoding: FileSystem.EncodingType.Base64 });
+        if (await Sharing.isAvailableAsync()) {
+          await Sharing.shareAsync(yol, { mimeType: veri.mime || "image/jpeg", dialogTitle: veri.baslik || "Paylaş" });
+        }
+      } catch (_e) { /* sessiz */ }
+      return;
+    }
   }
 
   // Token + sayfa hazır olunca token'ı siteye köprüle (site push_token'a yazar)
@@ -218,7 +233,7 @@ export default function App() {
         onLoadEnd={() => { setYukleniyor(false); setSayfaHazir(true); }}
         onNavigationStateChange={(s) => setGeriGidebilir(s.canGoBack)}
         onMessage={mesajGeldi}
-        injectedJavaScriptBeforeContentLoaded={"window.__ISIGINI_NATIVE=true;window.__ISIGINI_NATIVE_SURUM=9;true;"}
+        injectedJavaScriptBeforeContentLoaded={"window.__ISIGINI_NATIVE=true;window.__ISIGINI_NATIVE_SURUM=10;true;"}
         javaScriptEnabled
         domStorageEnabled
         thirdPartyCookiesEnabled

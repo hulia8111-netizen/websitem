@@ -2544,6 +2544,13 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
 .vurgu-parla { animation: vurguParla 1.6s ease-out 1; }
 @keyframes vurguParla { 0% { box-shadow: 0 0 0 0 rgba(233,196,106,0.55); } 100% { box-shadow: 0 0 0 14px rgba(233,196,106,0); } }
 
+/* İlham görseli önizleme (eski uygulama / masaüstü) */
+.ilham-onizleme { position: fixed; inset: 0; z-index: 99990; background: rgba(8,5,20,0.88); display: flex; align-items: center; justify-content: center; padding: 16px; }
+.io-ic { max-width: 360px; width: 100%; text-align: center; }
+.io-ic img { width: 100%; max-height: 62vh; object-fit: contain; border-radius: 16px; box-shadow: var(--glow-mor); }
+.io-not { color: var(--metin-soft); font-size: 0.88rem; line-height: 1.5; margin: 0.9rem 0; }
+.io-btnlar { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
+
 /* Bildirim izni davet kartı */
 .bildirim-davet { border-color: rgba(233,196,106,0.4); background: linear-gradient(135deg, rgba(179,140,255,0.14), rgba(233,196,106,0.08)); }
 .bd-ust { display: flex; gap: 0.8rem; align-items: flex-start; }
