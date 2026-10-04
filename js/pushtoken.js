@@ -64,8 +64,16 @@ const PushToken = window.PushToken = (() => {
       tz: tz(), guncelleme: new Date().toISOString(),
       son_acilis: new Date().toISOString()     // nazik geri çağırma: son kullanım
     };
-    try { await c.from("push_token").upsert(satir, { onConflict: "token" }); sonKayit = Date.now(); }
-    catch (e) { /* sessiz */ }
+    try {
+      // Önce güvenli sunucu fonksiyonu (hesap değişse de satırı günceller; hesabı auth.uid() belirler)
+      const { error } = await c.rpc("push_token_kaydet", { p: satir });
+      if (error) {
+        // Fonksiyon yoksa / hata → eski yöntem
+        const r = await c.from("push_token").upsert(satir, { onConflict: "token" });
+        if (r.error) console.warn("push_token kaydı:", r.error.message || r.error);
+      }
+      sonKayit = Date.now();
+    } catch (e) { /* sessiz */ }
   }
   let sonKayit = 0;
 
