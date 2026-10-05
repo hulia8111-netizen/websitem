@@ -14,7 +14,7 @@ const YouTube = window.YouTube = (() => {
   const KANAL = "https://www.youtube.com/channel/UCZSJZsySAh83h3gOp9p-xVw";
   const ABONE = KANAL + "?sub_confirmation=1";
   const VIDEOLAR = {
-    uyku: { id: "gdeZIfSZ7iY", baslik: "🌙 Uyku Meditasyonu", yayin: "2026-10-08T20:00:00+03:00" }
+    uyku: { id: "gdeZIfSZ7iY", baslik: "🌙 Uyku Meditasyonu", yayin: "2026-10-05T00:00:00+03:00" }
   };
   let ov = null;
 
