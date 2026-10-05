@@ -10,15 +10,15 @@
   <meta name="description" content="Işığını Bul ✨ — spiritüel kişisel farkındalık & wellbeing uygulaması: günün kartı, ruh hali, şükran, manifest, meditasyon, ay evresi, içsel rehber ve başarımlar." />
   <title>Işığını Bul ✨ · Spiritüel Wellness</title>
   <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=263" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=264" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <!-- Fontlar: render-blocking DEĞİL (offline'da ekranı dondurmasın; yüklenince uygulanır, yoksa yedek font stack devreye girer) -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet" /></noscript>
-  <link rel="stylesheet" href="css/style.css?v=263" />
-  <link rel="stylesheet" href="css/kutuphane.css?v=263" />
-  <link rel="stylesheet" href="css/bahce.css?v=263" />
+  <link rel="stylesheet" href="css/style.css?v=264" />
+  <link rel="stylesheet" href="css/kutuphane.css?v=264" />
+  <link rel="stylesheet" href="css/bahce.css?v=264" />
 </head>
 <body>
   <!-- Açılış (splash) ekranı: logo + isim + Word'den rastgele ilham cümlesi -->
@@ -43,9 +43,9 @@
       </div>
     </div>
   </div><!-- /splash -->
-  <script src="js/acilis-cumleler.js?v=263"></script>
-  <script src="js/splash.js?v=263"></script>
-  <script src="js/guncelle.js?v=263"></script>
+  <script src="js/acilis-cumleler.js?v=264"></script>
+  <script src="js/splash.js?v=264"></script>
+  <script src="js/guncelle.js?v=264"></script>
 
   <div class="aura" aria-hidden="true">
     <span class="blob blob-1"></span>
@@ -256,6 +256,7 @@
           <p class="mg-il-alt">Sorularınız, önerileriniz ve ürünler hakkında bilgi almak için bizimle iletişime geçebilirsiniz.</p>
           <div class="mg-il-butonlar">
             <a class="mg-il-btn ig" href="https://www.instagram.com/hulia.isiginibul" target="_blank" rel="noopener noreferrer">📸 Instagram</a>
+            <a class="mg-il-btn yt" data-yt-kanal href="https://www.youtube.com/channel/UCZSJZsySAh83h3gOp9p-xVw" target="_blank" rel="noopener noreferrer">▶️ YouTube</a>
             <a class="mg-il-btn wa" href="https://wa.me/905345276192" target="_blank" rel="noopener noreferrer">📱 WhatsApp</a>
           </div>
         </div>
@@ -522,6 +523,15 @@
           <p class="muted small">Sonbaharın hasat enerjisiyle: emeğini gör, olgunlaşanı topla, artık sana hizmet etmeyeni toprağa bırak. Benim sesimle rehberli meditasyon · ~15 dk 🎧</p>
           <audio class="hasat-audio" controls preload="none" src="sesler/hasat-donusum.mp3"></audio>
           <p class="muted small">Kulaklıkla, sessiz bir yerde dinlemen önerilir.</p>
+        </section>
+
+        <!-- 🌙 Uyku Meditasyonu — YouTube kanalındaki video (youtube.js: yayından önce sayaç, sonra uygulama içinde oynatır) -->
+        <section class="card card-wide yt-med" id="uyku-med" data-yt-video="uyku">
+          <h2>🌙 Uyku Meditasyonu</h2>
+          <p class="muted small">Benim sesimle, 30 dakikalık rehberli uyku meditasyonu. Bedenini gevşet, zihnini sustur ve huzurla uykuya dal.</p>
+          <p class="yt-durum" data-yt-durum></p>
+          <button class="btn" type="button" data-yt-izle>▶️ Şimdi izle</button>
+          <p class="muted small yt-kanal-not">Daha fazlası için <a data-yt-kanal href="https://www.youtube.com/channel/UCZSJZsySAh83h3gOp9p-xVw">▶️ YouTube kanalım</a></p>
         </section>
 
         <!-- 💎 21 Günlük Ses Ritüeli — mağazadaki ürünle birebir aynı (yolculuk21.js çizer) -->
@@ -1139,6 +1149,7 @@
 
   <footer class="site-footer">
     <p>Kendine nazik ol.</p>
+    <p class="footer-sosyal"><a href="https://www.instagram.com/hulia.isiginibul" target="_blank" rel="noopener">📸 Instagram</a> · <a data-yt-kanal href="https://www.youtube.com/channel/UCZSJZsySAh83h3gOp9p-xVw" target="_blank" rel="noopener">▶️ YouTube</a></p>
     <p class="footer-yasal"><a href="https://isiginibull.net/hakkimda.html" target="_blank" rel="noopener">Hakkımda</a> · <a href="https://isiginibull.net/gizlilik/" target="_blank" rel="noopener">Gizlilik Politikası</a></p>
   </footer>
 
@@ -1162,69 +1173,70 @@
     </button>
   </nav>
 
-  <script src="js/data.js?v=263"></script>
-  <script src="js/farkindalik-sorulari.js?v=263"></script>
-  <script src="js/mini-gorevler.js?v=263"></script>
-  <script src="js/store.js?v=263"></script>
-  <script src="js/perf.js?v=263"></script>
-  <script src="js/audio.js?v=263"></script>
-  <script src="js/muzik.js?v=263"></script>
-  <script src="js/rehbermed.js?v=263"></script>
-  <script src="js/rehber.js?v=263"></script>
-  <script src="js/ay.js?v=263"></script>
-  <script src="js/app.js?v=263"></script>
-  <script src="js/kartpaylas.js?v=263"></script>
-  <script src="js/haftalik-hedefler.js?v=263"></script>
-  <script src="js/puanla.js?v=263"></script>
-  <script src="js/haftalikhedef.js?v=263"></script>
-  <script src="js/streak.js?v=263"></script>
-  <script src="js/bahce.js?v=263"></script>
-  <script src="js/seri.js?v=263"></script>
-  <script src="js/yansima.js?v=263"></script>
-  <script src="js/ayatmosfer.js?v=263"></script>
-  <script src="js/keyif.js?v=263"></script>
-  <script src="js/iosipucu.js?v=263"></script>
-  <script src="js/reklam.js?v=263"></script>
-  <script src="js/gorevler.js?v=263"></script>
-  <script src="js/energy.js?v=263"></script>
-  <script src="js/gunluk.js?v=263"></script>
-  <script src="js/overlay-geri.js?v=263"></script>
-  <script src="js/pushtoken.js?v=263"></script>
-  <script src="js/gunlukilham.js?v=263"></script>
-  <script src="js/donus.js?v=263"></script>
-  <script src="js/bildirimdavet.js?v=263"></script>
-  <script src="js/rapor.js?v=263"></script>
-  <script src="js/bildirim.js?v=263"></script>
-  <script src="js/bildirimayar.js?v=263"></script>
-  <script src="js/yeniayrituel.js?v=263"></script>
-  <script src="js/dolunayrituel.js?v=263"></script>
-  <script src="js/magaza.js?v=263"></script>
-  <script src="js/profil.js?v=263"></script>
-  <script src="js/rituel.js?v=263"></script>
-  <script src="js/test.js?v=263"></script>
-  <script src="js/enerjitipi.js?v=263"></script>
-  <script src="js/cakra.js?v=263"></script>
-  <script src="js/nefes.js?v=263"></script>
-  <script src="js/vision.js?v=263"></script>
-  <script src="js/ciftsaat.js?v=263"></script>
-  <script src="js/takvim.js?v=263"></script>
-  <script src="js/hafta.js?v=263"></script>
+  <script src="js/data.js?v=264"></script>
+  <script src="js/farkindalik-sorulari.js?v=264"></script>
+  <script src="js/mini-gorevler.js?v=264"></script>
+  <script src="js/store.js?v=264"></script>
+  <script src="js/perf.js?v=264"></script>
+  <script src="js/audio.js?v=264"></script>
+  <script src="js/muzik.js?v=264"></script>
+  <script src="js/rehbermed.js?v=264"></script>
+  <script src="js/rehber.js?v=264"></script>
+  <script src="js/ay.js?v=264"></script>
+  <script src="js/app.js?v=264"></script>
+  <script src="js/kartpaylas.js?v=264"></script>
+  <script src="js/haftalik-hedefler.js?v=264"></script>
+  <script src="js/puanla.js?v=264"></script>
+  <script src="js/haftalikhedef.js?v=264"></script>
+  <script src="js/streak.js?v=264"></script>
+  <script src="js/bahce.js?v=264"></script>
+  <script src="js/seri.js?v=264"></script>
+  <script src="js/yansima.js?v=264"></script>
+  <script src="js/ayatmosfer.js?v=264"></script>
+  <script src="js/keyif.js?v=264"></script>
+  <script src="js/iosipucu.js?v=264"></script>
+  <script src="js/reklam.js?v=264"></script>
+  <script src="js/gorevler.js?v=264"></script>
+  <script src="js/energy.js?v=264"></script>
+  <script src="js/gunluk.js?v=264"></script>
+  <script src="js/overlay-geri.js?v=264"></script>
+  <script src="js/pushtoken.js?v=264"></script>
+  <script src="js/gunlukilham.js?v=264"></script>
+  <script src="js/donus.js?v=264"></script>
+  <script src="js/youtube.js?v=264"></script>
+  <script src="js/bildirimdavet.js?v=264"></script>
+  <script src="js/rapor.js?v=264"></script>
+  <script src="js/bildirim.js?v=264"></script>
+  <script src="js/bildirimayar.js?v=264"></script>
+  <script src="js/yeniayrituel.js?v=264"></script>
+  <script src="js/dolunayrituel.js?v=264"></script>
+  <script src="js/magaza.js?v=264"></script>
+  <script src="js/profil.js?v=264"></script>
+  <script src="js/rituel.js?v=264"></script>
+  <script src="js/test.js?v=264"></script>
+  <script src="js/enerjitipi.js?v=264"></script>
+  <script src="js/cakra.js?v=264"></script>
+  <script src="js/nefes.js?v=264"></script>
+  <script src="js/vision.js?v=264"></script>
+  <script src="js/ciftsaat.js?v=264"></script>
+  <script src="js/takvim.js?v=264"></script>
+  <script src="js/hafta.js?v=264"></script>
   
-  <script src="js/kozmik.js?v=263"></script>
+  <script src="js/kozmik.js?v=264"></script>
   <!-- Bulut üyelik & senkron (Supabase) — YEREL (offline'da da çalışsın, CDN beklemesin) -->
-  <script src="js/supabase.min.js?v=263"></script>
-  <script src="js/supabase-config.js?v=263"></script>
-  <script src="js/bulut.js?v=263"></script>
-  <script src="js/topluluk.js?v=263"></script>
-  <script src="js/vitrin.js?v=263"></script>
-  <script src="js/topluluk-sosyal.js?v=263"></script>
-  <script src="js/topluluk-duyuru.js?v=263"></script>
-  <script src="js/siteayar.js?v=263"></script>
-  <script src="js/kutuphane.js?v=263"></script>
-  <script src="js/yolculuk21.js?v=263"></script>
-  <script src="js/magazaurun.js?v=263"></script>
-  <script src="js/isikfisilti.js?v=263"></script>
-  <script src="js/ilhamyonet.js?v=263"></script>
+  <script src="js/supabase.min.js?v=264"></script>
+  <script src="js/supabase-config.js?v=264"></script>
+  <script src="js/bulut.js?v=264"></script>
+  <script src="js/topluluk.js?v=264"></script>
+  <script src="js/vitrin.js?v=264"></script>
+  <script src="js/topluluk-sosyal.js?v=264"></script>
+  <script src="js/topluluk-duyuru.js?v=264"></script>
+  <script src="js/siteayar.js?v=264"></script>
+  <script src="js/kutuphane.js?v=264"></script>
+  <script src="js/yolculuk21.js?v=264"></script>
+  <script src="js/magazaurun.js?v=264"></script>
+  <script src="js/isikfisilti.js?v=264"></script>
+  <script src="js/ilhamyonet.js?v=264"></script>
   <script>
     if ("serviceWorker" in navigator) {
       // SW'yi kaydet ve arka planda güncelle. ZORLA RELOAD YOK: fetch network-first
