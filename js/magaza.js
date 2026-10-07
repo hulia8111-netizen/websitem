@@ -36,7 +36,7 @@ const Magaza = window.Magaza = (() => {
           aciklama: "Ammonite fosil tel sarım uç ve doğal Kaplangözü taşlarından, el işçiliğiyle hazırlanmış özel tasarım kolye. Ammonite; yaklaşık 400 milyon yıllık antik bir deniz fosilidir — stresi ve olumsuz enerjiyi azalttığı, canlılık ve denge verdiği, Feng Shui'de bolluk, bereket ve uzun ömrü simgelediğine inanılır. Kaplangözü ise 'güç taşı': özgüven, cesaret ve irade aşılar; odağı ve zihinsel netliği güçlendirir, Kök ve Solar Pleksus çakralarıyla uyumludur. İki taşın harmonisini boynunda taşı. ✨ (Fosil stabilize edilip tel sarım yapılmıştır; darbelerden koruyarak dikkatli kullanın.)",
           gorsel: "/urunler/ammonite-kaplangozu-kolye.jpg",
           gorseller: ["/urunler/ammonite-kaplangozu-kolye.jpg", "/urunler/ammonite-kaplangozu-2.jpg"],
-          fiyat: "1.504,99 TL",
+          fiyat: "1.504,99 TL", stok: false,
           link: "https://www.shopier.com/dreamyhandmade/51039216"
         },
         {
@@ -62,7 +62,7 @@ const Magaza = window.Magaza = (() => {
         {
           id: "tas-labradorit", ad: "Tel Sarım Labradorit Kolye", ikon: "🌙",
           aciklama: "El işçiliğiyle gümüş renkli tel sarım yapılmış, doğal Labradorit kolye. Mavi-yeşil ışıltısıyla (labradoresans) büyüleyen Labradorit; koruma ve dönüşüm taşı olarak bilinir — sezgiyi güçlendirir, negatif enerjiden korur, hayal gücünü ve içsel ışığı uyandırır. Işığını yanında taşı. 🌙",
-          gorsel: "/urunler/labradorit-kolye.jpg", fiyat: "604,99 TL",
+          gorsel: "/urunler/labradorit-kolye.jpg", fiyat: "604,99 TL", stok: false,
           link: "https://www.shopier.com/dreamyhandmade/50596224"
         },
         {
@@ -100,13 +100,13 @@ const Magaza = window.Magaza = (() => {
         {
           id: "tas-ametist", ad: "Ametist Tel Sarım Kolye", ikon: "💜",
           aciklama: "El işçiliğiyle tel sarım yapılmış, gümüş kaplama doğal Ametist kolye. Stresi yatıştırır, zihni sakinleştirir; ruhsal dengeyi ve sezgiyi güçlendirir. Doğanın enerjisini yanında taşı. Çelik zincirli. 💜",
-          gorsel: "/urunler/ametist-kolye.jpg", fiyat: "604,99 TL",
+          gorsel: "/urunler/ametist-kolye.jpg", fiyat: "604,99 TL", stok: false,
           link: "https://www.shopier.com/dreamyhandmade/50073853"
         },
         {
           id: "tas-sodalit", ad: "Kalp Form Sodalit Kolye", ikon: "💙",
           aciklama: "Kalp formunda, doğal Sodalit taşından el yapımı kolye. Zihinsel netlik ve sakinlik taşı; mantıklı düşünmeyi ve odaklanmayı destekler, iletişimi güçlendirir, kaygıyı hafifletir. Kalbinin üzerinde huzur. Çelik zincirli. 💙",
-          gorsel: "/urunler/sodalit-kalp-kolye.jpg", fiyat: "304,99 TL",
+          gorsel: "/urunler/sodalit-kalp-kolye.jpg", fiyat: "304,99 TL", stok: false,
           link: "https://www.shopier.com/dreamyhandmade/50075370"
         }
       ]
@@ -278,7 +278,7 @@ const Magaza = window.Magaza = (() => {
     const efektifLink = (u0.id && window.SiteAyar && SiteAyar.get) ? SiteAyar.get("tas_link_" + u0.id, u0.link) : u0.link;
     const u = Object.assign({}, u0, { link: efektifLink });
     const kart = document.createElement("div");
-    kart.className = "mg-kart sade";
+    kart.className = "mg-kart sade" + (u0.stok === false ? " tukendi" : "");
     const satista = gecerliLink(u.link);
     const tukendi = u.stok === false;              // stok bitti → sipariş üzerine (WhatsApp)
     const adBasi = gorselli(u.gorsel) ? "" : esc(u.ikon) + " ";
@@ -288,6 +288,7 @@ const Magaza = window.Magaza = (() => {
     else if (!satista) { btnCls += " yakinda"; btnTxt = "Çok Yakında"; }
     const siparisNot = tukendi ? `<div class="mg-siparis-not">🕊️ El yapımı · senin için özel hazırlanır</div>` : "";
     kart.innerHTML = `
+      ${tukendi ? `<div class="mg-tukendi-rozet">Tükendi</div>` : ""}
       ${gorselHTML(u, "mg-kart-gorsel")}
       <div class="mg-kart-ad">${adBasi}${esc(u.ad)}</div>
       <div class="mg-kart-aciklama">${esc(u.aciklama)}</div>

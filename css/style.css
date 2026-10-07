@@ -2947,7 +2947,12 @@ body.mg-aktif { overflow: hidden; }
 .mg-satinal.siparis { color: #f3d98c; background: transparent; border: 1px solid rgba(243,217,140,0.55); box-shadow: none; }
 .mg-satinal.siparis:hover { background: rgba(243,217,140,0.12); box-shadow: 0 4px 14px rgba(243,217,140,0.18); }
 .mg-siparis-not { margin: 0.4rem 0.7rem 0; font-size: 0.72rem; color: var(--gold-soft, #f3d98c); opacity: 0.9; }
-
+.mg-kart.tukendi { position: relative; }
+.mg-tukendi-rozet {
+  position: absolute; top: 0.55rem; left: 0.55rem; z-index: 2; pointer-events: none;
+  padding: 0.22rem 0.6rem; border-radius: 999px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.03em;
+  color: #1a1430; background: rgba(243,217,140,0.95); box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+}
 /* === Mağazam: 1. katman — 3 bölüm kartı (Ziyaret Et) === */
 .mg-grid-kat { grid-template-columns: 1fr; gap: 0.7rem; }
 .mg-kat-kart {
