@@ -3,7 +3,7 @@
    SÃ¼rÃ¼m deÄŸiÅŸince CACHE adÄ±nÄ± artÄ±r ki eski dosyalar temizlensin.
    ============================================================ */
 
-const CACHE = "isigini-bul-v266";
+const CACHE = "isigini-bul-v267";
 const GORSEL = "isigini-gorsel-v1";   // kalıcı görsel önbelleği (sürümden bağımsız)
 const KABUK = [
   ".",

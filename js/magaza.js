@@ -32,6 +32,22 @@ const Magaza = window.Magaza = (() => {
       aciklama: "Doğal taşlar ve ritüellerine eşlik edecek özel parçalar.",
       urunler: [
         {
+          id: "tas-ammonit-kaplangozu-yeni", ad: "Ammonit & Kaplangözü Kolye", ikon: "🐚",
+          aciklama: "Milyonlarca yıllık eşsiz bir parça stilinle buluşuyor. Doğal formunu ve spiral detaylarını koruyan Ammonit fosili, tel sarma işçiliğiyle kolye ucuna dönüştü; boynu toprak tonlarının en güzel geçişlerine sahip doğal Kaplangözü taş taneleri sarıyor. Ammonit bolluk ve dönüşümü, Kaplangözü güç, özgüven ve odağı simgeler. Arkada dayanıklı çelik zincir ve klips kapanış. Bohem bir dokunuş ya da anlamlı, zamansız bir hediye için. ✨",
+          gorsel: "/urunler/ammonit-kaplangozu-yeni.jpg",
+          gorseller: ["/urunler/ammonit-kaplangozu-yeni.jpg", "/urunler/ammonit-kaplangozu-yeni-2.jpg"],
+          fiyat: "3.054,99 TL",
+          link: "https://www.shopier.com/dreamyhandmade/51570599"
+        },
+        {
+          id: "tas-sahmeran-rose-gold", ad: "Rose Gold Gümüş Şahmeran (925 Ayar)", ikon: "💍",
+          aciklama: "925 ayar hakiki gümüş üzerine uzun ömürlü rose altın kaplama, ince zincir üzerinde ışığı yansıtan zirkon taş detaylarıyla minimal el şahmeranı. Hafif ve esnek zincir yapısıyla eli rahatsız etmez; zarafeti ellerinde taşı. ✨",
+          gorsel: "/urunler/sahmeran-rose-gold.jpg",
+          gorseller: ["/urunler/sahmeran-rose-gold.jpg", "/urunler/sahmeran-rose-gold-2.jpg"],
+          fiyat: "1.254,99 TL",
+          link: "https://www.shopier.com/dreamyhandmade/51485724"
+        },
+        {
           id: "tas-ammonite-kaplangozu", ad: "Ammonite & Kaplangözü Kolye", ikon: "🐚",
           aciklama: "Ammonite fosil tel sarım uç ve doğal Kaplangözü taşlarından, el işçiliğiyle hazırlanmış özel tasarım kolye. Ammonite; yaklaşık 400 milyon yıllık antik bir deniz fosilidir — stresi ve olumsuz enerjiyi azalttığı, canlılık ve denge verdiği, Feng Shui'de bolluk, bereket ve uzun ömrü simgelediğine inanılır. Kaplangözü ise 'güç taşı': özgüven, cesaret ve irade aşılar; odağı ve zihinsel netliği güçlendirir, Kök ve Solar Pleksus çakralarıyla uyumludur. İki taşın harmonisini boynunda taşı. ✨ (Fosil stabilize edilip tel sarım yapılmıştır; darbelerden koruyarak dikkatli kullanın.)",
           gorsel: "/urunler/ammonite-kaplangozu-kolye.jpg",
@@ -250,7 +266,9 @@ const Magaza = window.Magaza = (() => {
       return;
     }
     grid.className = "mg-grid";
-    k.urunler.forEach(u => tasKartCiz(grid, u));
+    // Satıştakiler önce, tükenenler (sipariş üzerine) en sonda
+    const satista = k.urunler.filter(u => u.stok !== false), tukenen = k.urunler.filter(u => u.stok === false);
+    satista.concat(tukenen).forEach(u => tasKartCiz(grid, u));
   }
 
   /* ---------- düz ürün listesi (Işık Kartları/Mumları) ---------- */
