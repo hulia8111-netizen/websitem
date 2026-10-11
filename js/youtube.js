@@ -17,7 +17,7 @@ const YouTube = window.YouTube = (() => {
     uyku: { id: "gdeZIfSZ7iY", baslik: "🌙 Uyku Meditasyonu", yayin: "2026-10-05T00:00:00+03:00" },
     // Her hafta yeni bölüm gelince yalnız id + bolum + yayin güncellenir (site_ayar "yt_haftalikKart" ile de ezilebilir)
     // disari: true → uygulama içinde değil, doğrudan YouTube'da açılır. liste: oynatma listesi linki (varsa o açılır)
-    haftalikKart: { id: "lAXjEwTO7Tw", baslik: "📺 Haftanın Işık Kartı", bolum: "Bu Hafta Seni Hangi Kart Seçti? · Işık Kartı #01", yayin: "2026-10-11T00:00:00+03:00", disari: true, liste: "" }
+    haftalikKart: { id: "lAXjEwTO7Tw", baslik: "📺 Haftanın Işık Kartı", bolum: "Bu Hafta Seni Hangi Kart Seçti? · Işık Kartı #01", yayin: "2026-10-11T00:00:00+03:00", disari: true, liste: "https://www.youtube.com/playlist?list=PLBa4GWq0qy3s" }
   };
   let ov = null;
 
