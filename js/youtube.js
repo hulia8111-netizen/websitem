@@ -14,7 +14,10 @@ const YouTube = window.YouTube = (() => {
   const KANAL = "https://www.youtube.com/channel/UCZSJZsySAh83h3gOp9p-xVw";
   const ABONE = KANAL + "?sub_confirmation=1";
   const VIDEOLAR = {
-    uyku: { id: "gdeZIfSZ7iY", baslik: "🌙 Uyku Meditasyonu", yayin: "2026-10-05T00:00:00+03:00" }
+    uyku: { id: "gdeZIfSZ7iY", baslik: "🌙 Uyku Meditasyonu", yayin: "2026-10-05T00:00:00+03:00" },
+    // Her hafta yeni bölüm gelince yalnız id + bolum + yayin güncellenir (site_ayar "yt_haftalikKart" ile de ezilebilir)
+    // disari: true → uygulama içinde değil, doğrudan YouTube'da açılır. liste: oynatma listesi linki (varsa o açılır)
+    haftalikKart: { id: "lAXjEwTO7Tw", baslik: "📺 Haftanın Işık Kartı", bolum: "Bu Hafta Seni Hangi Kart Seçti? · Işık Kartı #01", yayin: "2026-10-11T00:00:00+03:00", disari: true, liste: "" }
   };
   let ov = null;
 
@@ -92,15 +95,31 @@ const YouTube = window.YouTube = (() => {
       const anahtar = kart.dataset.ytVideo;
       const btn = kart.querySelector("[data-yt-izle]");
       const durum = kart.querySelector("[data-yt-durum]");
+      // Kapak görseli + bölüm adı (varsa)
+      const v = VIDEOLAR[anahtar] || {};
+      const kapak = kart.querySelector("[data-yt-kapak]");
+      if (kapak && videoId(anahtar)) kapak.src = "https://i.ytimg.com/vi/" + encodeURIComponent(videoId(anahtar)) + "/hqdefault.jpg";
+      const bas = kart.querySelector("[data-yt-baslik]");
+      if (bas) bas.textContent = v.bolum || "";
+      // Dokununca: yayındaysa (disari → YouTube'da aç | değilse uygulama içinde oynat), yayından önce abone sayfası
+      const tikla = () => {
+        if (!yayindaMi(anahtar)) return disariAc(ABONE);
+        if (v.disari) return disariAc(v.liste || izleUrl(videoId(anahtar)));
+        oynat(anahtar);
+      };
+      const kapakBtn = kart.querySelector("[data-yt-izle-kapak]");
+      if (kapakBtn && !kapakBtn.dataset.bagli) { kapakBtn.dataset.bagli = "1"; kapakBtn.addEventListener("click", tikla); }
       const guncelle = () => {
         const acik = yayindaMi(anahtar);
-        if (btn) { btn.textContent = acik ? "▶️ Şimdi izle" : "🔔 Kanala abone ol, kaçırma"; }
-        if (durum) durum.textContent = acik ? "Yayında ✨ Dokun, uygulamanın içinde izle." : "✨ " + yayinYazisi(anahtar) + "'de YouTube kanalımda yayında.";
+        if (btn) { btn.textContent = acik ? (v.disari ? "▶️ YouTube'da izle" : "▶️ Şimdi izle") : "🔔 Kanala abone ol, kaçırma"; }
+        if (durum) durum.textContent = acik
+          ? (v.disari ? "Bu haftanın kartı ve mesajı ✨ Dokun, YouTube'da izle." : "Yayında ✨ Dokun, uygulamanın içinde izle.")
+          : "✨ " + yayinYazisi(anahtar) + "'de YouTube kanalımda yayında.";
       };
       guncelle();
       if (btn && !btn.dataset.bagli) {
         btn.dataset.bagli = "1";
-        btn.addEventListener("click", () => { if (yayindaMi(anahtar)) oynat(anahtar); else disariAc(ABONE); });
+        btn.addEventListener("click", tikla);
       }
       // Yayın saatine yakınsa dakikada bir kontrol et (uygulama açıkken saat gelince kart kendiliğinden açılsın)
       if (!yayindaMi(anahtar) && !kart.dataset.ytZaman) {
