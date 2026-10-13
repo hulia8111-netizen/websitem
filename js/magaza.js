@@ -36,7 +36,7 @@ const Magaza = window.Magaza = (() => {
           aciklama: "Milyonlarca yıllık eşsiz bir parça stilinle buluşuyor. Doğal formunu ve spiral detaylarını koruyan Ammonit fosili, tel sarma işçiliğiyle kolye ucuna dönüştü; boynu toprak tonlarının en güzel geçişlerine sahip doğal Kaplangözü taş taneleri sarıyor. Ammonit bolluk ve dönüşümü, Kaplangözü güç, özgüven ve odağı simgeler. Arkada dayanıklı çelik zincir ve klips kapanış. Bohem bir dokunuş ya da anlamlı, zamansız bir hediye için. ✨",
           gorsel: "/urunler/ammonit-kaplangozu-yeni.jpg",
           gorseller: ["/urunler/ammonit-kaplangozu-yeni.jpg", "/urunler/ammonit-kaplangozu-yeni-2.jpg"],
-          fiyat: "3.054,99 TL",
+          fiyat: "3.054,99 TL", stok: false,
           link: "https://www.shopier.com/dreamyhandmade/51570599"
         },
         {
@@ -92,7 +92,7 @@ const Magaza = window.Magaza = (() => {
           aciklama: "Doğal Ametist kırık taşlarından el yapımı bileklik. Ametist; sakinlik ve sezgi taşı olarak bilinir — stresi yatıştırır, zihni dinginleştirir, ruhsal dengeyi ve iç huzuru destekler. Mor ışıltısını bileğinde taşı. 💜",
           gorsel: "/urunler/ametist-bileklik.jpg",
           gorseller: ["/urunler/ametist-bileklik.jpg", "/urunler/ametist-bileklik-2.jpg"],
-          fiyat: "354,99 TL",
+          fiyat: "354,99 TL", stok: false,
           link: "https://www.shopier.com/dreamyhandmade/51241711"
         },
         {
@@ -104,13 +104,13 @@ const Magaza = window.Magaza = (() => {
         {
           id: "tas-aventurin", ad: "Aventurin Kalp Kolye", ikon: "💚",
           aciklama: "Kalp formunda, doğal yeşil Aventurin taşından kolye. Aventurin; şans, bolluk ve neşe taşı olarak bilinir — kalbi korur, stresi azaltır, yeni fırsatlara açar. Şansını kalbinde taşı. Çelik zincirli. 💚",
-          gorsel: "/urunler/aventurin-kalp-kolye.jpg", fiyat: "304,99 TL",
+          gorsel: "/urunler/aventurin-kalp-kolye.jpg", fiyat: "304,99 TL", stok: false,
           link: "https://www.shopier.com/dreamyhandmade/50075720"
         },
         {
           id: "tas-akik-yaprak", ad: "Yaprak Form Akik Kolye", ikon: "🍃",
           aciklama: "Yaprak formunda, doğal Akik taşından zarif kolye. Akik; ruhsal ve bedensel dengeyi destekleyen, stresi azaltan, özgüveni artıran ve negatif enerjiden koruyan bir taş olarak bilinir. Doğallığı boynunda taşı. Çelik zincirli. 🍃",
-          gorsel: "/urunler/akik-yaprak-kolye.jpg", fiyat: "304,99 TL",
+          gorsel: "/urunler/akik-yaprak-kolye.jpg", fiyat: "304,99 TL", stok: false,
           link: "https://www.shopier.com/dreamyhandmade/50075441"
         },
         {
