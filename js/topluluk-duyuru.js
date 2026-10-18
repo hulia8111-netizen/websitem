@@ -40,11 +40,22 @@ const ToplulukDuyuru = window.ToplulukDuyuru = (() => {
       return data || [];
     } catch (e) { return []; }
   }
-  async function yayinla(baslik, metin, bildir, etkinlik) {
+  /* Duyuruya eklenen bağlantı: yalnız http/https (javascript: vb. engellenir) */
+  function guvenliUrl(u) {
+    u = String(u || "").trim();
+    if (!u) return "";
+    if (!/^https?:\/\//i.test(u)) u = "https://" + u;          // "youtube.com/..." yazılırsa
+    try { const x = new URL(u); return /^https?:$/.test(x.protocol) ? x.href : ""; } catch (e) { return ""; }
+  }
+  async function yayinla(baslik, metin, bildir, etkinlik, bagBaslik, bagUrl) {
     const c = sb(); if (!c) return { ok: false, mesaj: "Bağlantı yok" };
     if (!baslik.trim() || !metin.trim()) return { ok: false, mesaj: "Başlık ve metin gerekli" };
+    const url = guvenliUrl(bagUrl);
+    if (String(bagUrl || "").trim() && !url) return { ok: false, mesaj: "Bağlantı adresi geçersiz (https://… olmalı)" };
     try {
-      const { error } = await c.from("topluluk_duyuru").insert({ baslik: baslik.trim(), metin: metin.trim(), bildir: !!bildir, etkinlik: !!etkinlik });
+      const satir = { baslik: baslik.trim(), metin: metin.trim(), bildir: !!bildir, etkinlik: !!etkinlik };
+      if (url) { satir.baglanti_url = url; satir.baglanti_baslik = String(bagBaslik || "").trim().slice(0, 60) || "Bağlantıyı aç"; }
+      const { error } = await c.from("topluluk_duyuru").insert(satir);
       if (error) return { ok: false, mesaj: error.message };
       // Bildirim işaretliyse native push fonksiyonunu doğrudan çağır (webhook gerekmez)
       if (bildir) {
@@ -115,6 +126,7 @@ const ToplulukDuyuru = window.ToplulukDuyuru = (() => {
         <span class="td-zaman">${zamanFark(d.olusturma)}</span>
       </div>
       <p class="td-metin">${esc(d.metin).replace(/\n/g, "<br>")}</p>
+      ${guvenliUrl(d.baglanti_url) ? `<a class="td-baglanti" href="${esc(guvenliUrl(d.baglanti_url))}" target="_blank" rel="noopener noreferrer">🔗 ${esc(d.baglanti_baslik || "Bağlantıyı aç")}</a>` : ""}
       ${rsvpHtml(d, secim, sayim, mod)}
       ${mod ? `<div class="td-mod">
         <button class="td-mini" data-td-act="${d.aktif ? "gizle" : "goster"}" data-id="${d.id}">${d.aktif ? "🙈 Gizle" : "👁️ Göster"}</button>
@@ -136,6 +148,11 @@ const ToplulukDuyuru = window.ToplulukDuyuru = (() => {
         <div class="td-yeni-bas">🛡️ Yeni Duyuru <span class="muted small">(yalnız sana görünür)</span></div>
         <input id="td-baslik" class="td-inp" placeholder="Duyuru başlığı" maxlength="80"/>
         <textarea id="td-metin" class="td-inp" placeholder="Duyuru metni… (topluluğa iletmek istediğin mesaj)" maxlength="600" rows="3"></textarea>
+        <div class="td-bag-alan">
+          <div class="td-bag-bas">🔗 Bağlantı ekle <span class="muted small">(isteğe bağlı)</span></div>
+          <input id="td-bag-baslik" class="td-inp" placeholder="Bağlantı başlığı (ör. Videoyu izle)" maxlength="60"/>
+          <input id="td-bag-url" class="td-inp" placeholder="Bağlantı (https://…)" inputmode="url" autocapitalize="off" spellcheck="false"/>
+        </div>
         <label class="td-bildir"><input type="checkbox" id="td-etkinlik"/> <span>Etkinlik (Katılıyorum/Katılamıyorum/Sonra) 🗓️</span></label>
         <label class="td-bildir"><input type="checkbox" id="td-bildir"/> <span>Kullanıcılara bildirim gönder 🔔</span></label>
         <button class="btn" id="td-yayinla">📢 Duyuru Yayınla</button>
@@ -171,8 +188,10 @@ const ToplulukDuyuru = window.ToplulukDuyuru = (() => {
         const metin = (govde.querySelector("#td-metin") || {}).value || "";
         const bildir = !!(govde.querySelector("#td-bildir") || {}).checked;
         const etkinlik = !!(govde.querySelector("#td-etkinlik") || {}).checked;
+        const bagBaslik = (govde.querySelector("#td-bag-baslik") || {}).value || "";
+        const bagUrl = (govde.querySelector("#td-bag-url") || {}).value || "";
         btn.disabled = true; bil.textContent = "Yayınlanıyor…"; bil.style.color = "var(--metin-faint)";
-        const r = await yayinla(baslik, metin, bildir, etkinlik);
+        const r = await yayinla(baslik, metin, bildir, etkinlik, bagBaslik, bagUrl);
         btn.disabled = false;
         if (r.ok) { bil.textContent = "✅ Duyuru yayınlandı" + (bildir ? " · bildirim gönderildi 🔔" : ""); bil.style.color = "var(--basari)"; await cizDuyurular(govde); }
         else { bil.textContent = "⚠️ " + (r.mesaj || "Yayınlanamadı"); bil.style.color = "var(--uyari)"; }
