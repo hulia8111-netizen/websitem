@@ -264,10 +264,10 @@ const Topluluk = window.Topluluk = (() => {
   });
 
   /* ---------- Overlay aç/kapat ---------- */
-  function ac() {
+  function ac(sekme) {
     const ov = $("topluluk-overlay"); if (!ov) return;
     ov.hidden = false;
-    aktifSekme = "paylasim"; ciz();
+    aktifSekme = typeof sekme === "string" && sekme ? sekme : "paylasim"; ciz();   // ör. ac("duyuru") → doğrudan Duyurular
     verileriYukle();
     // Sosyal modülü hazırla (moderatör/engel/takip) → bitince sekmeleri tazele (Moderasyon sekmesi belirsin)
     if (window.ToplulukSosyal && ToplulukSosyal.hazirla) ToplulukSosyal.hazirla().then(() => { if (!$("topluluk-overlay").hidden) ciz(); });

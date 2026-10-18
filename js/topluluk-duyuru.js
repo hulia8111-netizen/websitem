@@ -168,6 +168,9 @@ const ToplulukDuyuru = window.ToplulukDuyuru = (() => {
     // Görünen aktif duyuruları OKUNDU işaretle (rozet sadece ilk görüşte çıksın)
     const okunacak = gorunur.filter(d => d.aktif && !okSet.has(d.id)).map(d => d.id);
     if (okunacak.length) okunduIsaretle(okunacak);
+    // Bu sayfayı gören, en yeni duyuruyu görmüş sayılır → açılışta tekrar otomatik açılmaz
+    const enYeni = Math.max(0, ...gorunur.filter(d => d.aktif).map(d => d.id));
+    if (enYeni > Number(Store.get("son-acilan-duyuru", 0) || 0)) Store.set("son-acilan-duyuru", enYeni);
 
     // RSVP butonları
     govde.querySelectorAll(".td-rsvp").forEach(b => b.addEventListener("click", async () => {
@@ -211,13 +214,40 @@ const ToplulukDuyuru = window.ToplulukDuyuru = (() => {
     return (liste || []).filter(d => d.aktif)[0] || null;
   }
 
-  /* Bildirime tıklayınca / dışarıdan: Topluluk → Duyurular sekmesini aç */
+  /* Bildirime tıklayınca / dışarıdan: Topluluk → doğrudan Duyurular sekmesi */
+  const SON_ACILAN = "son-acilan-duyuru";
   function ac() {
     try {
-      if (window.Topluluk && Topluluk.ac) Topluluk.ac();
-      setTimeout(() => { const b = document.querySelector('.tp-sekme[data-sek="duyuru"]'); if (b) b.click(); }, 350);
+      if (window.Topluluk && Topluluk.ac) Topluluk.ac("duyuru");
+      sonDuyuru().then(d => { if (d) Store.set(SON_ACILAN, d.id); }).catch(() => {});
     } catch (e) {}
   }
+
+  /* Uygulama açılınca: görülmemiş YENİ duyuru varsa Duyurular sayfasını bir kez kendiliğinden aç.
+     Açılış ekranı / giriş kapısı / başka bir tam ekran pencere açıkken araya girmez. */
+  function baskaPencereAcik() {
+    const s = document.getElementById("splash");
+    if (s && getComputedStyle(s).display !== "none") return true;
+    const ob = document.getElementById("onboarding");
+    if (ob && !ob.hidden) return true;
+    return [...document.querySelectorAll("[id$='-overlay'], .test-overlay, .ilham-overlay")]
+      .some(el => !el.hidden && getComputedStyle(el).display !== "none" && el.id !== "topluluk-overlay");
+  }
+  async function yeniDuyuruKontrol(deneme = 0) {
+    try {
+      if (navigator.onLine === false || !sb()) return;
+      if (baskaPencereAcik()) { if (deneme < 12) setTimeout(() => yeniDuyuruKontrol(deneme + 1), 5000); return; }
+      const d = await sonDuyuru();
+      if (!d) return;
+      const gorulen = Number(Store.get(SON_ACILAN, 0) || 0);
+      const yeni = d.id > gorulen;
+      const taze = Date.now() - Date.parse(d.olusturma) < 7 * 86400000;   // 7 günden eskiyse açma
+      if (!yeni) return;
+      Store.set(SON_ACILAN, d.id);
+      if (taze) ac();
+    } catch (e) {}
+  }
+  document.addEventListener("DOMContentLoaded", () => setTimeout(yeniDuyuruKontrol, 9000));
 
   return { cizDuyurular, yukle, sonDuyuru, ac };
 })();
