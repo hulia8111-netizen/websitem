@@ -115,6 +115,10 @@
 .ilham-pay.wa { border-color: rgba(37,211,102,.55); }
 .ilham-pay.ig { border-color: rgba(225,48,108,.55); }
 .ilham-pay.fb { border-color: rgba(24,119,242,.55); }
+.ilham-pay.indir { border-color: rgba(233,196,106,.6); }
+.ilham-bilgi { position: absolute; left: 50%; bottom: -8px; transform: translate(-50%, 8px); opacity: 0; transition: all .3s ease; pointer-events: none;
+  background: rgba(20,13,43,.95); border: 1px solid rgba(233,196,106,.45); color: #fdf3d6; font-size: .85rem; padding: 8px 14px; border-radius: 999px; white-space: nowrap; max-width: 92vw; overflow: hidden; text-overflow: ellipsis; }
+.ilham-bilgi.gor { opacity: 1; transform: translate(-50%, 0); }
 
 /* --- Günün Kartı: Derin Anlam (seviye ödülü) --- */
 .kart-derin-teaser { text-align: center; padding: 12px 10px; opacity: .9; }

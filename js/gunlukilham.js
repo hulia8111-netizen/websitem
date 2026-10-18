@@ -44,6 +44,7 @@ const GunlukIlham = window.GunlukIlham = (() => {
             '<button class="ilham-pay wa" id="ilham-pay-wa" type="button" aria-label="WhatsApp\'ta paylaş">💬<span>WhatsApp</span></button>' +
             '<button class="ilham-pay ig" id="ilham-pay-ig" type="button" aria-label="Instagram\'da paylaş">📸<span>Instagram</span></button>' +
             '<button class="ilham-pay fb" id="ilham-pay-fb" type="button" aria-label="Facebook\'ta paylaş">👍<span>Facebook</span></button>' +
+            '<button class="ilham-pay indir" id="ilham-pay-indir" type="button" aria-label="Görseli indir">📥<span>İndir</span></button>' +
           '</div>' +
         '</div>' +
         '<div class="ilham-reklam" id="ilham-reklam" hidden>' +
@@ -59,6 +60,7 @@ const GunlukIlham = window.GunlukIlham = (() => {
     ov.querySelector("#ilham-pay-wa").addEventListener("click", waPaylas);
     ov.querySelector("#ilham-pay-fb").addEventListener("click", fbPaylas);
     ov.querySelector("#ilham-pay-ig").addEventListener("click", igPaylas);
+    ov.querySelector("#ilham-pay-indir").addEventListener("click", indir);
     return ov;
   }
 
@@ -146,6 +148,47 @@ const GunlukIlham = window.GunlukIlham = (() => {
     k.addEventListener("click", e => { if (e.target === k || e.target.matches("button")) k.remove(); });
     document.body.appendChild(k);
   }
+  /* ---------- 📥 İndir: Hikaye boyutunda görseli kaydet ----------
+       • Uygulama v11+ → doğrudan galeriye (native "gorsel-kaydet")
+       • Uygulama v10   → sistem menüsü (oradan "Galeriye kaydet" / "Dosyalar")
+       • Tarayıcı       → dosya olarak indir */
+  function kisaBilgi(m) {
+    let b = ov && ov.querySelector(".ilham-bilgi");
+    if (!b) { b = document.createElement("div"); b.className = "ilham-bilgi"; ov.querySelector(".ilham-ic").appendChild(b); }
+    b.textContent = m; b.classList.add("gor");
+    clearTimeout(b._t); b._t = setTimeout(() => b.classList.remove("gor"), 4200);
+  }
+  window.addEventListener("isigini-gorsel-kaydedildi", e => {
+    kisaBilgi(e && e.detail === false ? "Kaydedilemedi 😔 Galeri izni verip tekrar dene." : "Galerine kaydedildi ✨");
+  });
+  async function indir() {
+    const btn = ov && ov.querySelector("#ilham-pay-indir");
+    if (btn) btn.disabled = true;
+    try {
+      const cv = await hikayeGorseli();
+      const dataUrl = cv.toDataURL("image/jpeg", 0.92);
+      const ad = "isigini-bul-ilham-" + (typeof todayKey === "function" ? todayKey() : "gun") + ".jpg";
+      const surum = Number(window.__ISIGINI_NATIVE_SURUM || 0);
+      if (window.__ISIGINI_NATIVE && window.ReactNativeWebView && surum >= 11) {
+        window.ReactNativeWebView.postMessage(JSON.stringify({ type: "gorsel-kaydet", base64: dataUrl.split(",")[1], ad }));
+        return;
+      }
+      if (window.__ISIGINI_NATIVE && window.ReactNativeWebView && surum >= 10) {
+        kisaBilgi("Açılan menüden “Galeriye kaydet” ya da “Dosyalar”ı seç 📥");
+        window.ReactNativeWebView.postMessage(JSON.stringify({ type: "gorsel-paylas", base64: dataUrl.split(",")[1], mime: "image/jpeg", ad, baslik: "Görseli kaydet" }));
+        return;
+      }
+      if (window.__ISIGINI_NATIVE) { onizlemeGoster(dataUrl); return; }   // eski uygulama: önizleme + ekran görüntüsü
+      const a = document.createElement("a");
+      a.href = dataUrl; a.download = ad; document.body.appendChild(a); a.click(); a.remove();
+      kisaBilgi("Görsel indirildi ✨");
+    } catch (e) {
+      kisaBilgi("İndirilemedi 😔 Tekrar dener misin?");
+    } finally {
+      if (btn) btn.disabled = false;
+    }
+  }
+
   async function igPaylas() {
     const btn = ov && ov.querySelector("#ilham-pay-ig");
     if (btn) btn.disabled = true;
