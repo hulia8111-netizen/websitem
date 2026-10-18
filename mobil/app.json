@@ -16,7 +16,7 @@
     "android": {
       "package": "net.isiginibull.app",
       "googleServicesFile": "./google-services.json",
-      "versionCode": 10,
+      "versionCode": 11,
       "adaptiveIcon": {
         "backgroundColor": "#0c0a1c",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -38,6 +38,14 @@
         "react-native-google-mobile-ads",
         {
           "androidAppId": "ca-app-pub-6623600258686617~8674579785"
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Işığını Bul görsellerini galerine kaydedebilmek için izin gerekiyor.",
+          "savePhotosPermission": "Işığını Bul görsellerini galerine kaydedebilmek için izin gerekiyor.",
+          "isAccessMediaLocationEnabled": false
         }
       ]
     ],

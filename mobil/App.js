@@ -15,6 +15,7 @@ import Constants from "expo-constants";
 import * as StoreReview from "expo-store-review";
 import * as Sharing from "expo-sharing";
 import * as FileSystem from "expo-file-system/legacy";
+import * as MediaLibrary from "expo-media-library";
 import mobileAds, { RewardedAd, RewardedAdEventType, InterstitialAd, AdEventType } from "react-native-google-mobile-ads";
 
 const SITE = "https://isiginibull.net";
@@ -199,6 +200,22 @@ export default function App() {
       try { await Linking.openSettings(); } catch (_e) { /* sessiz */ }
       return;
     }
+    // Görseli doğrudan GALERİYE kaydet (ör. Günün İlhamı → 📥 İndir). Sonucu siteye bildir.
+    if (veri && veri.type === "gorsel-kaydet" && typeof veri.base64 === "string") {
+      let ok = false;
+      try {
+        const izin = await MediaLibrary.requestPermissionsAsync(true);   // yalnız yazma izni
+        if (izin.granted) {
+          const ad = String(veri.ad || "isigini-bul.jpg").replace(/[^a-z0-9._-]/gi, "_");
+          const yol = FileSystem.cacheDirectory + ad;
+          await FileSystem.writeAsStringAsync(yol, veri.base64, { encoding: FileSystem.EncodingType.Base64 });
+          await MediaLibrary.saveToLibraryAsync(yol);
+          ok = true;
+        }
+      } catch (_e) { ok = false; }
+      try { webRef.current && webRef.current.injectJavaScript(`window.dispatchEvent(new CustomEvent('isigini-gorsel-kaydedildi',{detail:${ok}}));true;`); } catch (_e) {}
+      return;
+    }
     // Görsel paylaş (ör. Günün ilham cümlesi 1080×1920): dosyaya yaz → sistem paylaşım menüsü
     // (Instagram burada Hikaye / Reels / Gönderi / Mesaj seçenekleriyle çıkar)
     if (veri && veri.type === "gorsel-paylas" && typeof veri.base64 === "string") {
@@ -233,7 +250,7 @@ export default function App() {
         onLoadEnd={() => { setYukleniyor(false); setSayfaHazir(true); }}
         onNavigationStateChange={(s) => setGeriGidebilir(s.canGoBack)}
         onMessage={mesajGeldi}
-        injectedJavaScriptBeforeContentLoaded={"window.__ISIGINI_NATIVE=true;window.__ISIGINI_NATIVE_SURUM=10;true;"}
+        injectedJavaScriptBeforeContentLoaded={"window.__ISIGINI_NATIVE=true;window.__ISIGINI_NATIVE_SURUM=11;true;"}
         javaScriptEnabled
         domStorageEnabled
         thirdPartyCookiesEnabled
