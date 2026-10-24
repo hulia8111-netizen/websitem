@@ -1786,6 +1786,10 @@ body.sayfa-gizli *, body.sayfa-gizli *::before, body.sayfa-gizli *::after { anim
 .tk-olay-ikon { font-size: 1.3rem; filter: drop-shadow(0 0 8px color-mix(in srgb, var(--renk) 60%, transparent)); }
 .tk-olay-mesaj { margin: 0.4rem 0 0.5rem; color: var(--metin-soft); font-size: 0.92rem; }
 .tk-sat { display: flex; gap: 0.5rem; font-size: 0.86rem; color: var(--metin-soft); margin-top: 0.3rem; }
+.tk-med-btn { width: 100%; align-items: center; text-align: left; font: inherit; font-size: 0.86rem; cursor: pointer; padding: 0.45rem 0.6rem; border-radius: 10px;
+  background: rgba(179,140,255,0.1); border: 1px solid rgba(179,140,255,0.3); color: var(--metin-soft); transition: border-color .15s ease; }
+.tk-med-btn:hover { border-color: var(--accent-2); }
+.tk-med-git { margin-left: auto; color: var(--gold-soft, #e9c46a); font-weight: 600; white-space: nowrap; }
 .tk-et { flex: 0 0 auto; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); padding-top: 0.15rem; min-width: 72px; }
 .tk-olumlama { font-family: var(--font-baslik); font-style: italic; color: var(--gold-soft); margin-top: 0.5rem; }
 .tk-sil { background: transparent; border: none; color: var(--uyari); cursor: pointer; font-size: 0.85rem; padding: 0.1rem 0.3rem; }

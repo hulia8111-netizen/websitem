@@ -115,7 +115,7 @@ const Takvim = window.Takvim = (() => {
           <div class="tk-olay-bas"><span class="tk-olay-ikon">${e.ikon || "✨"}</span><b>${esc(e.baslik || e.ad || "")}</b>${e.ozelId ? `<button class="tk-sil" data-sil="${e.ozelId}" aria-label="Sil">✕</button>` : ""}</div>
           <p class="tk-olay-mesaj">${esc(e.mesaj || "")}</p>
           ${e.rituel ? `<div class="tk-sat"><span class="tk-et">Ritüel</span><span>${esc(e.rituel)}</span></div>` : ""}
-          ${e.meditasyon ? `<div class="tk-sat"><span class="tk-et">Meditasyon</span><span>${esc(e.meditasyon)}</span></div>` : ""}
+          ${e.meditasyon ? `<button type="button" class="tk-sat tk-med-btn" data-med="${esc(e.meditasyon)}"><span class="tk-et">Meditasyon</span><span>${esc(e.meditasyon)}</span><span class="tk-med-git">Başla →</span></button>` : ""}
           ${e.olumlama ? `<div class="tk-olumlama">“${esc(e.olumlama)}”</div>` : ""}
         </div>`).join("");
     } else {
@@ -145,9 +145,24 @@ const Takvim = window.Takvim = (() => {
         else if (window.Magaza && Magaza.ac) Magaza.ac("rituel-araclar", "ritueller");
       }, 320);
     });
+    // Önerilen meditasyona git: nefes → Nefes ekranı · "639 Hz" gibi → o frekansı çal · diğer → Meditasyon sayfası
+    el.querySelectorAll(".tk-med-btn").forEach(b => b.addEventListener("click", () => medGit(b.dataset.med || "")));
     const enLink = $("tk-enerji-link");
     if (enLink) enLink.addEventListener("click", () => { kapat(); if (window.gotoView) window.gotoView("home"); const en = document.getElementById("enerji"); if (en) setTimeout(() => en.scrollIntoView({ behavior: "smooth", block: "center" }), 450); });
     const di = $("tk-ekle-tarih"); if (di) di.value = k;
+  }
+
+  function medGit(metin) {
+    kapat();
+    setTimeout(() => {
+      try {
+        if (/nefes/i.test(metin) && window.Nefes && Nefes.ac) { Nefes.ac(); return; }
+        if (window.gotoView) gotoView("meditasyon");
+        const hz = (metin.match(/(\d{3})\s*Hz/i) || [])[1];
+        const parca = hz && typeof DATA !== "undefined" && DATA.frekansAlani ? DATA.frekansAlani.find(t => String(t.hz) === hz) : null;
+        if (parca && window.Muzik && Muzik.cal) setTimeout(() => Muzik.cal(parca), 400);
+      } catch (e) { if (window.gotoView) gotoView("meditasyon"); }
+    }, 320);
   }
 
   /* ---------- özel gün ekle/sil ---------- */
