@@ -109,7 +109,7 @@ const Topluluk = window.Topluluk = (() => {
   }
 
   function cizSekmeler() {
-    const sek = [["paylasim", "📝 Paylaşımlar"], ["duyuru", "📢 Duyurular"], ["isik", "🌟 Işık"], ["galeri", "📸 Galeri"], ["rozet", "🏅 Rozetler"], ["gecmis", "📜 Geçmiş"]];
+    const sek = [["paylasim", "📝 Paylaşımlar"], ["duyuru", "📢 Duyurular"], ["zikir", "📿 Toplu Zikir"], ["isik", "🌟 Işık"], ["galeri", "📸 Galeri"], ["rozet", "🏅 Rozetler"], ["gecmis", "📜 Geçmiş"]];
     if (window.ToplulukSosyal && ToplulukSosyal.moderatorMuCached && ToplulukSosyal.moderatorMuCached()) sek.push(["moderasyon", "🛡️ Moderasyon"]);
     return `<div class="tp-sekmeler tp-sekmeler-kaydir">${sek.map(([id, ad]) =>
       `<button class="tp-sekme${aktifSekme === id ? " aktif" : ""}" data-sek="${id}">${esc(ad)}</button>`).join("")}</div>`;
@@ -245,6 +245,7 @@ const Topluluk = window.Topluluk = (() => {
     else if (aktifSekme === "duyuru") { if (window.ToplulukDuyuru) ToplulukDuyuru.cizDuyurular(govde); else govde.innerHTML = `<div class="tp-bilgi">Yükleniyor…</div>`; }
     else if (aktifSekme === "paylasim") { if (window.ToplulukSosyal) ToplulukSosyal.cizPaylasimlar(govde); else govde.innerHTML = `<div class="tp-bilgi">Yükleniyor…</div>`; }
     else if (aktifSekme === "galeri") { if (window.ToplulukSosyal) ToplulukSosyal.cizGaleri(govde); else govde.innerHTML = `<div class="tp-bilgi">Yükleniyor…</div>`; }
+    else if (aktifSekme === "zikir") { if (window.Zikir) Zikir.cizListe(govde); else govde.innerHTML = `<div class="tp-bilgi">Yükleniyor…</div>`; }
     else if (aktifSekme === "moderasyon") { if (window.ToplulukSosyal) ToplulukSosyal.cizModerasyon(govde); }
   }
 

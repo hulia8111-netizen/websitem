@@ -3042,6 +3042,39 @@ body.mg-aktif { overflow: hidden; }
 .footer-sosyal { margin: 0 0 0.3rem; font-size: 0.85rem; text-align: center; }
 .yt-overlay { position: fixed; inset: 0; z-index: 99975; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(8,5,20,0.92); }
 .yt-overlay[hidden] { display: none; }
+
+/* 📿 Toplu Zikir */
+.zk-giris { margin: 0 0 0.8rem; line-height: 1.5; }
+.zk-liste { display: flex; flex-direction: column; gap: 0.7rem; }
+.zk-kart { display: block; width: 100%; text-align: left; font: inherit; cursor: pointer; padding: 0.9rem 1rem; border-radius: 16px; color: var(--metin);
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(179,140,255,0.28); transition: border-color .15s ease; }
+.zk-kart:hover { border-color: var(--accent-2); }
+.zk-k-bas { font-weight: 600; font-size: 1rem; }
+.zk-k-aciklama { color: var(--metin-soft); font-size: 0.85rem; margin-top: 0.2rem; }
+.zk-bar { height: 8px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; margin: 0.7rem 0 0.45rem; }
+.zk-bar.buyuk { height: 10px; margin: 1.2rem 0 0.5rem; }
+.zk-bar span { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent), var(--gold)); transition: width .4s ease; }
+.zk-k-alt { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--metin-soft); }
+.zk-overlay { position: fixed; inset: 0; z-index: 99990; display: flex; justify-content: center; padding: 16px; overflow-y: auto;
+  background: radial-gradient(120% 90% at 50% 20%, #2a1d52 0%, #1a1233 55%, #0e0922 100%); }
+.zk-overlay[hidden] { display: none; }
+.zk-ic { width: 100%; max-width: 480px; display: flex; flex-direction: column; min-height: 100%; }
+.zk-ust { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.zk-baslik { color: #fdf3d6; font-weight: 600; font-size: 1.05rem; }
+.zk-kapat { background: none; border: 0; color: var(--metin); font-size: 1.4rem; cursor: pointer; padding: 0.2rem 0.5rem; }
+.zk-metin { text-align: center; font-family: var(--font-baslik), Georgia, serif; font-size: 1.35rem; color: #fdf3d6; margin-top: 1.2rem; line-height: 1.5; }
+.zk-aciklama { text-align: center; margin-top: 0.4rem; }
+.zk-sayilar { display: flex; justify-content: space-between; color: var(--metin-soft); font-size: 0.95rem; }
+.zk-sayilar b { color: var(--metin); }
+.zk-orta { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 280px; }
+.zk-buton { width: 220px; height: 220px; border-radius: 50%; border: 0; cursor: pointer; touch-action: manipulation; user-select: none; -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent; color: #fff; font: inherit; font-size: 3rem; font-weight: 600;
+  background: radial-gradient(circle at 35% 30%, #c9a8ff, var(--accent) 55%, #5b3fa8); box-shadow: 0 0 36px rgba(179,140,255,0.55), inset 0 -8px 20px rgba(0,0,0,0.25); }
+.zk-buton.vur { animation: zkVur .18s ease; }
+@keyframes zkVur { 50% { transform: scale(0.94); box-shadow: 0 0 52px rgba(233,196,106,0.6), inset 0 -4px 14px rgba(0,0,0,0.25); } }
+.zk-ipucu { text-align: center; margin: 0 0 1rem; }
+.zk-tamam { text-align: center; color: #fdf3d6; font-size: 1.2rem; line-height: 1.6; }
+.zk-tamam-ikon { font-size: 4rem; margin-bottom: 0.5rem; }
 .yt-ic { width: 100%; max-width: 720px; }
 .yt-ust { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; }
 .yt-baslik { color: #fdf3d6; font-weight: 600; }
