@@ -68,6 +68,51 @@ const Zikir = window.Zikir = (() => {
     try { const { data } = await c.from("group_zikirs").select("*").eq("id", id).maybeSingle(); return data || null; } catch (e) { return null; }
   }
 
+  /* ---------- Moderatör (yalnız sen): yeni zikir başlat / listeden kaldır ---------- */
+  function moderatorMu() {
+    try { const em = (window.Bulut && Bulut.durum ? (Bulut.durum().email || "") : "").toLowerCase(); if (em === "hulia8111@gmail.com") return true; } catch (e) {}
+    return !!(window.ToplulukSosyal && ToplulukSosyal.moderatorMuCached && ToplulukSosyal.moderatorMuCached());
+  }
+  function formHTML() {
+    return `<div class="zk-form">
+      <div class="zk-form-bas">🛡️ Yeni Toplu Zikir <span class="muted small">(yalnız sana görünür)</span></div>
+      <input class="td-inp" id="zk-f-baslik" maxlength="80" placeholder="Zikrin adı (ör. Salavat-ı Şerife)"/>
+      <input class="td-inp" id="zk-f-metin" maxlength="200" placeholder="Okunuşu (isteğe bağlı)"/>
+      <input class="td-inp" id="zk-f-aciklama" maxlength="160" placeholder="Kısa açıklama / niyet (isteğe bağlı)"/>
+      <input class="td-inp" id="zk-f-hedef" type="number" inputmode="numeric" min="1" step="1" placeholder="Hedef adet (ör. 10000)"/>
+      <button class="btn" type="button" id="zk-f-ekle">📿 Zikri başlat</button>
+      <p class="td-durum" id="zk-f-bilgi"></p>
+    </div>`;
+  }
+  async function zikirEkle(govde) {
+    const al = id => ((govde.querySelector(id) || {}).value || "").trim();
+    const bil = govde.querySelector("#zk-f-bilgi");
+    const yaz = (m, hata) => { bil.textContent = m; bil.style.color = hata ? "var(--uyari)" : "var(--basari)"; };
+    const title = al("#zk-f-baslik"), hedef = parseInt(al("#zk-f-hedef").replace(/\D/g, ""), 10);
+    if (!title) return yaz("Zikrin adını yaz 🙏", true);
+    if (!(hedef > 0)) return yaz("Hedef adedi gir (ör. 10000)", true);
+    const c = sb(); if (!c) return yaz("Bağlantı yok", true);
+    const btn = govde.querySelector("#zk-f-ekle"); btn.disabled = true; yaz("Başlatılıyor…");
+    try {
+      const { error } = await c.from("group_zikirs").insert({ title, zikir_text: al("#zk-f-metin") || null, description: al("#zk-f-aciklama") || null, target_count: hedef });
+      if (error) throw error;
+      await cizListe(govde);
+    } catch (e) {
+      const m = String((e && e.message) || e);
+      yaz(/row-level security|policy/i.test(m) ? "İzin yok: önce supabase/zikir-moderator.sql çalıştırılmalı." : "⚠️ " + m, true);
+      btn.disabled = false;
+    }
+  }
+  async function zikirKaldir(govde, id) {
+    if (!confirm("Bu zikir listeden kaldırılsın mı? (Sayılar silinmez, sadece gizlenir)")) return;
+    const c = sb(); if (!c) return;
+    try {
+      const { error } = await c.from("group_zikirs").update({ is_active: false }).eq("id", id);
+      if (error) { alert(/row-level security|policy/i.test(error.message || "") ? "İzin yok: önce supabase/zikir-moderator.sql çalıştırılmalı." : error.message); return; }
+    } catch (e) {}
+    await cizListe(govde);
+  }
+
   /* ---------- Topluluk sekmesi: liste ---------- */
   function ilerleme(cur, hedef) { return hedef > 0 ? Math.min(100, (cur / hedef) * 100) : 0; }
   function kartHTML(z) {
@@ -93,11 +138,19 @@ const Zikir = window.Zikir = (() => {
     const liste = await aktifler();
     if (listeGovde !== govde) return;   // bu arada başka sekmeye geçildi
     if (liste === null) { govde.innerHTML = `<div class="ts-bos">Toplu zikirler şu an yüklenemedi. Biraz sonra tekrar dene 🌿</div>`; return; }
-    govde.innerHTML = `<p class="zk-giris muted small">Hep birlikte, tek niyetle 🤍 Bir zikre dokun, zikirmatik açılsın. Kimin ne kadar çektiği görünmez; sadece toplam ve katılımcı sayısı.</p>` +
-      (liste.length ? `<div class="zk-liste">${liste.map(kartHTML).join("")}</div>` : `<div class="ts-bos">Şu an aktif toplu zikir yok 🌙</div>`);
+    const mod = moderatorMu();
+    govde.innerHTML = (mod ? formHTML() : "") +
+      `<p class="zk-giris muted small">Hep birlikte, tek niyetle 🤍 Bir zikre dokun, zikirmatik açılsın. Kimin ne kadar çektiği görünmez; sadece toplam ve katılımcı sayısı.</p>` +
+      (liste.length
+        ? `<div class="zk-liste">${liste.map(z => `<div class="zk-sarmal">${kartHTML(z)}${mod ? `<button class="td-mini td-sil zk-kaldir" type="button" data-zk-kaldir="${esc(z.id)}">🙈 Listeden kaldır</button>` : ""}</div>`).join("")}</div>`
+        : `<div class="ts-bos">Şu an aktif toplu zikir yok 🌙${mod ? " Yukarıdan ilk zikri başlat ✨" : ""}</div>`);
     govde.querySelectorAll("[data-zikir]").forEach(b => b.addEventListener("click", () => {
       const z = liste.find(x => x.id === b.dataset.zikir); if (z) ac(z);
     }));
+    if (mod) {
+      const e = govde.querySelector("#zk-f-ekle"); if (e) e.addEventListener("click", () => zikirEkle(govde));
+      govde.querySelectorAll("[data-zk-kaldir]").forEach(b => b.addEventListener("click", () => zikirKaldir(govde, b.dataset.zkKaldir)));
+    }
   }
 
   /* ---------- Zikirmatik ekranı ---------- */

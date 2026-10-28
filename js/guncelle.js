@@ -9,7 +9,7 @@
    + buradaki YEREL_SURUM birlikte artırılır.
    ============================================================ */
 (function () {
-  var YEREL_SURUM = 275;         // bu kodun (yüklenen sürümün) numarası
+  var YEREL_SURUM = 276;         // bu kodun (yüklenen sürümün) numarası
   var GOSTERILDI = false;
 
   function bannerGoster() {

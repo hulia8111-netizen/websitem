@@ -3045,6 +3045,10 @@ body.mg-aktif { overflow: hidden; }
 
 /* 📿 Toplu Zikir */
 .zk-giris { margin: 0 0 0.8rem; line-height: 1.5; }
+.zk-form { display: flex; flex-direction: column; gap: 0.45rem; padding: 0.8rem; margin-bottom: 0.9rem; border-radius: 14px; border: 1px dashed rgba(233,196,106,0.4); background: rgba(233,196,106,0.05); }
+.zk-form-bas { font-weight: 600; color: var(--gold-soft, #e9c46a); }
+.zk-sarmal { display: flex; flex-direction: column; gap: 0.35rem; }
+.zk-kaldir { align-self: flex-end; }
 .zk-liste { display: flex; flex-direction: column; gap: 0.7rem; }
 .zk-kart { display: block; width: 100%; text-align: left; font: inherit; cursor: pointer; padding: 0.9rem 1rem; border-radius: 16px; color: var(--metin);
   background: rgba(255,255,255,0.04); border: 1px solid rgba(179,140,255,0.28); transition: border-color .15s ease; }
