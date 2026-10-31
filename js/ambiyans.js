@@ -1,5 +1,5 @@
 /* ============================================================
-   ambiyans.js — Arka plan huzur müziği 🎵 (Tratak — Jesse Gallagher)
+   ambiyans.js — Arka plan huzur müziği 🎵 (Healing Meditation Flute — BerryDeep, Pixabay lisansı)
    ------------------------------------------------------------
    Uygulama açıldığı andan itibaren düşük seste, döngüde çalar.
    • Varsayılan AÇIK; köşedeki 🎵 butonuyla aç/kapa (tercih hatırlanır).
@@ -11,7 +11,7 @@
    Global: window.Ambiyans
    ============================================================ */
 const Ambiyans = window.Ambiyans = (() => {
-  const DOSYA = "sesler/ambiyans-tratak.mp3";
+  const DOSYA = "sesler/ambiyans-flut.mp3";
   const TERCIH = "kdm_ambiyans";          // "acik" | "kapali" (yalnız bu cihaz)
   const HEDEF_SES = 0.22;                 // huzurlu, arka planda kalan seviye
   let ses = null, solma = null, buton = null;
