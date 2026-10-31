@@ -3,7 +3,7 @@
    SÃ¼rÃ¼m deÄŸiÅŸince CACHE adÄ±nÄ± artÄ±r ki eski dosyalar temizlensin.
    ============================================================ */
 
-const CACHE = "isigini-bul-v276";
+const CACHE = "isigini-bul-v277";
 const GORSEL = "isigini-gorsel-v1";   // kalıcı görsel önbelleği (sürümden bağımsız)
 const KABUK = [
   ".",
@@ -47,6 +47,7 @@ const KABUK = [
   "js/gunlukilham.js",
   "js/donus.js",
   "js/youtube.js",
+  "js/ambiyans.js",
   "js/bildirimdavet.js",
   "js/rapor.js",
   "js/bildirim.js",
