@@ -32,6 +32,22 @@ const Magaza = window.Magaza = (() => {
       aciklama: "Doğal taşlar ve ritüellerine eşlik edecek özel parçalar.",
       urunler: [
         {
+          id: "tas-aytasi-kalp", ad: "Kalp Form Aytaşı Kolye", ikon: "🌙",
+          aciklama: "Kalp formunda doğal Aytaşı kolye (taş 11×12 mm). Mavi ışıltısıyla Aytaşı; duygusal denge ve iç huzur taşı olarak bilinir — kaygıyı yatıştırır, sezgiyi ve içsel bilgeliği güçlendirir, meditasyonu destekler. Yeni başlangıçların ve dişil enerjinin sembolüdür; sevgi bağlarını ve şefkati besler, huzurlu uykuya eşlik ettiğine inanılır. Ay'ın ışığını kalbinde taşı. 🌙",
+          gorsel: "/urunler/aytasi-kalp-kolye.jpg",
+          gorseller: ["/urunler/aytasi-kalp-kolye.jpg", "/urunler/aytasi-kalp-kolye-2.jpg", "/urunler/aytasi-kalp-kolye-3.jpg"],
+          fiyat: "504,99 TL",
+          link: "https://www.shopier.com/dreamyhandmade/52381162"
+        },
+        {
+          id: "tas-ammonit-kesit", ad: "Ammonit Fosil Kolye", ikon: "🐚",
+          aciklama: "Yaklaşık 65–400 milyon yıllık Ammonit fosili, enlemesine kesilip parlatılarak kolye ucuna dönüştü; iç odacıklarını dolduran kalsit kristallerinin geometrik spirali net ve büyüleyici. Kahverengi tonları ve çelik çerçevesiyle günlük kombinlere anlamlı bir dokunuş. Ammonit; dönüşüm, bolluk ve yaşamın sonsuz döngüsünü simgeler. Evrenin spiralini boynunda taşı. ✨",
+          gorsel: "/urunler/ammonit-kolye.jpg",
+          gorseller: ["/urunler/ammonit-kolye.jpg", "/urunler/ammonit-kolye-2.jpg"],
+          fiyat: "1.204,99 TL",
+          link: "https://www.shopier.com/dreamyhandmade/52381171"
+        },
+        {
           id: "tas-ammonit-kaplangozu-yeni", ad: "Ammonit & Kaplangözü Kolye", ikon: "🐚",
           aciklama: "Milyonlarca yıllık eşsiz bir parça stilinle buluşuyor. Doğal formunu ve spiral detaylarını koruyan Ammonit fosili, tel sarma işçiliğiyle kolye ucuna dönüştü; boynu toprak tonlarının en güzel geçişlerine sahip doğal Kaplangözü taş taneleri sarıyor. Ammonit bolluk ve dönüşümü, Kaplangözü güç, özgüven ve odağı simgeler. Arkada dayanıklı çelik zincir ve klips kapanış. Bohem bir dokunuş ya da anlamlı, zamansız bir hediye için. ✨",
           gorsel: "/urunler/ammonit-kaplangozu-yeni.jpg",
@@ -72,7 +88,7 @@ const Magaza = window.Magaza = (() => {
         {
           id: "tas-delphinula-sedef-2", ad: "Delphinula Sedef Kolye", ikon: "🐚",
           aciklama: "Eşsiz Delphinula (Angaria Delphinus) deniz kabuğu ucu, doğal sedef taş kırıklarıyla buluştu. Sedefin ışıltısı denizin dinginliğini taşır; her kolye doğal taş olduğundan kendine özgüdür — el yapımı, sevgiyle hazırlandı, özel kutusunda gönderilir. 🐚",
-          gorsel: "/urunler/delphinula-sedef-2.jpg", fiyat: "1.404,99 TL",
+          gorsel: "/urunler/delphinula-sedef-2.jpg", fiyat: "1.404,99 TL", stok: false,
           link: "https://www.shopier.com/dreamyhandmade/50543971"
         },
         {
