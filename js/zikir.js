@@ -1,5 +1,5 @@
 /* ============================================================
-   zikir.js — 📿 Toplu Zikir (zikirmatik)
+   zikir.js — 🪷 Toplu Mantra (eski Toplu Zikir; aynı sayaç sistemi)
    ------------------------------------------------------------
    Supabase: group_zikirs (herkes okur) + add_zikir(p_zikir_id,
    p_client_id, p_amount) RPC (supabase toplu_zikir.sql — kullanıcı
@@ -19,6 +19,38 @@ const Zikir = window.Zikir = (() => {
   let ov = null, aktif = null, kanal = null, yoklama = null, gonderTimer = null;
   let sunucu = 0, katilimci = 0, tamam = false, bekleyen = 0, ucuyor = 0, benim = 0, gonderiliyor = false;
   let listeGovde = null;
+
+  /* 🪷 Mantra kütüphanesi — moderatör formu buradan seçer; ekranda anlamı / yararı / kaynağı gösterilir.
+     (Veritabanı aynı: group_zikirs + add_zikir. Kayıt başlığı = mantranın adı → detay buradan bulunur.) */
+  const MANTRALAR = [
+    { ad: "Om Swastyastu", okunus: "Om Svasti-astu",
+      anlam: "“Sana esenlik ve iyilik olsun.” Sanskritçe svasti (esenlik, iyi oluş) ve astu (olsun) kelimelerinden gelir.",
+      yarar: "Kalbi açar, karşıdakine ve kendine iyi niyet gönderme alışkanlığı kazandırır; güne yumuşak ve bağlantılı bir başlangıç yaptırır.",
+      kaynak: "Bali geleneği. Bali'de günlük selamlaşmadır; insanlar ellerini göğüs hizasında birleştirerek birbirine bu dileği söyler." },
+    { ad: "Om Shanti Shanti Shanti", okunus: "Om Şanti Şanti Şanti",
+      anlam: "“Barış, barış, barış.” Üç kez söylenir: bedende, sözde ve zihinde (ya da içimizde, çevremizde ve evrende) huzur dileği.",
+      yarar: "Sinir sistemini yatıştırır, nefesi yavaşlatır; gerginlik ve kaygı anlarında içsel sessizliğe dönmeye yardım eder.",
+      kaynak: "Upanişadlar'daki “barış dualarının” (Şanti mantraları) kapanış sözüdür. Bali'de de dualar ve törenler genellikle bu sözle kapanır." },
+    { ad: "Lokah Samastah Sukhino Bhavantu", okunus: "Lokah Samastah Sukino Bavantu",
+      anlam: "“Tüm âlemlerdeki bütün varlıklar mutlu ve özgür olsun.”",
+      yarar: "Şefkati ve bütünlük duygusunu büyütür; kendi derdinden çıkıp herkes için iyilik dilemek kalbi hafifletir.",
+      kaynak: "Hint geleneğinden gelen Sanskritçe bir iyi dilek duası. Günümüzde yoga ve meditasyon derslerinin kapanış mantrası olarak bilinir." },
+    { ad: "Om Mani Padme Hum", okunus: "Om Mani Padme Hum",
+      anlam: "“Lotustaki mücevher.” Çamurdan doğup tertemiz açan lotus gibi, her kalbin özünde saf bir ışık olduğunu hatırlatır.",
+      yarar: "Şefkat ve merhamet mantrası olarak bilinir; yargıyı yumuşatır, kalbe sabır ve sevgi getirir.",
+      kaynak: "Tibet Budizmi'nin en bilinen mantrası; şefkatin sembolü Avalokiteşvara ile ilişkilendirilir. İlk kez Karandavyuha Sutra'da (yaklaşık MS 4.–5. yüzyıl) geçer." },
+    { ad: "So Hum", okunus: "So Ham",
+      anlam: "“Ben O'yum” — ben de bütünün, evrenin bir parçasıyım.",
+      yarar: "Nefes mantrasıdır: nefes alırken içinden “So”, verirken “Ham” denir. Zihni nefese bağlar, odak ve dinginlik getirir.",
+      kaynak: "Kökü Upanişadlar'a (İşa Upanişad'daki “so 'ham asmi” – “O benim” ifadesi) dayanır; yoga geleneğinde doğal nefes mantrası olarak kullanılır." },
+    { ad: "Gayatri Mantra", okunus: "Om Bur Buva Svaha · Tat Savitur Vareniyam · Bargo Devasya Dimahi · Diyo Yo Nah Praçodayat",
+      anlam: "“Varoluşun tüm katmanlarını aydınlatan o kutsal ışığın parlaklığı üzerine düşünürüz; o ışık zihnimizi aydınlatsın.”",
+      yarar: "Berraklık ve farkındalık mantrası olarak bilinir; zihni toparlar, güne ya da meditasyona aydınlık bir niyetle başlatır.",
+      kaynak: "Bilinen en eski mantralardandır: Rigveda'da (3.62.10) yer alır ve bilge Vişvamitra'ya atfedilir. Bali'de günde üç kez okunan Puja Trisandhya duasının ilk bölümüdür." }
+  ];
+  function mantraBul(ad) { const a = String(ad || "").trim().toLowerCase(); return MANTRALAR.find(m => m.ad.toLowerCase() === a) || null; }
+  // Eski dini zikir kayıtları (ör. Salavat) mantra listesinde görünmesin
+  const ESKI_ZIKIR = /salavat|zikir|tesbih|esma|allah|subhan|sübhan|elhamd|estağfir|kelime-i|lailahe/i;
 
   function sb() { try { return window.Bulut && Bulut.client ? Bulut.client() : null; } catch (e) { return null; } }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
@@ -60,7 +92,7 @@ const Zikir = window.Zikir = (() => {
     try {
       const { data, error } = await c.from("group_zikirs").select("*").eq("is_active", true).order("created_at", { ascending: false });
       if (error) return null;
-      return data || [];
+      return (data || []).filter(z => !ESKI_ZIKIR.test((z.title || "") + " " + (z.zikir_text || "")));
     } catch (e) { return null; }
   }
   async function tekZikir(id) {
@@ -75,12 +107,16 @@ const Zikir = window.Zikir = (() => {
   }
   function formHTML() {
     return `<div class="zk-form">
-      <div class="zk-form-bas">🛡️ Yeni Toplu Zikir <span class="muted small">(yalnız sana görünür)</span></div>
-      <input class="td-inp" id="zk-f-baslik" maxlength="80" placeholder="Zikrin adı (ör. Salavat-ı Şerife)"/>
-      <input class="td-inp" id="zk-f-metin" maxlength="200" placeholder="Okunuşu (isteğe bağlı)"/>
-      <input class="td-inp" id="zk-f-aciklama" maxlength="160" placeholder="Kısa açıklama / niyet (isteğe bağlı)"/>
+      <div class="zk-form-bas">🛡️ Yeni Toplu Mantra <span class="muted small">(yalnız sana görünür)</span></div>
+      <select class="td-inp" id="zk-f-sec">
+        <option value="">Kütüphaneden mantra seç…</option>
+        ${MANTRALAR.map((m, i) => `<option value="${i}">${esc(m.ad)}</option>`).join("")}
+      </select>
+      <input class="td-inp" id="zk-f-baslik" maxlength="80" placeholder="Mantranın adı (ör. Om Shanti Shanti Shanti)"/>
+      <input class="td-inp" id="zk-f-metin" maxlength="200" placeholder="Okunuşu (Türkçe harflerle)"/>
+      <input class="td-inp" id="zk-f-aciklama" maxlength="160" placeholder="Kısa anlamı / niyet (isteğe bağlı)"/>
       <input class="td-inp" id="zk-f-hedef" type="number" inputmode="numeric" min="1" step="1" placeholder="Hedef adet (ör. 10000)"/>
-      <button class="btn" type="button" id="zk-f-ekle">📿 Zikri başlat</button>
+      <button class="btn" type="button" id="zk-f-ekle">🪷 Mantrayı başlat</button>
       <p class="td-durum" id="zk-f-bilgi"></p>
     </div>`;
   }
@@ -89,7 +125,7 @@ const Zikir = window.Zikir = (() => {
     const bil = govde.querySelector("#zk-f-bilgi");
     const yaz = (m, hata) => { bil.textContent = m; bil.style.color = hata ? "var(--uyari)" : "var(--basari)"; };
     const title = al("#zk-f-baslik"), hedef = parseInt(al("#zk-f-hedef").replace(/\D/g, ""), 10);
-    if (!title) return yaz("Zikrin adını yaz 🙏", true);
+    if (!title) return yaz("Mantranın adını yaz 🙏", true);
     if (!(hedef > 0)) return yaz("Hedef adedi gir (ör. 10000)", true);
     const c = sb(); if (!c) return yaz("Bağlantı yok", true);
     const btn = govde.querySelector("#zk-f-ekle"); btn.disabled = true; yaz("Başlatılıyor…");
@@ -104,7 +140,7 @@ const Zikir = window.Zikir = (() => {
     }
   }
   async function zikirKaldir(govde, id) {
-    if (!confirm("Bu zikir listeden kaldırılsın mı? (Sayılar silinmez, sadece gizlenir)")) return;
+    if (!confirm("Bu mantra listeden kaldırılsın mı? (Sayılar silinmez, sadece gizlenir)")) return;
     const c = sb(); if (!c) return;
     try {
       const { error } = await c.from("group_zikirs").update({ is_active: false }).eq("id", id);
@@ -116,10 +152,12 @@ const Zikir = window.Zikir = (() => {
   /* ---------- Topluluk sekmesi: liste ---------- */
   function ilerleme(cur, hedef) { return hedef > 0 ? Math.min(100, (cur / hedef) * 100) : 0; }
   function kartHTML(z) {
-    const bitti = !!z.completed_at;
+    const bitti = !!z.completed_at, m = mantraBul(z.title);
+    const kisa = m ? m.anlam : z.description;
     return `<button class="zk-kart" type="button" data-zikir="${esc(z.id)}">
-      <div class="zk-k-bas">📿 ${esc(z.title)}</div>
-      ${z.description ? `<div class="zk-k-aciklama">${esc(z.description)}</div>` : ""}
+      <div class="zk-k-bas">🪷 ${esc(z.title)}</div>
+      ${z.zikir_text ? `<div class="zk-k-okunus">“${esc(z.zikir_text)}”</div>` : ""}
+      ${kisa ? `<div class="zk-k-aciklama">${esc(kisa)}</div>` : ""}
       <div class="zk-bar"><span style="width:${ilerleme(z.current_count, z.target_count).toFixed(1)}%"></span></div>
       <div class="zk-k-alt">
         <span>${bitti ? "✅ Tamamlandı" : `${bicim(z.current_count)} / ${bicim(z.target_count)}`}</span>
@@ -130,25 +168,32 @@ const Zikir = window.Zikir = (() => {
   async function cizListe(govde) {
     listeGovde = govde;
     if (navigator.onLine === false) {
-      govde.innerHTML = `<div class="tp-bilgi">🌙 Toplu zikir için internet bağlantısı gerekiyor. Bağlanınca burası kendiliğinden yenilenir.</div>`;
+      govde.innerHTML = `<div class="tp-bilgi">🌙 Toplu mantra için internet bağlantısı gerekiyor. Bağlanınca burası kendiliğinden yenilenir.</div>`;
       return;
     }
-    govde.innerHTML = `<div class="tp-bilgi">📿 Toplu zikirler yükleniyor…</div>`;
+    govde.innerHTML = `<div class="tp-bilgi">🪷 Toplu mantralar yükleniyor…</div>`;
     eskiBekleyenleriGonder();
     const liste = await aktifler();
     if (listeGovde !== govde) return;   // bu arada başka sekmeye geçildi
-    if (liste === null) { govde.innerHTML = `<div class="ts-bos">Toplu zikirler şu an yüklenemedi. Biraz sonra tekrar dene 🌿</div>`; return; }
+    if (liste === null) { govde.innerHTML = `<div class="ts-bos">Toplu mantralar şu an yüklenemedi. Biraz sonra tekrar dene 🌿</div>`; return; }
     const mod = moderatorMu();
     govde.innerHTML = (mod ? formHTML() : "") +
-      `<p class="zk-giris muted small">Hep birlikte, tek niyetle 🤍 Bir zikre dokun, zikirmatik açılsın. Kimin ne kadar çektiği görünmez; sadece toplam ve katılımcı sayısı.</p>` +
+      `<p class="zk-giris muted small">Bali'de olduğu gibi, hep birlikte tek niyetle 🤍 Bir mantraya dokun, sayaç açılsın; her tekrarında bir kez dokun. Kimin ne kadar okuduğu görünmez; sadece toplam ve katılımcı sayısı.</p>` +
       (liste.length
         ? `<div class="zk-liste">${liste.map(z => `<div class="zk-sarmal">${kartHTML(z)}${mod ? `<button class="td-mini td-sil zk-kaldir" type="button" data-zk-kaldir="${esc(z.id)}">🙈 Listeden kaldır</button>` : ""}</div>`).join("")}</div>`
-        : `<div class="ts-bos">Şu an aktif toplu zikir yok 🌙${mod ? " Yukarıdan ilk zikri başlat ✨" : ""}</div>`);
+        : `<div class="ts-bos">Şu an aktif toplu mantra yok 🌙${mod ? " Yukarıdan ilk mantrayı başlat ✨" : ""}</div>`);
     govde.querySelectorAll("[data-zikir]").forEach(b => b.addEventListener("click", () => {
       const z = liste.find(x => x.id === b.dataset.zikir); if (z) ac(z);
     }));
     if (mod) {
       const e = govde.querySelector("#zk-f-ekle"); if (e) e.addEventListener("click", () => zikirEkle(govde));
+      const s = govde.querySelector("#zk-f-sec");
+      if (s) s.addEventListener("change", () => {
+        const m = MANTRALAR[+s.value]; if (!m) return;
+        govde.querySelector("#zk-f-baslik").value = m.ad;
+        govde.querySelector("#zk-f-metin").value = m.okunus;
+        govde.querySelector("#zk-f-aciklama").value = m.anlam.slice(0, 160);
+      });
       govde.querySelectorAll("[data-zk-kaldir]").forEach(b => b.addEventListener("click", () => zikirKaldir(govde, b.dataset.zkKaldir)));
     }
   }
@@ -163,10 +208,11 @@ const Zikir = window.Zikir = (() => {
         '<div class="zk-ust"><span class="zk-baslik" id="zk-baslik"></span><button class="zk-kapat" type="button" aria-label="Kapat">✕</button></div>' +
         '<div class="zk-metin" id="zk-metin"></div>' +
         '<div class="zk-aciklama muted small" id="zk-aciklama"></div>' +
+        '<details class="zk-detay" id="zk-detay"><summary>ℹ️ Anlamı · Yararı · Kaynağı</summary><div id="zk-detay-ic"></div></details>' +
         '<div class="zk-bar buyuk"><span id="zk-bar"></span></div>' +
         '<div class="zk-sayilar"><b id="zk-toplam"></b><span id="zk-katilimci"></span></div>' +
         '<div class="zk-orta" id="zk-orta"></div>' +
-        '<p class="zk-ipucu muted small" id="zk-ipucu">Çekmek için dokun</p>' +
+        '<p class="zk-ipucu muted small" id="zk-ipucu">Her okuyuşta bir kez dokun</p>' +
       '</div>';
     document.body.appendChild(ov);
     if (window.OverlayGeri && OverlayGeri.izle) OverlayGeri.izle(ov);   // telefon GERİ tuşu kapatsın
@@ -182,12 +228,12 @@ const Zikir = window.Zikir = (() => {
     ov.querySelector("#zk-katilimci").textContent = `${bicim(katilimci)} katılımcı`;
     const orta = ov.querySelector("#zk-orta");
     if (tamam) {
-      orta.innerHTML = '<div class="zk-tamam"><div class="zk-tamam-ikon">✅</div><div>Zikir tamamlandı.<br>Allah kabul etsin 🤍</div></div>';
+      orta.innerHTML = '<div class="zk-tamam"><div class="zk-tamam-ikon">🪷</div><div>Mantra tamamlandı.<br>Ortak niyetimiz evrene ulaştı 🤍</div></div>';
       ov.querySelector("#zk-ipucu").hidden = true;
     } else {
       let b = orta.querySelector(".zk-buton");
       if (!b) {
-        orta.innerHTML = '<button class="zk-buton" type="button" aria-label="Zikir çek"><span id="zk-benim">0</span></button>';
+        orta.innerHTML = '<button class="zk-buton" type="button" aria-label="Mantrayı say"><span id="zk-benim">0</span></button>';
         b = orta.querySelector(".zk-buton");
         b.addEventListener("pointerdown", e => { e.preventDefault(); dokun(); });
         b.addEventListener("keydown", e => { if (e.key === " " || e.key === "Enter") { e.preventDefault(); dokun(); } });
@@ -266,11 +312,18 @@ const Zikir = window.Zikir = (() => {
     bekleyen = 0; ucuyor = 0; benim = 0;
     // Bu zikir için daha önce gönderilemeyenler varsa önce onları kuyruğa al
     const m = bekleyenAl(); if (m[z.id]) { bekleyen = m[z.id]; delete m[z.id]; bekleyenYaz(m); }
-    ov.querySelector("#zk-baslik").textContent = "📿 " + z.title;
-    ov.querySelector("#zk-metin").textContent = z.zikir_text || "";
-    ov.querySelector("#zk-metin").hidden = !z.zikir_text;
-    ov.querySelector("#zk-aciklama").textContent = z.description || "";
-    ov.querySelector("#zk-aciklama").hidden = !z.description;
+    const mk = mantraBul(z.title);
+    const okunus = z.zikir_text || (mk && mk.okunus) || "";
+    ov.querySelector("#zk-baslik").textContent = "🪷 " + z.title;
+    ov.querySelector("#zk-metin").textContent = okunus;
+    ov.querySelector("#zk-metin").hidden = !okunus;
+    ov.querySelector("#zk-aciklama").textContent = mk ? "" : (z.description || "");
+    ov.querySelector("#zk-aciklama").hidden = !!mk || !z.description;
+    const detay = ov.querySelector("#zk-detay");
+    detay.hidden = !mk; detay.open = false;
+    ov.querySelector("#zk-detay-ic").innerHTML = mk
+      ? `<p><b>✨ Anlamı:</b> ${esc(mk.anlam)}</p><p><b>🌿 Yararı:</b> ${esc(mk.yarar)}</p><p><b>📜 Kaynağı:</b> ${esc(mk.kaynak)}</p>`
+      : "";
     ov.querySelector("#zk-orta").innerHTML = "";
     guncelle();
     ov.hidden = false;
