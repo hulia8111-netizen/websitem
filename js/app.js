@@ -367,13 +367,16 @@ document.addEventListener("DOMContentLoaded", () => {
   function gosterKartlar() {
     const idx1 = Store.get("card-" + today);
     // Günün kartı (her zaman, günde 1)
+    const kapali = idx1 !== null && !!Store.get("kart-kapali-" + today);   // çark seçti, henüz okunmadı
     kartAlani.innerHTML = "";
-    if (idx1 !== null && DATA.kartlar[idx1]) kartEkle(kartAlani, DATA.kartlar[idx1], !!Store.get("card-ozel-" + today));
+    if (kapali) kartAlani.innerHTML = kapaliKartHtml();
+    else if (idx1 !== null && DATA.kartlar[idx1]) kartEkle(kartAlani, DATA.kartlar[idx1], !!Store.get("card-ozel-" + today));
     else kartAlani.innerHTML = carkHtml();
-    kartCekBtn.hidden = idx1 !== null;
-    kartCekBtn.textContent = "🎡 Çarkı Çevir";
+    kartCekBtn.hidden = idx1 !== null && !kapali;
+    kartCekBtn.disabled = false;
+    kartCekBtn.textContent = kapali ? "📖 Kartını Oku" : "🎡 Çarkı Çevir";
     // Derin Anlam (seviye ödülü)
-    derinAnlamCiz(idx1);
+    derinAnlamCiz(kapali ? null : idx1);
   }
   function derinAnlamCiz(idx1) {
     const alan = $("#kart-derin"); if (!alan) return;
@@ -415,9 +418,30 @@ document.addEventListener("DOMContentLoaded", () => {
       Store.set("card-" + today, Math.floor(Math.random() * DATA.kartlar.length));
       nadir = Math.random() < 0.14;                                                  // ~%14 nadir sürpriz
       Store.set("card-ozel-" + today, nadir);
+      Store.set("kart-kapali-" + today, true);                                       // önce kapalı gelir → "Kartını Oku"
     }
     gosterKartlar();
-    if (yeniCekim && window.Keyif) { nadir ? Keyif.kutlama(kartAlani) : Keyif.basari(kartAlani); }
+  }
+  // "Kartını Oku": (Play uygulamasında, günde 1) geçiş reklamı → reklam bitince kart açılır
+  function kartiAc() {
+    if (!Store.get("kart-kapali-" + today)) return;   // zaten açıldı (reklam sinyali + emniyet süresi)
+    Store.set("kart-kapali-" + today, false);
+    gosterKartlar();
+    if (window.Keyif) { Store.get("card-ozel-" + today) ? Keyif.kutlama(kartAlani) : Keyif.basari(kartAlani); }
+  }
+  function kartiOku() {
+    const r = window.Reklam && Reklam.gecisGoster ? Reklam.gecisGoster(kartiAc) : false;
+    if (!r) { kartiAc(); return; }
+    kartCekBtn.disabled = true;
+    const not = kartAlani.querySelector(".cark-not"); if (not) not.textContent = "Reklam bitince kartın açılacak 🌙";
+    // Reklam açılamadıysa takılı kalmasın: birkaç saniye sonra buton yeniden basılabilir
+    setTimeout(() => { if (Store.get("kart-kapali-" + today)) kartCekBtn.disabled = false; }, 6000);
+  }
+  function kapaliKartHtml() {
+    return `<div class="cark-kutu">
+        <div class="kart-kapali" aria-hidden="true"><span>✦</span></div>
+        <p class="cark-not">Kartın seni buldu ✨ Okumaya hazır olduğunda dokun</p>
+      </div>`;
   }
   /* 🎡 Işık Çarkı — kart seçimi aynı (kartCek); çark yalnızca "kendi şansınla çekiyorsun" hissini verir */
   const CARK_SEMBOL = ["🌙", "✨", "☀️", "🔮", "💫", "🌸", "⭐", "🕊️", "🌿", "💜", "🪐", "🌊"];
@@ -434,13 +458,14 @@ document.addEventListener("DOMContentLoaded", () => {
   let carkDonuyor = false;
   function carkCevir() {
     const cark = $("#cark");
-    if (!cark || Store.get("card-" + today) !== null) { kartCek(); return; }
     if (carkDonuyor) return;
+    if (Store.get("card-" + today) !== null) { if (Store.get("kart-kapali-" + today)) kartiOku(); return; }
+    if (!cark) { kartCek(); return; }
     carkDonuyor = true; kartCekBtn.disabled = true;
     const azHareket = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const sure = azHareket ? 1200 : 4200;
-    const tur = (azHareket ? 1 : 5 + Math.floor(Math.random() * 3)) * 360 + Math.random() * 360;
-    cark.style.transition = `transform ${sure}ms cubic-bezier(.17,.67,.16,1)`;
+    const sure = azHareket ? 1500 : 7500;
+    const tur = (azHareket ? 1 : 9 + Math.floor(Math.random() * 3)) * 360 + Math.random() * 360;
+    cark.style.transition = `transform ${sure}ms cubic-bezier(.12,.6,.1,1)`;
     requestAnimationFrame(() => { cark.style.transform = `rotate(${tur}deg)`; });
     const not = kartAlani.querySelector(".cark-not"); if (not) not.textContent = "Evren senin için seçiyor… 🌙";
     setTimeout(() => {

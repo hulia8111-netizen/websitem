@@ -956,6 +956,11 @@ code { background: rgba(255,255,255,0.08); padding: 1px 5px; border-radius: 6px;
   display: flex; align-items: center; justify-content: center; color: #e9c46a; font-size: 1.3rem;
   background: radial-gradient(circle, #2a1d52, #1a1233); border: 2px solid rgba(233,196,106,0.8); }
 .cark.durdu { box-shadow: 0 0 44px rgba(233,196,106,0.75), inset 0 0 26px rgba(0,0,0,0.35); }
+.kart-kapali { width: min(170px, 48vw); aspect-ratio: 2 / 3; border-radius: 14px; display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(circle at 50% 40%, #5b3fa0, #2a1d52 70%); border: 3px solid rgba(233,196,106,0.8);
+  box-shadow: 0 0 34px rgba(233,196,106,0.5); animation: kartNefes 2.6s ease-in-out infinite; }
+.kart-kapali span { color: #e9c46a; font-size: 2.6rem; text-shadow: 0 0 16px rgba(233,196,106,0.9); }
+@keyframes kartNefes { 50% { transform: scale(1.04); box-shadow: 0 0 50px rgba(233,196,106,0.75); } }
 .cark-not { margin: 14px 0 0; text-align: center; color: var(--metin-faint); font-style: italic; font-size: 0.92rem; }
 .kart-icerik { text-align: center; animation: kartGir 0.7s cubic-bezier(.18,.7,.3,1) both; }
 .kart-gorsel-cerceve {
