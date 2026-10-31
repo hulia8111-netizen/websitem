@@ -369,8 +369,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // Günün kartı (her zaman, günde 1)
     kartAlani.innerHTML = "";
     if (idx1 !== null && DATA.kartlar[idx1]) kartEkle(kartAlani, DATA.kartlar[idx1], !!Store.get("card-ozel-" + today));
-    else kartAlani.innerHTML = `<div class="kart-placeholder">Kartını çekmek için butona dokun</div>`;
+    else kartAlani.innerHTML = carkHtml();
     kartCekBtn.hidden = idx1 !== null;
+    kartCekBtn.textContent = "🎡 Çarkı Çevir";
     // Derin Anlam (seviye ödülü)
     derinAnlamCiz(idx1);
   }
@@ -418,9 +419,40 @@ document.addEventListener("DOMContentLoaded", () => {
     gosterKartlar();
     if (yeniCekim && window.Keyif) { nadir ? Keyif.kutlama(kartAlani) : Keyif.basari(kartAlani); }
   }
+  /* 🎡 Işık Çarkı — kart seçimi aynı (kartCek); çark yalnızca "kendi şansınla çekiyorsun" hissini verir */
+  const CARK_SEMBOL = ["🌙", "✨", "☀️", "🔮", "💫", "🌸", "⭐", "🕊️", "🌿", "💜", "🪐", "🌊"];
+  function carkHtml() {
+    const n = CARK_SEMBOL.length, dilim = 360 / n;
+    const semboller = CARK_SEMBOL.map((s, i) =>
+      `<span class="cark-sembol" style="transform:rotate(${i * dilim + dilim / 2}deg)"><i style="transform:rotate(${-(i * dilim + dilim / 2)}deg)">${s}</i></span>`).join("");
+    return `<div class="cark-kutu">
+        <div class="cark-ok" aria-hidden="true">▼</div>
+        <div class="cark" id="cark">${semboller}<div class="cark-merkez">✦</div></div>
+        <p class="cark-not">Niyetini kalbinde tut ve çarkı çevir — kartın seni bulsun ✨</p>
+      </div>`;
+  }
+  let carkDonuyor = false;
+  function carkCevir() {
+    const cark = $("#cark");
+    if (!cark || Store.get("card-" + today) !== null) { kartCek(); return; }
+    if (carkDonuyor) return;
+    carkDonuyor = true; kartCekBtn.disabled = true;
+    const azHareket = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const sure = azHareket ? 1200 : 4200;
+    const tur = (azHareket ? 1 : 5 + Math.floor(Math.random() * 3)) * 360 + Math.random() * 360;
+    cark.style.transition = `transform ${sure}ms cubic-bezier(.17,.67,.16,1)`;
+    requestAnimationFrame(() => { cark.style.transform = `rotate(${tur}deg)`; });
+    const not = kartAlani.querySelector(".cark-not"); if (not) not.textContent = "Evren senin için seçiyor… 🌙";
+    setTimeout(() => {
+      try { if (navigator.vibrate) navigator.vibrate(40); } catch (e) {}
+      cark.classList.add("durdu");
+      setTimeout(() => { carkDonuyor = false; kartCekBtn.disabled = false; kartCek(); }, 700);
+    }, sure);
+  }
+
   gosterKartlar();
   window.kartlariTazele = gosterKartlar;   // seviye değişince dışarıdan tazelemek için
-  kartCekBtn.addEventListener("click", kartCek);
+  kartCekBtn.addEventListener("click", carkCevir);
 
   /* 5. GÜNÜN RİTÜELİ — js/rituel.js modülünde yönetilir (task-<gün> entegrasyonu orada). */
 

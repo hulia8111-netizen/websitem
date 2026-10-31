@@ -944,6 +944,19 @@ code { background: rgba(255,255,255,0.08); padding: 1px 5px; border-radius: 6px;
 /* ---------- Kart çekme ---------- */
 .kart-alani { min-height: 130px; display: flex; align-items: center; justify-content: center; margin-bottom: var(--sp-3); }
 .kart-placeholder { color: var(--metin-faint); font-style: italic; text-align: center; }
+/* 🎡 Işık Çarkı (günün kartı) */
+.cark-kutu { position: relative; display: flex; flex-direction: column; align-items: center; padding-top: 14px; width: 100%; }
+.cark-ok { position: absolute; top: 0; z-index: 2; color: #e9c46a; font-size: 1.4rem; text-shadow: 0 0 10px rgba(233,196,106,0.8); }
+.cark { position: relative; width: min(250px, 70vw); aspect-ratio: 1; border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg, #3b2a6e 0deg 30deg, #5b3fa0 30deg 60deg);
+  border: 4px solid rgba(233,196,106,0.75); box-shadow: 0 0 28px rgba(179,140,255,0.45), inset 0 0 26px rgba(0,0,0,0.35); }
+.cark-sembol { position: absolute; inset: 0; display: flex; align-items: flex-start; justify-content: center; padding-top: 6%; pointer-events: none; }
+.cark-sembol i { font-style: normal; font-size: clamp(1rem, 4.5vw, 1.35rem); display: inline-block; }
+.cark-merkez { position: absolute; top: 50%; left: 50%; width: 22%; aspect-ratio: 1; transform: translate(-50%,-50%); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; color: #e9c46a; font-size: 1.3rem;
+  background: radial-gradient(circle, #2a1d52, #1a1233); border: 2px solid rgba(233,196,106,0.8); }
+.cark.durdu { box-shadow: 0 0 44px rgba(233,196,106,0.75), inset 0 0 26px rgba(0,0,0,0.35); }
+.cark-not { margin: 14px 0 0; text-align: center; color: var(--metin-faint); font-style: italic; font-size: 0.92rem; }
 .kart-icerik { text-align: center; animation: kartGir 0.7s cubic-bezier(.18,.7,.3,1) both; }
 .kart-gorsel-cerceve {
   position: relative; display: inline-block; border-radius: 18px; padding: 4px;
