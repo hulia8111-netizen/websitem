@@ -16,6 +16,9 @@ const Ambiyans = window.Ambiyans = (() => {
   const HEDEF_SES = 0.22;                 // huzurlu, arka planda kalan seviye
   let ses = null, solma = null, buton = null;
 
+  // Tek seferlik: sol üstteki eski buton (Geri / başlık butonlarıyla çakışıp) yanlışlıkla kapatılmış olabilir → bir kez yeniden aç
+  try { if (localStorage.getItem(TERCIH + "-v") !== "2") { localStorage.removeItem(TERCIH); localStorage.setItem(TERCIH + "-v", "2"); } } catch (e) {}
+
   function acikMi() { try { return localStorage.getItem(TERCIH) !== "kapali"; } catch (e) { return true; } }
   function tercihYaz(acik) { try { localStorage.setItem(TERCIH, acik ? "acik" : "kapali"); } catch (e) {} }
 
@@ -73,6 +76,12 @@ const Ambiyans = window.Ambiyans = (() => {
     buton.setAttribute("aria-label", acik ? "Arka plan müziğini kapat" : "Arka plan müziğini aç");
     buton.title = acik ? "Müzik açık" : "Müzik kapalı";
   }
+  let balonEl = null, balonT = null;
+  function balon(metin) {
+    if (!balonEl) { balonEl = document.createElement("div"); balonEl.className = "ambiyans-balon"; document.body.appendChild(balonEl); }
+    balonEl.textContent = metin; balonEl.classList.add("gor");
+    clearTimeout(balonT); balonT = setTimeout(() => balonEl.classList.remove("gor"), 2600);
+  }
   function butonKur() {
     buton = document.createElement("button");
     buton.type = "button"; buton.className = "ambiyans-btn";
@@ -81,6 +90,7 @@ const Ambiyans = window.Ambiyans = (() => {
       const yeni = !acikMi(); tercihYaz(yeni);
       if (yeni) baslat(); else sustur(true);
       butonCiz();
+      balon(yeni ? "🎵 Huzur müziği açıldı" : "🔇 Müzik kapandı · açmak için tekrar dokun");
     });
     document.body.appendChild(buton);
     butonCiz();
